@@ -1,0 +1,20 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection":
+      "Server=(localdb)\\mssqllocaldb;Database=TemplateBase;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "AppSettings": {
+    "Authority": "https://localhost:44319",
+    "ApiUrl": "https://localhost:5001",
+    "JsClientUrl": "https://localhost:5003",
+    "MvcClientUrl": "https://localhost:5002",
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    "Database": {
+      "Timeout": 30,
+      "ConnectionStringName": "DefaultConnection"
+    },
+    "Cache": {
+      "DefaultExpiration": "00:00:30"
+    }
+  }
+}

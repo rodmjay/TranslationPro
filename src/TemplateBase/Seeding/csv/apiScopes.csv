@@ -1,0 +1,2 @@
+﻿Id,Enabled,Name,DisplayName,Description,Required,Emphasize,ShowInDiscoveryDocument
+1,1,api1,My API,NULL,0,0,1
