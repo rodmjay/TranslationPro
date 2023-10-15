@@ -1,4 +1,4 @@
-# Template Projects
+# Translation Pro
 
 ## Features
 
@@ -17,7 +17,6 @@ This is a common template for most .NET Core Projects that may come along
 
 1. Right click solution and chose `Set Startup Projects...`
 2. Choose option `Multiple Startup Projects`
-3. Select `TemplateApi`, `TemplateIdentityServer`, and `TemplateJsClient`
 4. In Visual Studio `Start` the application(s)
 
 ## Logging In
@@ -38,8 +37,8 @@ Getting a token looks like this:
 ## Creating Migrations
 
 1. open `Package Manager Console`
-2. setup startup project to `TemplateBase` 
-3. set default project to `TemplateBase`
+2. setup startup project to `TranslationPro.Base` 
+3. set default project to `TranslationPro.Base`
 4. run `add-migration [Migration Name] -o "Common/Data/Migrations"`
 5. double check to make sure the migration is correct
 
@@ -47,8 +46,8 @@ Getting a token looks like this:
 ## Executing Migrations
 
 1. open `Package Manager Console`
-2. setup startup project to `TemplateBase` 
-3. set default project to `TemplateBase`
+2. setup startup project to `TranslationPro.Base` 
+3. set default project to `TranslationPro.Base`
 4. run `update-database` to update your local database
 
 ## Basic Rules

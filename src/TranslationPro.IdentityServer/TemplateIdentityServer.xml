@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TranslationPro.IdentityServer</name>
+    </assembly>
+    <members>
+        <member name="M:TemplateIdentityServer.Extensions.Extensions.IsNativeClient(IdentityServer4.Models.AuthorizationRequest)">
+            <summary>
+                Checks if the redirect URI is for a native client.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
