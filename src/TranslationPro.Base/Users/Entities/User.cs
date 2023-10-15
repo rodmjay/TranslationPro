@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Users.Interfaces;
@@ -38,6 +39,7 @@ namespace TranslationPro.Base.Users.Entities
         public ICollection<UserToken> UserTokens { get; set; }
         public ICollection<UserLogin> UserLogins { get; set; }
         public ICollection<UserClaim> UserClaims { get; set; }
+        public ICollection<Application> Applications { get; set; }
 
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -63,6 +65,11 @@ namespace TranslationPro.Base.Users.Entities
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.UserClaims)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.Applications)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);

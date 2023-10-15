@@ -16,13 +16,13 @@ namespace TranslationPro.Base.Languages.Entities
     public class Language : BaseEntity<Language>
     {
         public string Name { get; set; }
-        public string NativeName { get; set; }
-        public string Code2 { get; set; }
-        public string Code3 { get; set; }
+        public string LanguageId { get; set; }
+        public string LabelId { get; set; }
+        public ICollection<ApplicationLanguage> Applications { get; set; }
 
         public override void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.HasKey(x => x.Code3);
+            builder.HasKey(x => x.LanguageId);
 
         }
     }
