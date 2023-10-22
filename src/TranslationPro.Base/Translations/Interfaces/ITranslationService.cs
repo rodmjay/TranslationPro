@@ -11,7 +11,6 @@ namespace TranslationPro.Base.Translations.Interfaces
     public interface ITranslationService : IService<Translation>
     {
         Task<Result> CreateTranslationAsync(Guid applicationId, int phraseId, TranslationInput input);
-        Task<Result> UpdateTranslationAsync(Guid applicationId, int translationId, TranslationInput input);
         Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
             where T : TranslationDto;
 

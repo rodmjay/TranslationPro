@@ -8,7 +8,7 @@ using TranslationPro.Base.Translations.Models;
 
 namespace TranslationPro.Api.Controllers;
 
-[Route("v1.0/{applicationId}/translations")]
+[Route("v1.0/applications/{applicationId}/phrases/{phraseId}/translations")]
 public class TranslationsController : BaseController
 {
     private readonly ITranslationService _translationService;
@@ -17,5 +17,10 @@ public class TranslationsController : BaseController
     {
         _translationService = translationService;
     }
-    
+
+    [HttpPost]
+    public async Task<Result> SaveTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId, [FromBody] TranslationInput input)
+    {
+        return await _translationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);  
+    }
 }

@@ -17,8 +17,6 @@ public class Translation : BaseEntity<Translation>, ITranslation
     public DateTime? TranslationDate { get; set; }
     public string Text { get; set; }
 
-
-    public string TranslatedText { get; set; }
     public override void Configure(EntityTypeBuilder<Translation> builder)
     {
         builder.HasKey(x => x.Id);
