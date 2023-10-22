@@ -21,4 +21,22 @@ public class TranslationErrorDescriber
             Description = $"Unable to delete phrase '{id}'"
         };
     }
+
+    public virtual Error UnableToCreatePhrase()
+    {
+        return new()
+        {
+            Code = nameof(UnableToCreatePhrase),
+            Description = $"Unable to create phrase"
+        };
+    }
+
+    public virtual Error UnableToUpdatePhrase(int id)
+    {
+        return new()
+        {
+            Code = nameof(UnableToUpdatePhrase),
+            Description = $"Unable to update phrase '{id}'"
+        };
+    }
 }

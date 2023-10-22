@@ -45,6 +45,14 @@ public class PhrasesController : BaseController
         return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging, filters).ConfigureAwait(false);
     }
 
+    [HttpGet("{language}")]
+    public async Task<Dictionary<int,string>> GetPhrasesForApplicationAndLanguage([FromRoute] Guid applicationId, [FromRoute]string language)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        return await _phraseService.GetApplicationPhraseList(applicationId, language).ConfigureAwait(false);
+    }
+
     [HttpDelete("{phraseId}")]
     public async Task<Result> DeletePhrase([FromRoute] Guid applicationId, [FromRoute] int phraseId)
     {

@@ -8,6 +8,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,5 +46,7 @@ namespace TranslationPro.Base.Common.Services.Bases
         }
 
         public IRepositoryAsync<TEntity> Repository { get; }
+
+       
     }
 }

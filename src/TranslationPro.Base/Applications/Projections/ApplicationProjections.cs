@@ -11,7 +11,7 @@ namespace TranslationPro.Base.Applications.Projections
         {
             CreateMap<Application, ApplicationDto>()
                 .ForMember(x => x.SupportedLanguages, opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId)))
-                .ForMember(x=>x.PhraseCount, opt=>opt.MapFrom(x=>x.Phrases.Count));
+                .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,13 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         PhraseFilters filters) where T : PhraseDto
     {
         return this.PaginateAsync<Phrase, T>(x => x.ApplicationId == applicationId, filters.GetExpression(), paging);
+    }
+
+    public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
+    {
+        var phrases = await Phrases.Include(x => x.Translations.Where(t => t.LanguageId == language)).Where(x => x.ApplicationId == applicationId).ToListAsync();
+
+        return phrases.SelectMany(x => x.Translations).ToDictionary(x => x.PhraseId, x => x.Text);
     }
 
     public async Task<Result> CreatePhraseAsync(Guid applicationId, CreatePhraseDto input)
@@ -74,7 +82,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         if (records > 0)
             return Result.Success(phrase.Id);
 
-        return Result.Failed();
+        return Result.Failed(_errorDescriber.UnableToCreatePhrase());
     }
 
     public async Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, UpdatePhraseDto input)
@@ -102,10 +110,10 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         }
 
         var records = Repository.InsertOrUpdateGraph(existing, true);
-        if(records > 0)
+        if (records > 0)
             return Result.Success(phraseId);
 
-        return Result.Failed();
+        return Result.Failed(_errorDescriber.UnableToUpdatePhrase(phraseId));
     }
 
     public async Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)
