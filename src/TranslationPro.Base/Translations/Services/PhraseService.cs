@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
+using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Translations.Entities;
@@ -27,9 +28,9 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
     private IQueryable<Phrase> Phrases => Repository.Queryable();
     
-    public Task<List<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId) where T : PhraseDto
+    public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging) where T : PhraseDto
     {
-        return Phrases.Where(x => x.ApplicationId == applicationId).ProjectTo<T>(ProjectionMapping).ToListAsync();
+        return this.PaginateAsync<Phrase, T>(x => x.ApplicationId == applicationId, paging);
     }
 
     public async Task<Result> CreatePhraseAsync(Guid applicationId, CreatePhraseDto input)

@@ -29,10 +29,10 @@ public class PhrasesController : BaseController
     }
 
     [HttpGet]
-    public async Task<List<PhraseDto>> GetPhrases([FromRoute] Guid applicationId)
+    public async Task<PagedList<PhraseDto>> GetPhrases([FromRoute] Guid applicationId, [FromQuery]PagingQuery paging)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId).ConfigureAwait(false);
+        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging).ConfigureAwait(false);
     }
 }

@@ -73,4 +73,8 @@ Getting a token looks like this:
 11. Service methods never return entities
 12. Entities and Dtos can coordinate properties with interface (See IProvider)
 
+## Collaboration Information
+
+1. Please contact rodmjay@gmail.com if you would like to be added to the postman team
+
 
