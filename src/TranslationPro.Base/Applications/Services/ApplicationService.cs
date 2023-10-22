@@ -29,7 +29,7 @@ namespace TranslationPro.Base.Applications.Services
         private IQueryable<Application> Applications => Repository.Queryable();
         private IQueryable<Language> Languages => _languageRepository.Queryable();
 
-        public async Task<Result> CreateApplicationAsync(int userId, ApplicationInputDto input)
+        public async Task<Result> CreateApplicationAsync(int userId, ApplicationInput input)
         {
             
             var application = new Application
@@ -66,7 +66,7 @@ namespace TranslationPro.Base.Applications.Services
             return Applications.Where(x => x.UserId == userId).ProjectTo<T>(ProjectionMapping).ToListAsync();
         }
 
-        public Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInputDto dto)
+        public Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput dto)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Interfaces;
@@ -11,6 +12,8 @@ namespace TranslationPro.Base.Translations.Interfaces
     {
         Task<Result> CreateTranslationAsync(Guid applicationId, int phraseId, TranslationInput input);
         Task<Result> UpdateTranslationAsync(Guid applicationId, int translationId, TranslationInput input);
+        Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
+            where T : TranslationDto;
 
     }
 }

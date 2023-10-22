@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;
@@ -21,6 +25,8 @@ namespace TranslationPro.Base.Translations.Services
             _applicationRepository = unitOfWork.RepositoryAsync<Application>();
         }
 
+        private IQueryable<Translation> Translations => Repository.Queryable();
+
         public Task<Result> CreateTranslationAsync(Guid applicationId, int phraseId, TranslationInput input)
         {
             throw new NotImplementedException();
@@ -30,6 +36,11 @@ namespace TranslationPro.Base.Translations.Services
         {
             throw new NotImplementedException();
         }
-        
+
+        public Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId) where T : TranslationDto
+        {
+            return Translations.Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
+                .ProjectTo<T>(ProjectionMapping).ToListAsync();
+        }
     }
 }

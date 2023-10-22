@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -17,19 +18,22 @@ public class ApplicationsController : BaseController
         _service = service;
     }
 
+    [HttpGet]
     public async Task<List<ApplicationDto>> GetApplicationsAsync()
     {
         return await _service.GetApplicationsForUserAsync<ApplicationDto>(1);
     }
 
-    public async Task<Result> CreateApplicationAsync(ApplicationInputDto input)
+    [HttpPost]
+    public async Task<Result> CreateApplicationAsync(ApplicationInput input)
     {
         var user = await GetCurrentUser();
         
         return await _service.CreateApplicationAsync(user.Id, input).ConfigureAwait(false);
     }
 
-    public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInputDto input)
+    [HttpPut]
+    public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 

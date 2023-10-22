@@ -8,11 +8,9 @@
 		<DocumentationFile>TranslationPro.Api.xml</DocumentationFile>
 		<NoWarn>1701;1702;1591;</NoWarn>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Remove="TranslationPro.Api.xml" />
-	</ItemGroup>
-
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 	<ItemGroup>
 		<Content Include="TranslationPro.Api.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

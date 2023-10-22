@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Models;
 
@@ -8,7 +9,8 @@ namespace TranslationPro.Base.Applications.Projections
     {
         public ApplicationProjections()
         {
-            CreateMap<Application, ApplicationDto>();
+            CreateMap<Application, ApplicationDto>()
+                .ForMember(x => x.SupportedLanguages, opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId)));
         }
     }
 }

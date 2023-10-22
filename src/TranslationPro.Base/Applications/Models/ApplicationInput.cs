@@ -2,7 +2,7 @@
 
 namespace TranslationPro.Base.Applications.Models
 {
-    public class ApplicationInputDto
+    public class ApplicationInput
     {
         [Required]
         public string Name { get; set; }

@@ -6,10 +6,11 @@ using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Users.Entities;
+using TranslationPro.Base.Applications.Interfaces;
 
 namespace TranslationPro.Base.Applications.Entities
 {
-    public class Application : BaseEntity<Application>
+    public class Application : BaseEntity<Application>, IApplication
     {
         public Application()
         {
