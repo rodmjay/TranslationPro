@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
@@ -7,22 +8,57 @@ using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
+using TranslationPro.Base.Common.Data.Enums;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
+using TranslationPro.Base.Languages.Entities;
 
 namespace TranslationPro.Base.Applications.Services
 {
     public class ApplicationService : BaseService<Application>, IApplicationService
     {
-        public ApplicationService(IServiceProvider serviceProvider) : base(serviceProvider)
+        private readonly ApplicationErrorDescriber _errorDescriber;
+        private readonly IRepositoryAsync<Language> _languageRepository;
+        public ApplicationService(IServiceProvider serviceProvider, ApplicationErrorDescriber errorDescriber) : base(serviceProvider)
         {
+            _errorDescriber = errorDescriber;
+            _languageRepository = UnitOfWork.RepositoryAsync<Language>();
         }
 
         private IQueryable<Application> Applications => Repository.Queryable();
+        private IQueryable<Language> Languages => _languageRepository.Queryable();
 
-        public Task<Result> CreateApplicationAsync(int userId, ApplicationInputDto inputDto)
+        public async Task<Result> CreateApplicationAsync(int userId, ApplicationInputDto input)
         {
-            throw new NotImplementedException();
+            
+            var application = new Application
+            {
+                UserId = userId,
+                ObjectState = ObjectState.Added
+            };
+
+            // make sure the languages exist in database and remove any junk data
+            var languages = await Languages.Where(x => input.Languages.Contains(x.Id)).ToListAsync();
+            
+            foreach (var lang in input.Languages)
+            {
+                var selectedLang = languages.FirstOrDefault(x => x.Id == lang);
+                if (selectedLang != null)
+                {
+                    application.Languages.Add(new ApplicationLanguage()
+                    {
+                        LanguageId = selectedLang.Id,
+                        ObjectState = ObjectState.Added
+                    });
+                }
+            }
+
+            var records = Repository.InsertOrUpdateGraph(application, true);
+            if (records > 0)
+                return Result.Success(application.Id);
+
+            return Result.Failed();
         }
 
         public Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationDto

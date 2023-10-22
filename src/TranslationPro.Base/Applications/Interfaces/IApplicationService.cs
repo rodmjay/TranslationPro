@@ -10,7 +10,7 @@ namespace TranslationPro.Base.Applications.Interfaces
 {
     public interface IApplicationService : IService<Application>
     {
-        Task<Result> CreateApplicationAsync(int userId, ApplicationInputDto inputDto);
+        Task<Result> CreateApplicationAsync(int userId, ApplicationInputDto input);
         Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationDto;
         Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInputDto input);
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Interfaces;
@@ -9,7 +10,7 @@ namespace TranslationPro.Base.Translations.Interfaces;
 
 public interface IPhraseService : IService<Phrase>
 {
-    Task<T> GetPhrasesAsync<T>(Guid applicationId) where T : PhraseDto;
+    Task<List<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId) where T : PhraseDto;
     Task<Result> CreatePhraseAsync(Guid applicationId,  CreatePhraseDto input);
     Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, UpdatePhraseDto input);
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);

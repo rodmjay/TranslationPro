@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
@@ -23,11 +25,11 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
     }
 
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
-
-
-    public Task<T> GetPhrasesAsync<T>(Guid applicationId) where T : PhraseDto
+    private IQueryable<Phrase> Phrases => Repository.Queryable();
+    
+    public Task<List<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId) where T : PhraseDto
     {
-        throw new NotImplementedException();
+        return Phrases.Where(x => x.ApplicationId == applicationId).ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
     public async Task<Result> CreatePhraseAsync(Guid applicationId, CreatePhraseDto input)
@@ -54,7 +56,11 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
             });
         }
 
-        throw new NotImplementedException();
+        var records = Repository.InsertOrUpdateGraph(phrase, true);
+        if (records > 0)
+            return Result.Success(phrase.Id);
+
+        return Result.Failed();
     }
 
     public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, UpdatePhraseDto input)

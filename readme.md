@@ -2,7 +2,15 @@
 
 ## Features
 
-This is a common template for most .NET Core Projects that may come along
+Provides translation services for websites
+
+## Entities
+- User
+- Application
+- Langulage
+- ApplicationLanguage
+- Phrase
+- Translation
 
 ## Components
 

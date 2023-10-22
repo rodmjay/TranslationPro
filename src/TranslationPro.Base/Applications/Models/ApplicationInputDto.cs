@@ -1,9 +1,12 @@
-﻿namespace TranslationPro.Base.Applications.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TranslationPro.Base.Applications.Models
 {
     public class ApplicationInputDto
     {
+        [Required]
         public string Name { get; set; }
-        public string[] SupportedLanguages { get; set; }
+        public string[] Languages { get; set; }
         public string ApiKey { get; set; }
     }
 }

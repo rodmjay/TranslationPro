@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -25,5 +26,13 @@ public class PhrasesController : BaseController
         await AssertUserHasAccessToApplication(applicationId);
 
         return await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
+    }
+
+    [HttpGet]
+    public async Task<List<PhraseDto>> GetPhrases([FromRoute] Guid applicationId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId).ConfigureAwait(false);
     }
 }

@@ -106,46 +106,6 @@
 				}
 			},
 			"response": []
-		},
-		{
-			"name": "Get Countries",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{access_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5001/v1.0/countries?page=1&size=12",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"v1.0",
-						"countries"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "12"
-						}
-					]
-				}
-			},
-			"response": []
 		}
 	]
 }

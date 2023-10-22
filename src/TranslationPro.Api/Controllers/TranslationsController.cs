@@ -11,11 +11,11 @@ namespace TranslationPro.Api.Controllers;
 [Route("v1.0/{applicationId}/translations")]
 public class TranslationsController : BaseController
 {
-    private readonly ITranslationService _translationXService;
+    private readonly ITranslationService _translationService;
 
-    protected TranslationsController(IServiceProvider serviceProvider, ITranslationService translationXService) : base(serviceProvider)
+    protected TranslationsController(IServiceProvider serviceProvider, ITranslationService translationService) : base(serviceProvider)
     {
-        _translationXService = translationXService;
+        _translationService = translationService;
     }
     
 }
