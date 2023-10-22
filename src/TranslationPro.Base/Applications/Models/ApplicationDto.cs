@@ -11,5 +11,6 @@ public class ApplicationDto : IApplication
     public string Name { get; set; }
     public string ApiKey { get; set; }
     public List<string> SupportedLanguages { get; set; }
+    public int PhraseCount { get; set; }
     
 }

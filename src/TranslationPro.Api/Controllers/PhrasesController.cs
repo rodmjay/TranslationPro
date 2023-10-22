@@ -28,11 +28,28 @@ public class PhrasesController : BaseController
         return await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
     }
 
-    [HttpGet]
-    public async Task<PagedList<PhraseDto>> GetPhrases([FromRoute] Guid applicationId, [FromQuery]PagingQuery paging)
+    [HttpPut("{phraseId}")]
+    public async Task<Result> UpdatePhrase([FromRoute] Guid applicationId, [FromRoute] int phraseId,
+        [FromBody] UpdatePhraseDto input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging).ConfigureAwait(false);
+        return await _phraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
+    }
+
+    [HttpGet]
+    public async Task<PagedList<PhraseDto>> GetPhrases([FromRoute] Guid applicationId, [FromQuery] PagingQuery paging, [FromQuery] PhraseFilters filters)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging, filters).ConfigureAwait(false);
+    }
+
+    [HttpDelete("{phraseId}")]
+    public async Task<Result> DeletePhrase([FromRoute] Guid applicationId, [FromRoute] int phraseId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        return await _phraseService.DeletePhraseAsync(applicationId, phraseId);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using TranslationPro.Base.Common.Middleware.Builders;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Models;
 using TranslationPro.Base.Translations.Services;

@@ -8,7 +8,6 @@
 #endregion
 
 using System.Collections.Generic;
-using EllipticCurve;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Interfaces;

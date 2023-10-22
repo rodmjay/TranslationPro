@@ -2,5 +2,5 @@
 
 public class UpdatePhraseDto
 {
-
+    public string Text { get; set; }
 }

@@ -1,6 +1,4 @@
-﻿using TranslationPro.Base.Translations.Interfaces;
-
-namespace TranslationPro.Base.Translations.Models;
+﻿namespace TranslationPro.Base.Translations.Models;
 
 public class CreatePhraseDto
 {
