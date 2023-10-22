@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account.Manage
+namespace TranslationPro.IdentityServer.Pages.Account.Manage
 {
     [Authorize("ApiScope")]
     public class ChangePasswordModel : PageModel

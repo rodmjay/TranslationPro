@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account
 {
     public class LogOutModel : PageModel
     {

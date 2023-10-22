@@ -5,20 +5,20 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>TemplateIdentityServer.xml</DocumentationFile>
+		<DocumentationFile>TranslationPro.IdentityServer.xml</DocumentationFile>
 		<NoWarn>1701;1702;1591;</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="tempkey.jwk" />
-		<None Remove="TemplateIdentityServer.xml" />
+		<None Remove="TranslationPro.IdentityServer.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="tempkey.jwk">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Include="TemplateIdentityServer.xml">
+		<Content Include="TranslationPro.IdentityServer.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

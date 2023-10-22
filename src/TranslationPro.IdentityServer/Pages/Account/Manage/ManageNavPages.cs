@@ -11,7 +11,7 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace TemplateIdentityServer.Pages.Account.Manage
+namespace TranslationPro.IdentityServer.Pages.Account.Manage
 {
     public static class ManageNavPages
     {

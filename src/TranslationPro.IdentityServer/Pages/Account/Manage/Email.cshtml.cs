@@ -15,10 +15,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using TranslationPro.Base.Users.Managers;
 using TranslationPro.Base.Users.Entities;
+using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account.Manage
+namespace TranslationPro.IdentityServer.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {

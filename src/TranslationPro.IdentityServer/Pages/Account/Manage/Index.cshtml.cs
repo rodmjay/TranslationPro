@@ -11,10 +11,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TranslationPro.Base.Users.Managers;
 using TranslationPro.Base.Users.Entities;
+using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account.Manage
+namespace TranslationPro.IdentityServer.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {

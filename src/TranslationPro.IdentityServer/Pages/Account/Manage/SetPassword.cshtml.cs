@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account.Manage
+namespace TranslationPro.IdentityServer.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {

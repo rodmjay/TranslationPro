@@ -5,7 +5,7 @@
   },
   "AppSettings": {
     "Authority": "https://localhost:44319",
-    "ApiUrl": "https://localhost:5001",
+    "ApiUrl": "https://localhost:19977",
     "JsClientUrl": "https://localhost:5003",
     "MvcClientUrl": "https://localhost:5002",
     "ASPNETCORE_ENVIRONMENT": "Development",

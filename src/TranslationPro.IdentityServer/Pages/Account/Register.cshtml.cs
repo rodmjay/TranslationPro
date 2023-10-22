@@ -21,7 +21,7 @@ using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel

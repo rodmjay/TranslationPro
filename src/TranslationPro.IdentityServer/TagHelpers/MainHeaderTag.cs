@@ -11,7 +11,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace TemplateIdentityServer.TagHelpers
+namespace TranslationPro.IdentityServer.TagHelpers
 {
     [HtmlTargetElement("main-header", Attributes = "name", TagStructure = TagStructure.NormalOrSelfClosing)]
     public class MainHeaderTag : TagHelper

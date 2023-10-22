@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "TemplateIdentityServer": {
+    "TranslationPro.IdentityServer": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

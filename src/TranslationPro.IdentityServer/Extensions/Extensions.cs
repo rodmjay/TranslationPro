@@ -10,7 +10,7 @@
 using System;
 using IdentityServer4.Models;
 
-namespace TemplateIdentityServer.Extensions
+namespace TranslationPro.IdentityServer.Extensions
 {
     public static class Extensions
     {

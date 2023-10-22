@@ -16,7 +16,7 @@ namespace TranslationPro.Api.Controllers
 {
     public class IdentityController : BaseController
     {
-        protected IdentityController(IServiceProvider serviceProvider) : base(serviceProvider)
+        public IdentityController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
         }
 

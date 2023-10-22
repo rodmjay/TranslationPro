@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using TranslationPro.Base.Common.Middleware.Extensions;
 
-namespace TemplateIdentityServer
+namespace TranslationPro.IdentityServer
 {
     [ExcludeFromCodeCoverage]
     public class Program

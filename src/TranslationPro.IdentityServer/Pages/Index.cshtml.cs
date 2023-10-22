@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages
+namespace TranslationPro.IdentityServer.Pages
 {
     public class IndexModel : PageModel
     {

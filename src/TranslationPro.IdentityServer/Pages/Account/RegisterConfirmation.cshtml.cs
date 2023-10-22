@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Hosting;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel

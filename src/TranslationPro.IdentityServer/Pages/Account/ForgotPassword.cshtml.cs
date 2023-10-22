@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using TranslationPro.Base.Users.Managers;
 
-namespace TemplateIdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
