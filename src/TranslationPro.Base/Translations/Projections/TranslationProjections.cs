@@ -10,7 +10,8 @@ namespace TranslationPro.Base.Translations.Projections
         {
             CreateMap<Phrase, PhraseDto>();
 
-            CreateMap<Translation, TranslationDto>();
+            CreateMap<Translation, TranslationDto>()
+                .ForMember(x => x.LanguageName, opt => opt.MapFrom(x => x.Language.Name));
         }
     }
 }
