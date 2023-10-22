@@ -35,6 +35,8 @@ namespace TranslationPro.Base.Applications.Services
             var application = new Application
             {
                 UserId = userId,
+                Name = input.Name,
+                ApiKey = input.ApiKey,
                 ObjectState = ObjectState.Added
             };
 
