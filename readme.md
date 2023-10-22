@@ -7,7 +7,7 @@ Provides translation services for websites
 ## Entities
 - User: User of the platform 
 - Application: User can have many applications 
-- Language: Langulages supported by the platform
+- Language: Languages supported by the platform
 - ApplicationLanguage: Languages supported by each application
 - Phrase: Phrases belonging to each application that should be translated
 - Translation: The translation of each phrase
