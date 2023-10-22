@@ -7,6 +7,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -40,6 +41,7 @@ namespace TranslationPro.Base.Users.Entities
         public ICollection<UserLogin> UserLogins { get; set; }
         public ICollection<UserClaim> UserClaims { get; set; }
         public ICollection<Application> Applications { get; set; }
+        public Guid? CurrentApplication { get; set; }
 
         public void Configure(EntityTypeBuilder<User> builder)
         {

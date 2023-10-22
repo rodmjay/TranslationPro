@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Common.Middleware.Extensions;
 
 namespace TranslationPro.Base.Common.Middleware.Extensions
 {

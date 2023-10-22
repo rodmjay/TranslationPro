@@ -10,7 +10,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using TranslationPro.Base.Common.Validation;
 
 namespace TranslationPro.Base.Common.Validation
 {

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Base.Translations.Entities
@@ -15,13 +14,13 @@ namespace TranslationPro.Base.Translations.Entities
         public Application Application { get; set; }
         public string OriginalText { get; set; }
         public DateTime? TranslationDate { get; set; }
-        public ICollection<LanguageTranslation> LanguageTranslations { get; set; }
+        public ICollection<Phrase> Phrases { get; set; }
 
         public override void Configure(EntityTypeBuilder<Translation> builder)
         {
             builder.HasKey(t => t.Id);
 
-            builder.HasMany(x => x.LanguageTranslations)
+            builder.HasMany(x => x.Phrases)
                 .WithOne(x => x.Translation)
                 .HasForeignKey(x => x.TranslationId);
 

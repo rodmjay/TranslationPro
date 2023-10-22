@@ -127,9 +127,4 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
 		<PackageReference Include="Twilio" Version="5.65.2" />
 	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Applications\Models\" />
-	</ItemGroup>
 </Project>

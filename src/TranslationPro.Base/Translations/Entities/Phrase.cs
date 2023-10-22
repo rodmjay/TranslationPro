@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Net.Mime;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Languages.Entities;
 
 namespace TranslationPro.Base.Translations.Entities;
 
-public class LanguageTranslation : BaseEntity<LanguageTranslation>
+public class Phrase : BaseEntity<Phrase>
 {
     public int Id { get; set; }
     public int TranslationId { get; set; }
@@ -18,11 +15,11 @@ public class LanguageTranslation : BaseEntity<LanguageTranslation>
     public DateTime? TranslationDate { get; set; }
 
     public string TranslatedText { get; set; }
-    public override void Configure(EntityTypeBuilder<LanguageTranslation> builder)
+    public override void Configure(EntityTypeBuilder<Phrase> builder)
     {
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Translation)
-            .WithMany(x => x.LanguageTranslations)
+            .WithMany(x => x.Phrases)
             .HasForeignKey(x => x.TranslationId);
     }
 }

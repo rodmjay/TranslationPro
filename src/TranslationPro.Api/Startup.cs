@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
+using TranslationPro.Base.Translations.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
 namespace TranslationPro.Api
@@ -46,7 +47,8 @@ namespace TranslationPro.Api
                 .AddDatabase<ApplicationContext>()
                 .AddAutomapperProfilesFromAssemblies()
                 .AddCaching()
-                .AddUserDependencies();
+                .AddUserDependencies()
+                .AddTranslationDependencies();
 
             var webAppBuilder = builder.ConfigureWebApp(Environment);
 

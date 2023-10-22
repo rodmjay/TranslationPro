@@ -15,10 +15,8 @@ using Microsoft.Extensions.Hosting;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Users.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
-using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Email.Extensions;
 using TranslationPro.Base.IdentityServer.Extensions;
-using TranslationPro.Base.Users.Extensions;
 
 namespace TemplateIdentityServer
 {

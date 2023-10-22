@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Users.Extensions;
 
 namespace TranslationPro.Base.Users.Extensions
 {

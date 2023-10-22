@@ -12,9 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using TranslationPro.Base.Users.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Users.Extensions;
 using TranslationPro.Base.Users.Interfaces;
 using TranslationPro.Base.Users.Services;
 

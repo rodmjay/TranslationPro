@@ -12,6 +12,7 @@ namespace TranslationPro.Base.Applications.Entities
     public class Application : BaseEntity<Application>
     {
         public Guid Id { get; set; }
+        public string Name { get; set; }
         public List<ApplicationLanguage> Languages { get; set; }
         public List<Translation> Translations { get; set; }
         public User User { get; set; }

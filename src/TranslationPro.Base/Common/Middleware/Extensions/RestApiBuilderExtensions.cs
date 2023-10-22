@@ -26,7 +26,6 @@ using Newtonsoft.Json.Serialization;
 using Serilog;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Middleware.Swagger;
 using TranslationPro.Base.Common.Settings;
 

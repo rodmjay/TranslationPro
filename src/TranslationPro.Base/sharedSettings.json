@@ -1,7 +1,7 @@
 {
   "ConnectionStrings": {
     "DefaultConnection":
-      "Server=(localdb)\\mssqllocaldb;Database=TranslationPro.Base;Trusted_Connection=True;MultipleActiveResultSets=true"
+      "Server=(localdb)\\mssqllocaldb;Database=TranslationPro;Trusted_Connection=True;MultipleActiveResultSets=true"
   },
   "AppSettings": {
     "Authority": "https://localhost:44319",
