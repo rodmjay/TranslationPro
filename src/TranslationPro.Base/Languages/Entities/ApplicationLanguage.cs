@@ -28,11 +28,11 @@ namespace TranslationPro.Base.Languages.Entities
 
             builder.HasOne(x => x.Language)
                 .WithMany(x => x.Applications)
-                .HasForeignKey(x => x.ApplicationId);
+                .HasForeignKey(x => x.LanguageId);
 
             builder.HasOne(x=>x.Application)
                 .WithMany(x => x.Languages)
-                .HasForeignKey(x => x.LanguageId);
+                .HasForeignKey(x => x.ApplicationId);
 
         }
     }

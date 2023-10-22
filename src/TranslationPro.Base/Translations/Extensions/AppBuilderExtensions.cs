@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TranslationPro.Base.Common.Middleware.Builders;
+﻿using TranslationPro.Base.Common.Middleware.Builders;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Models;
 using TranslationPro.Base.Translations.Services;

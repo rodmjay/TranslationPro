@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Models;
@@ -9,7 +10,8 @@ namespace TranslationPro.Base.Applications.Interfaces
 {
     public interface IApplicationService : IService<Application>
     {
-        Task<Result> CreateApplication(int userId, CreateApplicationDto dto);
-        Task<List<T>> GetApplications<T>(int userId) where T : ApplicationDto;
+        Task<Result> CreateApplicationAsync(int userId, ApplicationInputDto inputDto);
+        Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationDto;
+        Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInputDto input);
     }
 }

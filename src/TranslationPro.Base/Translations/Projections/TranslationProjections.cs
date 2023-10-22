@@ -8,9 +8,9 @@ namespace TranslationPro.Base.Translations.Projections
     {
         public TranslationProjections()
         {
-            CreateMap<Translation, TranslationDto>();
-
             CreateMap<Phrase, PhraseDto>();
+
+            CreateMap<Translation, TranslationDto>();
         }
     }
 }

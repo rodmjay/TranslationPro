@@ -13,12 +13,10 @@
 		<None Remove="Seeding\csv\clients.csv" />
 		<None Remove="Seeding\csv\clientScopes.csv" />
 		<None Remove="Seeding\csv\clientSecrets.csv" />
-		<None Remove="Seeding\csv\countries.csv" />
 		<None Remove="Seeding\csv\identityResourceClaims.csv" />
 		<None Remove="Seeding\csv\identityResources.csv" />
 		<None Remove="Seeding\csv\languages.csv" />
 		<None Remove="Seeding\csv\roles.csv" />
-		<None Remove="Seeding\csv\stateProvinces.csv" />
 		<None Remove="Seeding\csv\userRoles.csv" />
 		<None Remove="Seeding\csv\users.csv" />
 		<None Remove="sharedsettings.json" />
@@ -54,12 +52,6 @@
 		</EmbeddedResource>
 		<EmbeddedResource Include="Seeding\csv\languages.csv">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Seeding\csv\stateProvinces.csv">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Seeding\csv\countries.csv">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Seeding\csv\identityResourceClaims.csv">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

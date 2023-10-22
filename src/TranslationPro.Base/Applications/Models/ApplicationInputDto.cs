@@ -1,6 +1,6 @@
 ﻿namespace TranslationPro.Base.Applications.Models
 {
-    public class CreateApplicationDto
+    public class ApplicationInputDto
     {
         public string Name { get; set; }
         public string[] SupportedLanguages { get; set; }

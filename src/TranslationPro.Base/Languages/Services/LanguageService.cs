@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Languages.Interfaces;
@@ -13,9 +17,11 @@ namespace TranslationPro.Base.Languages.Services
         {
         }
 
-        public IList<T> GetLanguages<T>() where T : LanguageDto
+        private IQueryable<Language> Languages => Repository.Queryable();
+
+        public Task<List<T>> GetLanguagesAsync<T>() where T : LanguageDto
         {
-            throw new NotImplementedException();
+            return Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
         }
     }
 }

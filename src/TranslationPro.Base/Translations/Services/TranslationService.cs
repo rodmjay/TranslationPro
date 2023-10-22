@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
@@ -12,27 +13,23 @@ namespace TranslationPro.Base.Translations.Services
 {
     public class TranslationService : BaseService<Translation>, ITranslationService
     {
-        private IRepositoryAsync<Language> _languageRepository;
+        private readonly IRepositoryAsync<Language> _languageRepository;
+        private readonly IRepositoryAsync<Application> _applicationRepository;
         public TranslationService(IServiceProvider serviceProvider, IUnitOfWorkAsync unitOfWork) : base(serviceProvider)
         {
             _languageRepository = unitOfWork.RepositoryAsync<Language>();
+            _applicationRepository = unitOfWork.RepositoryAsync<Application>();
         }
 
-        public Task<Result> CreateTranslation(Guid applicationId, CreateTranslationDto input)
-        {
-
-
-            throw new NotImplementedException();
-        }
-
-        public Task<Result> UpdateTranslation(Guid applicationId, int translationId, UpdateTranslationDto input)
+        public Task<Result> CreateTranslationAsync(Guid applicationId, int phraseId, TranslationInput input)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagedList<T>> GetTranslations<T>(Guid applicationId, PagingQuery query)
+        public Task<Result> UpdateTranslationAsync(Guid applicationId, int translationId, TranslationInput input)
         {
             throw new NotImplementedException();
         }
+        
     }
 }

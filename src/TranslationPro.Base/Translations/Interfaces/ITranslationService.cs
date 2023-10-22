@@ -9,10 +9,8 @@ namespace TranslationPro.Base.Translations.Interfaces
 {
     public interface ITranslationService : IService<Translation>
     {
-        Task<Result> CreateTranslation(Guid applicationId, CreateTranslationDto input);
-        Task<Result> UpdateTranslation(Guid applicationId, int translationId, UpdateTranslationDto input);
-
-        Task<PagedList<T>> GetTranslations<T>(Guid applicationId, PagingQuery query);
+        Task<Result> CreateTranslationAsync(Guid applicationId, int phraseId, TranslationInput input);
+        Task<Result> UpdateTranslationAsync(Guid applicationId, int translationId, TranslationInput input);
 
     }
 }

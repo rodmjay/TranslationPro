@@ -1,6 +1,6 @@
 ﻿namespace TranslationPro.Base.Translations.Models;
 
-public class UpdateTranslationDto
+public class TranslationInput
 {
     public string Text { get; set; }
 }

@@ -18,9 +18,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TranslationPro.Base.Applications.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
+using TranslationPro.Base.Languages.Extensions;
+using TranslationPro.Base.Permissions.Extensions;
 using TranslationPro.Base.Translations.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
@@ -48,6 +51,9 @@ namespace TranslationPro.Api
                 .AddAutomapperProfilesFromAssemblies()
                 .AddCaching()
                 .AddUserDependencies()
+                .AddPermissionExtensions()
+                .AddLanguageDependencies()
+                .AddApplicationDependencies()
                 .AddTranslationDependencies();
 
             var webAppBuilder = builder.ConfigureWebApp(Environment);

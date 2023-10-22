@@ -1,8 +1,12 @@
-﻿namespace TranslationPro.Base.Translations.Models;
+﻿using System;
+using System.Collections.Generic;
+using TranslationPro.Base.Translations.Interfaces;
 
-public class PhraseDto
+namespace TranslationPro.Base.Translations.Models;
+
+public class PhraseDto : IPhrase
 {
-    public string TranslationId { get; set; }
+    public int Id { get; set; }
     public string Text { get; set; }
-    public string Language { get; set; }
+    public List<TranslationDto> Translations { get; set; }
 }
