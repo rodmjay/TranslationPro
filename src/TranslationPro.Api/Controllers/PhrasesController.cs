@@ -9,7 +9,7 @@ using TranslationPro.Base.Translations.Models;
 
 namespace TranslationPro.Api.Controllers;
 
-[Route("v1.0/{applicationId}/phrases")]
+[Route("v1.0/applications/{applicationId}/phrases")]
 public class PhrasesController : BaseController
 {
     private readonly IPhraseService _phraseService;

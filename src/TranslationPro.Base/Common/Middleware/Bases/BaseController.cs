@@ -45,7 +45,8 @@ namespace TranslationPro.Base.Common.Middleware.Bases
         {
             var user = await GetCurrentUser();
 
-            throw new NotImplementedException();
+            // todo: add logic here
+            return true;
         }
 
         protected async Task<IUser> GetCurrentUser()

@@ -34,11 +34,13 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
     public async Task<Result> CreatePhraseAsync(Guid applicationId, CreatePhraseDto input)
     {
-        var translationId = await GetNextPhraseIdAsync(applicationId);
+        var phraseId = await GetNextPhraseIdAsync(applicationId);
 
         var phrase = new Phrase
         {
-            Id = translationId,
+            Id = phraseId,
+            Text = input.Text,
+            ApplicationId = applicationId,
             ObjectState = ObjectState.Added
         };
 
@@ -50,8 +52,8 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
             phrase.Translations.Add(new Translation()
             {
                 LanguageId = lang.LanguageId,
-                ApplicationId = lang.ApplicationId,
-                PhraseId = translationId,
+                ApplicationId = applicationId,
+                PhraseId = phraseId,
                 ObjectState = ObjectState.Added
             });
         }
@@ -74,9 +76,15 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
     }
 
 
-    private Task<int> GetNextPhraseIdAsync(Guid applicationId)
+    private async Task<int> GetNextPhraseIdAsync(Guid applicationId)
     {
-        throw new NotImplementedException();
+        var lastPhrase = await Phrases.Where(x=>x.ApplicationId == applicationId).OrderByDescending(x=>x.Id)
+            .FirstOrDefaultAsync().ConfigureAwait(false);
+
+        if (lastPhrase == null)
+            return 10000;
+
+        return lastPhrase.Id + 1;
     }
     
 }
