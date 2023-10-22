@@ -1,9 +1,11 @@
-﻿namespace TranslationPro.Base.Languages.Models
+﻿using TranslationPro.Base.Languages.Interfaces;
+
+namespace TranslationPro.Base.Languages.Models
 {
     
-    public class LanguageDto
+    public class LanguageDto : ILanguage
     {
         public string Name { get; set; }
-        public string LabelId { get; set; }
+        public string Id { get; set; }
     }
 }

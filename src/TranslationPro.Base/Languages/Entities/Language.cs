@@ -11,11 +11,12 @@ using System.Collections.Generic;
 using EllipticCurve;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Languages.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 
 namespace TranslationPro.Base.Languages.Entities
 {
-    public class Language : BaseEntity<Language>
+    public class Language : BaseEntity<Language>, ILanguage
     {
         public Language()
         {

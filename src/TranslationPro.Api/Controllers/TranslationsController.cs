@@ -13,7 +13,7 @@ public class TranslationsController : BaseController
 {
     private readonly ITranslationService _translationService;
 
-    protected TranslationsController(IServiceProvider serviceProvider, ITranslationService translationService) : base(serviceProvider)
+    public TranslationsController(IServiceProvider serviceProvider, ITranslationService translationService) : base(serviceProvider)
     {
         _translationService = translationService;
     }

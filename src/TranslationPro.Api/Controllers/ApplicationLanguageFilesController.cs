@@ -5,7 +5,7 @@ namespace TranslationPro.Api.Controllers;
 
 public class ApplicationLanguageFilesController : BaseController
 {
-    protected ApplicationLanguageFilesController(IServiceProvider serviceProvider) : base(serviceProvider)
+    public ApplicationLanguageFilesController(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }

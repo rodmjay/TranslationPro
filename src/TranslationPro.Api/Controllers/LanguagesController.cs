@@ -12,7 +12,7 @@ namespace TranslationPro.Api.Controllers
     {
         private readonly ILanguageService _languageService;
 
-        protected LanguagesController(IServiceProvider serviceProvider, ILanguageService languageService) : base(serviceProvider)
+        public LanguagesController(IServiceProvider serviceProvider, ILanguageService languageService) : base(serviceProvider)
         {
             _languageService = languageService;
         }

@@ -14,7 +14,7 @@ public class PhrasesController : BaseController
 {
     private readonly IPhraseService _phraseService;
 
-    protected PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService) : base(serviceProvider)
+    public PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService) : base(serviceProvider)
     {
         _phraseService = phraseService;
     }

@@ -13,7 +13,7 @@ public class ApplicationsController : BaseController
 {
     private readonly IApplicationService _service;
 
-    protected ApplicationsController(IServiceProvider serviceProvider, IApplicationService service) : base(serviceProvider)
+    public ApplicationsController(IServiceProvider serviceProvider, IApplicationService service) : base(serviceProvider)
     {
         _service = service;
     }

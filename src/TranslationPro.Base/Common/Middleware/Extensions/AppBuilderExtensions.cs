@@ -95,7 +95,7 @@ namespace TranslationPro.Base.Common.Middleware.Extensions
             this AppBuilder builder)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => x.FullName.StartsWith("Template")).ToList();
+                .Where(x => x.FullName.StartsWith("TranslationPro")).ToList();
 
             foreach (var assembly in assemblies)
                 if (!builder.AssembliesToMap.Contains(assembly.FullName))

@@ -91,6 +91,8 @@ namespace TranslationPro.Base.Users.Extensions
             builder.Services.TryAddTransient<IUserValidator<User>, DuplicateEmailValidator>();
             builder.Services.TryAddTransient<IUserValidator<User>, DuplicateUserNameValidator>();
 
+            builder.Services.TryAddScoped<IUserAccessor, UserAccessor>();
+
             return builder;
         }
 
