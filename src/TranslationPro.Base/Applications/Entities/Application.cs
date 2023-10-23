@@ -26,7 +26,6 @@ namespace TranslationPro.Base.Applications.Entities
         public List<Phrase> Phrases { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
-        public string ApiKey { get; set; }
         public override void Configure(EntityTypeBuilder<Application> builder)
         {
             builder.HasKey(x => x.Id);

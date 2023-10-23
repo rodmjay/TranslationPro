@@ -10,9 +10,9 @@ namespace TranslationPro.Base.Applications.Projections
         public ApplicationProjections()
         {
             CreateMap<Application, ApplicationDto>()
-                .ForMember(x=>x.ApplicationId, opt=>opt.MapFrom(x=>x.Id))
                 .ForMember(x => x.SupportedLanguages, opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId)))
-                .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count));
+                .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count))
+                .ForMember(x => x.TranslationCount, opt => opt.MapFrom(x => x.Phrases.SelectMany(a=>a.Translations).Count()));
         }
     }
 }

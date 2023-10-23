@@ -1,3 +1,27 @@
 ﻿Name,Id
 English,en
-Spanish;Castilian,es
+Spanish,es
+French,fr
+German,de
+Chinese (Simplified),zh-CN
+Chinese (Traditional),zh-TW
+Japanese,ja
+Korean,ko
+Russian,ru
+Arabic,ar
+Hindi,hi
+Portugese,pt
+Italian,it
+Dutch,nl
+Swedish,sv
+Norwegian,no
+Danish,da
+Finnish,fi
+Greek,el
+Turkish,tr
+Hebrew,iw
+Thai,th
+Vietnamese,vi
+Polish,pl
+Czech,cs
+Hungarian,hu

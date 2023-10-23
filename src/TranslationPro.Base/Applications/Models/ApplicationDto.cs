@@ -6,11 +6,10 @@ namespace TranslationPro.Base.Applications.Models;
 
 public class ApplicationDto : IApplication
 {
-    public Guid ApplicationId { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string ApiKey { get; set; }
     public List<string> SupportedLanguages { get; set; }
     public int PhraseCount { get; set; }
-    
+    public int TranslationCount { get; set; }
+
 }

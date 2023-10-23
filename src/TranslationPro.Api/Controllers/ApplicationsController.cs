@@ -6,37 +6,51 @@ using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
+using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Api.Controllers;
+
 
 public class ApplicationsController : BaseController
 {
     private readonly IApplicationService _service;
+    private readonly ITranslationService _translationService;
 
-    public ApplicationsController(IServiceProvider serviceProvider, IApplicationService service) : base(serviceProvider)
+    public ApplicationsController(IServiceProvider serviceProvider, IApplicationService service, ITranslationService translationService) : base(serviceProvider)
     {
         _service = service;
+        _translationService = translationService;
     }
-
+    [HttpGet("{applicationId}")]
+    public async Task<ApplicationDto> GetApplicationAsync([FromRoute]Guid applicationId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+        return await _service.GetApplication<ApplicationDto>(applicationId);
+    }
     [HttpGet]
     public async Task<List<ApplicationDto>> GetApplicationsAsync()
     {
-        return await _service.GetApplicationsForUserAsync<ApplicationDto>(1);
+        var user = await GetCurrentUser();
+        return await _service.GetApplicationsForUserAsync<ApplicationDto>(user.Id);
     }
 
     [HttpPost]
-    public async Task<Result> CreateApplicationAsync(ApplicationInput input)
+    public async Task<Result> CreateApplicationAsync([FromBody] ApplicationInput input)
     {
         var user = await GetCurrentUser();
         
         return await _service.CreateApplicationAsync(user.Id, input).ConfigureAwait(false);
     }
 
-    [HttpPut]
-    public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input)
+    [HttpPut("{applicationId}")]
+    public async Task<Result> UpdateApplicationAsync([FromRoute]Guid applicationId, [FromBody] ApplicationInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        return await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
+        var result = await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
+
+        await _translationService.ProcessAllTranslationsAsync(applicationId);
+
+        return result;
     }
 }
