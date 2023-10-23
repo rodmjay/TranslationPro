@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using TranslationPro.Base.Applications.Interfaces;
+using TranslationPro.Base.Applications.Models;
 
 [assembly: FunctionsStartup(typeof(TranslationPro.Functions.Startup))]
 
@@ -46,12 +47,11 @@ namespace TranslationPro.Functions
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+            var applications = await _applicationService.GetApplicationsForUserAsync<ApplicationDto>(1);
             
 
-            // Process the data received via the HTTP POST request.
-            // You can add your custom logic here.
-
-            return new OkObjectResult("Data received and processed successfully.");
+            return new OkObjectResult(applications);
         }
 
     }
