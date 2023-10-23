@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.Base.Applications.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Extensions;
+using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Services;

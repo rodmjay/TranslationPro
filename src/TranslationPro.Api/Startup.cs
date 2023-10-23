@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TranslationPro.Base.Applications.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
+using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Languages.Extensions;
@@ -46,7 +47,7 @@ namespace TranslationPro.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder = services.ConfigureApp(Configuration, Environment)
+            var builder = services.ConfigureApp(Configuration)
                 .AddDatabase<ApplicationContext>()
                 .AddAutomapperProfilesFromAssemblies()
                 .AddCaching()
