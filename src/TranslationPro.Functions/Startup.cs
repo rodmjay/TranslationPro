@@ -38,5 +38,6 @@ public class Startup : FunctionsStartup
             .AddApplicationDependencies()
             .AddPhraseDependencies()
             .AddTranslationDependencies();
+        
     }
 }

@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Google.Cloud.Translation.V2;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TranslationPro.Base.Applications.Entities;
+using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;
@@ -87,7 +89,7 @@ namespace TranslationPro.Base.Translations.Services
                 .ProjectTo<T>(ProjectionMapping).ToListAsync();
         }
 
-        public async Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguage()
+        public async Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync()
         {
             var translations = await Translations.Where(x => x.TranslationDate == null && x.Text == null).ToListAsync();
 
@@ -120,6 +122,36 @@ namespace TranslationPro.Base.Translations.Services
 
             var records = Repository.Commit();
             return Result.Success(records);
+        }
+
+        public async Task<List<Result>> ProcessAllTranslationsAsync(Guid applicationId)
+        {
+            var results = new List<Result>();
+
+            // generate your own google api key for cloud translation api and store in machine's environment variables
+
+            var apiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
+            var client = TranslationClient.CreateFromApiKey(apiKey);
+
+            var missingTranslations = await GetMissingTranslationsByApplicationByLanguageAsync();
+            
+            foreach (var appKeyValue in missingTranslations)
+            {
+                var application = await _applicationRepository.FirstOrDefaultAsync(x => x.Id == applicationId);
+                if (application != null)
+                {
+                    foreach (var langKeyValue in appKeyValue.Value)
+                    {
+                        var texts = langKeyValue.Value.Select(x => x.ToString()).ToList();
+                        var translations = client.TranslateText(texts, langKeyValue.Key);
+                        
+                        var result = await SaveBulkTranslations(application.Id, translations.ToList());
+                        results.Add(result);
+                    }
+                }
+            }
+
+            return results;
         }
     }
 }

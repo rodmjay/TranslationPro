@@ -6,6 +6,7 @@ using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Api.Controllers;
 
@@ -13,10 +14,12 @@ namespace TranslationPro.Api.Controllers;
 public class PhrasesController : BaseController
 {
     private readonly IPhraseService _phraseService;
+    private readonly ITranslationService _transactionService;
 
-    public PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService) : base(serviceProvider)
+    public PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService, ITranslationService transactionService) : base(serviceProvider)
     {
         _phraseService = phraseService;
+        _transactionService = transactionService;
     }
 
     [HttpPost]
@@ -25,7 +28,11 @@ public class PhrasesController : BaseController
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        return await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
+        var result = await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
+
+        await _transactionService.ProcessAllTranslationsAsync(applicationId);
+
+        return result;
     }
 
     [HttpPut("{phraseId}")]
@@ -34,7 +41,12 @@ public class PhrasesController : BaseController
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        return await _phraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
+        var result = await _phraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
+
+        await _transactionService.ProcessAllTranslationsAsync(applicationId);
+
+        return result;
+
     }
 
     [HttpGet]
