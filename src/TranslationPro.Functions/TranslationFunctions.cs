@@ -43,6 +43,9 @@ namespace TranslationPro.Functions
         {
             List<Result> results = new List<Result>();
 
+            // generate your own google api key for cloud translation api and store in machine's environment variables
+
+            var apiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
             log.LogInformation("C# HTTP trigger function processed a request.");
             
             var missingTranslations = await _translationService.GetMissingTranslationsByApplicationByLanguage();
@@ -54,7 +57,7 @@ namespace TranslationPro.Functions
                 var application = applications.FirstOrDefault(x => x.Id == keyValue.Key);
                 if (application != null)
                 {
-                    var client = TranslationClient.CreateFromApiKey("<secret>");
+                    var client = TranslationClient.CreateFromApiKey(apiKey);
 
                     var languageDictionary = keyValue.Value;
 
