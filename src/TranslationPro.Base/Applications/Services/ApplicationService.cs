@@ -28,7 +28,12 @@ namespace TranslationPro.Base.Applications.Services
         private IQueryable<Application> Applications => Repository.Queryable();
         private IQueryable<Language> Languages => _languageRepository.Queryable();
 
-       
+
+        public Task<List<T>> GetApplicationsAsync<T>()
+        {
+            return Applications.ProjectTo<T>(ProjectionMapping).ToListAsync();
+        }
+
         public async Task<Result> CreateApplicationAsync(int userId, ApplicationInput input)
         {
             

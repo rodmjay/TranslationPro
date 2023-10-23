@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
+using Google.Cloud.Translation.V2;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Models;
+using Language = TranslationPro.Base.Languages.Entities.Language;
 
 namespace TranslationPro.Base.Translations.Services
 {
@@ -98,5 +99,27 @@ namespace TranslationPro.Base.Translations.Services
             return dictionary;
         }
 
+        public async Task<Result> SaveBulkTranslations(Guid applicationId, List<TranslationResult> input)
+        {
+            var translations = await Translations
+                .Where(x => x.ApplicationId == applicationId && x.TranslationDate == null && x.Text == null)
+                .ToListAsync();
+
+            foreach (var tran in input)
+            {
+                var translation =
+                    translations
+                        .FirstOrDefault(x => x.Phrase.Text == tran.OriginalText && x.LanguageId == tran.TargetLanguage);
+
+                translation.Text = tran.TranslatedText;
+                translation.TranslationDate = DateTime.UtcNow;
+                translation.ObjectState = ObjectState.Modified;
+
+                Repository.InsertOrUpdateGraph(translation);
+            }
+
+            var records = Repository.Commit();
+            return Result.Success(records);
+        }
     }
 }

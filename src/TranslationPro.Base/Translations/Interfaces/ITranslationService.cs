@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Google.Cloud.Translation.V2;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Translations.Entities;
@@ -15,5 +16,7 @@ namespace TranslationPro.Base.Translations.Interfaces
             where T : TranslationDto;
 
         Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguage();
+
+        Task<Result> SaveBulkTranslations(Guid applicationId, List<TranslationResult> input);
     }
 }

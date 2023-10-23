@@ -98,7 +98,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
-
+		<PackageReference Include="Google.Cloud.Translation.V2" Version="3.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.tools" Version="5.0.10">
 			<PrivateAssets>all</PrivateAssets>

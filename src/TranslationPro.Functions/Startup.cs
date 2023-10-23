@@ -38,11 +38,5 @@ public class Startup : FunctionsStartup
             .AddApplicationDependencies()
             .AddPhraseDependencies()
             .AddTranslationDependencies();
-
-        //string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsMyFunctionAppConnectionString");
-        //builder.Services.AddDbContext<ApplicationContext>(options =>
-        //    options.UseSqlServer(connectionString));
-
-        //builder.Services.AddSingleton<ITranslationService, TranslationService>();
     }
 }
