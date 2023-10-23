@@ -3,15 +3,16 @@ using System;
 using System.Collections.Generic;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Translations.Interfaces;
+using TranslationPro.Base.Phrases.Interfaces;
+using TranslationPro.Base.Translations.Entities;
 
-namespace TranslationPro.Base.Translations.Entities
+namespace TranslationPro.Base.Phrases.Entities
 {
     public class Phrase : BaseEntity<Phrase>, IPhrase
     {
         public Phrase()
         {
-            this.Translations = new List<Translation>();
+            Translations = new List<Translation>();
         }
         public int Id { get; set; }
         public Guid ApplicationId { get; set; }
@@ -21,7 +22,7 @@ namespace TranslationPro.Base.Translations.Entities
 
         public override void Configure(EntityTypeBuilder<Phrase> builder)
         {
-            builder.HasKey(t => new{t.ApplicationId, t.Id});
+            builder.HasKey(t => new { t.ApplicationId, t.Id });
 
             builder.HasMany(x => x.Translations)
                 .WithOne(x => x.Phrase)

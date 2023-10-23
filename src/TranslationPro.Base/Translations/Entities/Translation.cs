@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
+using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Base.Translations.Entities;

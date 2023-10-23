@@ -1,4 +1,4 @@
-﻿namespace TranslationPro.Base.Translations.Models;
+﻿namespace TranslationPro.Base.Phrases.Models;
 
 public class PhraseFilters
 {

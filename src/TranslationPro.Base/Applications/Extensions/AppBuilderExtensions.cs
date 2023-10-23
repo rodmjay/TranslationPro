@@ -10,23 +10,12 @@ namespace TranslationPro.Base.Applications.Extensions
 {
     public static class AppBuilderExtensions
     {
-        public static FunctionAppBuilder AddApplicationDependencies(this FunctionAppBuilder builder)
-        {
-            ConfigureServices(builder.Services);
-            return builder;
-        }
-
+   
         public static AppBuilder AddApplicationDependencies(this AppBuilder builder)
         {
-            ConfigureServices(builder.Services);
+            builder.Services.TryAddTransient<ApplicationErrorDescriber>();
+            builder.Services.TryAddScoped<IApplicationService, ApplicationService>();
             return builder;
-        }
-
-        private static void ConfigureServices(IServiceCollection services)
-        {
-            services.TryAddTransient<ApplicationErrorDescriber>();
-            services.TryAddScoped<IApplicationService, ApplicationService>();
-
         }
     }
 }

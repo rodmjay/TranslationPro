@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
 using TranslationPro.Base.Common.Queries;
-using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Base.Translations.Models;
+using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Phrases.Models;
 
-namespace TranslationPro.Base.Translations.Extensions;
+namespace TranslationPro.Base.Phrases.Extensions;
 
 public static class PhraseFiltersExtensions
 {

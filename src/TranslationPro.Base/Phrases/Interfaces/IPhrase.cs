@@ -1,4 +1,4 @@
-﻿namespace TranslationPro.Base.Translations.Interfaces;
+﻿namespace TranslationPro.Base.Phrases.Interfaces;
 
 public interface IPhrase
 {

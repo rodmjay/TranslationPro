@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
-using TranslationPro.Base.Translations.Interfaces;
-using TranslationPro.Base.Translations.Models;
+using TranslationPro.Base.Phrases.Interfaces;
+using TranslationPro.Base.Phrases.Models;
 
 namespace TranslationPro.Api.Controllers;
 

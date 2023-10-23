@@ -9,19 +9,21 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
+using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Phrases.Extensions;
+using TranslationPro.Base.Phrases.Interfaces;
+using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Base.Translations.Extensions;
-using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Models;
 
-namespace TranslationPro.Base.Translations.Services;
+namespace TranslationPro.Base.Phrases.Services;
 
 public class PhraseService : BaseService<Phrase>, IPhraseService
 {
-    private readonly TranslationErrorDescriber _errorDescriber;
+    private readonly PhraseErrorDescriber _errorDescriber;
     private readonly IRepositoryAsync<Application> _applicationRepository;
 
-    public PhraseService(IServiceProvider serviceProvider, TranslationErrorDescriber errorDescriber) : base(serviceProvider)
+    public PhraseService(IServiceProvider serviceProvider, PhraseErrorDescriber errorDescriber) : base(serviceProvider)
     {
         _errorDescriber = errorDescriber;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();

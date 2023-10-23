@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TranslationPro.Base.Translations.Interfaces;
+using TranslationPro.Base.Phrases.Interfaces;
+using TranslationPro.Base.Translations.Models;
 
-namespace TranslationPro.Base.Translations.Models;
+namespace TranslationPro.Base.Phrases.Models;
 
 public class PhraseDto : IPhrase
 {

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Models;
 

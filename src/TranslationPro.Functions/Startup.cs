@@ -8,6 +8,10 @@ using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Common.Middleware.Extensions;
+using TranslationPro.Base.Languages.Extensions;
+using TranslationPro.Base.Permissions.Extensions;
+using TranslationPro.Base.Phrases.Extensions;
+using TranslationPro.Base.Translations.Extensions;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Services;
 
@@ -31,10 +35,14 @@ public class Startup : FunctionsStartup
         config
             .AddEnvironmentVariables();
 
-        var b = builder.Services.ConfigureApp(config.Build())
+        var appBuilder = builder.Services.ConfigureApp(config.Build())
             .AddDatabase<ApplicationContext>()
             .AddAutomapperProfilesFromAssemblies()
-            .AddApplicationDependencies();
+            .AddPermissionExtensions()
+            .AddLanguageDependencies()
+            .AddApplicationDependencies()
+            .AddPhraseDependencies()
+            .AddTranslationDependencies();
 
         //string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsMyFunctionAppConnectionString");
         //builder.Services.AddDbContext<ApplicationContext>(options =>

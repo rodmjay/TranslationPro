@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Applications.Interfaces;
+using TranslationPro.Base.Phrases.Entities;
 
 namespace TranslationPro.Base.Applications.Entities
 {
