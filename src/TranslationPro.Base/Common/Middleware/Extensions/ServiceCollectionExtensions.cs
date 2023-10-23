@@ -24,6 +24,20 @@ namespace TranslationPro.Base.Common.Middleware.Extensions
             return $"[{nameof(ServiceCollectionExtensions)}.{callerName}] - {message}";
         }
 
+        public static FunctionAppBuilder ConfigureApp(this IServiceCollection services, IConfiguration configuration)
+        {
+            var appSettings = new AppSettings();
+
+            var settingsSection = configuration.GetSection("AppSettings");
+            settingsSection.Bind(appSettings);
+
+            Log.Logger.Debug(GetLogMessage($"Application: {appSettings.Name}"));
+
+            services.Configure<AppSettings>(settingsSection);
+            services.AddOptions();
+
+            return new FunctionAppBuilder(services, appSettings, configuration);
+        }
 
         public static AppBuilder ConfigureApp(
             this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)

@@ -10,7 +10,7 @@ namespace TranslationPro.Base.Translations.Interfaces
 {
     public interface ITranslationService : IService<Translation>
     {
-        Task<Result> CreateTranslationAsync(Guid applicationId, int phraseId, TranslationInput input);
+        Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input);
         Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
             where T : TranslationDto;
 

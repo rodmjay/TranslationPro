@@ -7,6 +7,7 @@ using TranslationPro.Base.Translations.Services;
 
 namespace TranslationPro.Base.Translations.Extensions
 {
+    
     public static class AppBuilderExtensions
     {
         public static AppBuilder AddTranslationDependencies(this AppBuilder builder)

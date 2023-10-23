@@ -10,6 +10,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,34 +48,31 @@ namespace TranslationPro.Base.Common.Middleware.Extensions
             logging.AddFilter("IdentityServer4", LogLevel.Warning);
         }
 
+       
         public static void Configure(HostBuilderContext hostingContext,
             IConfigurationBuilder config)
         {
             var env = hostingContext.HostingEnvironment;
-            var assembly = typeof(HostBuilderExtensions).Assembly;
-
-            config
-                .AddEmbeddedJsonFile(assembly, "sharedSettings.json")
-                .AddEmbeddedJsonFile(assembly, $"sharedSettings.{env.EnvironmentName}.json", true)
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
-
-            config
-                .AddEnvironmentVariables()
-                .Build();
+            Configure(config, env.EnvironmentName);
         }
+
 
         public static void Configure(WebHostBuilderContext hostingContext,
             IConfigurationBuilder config)
         {
             var env = hostingContext.HostingEnvironment;
+            Configure(config, env.EnvironmentName);
+        }
+
+        public static void Configure(IConfigurationBuilder config, string environmentName)
+        {
             var assembly = typeof(HostBuilderExtensions).Assembly;
 
             config
                 .AddEmbeddedJsonFile(assembly, "sharedSettings.json")
-                .AddEmbeddedJsonFile(assembly, $"sharedSettings.{env.EnvironmentName}.json", true)
+                .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
                 .AddJsonFile("appsettings.json", true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
+                .AddJsonFile($"appsettings.{environmentName}.json", true);
 
             config
                 .AddEnvironmentVariables()

@@ -15,6 +15,24 @@ using TranslationPro.Base.Common.Settings;
 
 namespace TranslationPro.Base.Common.Middleware.Builders
 {
+    public class FunctionAppBuilder
+    {
+        public IServiceCollection Services { get; }
+        public AppSettings AppSettings { get; }
+        public IConfiguration Configuration { get; }
+        public string ConnectionString { get; set; }
+        public List<string> AssembliesToMap { get; set; }
+
+
+        public FunctionAppBuilder(IServiceCollection services, AppSettings appSettings, IConfiguration configuration)
+        {
+            Services = services;
+            AppSettings = appSettings;
+            Configuration = configuration;
+            AssembliesToMap = new List<string>();
+        }
+    }
+
     public class AppBuilder
     {
         public AppBuilder(
