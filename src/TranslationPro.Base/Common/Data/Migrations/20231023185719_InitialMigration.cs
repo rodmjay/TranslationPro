@@ -795,12 +795,16 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     PhraseId = table.Column<int>(type: "int", nullable: false),
                     LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TranslationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TranslatedText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Translation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Translation_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Translation_Language_LanguageId",
                         column: x => x.LanguageId,

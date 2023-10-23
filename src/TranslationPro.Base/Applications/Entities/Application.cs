@@ -7,6 +7,7 @@ using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Translations.Entities;
 
 namespace TranslationPro.Base.Applications.Entities
 {
@@ -16,10 +17,12 @@ namespace TranslationPro.Base.Applications.Entities
         {
             this.Languages = new List<ApplicationLanguage>();
             this.Phrases = new List<Phrase>();
+            this.Translations = new List<Translation>();
         }
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<ApplicationLanguage> Languages { get; set; }
+        public ICollection<ApplicationLanguage> Languages { get; set; }
+        public ICollection<Translation> Translations { get; set; }
         public List<Phrase> Phrases { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }

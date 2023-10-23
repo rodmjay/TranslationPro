@@ -10,7 +10,7 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20231022155407_InitialMigration")]
+    [Migration("20231023185719_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1332,7 +1332,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Phrase", b =>
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
                 {
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
@@ -1365,9 +1365,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TranslatedText")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TranslationDate")
@@ -1831,7 +1828,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Phrase", b =>
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
                 {
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
                         .WithMany("Phrases")
@@ -1844,15 +1841,23 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
             modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Translation", b =>
                 {
+                    b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
+                        .WithMany("Translations")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
                         .WithMany("Translations")
                         .HasForeignKey("LanguageId");
 
-                    b.HasOne("TranslationPro.Base.Translations.Entities.Phrase", "Phrase")
+                    b.HasOne("TranslationPro.Base.Phrases.Entities.Phrase", "Phrase")
                         .WithMany("Translations")
                         .HasForeignKey("ApplicationId", "PhraseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Application");
 
                     b.Navigation("Language");
 
@@ -1973,6 +1978,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Languages");
 
                     b.Navigation("Phrases");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Languages.Entities.Language", b =>
@@ -1982,7 +1989,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Translations");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Phrase", b =>
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
                 {
                     b.Navigation("Translations");
                 });

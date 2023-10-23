@@ -14,5 +14,6 @@ namespace TranslationPro.Base.Translations.Interfaces
         Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
             where T : TranslationDto;
 
+        Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguage();
     }
 }

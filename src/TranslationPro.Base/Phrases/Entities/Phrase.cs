@@ -23,10 +23,7 @@ namespace TranslationPro.Base.Phrases.Entities
         public override void Configure(EntityTypeBuilder<Phrase> builder)
         {
             builder.HasKey(t => new { t.ApplicationId, t.Id });
-
-            builder.HasMany(x => x.Translations)
-                .WithOne(x => x.Phrase)
-                .HasForeignKey(x => x.PhraseId);
+            
 
             builder.HasOne(x => x.Application)
                 .WithMany(x => x.Phrases)

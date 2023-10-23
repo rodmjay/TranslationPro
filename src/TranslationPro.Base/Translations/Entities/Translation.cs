@@ -1,5 +1,7 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
@@ -11,6 +13,7 @@ public class Translation : BaseEntity<Translation>, ITranslation
 {
     public int Id { get; set; }
     public Guid ApplicationId { get; set; }
+    public Application Application { get; set; }
     public int PhraseId { get; set; }
     public Phrase Phrase { get; set; }
     public string LanguageId { get; set; }
@@ -25,6 +28,10 @@ public class Translation : BaseEntity<Translation>, ITranslation
             .WithMany(x => x.Translations)
             .HasForeignKey(x => new { x.ApplicationId, x.PhraseId });
 
+        builder.HasOne(x => x.Application)
+            .WithMany(x => x.Translations)
+            .HasForeignKey(x => x.ApplicationId)
+            .OnDelete(DeleteBehavior.NoAction);
 
     }
 }

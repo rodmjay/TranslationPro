@@ -1,19 +1,14 @@
 using System;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.Base.Applications.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Extensions;
-using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Languages.Extensions;
 using TranslationPro.Base.Permissions.Extensions;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Translations.Extensions;
-using TranslationPro.Base.Translations.Interfaces;
-using TranslationPro.Base.Translations.Services;
 
 namespace TranslationPro.Functions;
 

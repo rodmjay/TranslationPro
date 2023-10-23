@@ -33,7 +33,7 @@ namespace TranslationPro.IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder = services.ConfigureApp(Configuration, Environment)
+            var builder = services.ConfigureApp(Configuration)
                 .AddDatabase<ApplicationContext>()
                 .AddIdentity()
                 .AddAutomapperProfilesFromAssemblies()

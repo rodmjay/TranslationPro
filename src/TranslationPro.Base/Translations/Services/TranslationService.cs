@@ -29,8 +29,8 @@ namespace TranslationPro.Base.Translations.Services
             _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
         }
 
-        private IQueryable<Translation> Translations => Repository.Queryable();
-        private IQueryable<Phrase> Phrases => _phraseRepository.Queryable().Include(x=>x.Translations);
+        private IQueryable<Translation> Translations => Repository.Queryable().Include(x => x.Phrase).Include(x => x.Application);
+        private IQueryable<Phrase> Phrases => _phraseRepository.Queryable().Include(x => x.Translations);
         private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace TranslationPro.Base.Translations.Services
         public async Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input)
         {
             var phrase = await Phrases.Where(x => x.Id == phraseId).FirstOrDefaultAsync();
-            
+
             if (phrase == null)
                 return Result.Failed();
 
@@ -74,17 +74,29 @@ namespace TranslationPro.Base.Translations.Services
             translation.TranslationDate = DateTime.UtcNow;
 
             var records = Repository.InsertOrUpdateGraph(translation, true);
-            if(records > 0)
+            if (records > 0)
                 return Result.Success();
 
             return Result.Failed();
         }
-        
 
         public Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId) where T : TranslationDto
         {
             return Translations.Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
                 .ProjectTo<T>(ProjectionMapping).ToListAsync();
         }
+
+        public async Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguage()
+        {
+            var translations = await Translations.Where(x => x.TranslationDate == null && x.Text == null).ToListAsync();
+
+            var dictionary = translations.GroupBy(translation => translation.ApplicationId)
+                .ToDictionary(x => x.Key, x => x.GroupBy(a => a.LanguageId)
+                    .ToDictionary(group => group.Key, group => group
+                        .Select(translation => translation.Phrase.Text).ToList()));
+
+            return dictionary;
+        }
+
     }
 }

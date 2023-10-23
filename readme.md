@@ -29,7 +29,7 @@ Provides translation services for websites
 
 ## Logging In
 
-Admin user is setup automatically, the username is `admin` and password is `ASDFasdf!`
+Admin user is setup automatically, the username is `admin@admin.com` and password is `ASDFasdf!`
 
 ## Postman Setup
 

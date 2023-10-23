@@ -6,11 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using TranslationPro.Base.Applications.Interfaces;
-using TranslationPro.Base.Applications.Models;
+using TranslationPro.Base.Translations.Interfaces;
 
 [assembly: FunctionsStartup(typeof(TranslationPro.Functions.Startup))]
 
@@ -19,11 +18,11 @@ namespace TranslationPro.Functions
 
     public class TranslationFunctions
     {
-        private readonly IApplicationService _applicationService;
+        private readonly ITranslationService _translationService;
 
-        public TranslationFunctions(IApplicationService applicationService)
+        public TranslationFunctions(IApplicationService applicationService, ITranslationService translationService)
         {
-            _applicationService = applicationService;
+            _translationService = translationService;
         }
 
 
@@ -45,13 +44,10 @@ namespace TranslationPro.Functions
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-
-            var applications = await _applicationService.GetApplicationsForUserAsync<ApplicationDto>(1);
             
+            var missingTranslations = await _translationService.GetMissingTranslationsByApplicationByLanguage();
 
-            return new OkObjectResult(applications);
+            return new OkObjectResult(missingTranslations);
         }
 
     }
