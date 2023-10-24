@@ -26,7 +26,8 @@ public class Translation : BaseEntity<Translation>, ITranslation
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Phrase)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => new {x.ApplicationId, x.PhraseId});
+            .HasForeignKey(x => new {x.ApplicationId, x.PhraseId})
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Application)
             .WithMany(x => x.Translations)

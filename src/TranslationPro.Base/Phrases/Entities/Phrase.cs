@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
@@ -28,6 +29,7 @@ public class Phrase : BaseEntity<Phrase>, IPhrase
 
         builder.HasOne(x => x.Application)
             .WithMany(x => x.Phrases)
-            .HasForeignKey(x => x.ApplicationId);
+            .HasForeignKey(x => x.ApplicationId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

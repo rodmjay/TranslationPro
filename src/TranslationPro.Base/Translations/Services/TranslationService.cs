@@ -21,12 +21,11 @@ namespace TranslationPro.Base.Translations.Services;
 public class TranslationService : BaseService<Translation>, ITranslationService
 {
     private readonly IRepositoryAsync<Application> _applicationRepository;
-    private readonly IRepositoryAsync<Language> _languageRepository;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
 
     public TranslationService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        _languageRepository = UnitOfWork.RepositoryAsync<Language>();
+        UnitOfWork.RepositoryAsync<Language>();
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
     }

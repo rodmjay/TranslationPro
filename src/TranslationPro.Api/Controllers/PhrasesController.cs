@@ -23,9 +23,22 @@ public class PhrasesController : BaseController
         _transactionService = transactionService;
     }
 
+    [HttpPost("bulk")]
+    public async Task<Result> BulkUpload([FromRoute] Guid applicationId,
+        [FromBody] List<string> input)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        var result = await _phraseService.BulkUploadPhrases(applicationId, input).ConfigureAwait(false);
+
+        await _transactionService.ProcessAllTranslationsAsync(applicationId);
+
+        return result;
+    }
+
     [HttpPost]
     public async Task<Result> CreatePhrase([FromRoute] Guid applicationId, [FromRoute] int translationId,
-        [FromBody] CreatePhraseDto input)
+        [FromBody] PhraseInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
@@ -38,7 +51,7 @@ public class PhrasesController : BaseController
 
     [HttpPut("{phraseId}")]
     public async Task<Result> UpdatePhrase([FromRoute] Guid applicationId, [FromRoute] int phraseId,
-        [FromBody] UpdatePhraseDto input)
+        [FromBody] PhraseInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 

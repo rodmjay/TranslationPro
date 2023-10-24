@@ -42,6 +42,16 @@ Getting a token looks like this:
 
 	client_secret=secret&scope=openid%20api1&grant_type=password&username=admin&password=ASDFasdf!&client_id=postman
 
+## Generate your own Google Cloud Translate API Key
+You will need to generate your own translation key and store in environmet variable named `TranslationProGoogleApi`
+
+1. Go to the Google Cloud Console: https://console.cloud.google.com/
+2. Create a new project or select an existing one.
+3. Enable the "Cloud Translation API" for your project.
+4. Navigate to the "APIs & Services" > "Credentials" page.
+5. Click the "Create credentials" button and select "API key."
+6. Copy the API key provided.
+
 ## Creating Migrations
 
 1. open `Package Manager Console`

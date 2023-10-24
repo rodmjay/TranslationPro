@@ -44,8 +44,47 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
         return phrases.SelectMany(x => x.Translations).ToDictionary(x => x.PhraseId, x => x.Text);
     }
+    
+    public async Task<Result> BulkUploadPhrases(Guid applicationId, List<string> inputs)
+    {
+        var phrases = Phrases.Where(x => x.ApplicationId == applicationId).ToList();
 
-    public async Task<Result> CreatePhraseAsync(Guid applicationId, CreatePhraseDto input)
+        foreach (var input in inputs)
+        {
+            var existing = phrases
+                .FirstOrDefault(x => x.ApplicationId == applicationId && x.Text == input);
+
+            if (existing != null) continue;
+
+            var phraseId = await GetNextPhraseIdAsync(applicationId);
+
+            var phrase = new Phrase
+            {
+                Id = phraseId,
+                Text = input,
+                ApplicationId = applicationId,
+                ObjectState = ObjectState.Added
+            };
+
+            var application = await Applications.Where(x => x.Id == applicationId).FirstOrDefaultAsync();
+
+            foreach (var lang in application.Languages)
+                phrase.Translations.Add(new Translation
+                {
+                    LanguageId = lang.LanguageId,
+                    ApplicationId = applicationId,
+                    PhraseId = phraseId,
+                    ObjectState = ObjectState.Added
+                });
+        }
+
+        var records = Repository.Commit();
+
+        return Result.Success(records);
+    }
+
+
+    public async Task<Result> CreatePhraseAsync(Guid applicationId, PhraseInput input)
     {
         // does phrase already exist?
         var existing = await Phrases.Where(x => x.ApplicationId == applicationId && x.Text == input.Text)
@@ -85,7 +124,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         return Result.Failed(_errorDescriber.UnableToCreatePhrase());
     }
 
-    public async Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, UpdatePhraseDto input)
+    public async Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseInput input)
     {
         var existing = await Phrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
             .FirstOrDefaultAsync();

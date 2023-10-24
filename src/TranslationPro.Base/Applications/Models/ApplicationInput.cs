@@ -7,5 +7,4 @@ public class ApplicationInput
     [Required] [MinLength(3)] public string Name { get; set; }
 
     public string[] Languages { get; set; }
-    public string ApiKey { get; set; }
 }

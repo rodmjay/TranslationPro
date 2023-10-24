@@ -8,7 +8,8 @@ namespace TranslationPro.Base.Phrases.Models;
 public class PhraseDto : IPhrase
 {
     public List<TranslationDto> Translations { get; set; }
-    public int PendingTranslations => Translations.Count(t => t.Text == null);
     public int Id { get; set; }
     public string Text { get; set; }
+    public int TranslationCount { get; set; }
+    public int PendingTranslationCount { get; set; }
 }

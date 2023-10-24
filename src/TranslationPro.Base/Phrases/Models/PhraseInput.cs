@@ -1,6 +1,6 @@
 ﻿namespace TranslationPro.Base.Phrases.Models;
 
-public class CreatePhraseDto
+public class PhraseInput
 {
     public string Text { get; set; }
 }
