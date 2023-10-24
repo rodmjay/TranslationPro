@@ -8,12 +8,11 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Models
+namespace TranslationPro.Base.Common.Models;
+
+public class PagingQuery
 {
-    public class PagingQuery
-    {
-        public string Sort { get; set; }
-        public int Page { get; set; }
-        public int Size { get; set; }
-    }
+    public string Sort { get; set; }
+    public int Page { get; set; }
+    public int Size { get; set; }
 }

@@ -14,14 +14,13 @@ using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Base.Translations.Models;
 
 namespace TranslationPro.Base.Phrases.Services;
 
 public class PhraseService : BaseService<Phrase>, IPhraseService
 {
-    private readonly PhraseErrorDescriber _errorDescriber;
     private readonly IRepositoryAsync<Application> _applicationRepository;
+    private readonly PhraseErrorDescriber _errorDescriber;
 
     public PhraseService(IServiceProvider serviceProvider, PhraseErrorDescriber errorDescriber) : base(serviceProvider)
     {
@@ -40,7 +39,8 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
     public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
     {
-        var phrases = await Phrases.Include(x => x.Translations.Where(t => t.LanguageId == language)).Where(x => x.ApplicationId == applicationId).ToListAsync();
+        var phrases = await Phrases.Include(x => x.Translations.Where(t => t.LanguageId == language))
+            .Where(x => x.ApplicationId == applicationId).ToListAsync();
 
         return phrases.SelectMany(x => x.Translations).ToDictionary(x => x.PhraseId, x => x.Text);
     }
@@ -69,15 +69,13 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
         // add empty translation for each supported language... these will get translated by ChatGPT
         foreach (var lang in application.Languages)
-        {
-            phrase.Translations.Add(new Translation()
+            phrase.Translations.Add(new Translation
             {
                 LanguageId = lang.LanguageId,
                 ApplicationId = applicationId,
                 PhraseId = phraseId,
                 ObjectState = ObjectState.Added
             });
-        }
 
         // save to database
         var records = Repository.InsertOrUpdateGraph(phrase, true);
@@ -131,7 +129,6 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
             return Result.Success();
 
         return Result.Failed(_errorDescriber.UnableToDeletePhrase(phraseId));
-
     }
 
 
@@ -145,5 +142,4 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
         return lastPhrase.Id + 1;
     }
-
 }

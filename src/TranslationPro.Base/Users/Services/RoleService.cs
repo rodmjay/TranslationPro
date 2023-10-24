@@ -18,56 +18,55 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Interfaces;
 
-namespace TranslationPro.Base.Users.Services
+namespace TranslationPro.Base.Users.Services;
+
+public partial class RoleService : BaseService<Role>, IRoleService
 {
-    public partial class RoleService : BaseService<Role>, IRoleService
+    private readonly IdentityErrorDescriber _errors;
+
+    private readonly IRepositoryAsync<RoleClaim> _roleClaimRepository;
+    private bool _disposed;
+
+    public RoleService(
+        IdentityErrorDescriber _errors,
+        IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        private readonly IdentityErrorDescriber _errors;
+        _roleClaimRepository = UnitOfWork.RepositoryAsync<RoleClaim>();
+        this._errors = _errors;
+    }
 
-        private readonly IRepositoryAsync<RoleClaim> _roleClaimRepository;
-        private bool _disposed;
+    public bool AutoSaveChanges { get; set; } = true;
+    public IQueryable<Role> Roles => Repository.Queryable();
 
-        public RoleService(
-            IdentityErrorDescriber _errors,
-            IServiceProvider serviceProvider) : base(serviceProvider)
+    public void Dispose()
+    {
+        _disposed = true;
+    }
+
+    private Task SaveChanges(CancellationToken cancellationToken)
+    {
+        if (AutoSaveChanges)
         {
-            _roleClaimRepository = UnitOfWork.RepositoryAsync<RoleClaim>();
-            this._errors = _errors;
+            var changes = Repository.Commit();
         }
 
-        public bool AutoSaveChanges { get; set; } = true;
-        public IQueryable<Role> Roles => Repository.Queryable();
+        return Task.CompletedTask;
+    }
 
-        public void Dispose()
-        {
-            _disposed = true;
-        }
+    protected void ThrowIfDisposed()
+    {
+        if (_disposed) throw new ObjectDisposedException(GetType().Name);
+    }
 
-        private Task SaveChanges(CancellationToken cancellationToken)
-        {
-            if (AutoSaveChanges)
-            {
-                var changes = Repository.Commit();
-            }
+    public virtual string ConvertIdToString(int id)
+    {
+        if (id.Equals(default)) return null;
+        return id.ToString();
+    }
 
-            return Task.CompletedTask;
-        }
-
-        protected void ThrowIfDisposed()
-        {
-            if (_disposed) throw new ObjectDisposedException(GetType().Name);
-        }
-
-        public virtual string ConvertIdToString(int id)
-        {
-            if (id.Equals(default(int))) return null;
-            return id.ToString();
-        }
-
-        public virtual int ConvertIdFromString(string id)
-        {
-            if (id == null) return default(int);
-            return (int) TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(id);
-        }
+    public virtual int ConvertIdFromString(string id)
+    {
+        if (id == null) return default;
+        return (int) TypeDescriptor.GetConverter(typeof(int)).ConvertFromInvariantString(id);
     }
 }

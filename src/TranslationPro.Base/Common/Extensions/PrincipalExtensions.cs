@@ -10,25 +10,24 @@
 using System.Diagnostics;
 using System.Security.Principal;
 
-namespace TranslationPro.Base.Common.Extensions
+namespace TranslationPro.Base.Common.Extensions;
+
+/// <summary>
+///     Extension methods for <see cref="IPrincipal" /> and
+///     <see cref="IIdentity" /> .
+/// </summary>
+public static class PrincipalExtensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="IPrincipal" /> and
-    ///     <see cref="IIdentity" /> .
+    ///     Determines whether this instance is authenticated.
     /// </summary>
-    public static class PrincipalExtensions
+    /// <param name="principal">The principal.</param>
+    /// <returns>
+    ///     <c>true</c> if the specified principal is authenticated; otherwise, <c>false</c>.
+    /// </returns>
+    [DebuggerStepThrough]
+    public static bool IsAuthenticated(this IPrincipal principal)
     {
-        /// <summary>
-        ///     Determines whether this instance is authenticated.
-        /// </summary>
-        /// <param name="principal">The principal.</param>
-        /// <returns>
-        ///     <c>true</c> if the specified principal is authenticated; otherwise, <c>false</c>.
-        /// </returns>
-        [DebuggerStepThrough]
-        public static bool IsAuthenticated(this IPrincipal principal)
-        {
-            return principal is { Identity: { IsAuthenticated: true } };
-        }
+        return principal is {Identity: {IsAuthenticated: true}};
     }
 }

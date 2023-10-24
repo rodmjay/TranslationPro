@@ -8,11 +8,10 @@
 #endregion
 
 
-namespace TranslationPro.Base.Users.Interfaces
+namespace TranslationPro.Base.Users.Interfaces;
+
+public interface IRole
 {
-    public interface IRole
-    {
-        string Name { get; set; }
-        int Id { get; set; }
-    }
+    string Name { get; set; }
+    int Id { get; set; }
 }

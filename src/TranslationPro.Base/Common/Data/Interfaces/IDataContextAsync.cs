@@ -10,14 +10,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IDataContextAsync : IDataContext
 {
-    public interface IDataContextAsync : IDataContext
-    {
-        //Task BeginTransactionAsync(DbIsolationLevel isolationLevel);
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-        Task<int> SaveChangesAsync();
-        Task SyncObjectsStatePostCommitAsync();
-        Task<int> ExecuteSqlAsync(string query, params object[] parameters);
-    }
+    //Task BeginTransactionAsync(DbIsolationLevel isolationLevel);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<int> SaveChangesAsync();
+    Task SyncObjectsStatePostCommitAsync();
+    Task<int> ExecuteSqlAsync(string query, params object[] parameters);
 }

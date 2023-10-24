@@ -11,22 +11,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TranslationPro.Base.Users.Managers;
 
-namespace TranslationPro.IdentityServer.Pages
+namespace TranslationPro.IdentityServer.Pages;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly SignInManager _signinManager;
+
+    public IndexModel(SignInManager signinManager)
     {
-        private readonly SignInManager _signinManager;
+        _signinManager = signinManager;
+    }
 
-        public IndexModel(SignInManager signinManager)
-        {
-            _signinManager = signinManager;
-        }
+    public IActionResult OnGet()
+    {
+        if (_signinManager.IsSignedIn(User)) return LocalRedirect("/Account/Manage");
 
-        public IActionResult OnGet()
-        {
-            if (_signinManager.IsSignedIn(User)) return LocalRedirect("/Account/Manage");
-
-            return LocalRedirect("/Account/Login");
-        }
+        return LocalRedirect("/Account/Login");
     }
 }

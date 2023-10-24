@@ -8,12 +8,11 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IUserAudited :
+    IAudited,
+    IUserCreationAudited,
+    IUserModificationAudited
 {
-    public interface IUserAudited :
-        IAudited,
-        IUserCreationAudited,
-        IUserModificationAudited
-    {
-    }
 }

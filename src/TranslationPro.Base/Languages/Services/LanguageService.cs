@@ -9,19 +9,18 @@ using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Languages.Interfaces;
 using TranslationPro.Base.Languages.Models;
 
-namespace TranslationPro.Base.Languages.Services
+namespace TranslationPro.Base.Languages.Services;
+
+public class LanguageService : BaseService<Language>, ILanguageService
 {
-    public class LanguageService : BaseService<Language>, ILanguageService
+    public LanguageService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        public LanguageService(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
+    }
 
-        private IQueryable<Language> Languages => Repository.Queryable();
+    private IQueryable<Language> Languages => Repository.Queryable();
 
-        public Task<List<T>> GetLanguagesAsync<T>() where T : LanguageDto
-        {
-            return Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
-        }
+    public Task<List<T>> GetLanguagesAsync<T>() where T : LanguageDto
+    {
+        return Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 }

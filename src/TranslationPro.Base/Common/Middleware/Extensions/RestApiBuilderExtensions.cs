@@ -29,124 +29,123 @@ using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Common.Middleware.Swagger;
 using TranslationPro.Base.Common.Settings;
 
-namespace TranslationPro.Base.Common.Middleware.Extensions
+namespace TranslationPro.Base.Common.Middleware.Extensions;
+
+[ExcludeFromCodeCoverage]
+public static class RestApiBuilderExtensions
 {
-    [ExcludeFromCodeCoverage]
-    public static class RestApiBuilderExtensions
+    private static bool _swaggerAdded;
+
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
     {
-        private static bool _swaggerAdded;
+        return $"[{nameof(RestApiBuilderExtensions)}.{callerName}] - {message}";
+    }
 
-        private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+
+    public static RestApiBuilder AddSwagger(this RestApiBuilder builder,
+        Assembly assembly)
+    {
+        Log.Logger.Debug(GetLogMessage("Adding swagger"));
+        _swaggerAdded = true;
+        builder.Services.AddSwaggerGen(c =>
         {
-            return $"[{nameof(RestApiBuilderExtensions)}.{callerName}] - {message}";
-        }
-
-
-        public static RestApiBuilder AddSwagger(this RestApiBuilder builder,
-            Assembly assembly)
-        {
-            Log.Logger.Debug(GetLogMessage("Adding swagger"));
-            _swaggerAdded = true;
-            builder.Services.AddSwaggerGen(c =>
+            c.SwaggerDoc("v1", new OpenApiInfo
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = builder.AppSettings.Name
-                });
-
-
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{assembly.GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-                c.SchemaFilter<SwaggerExcludeFilter>();
-                c.DocumentFilter<LowercaseDocumentFilter>();
+                Version = "v1",
+                Title = builder.AppSettings.Name
             });
 
-            return builder;
-        }
 
-        public static RestApiBuilder ConfigureRest(this WebAppBuilder builder)
-        {
-            Log.Logger.Debug(GetLogMessage("ConfigureRestServices"));
-            builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<HttpContextAccessor>();
+            // Set the comments path for the Swagger JSON and UI.
+            var xmlFile = $"{assembly.GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+            c.SchemaFilter<SwaggerExcludeFilter>();
+            c.DocumentFilter<LowercaseDocumentFilter>();
+        });
 
+        return builder;
+    }
 
-            builder.Services.AddControllers(x => { x.EnableEndpointRouting = true; })
-                .AddNewtonsoftJson(o =>
-                {
-                    o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    o.SerializerSettings.Formatting = Formatting.Indented;
-                    o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    o.SerializerSettings.NullValueHandling = NullValueHandling.Include;
-                })
-                .ConfigureApiBehaviorOptions(o =>
-                {
-                    o.InvalidModelStateResponseFactory = c =>
-                    {
-                        var result = new BadRequestObjectResult(c.ModelState);
-                        result.ContentTypes.Add(MediaTypeNames.Application.Json);
-
-                        return result;
-                    };
-                });
+    public static RestApiBuilder ConfigureRest(this WebAppBuilder builder)
+    {
+        Log.Logger.Debug(GetLogMessage("ConfigureRestServices"));
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<HttpContextAccessor>();
 
 
-            return new RestApiBuilder(builder);
-        }
-
-        public static RestApiBuilder AddCors(this RestApiBuilder builder, params string[] origins)
-        {
-            builder.Services.AddCors(options =>
+        builder.Services.AddControllers(x => { x.EnableEndpointRouting = true; })
+            .AddNewtonsoftJson(o =>
             {
-                options.AddDefaultPolicy(
-                    opts => opts
-                        .WithOrigins(origins)
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                );
+                o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                o.SerializerSettings.Formatting = Formatting.Indented;
+                o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                o.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+            })
+            .ConfigureApiBehaviorOptions(o =>
+            {
+                o.InvalidModelStateResponseFactory = c =>
+                {
+                    var result = new BadRequestObjectResult(c.ModelState);
+                    result.ContentTypes.Add(MediaTypeNames.Application.Json);
+
+                    return result;
+                };
             });
 
-            return builder;
-        }
 
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context,
-            IOptions<AppSettings> settings)
+        return new RestApiBuilder(builder);
+    }
+
+    public static RestApiBuilder AddCors(this RestApiBuilder builder, params string[] origins)
+    {
+        builder.Services.AddCors(options =>
         {
-            var appSettings = settings.Value;
+            options.AddDefaultPolicy(
+                opts => opts
+                    .WithOrigins(origins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            );
+        });
 
-            IdentityModelEventSource.ShowPII = true;
+        return builder;
+    }
 
-            app.UseMiddleware<ExceptionMiddleware>();
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context,
+        IOptions<AppSettings> settings)
+    {
+        var appSettings = settings.Value;
 
-            app.UseStaticFiles();
+        IdentityModelEventSource.ShowPII = true;
 
-            if (_swaggerAdded)
+        app.UseMiddleware<ExceptionMiddleware>();
+
+        app.UseStaticFiles();
+
+        if (_swaggerAdded)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", appSettings.Name);
-                    c.DisplayRequestDuration();
-                    c.RoutePrefix = string.Empty;
-                });
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseCors();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers()
-                    .RequireAuthorization("ApiScope");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", appSettings.Name);
+                c.DisplayRequestDuration();
+                c.RoutePrefix = string.Empty;
             });
         }
+
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseCors();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers()
+                .RequireAuthorization("ApiScope");
+        });
     }
 }

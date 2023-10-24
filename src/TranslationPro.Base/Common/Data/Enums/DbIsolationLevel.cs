@@ -8,16 +8,15 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Data.Enums
+namespace TranslationPro.Base.Common.Data.Enums;
+
+public enum DbIsolationLevel
 {
-    public enum DbIsolationLevel
-    {
-        Chaos,
-        ReadCommitted,
-        ReadUncommitted,
-        RepeatableRead,
-        Serializable,
-        Snapshot,
-        Unspecified
-    }
+    Chaos,
+    ReadCommitted,
+    ReadUncommitted,
+    RepeatableRead,
+    Serializable,
+    Snapshot,
+    Unspecified
 }

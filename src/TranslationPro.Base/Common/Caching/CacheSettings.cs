@@ -10,11 +10,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TranslationPro.Base.Common.Caching
+namespace TranslationPro.Base.Common.Caching;
+
+[ExcludeFromCodeCoverage]
+public class CacheSettings
 {
-    [ExcludeFromCodeCoverage]
-    public class CacheSettings
-    {
-        public TimeSpan? DefaultExpiration { get; set; }
-    }
+    public TimeSpan? DefaultExpiration { get; set; }
 }

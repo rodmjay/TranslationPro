@@ -11,22 +11,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TranslationPro.Base.Users.Entities;
 
-namespace TranslationPro.Base.Users.Validators
+namespace TranslationPro.Base.Users.Validators;
+
+public class DuplicateUserNameValidator : IUserValidator<User>
 {
-    public class DuplicateUserNameValidator : IUserValidator<User>
+    private readonly IdentityErrorDescriber _errors;
+
+    public DuplicateUserNameValidator(IdentityErrorDescriber errors)
     {
-        private readonly IdentityErrorDescriber _errors;
+        _errors = errors;
+    }
 
-        public DuplicateUserNameValidator(IdentityErrorDescriber errors)
-        {
-            _errors = errors;
-        }
-
-        public async Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
-        {
-            var userByEmail = await manager.FindByEmailAsync(user.NormalizedEmail);
-            if (userByEmail != null) return IdentityResult.Failed(_errors.DuplicateEmail(user.Email));
-            return IdentityResult.Success;
-        }
+    public async Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
+    {
+        var userByEmail = await manager.FindByEmailAsync(user.NormalizedEmail);
+        if (userByEmail != null) return IdentityResult.Failed(_errors.DuplicateEmail(user.Email));
+        return IdentityResult.Success;
     }
 }

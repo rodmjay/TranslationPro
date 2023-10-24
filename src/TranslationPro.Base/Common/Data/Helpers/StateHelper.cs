@@ -12,50 +12,49 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Enums;
 
-namespace TranslationPro.Base.Common.Data.Helpers
+namespace TranslationPro.Base.Common.Data.Helpers;
+
+[ExcludeFromCodeCoverage]
+public class StateHelper
 {
-    [ExcludeFromCodeCoverage]
-    public class StateHelper
+    public static EntityState ConvertState(ObjectState state)
     {
-        public static EntityState ConvertState(ObjectState state)
+        switch (state)
         {
-            switch (state)
-            {
-                case ObjectState.Added:
-                    return EntityState.Added;
-                case ObjectState.Modified:
-                    return EntityState.Modified;
-                case ObjectState.Deleted:
-                    return EntityState.Deleted;
-                case ObjectState.Unchanged:
-                    return EntityState.Unchanged;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
-            }
+            case ObjectState.Added:
+                return EntityState.Added;
+            case ObjectState.Modified:
+                return EntityState.Modified;
+            case ObjectState.Deleted:
+                return EntityState.Deleted;
+            case ObjectState.Unchanged:
+                return EntityState.Unchanged;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
+    }
 
-        public static ObjectState ConvertState(EntityState state)
+    public static ObjectState ConvertState(EntityState state)
+    {
+        switch (state)
         {
-            switch (state)
-            {
-                case EntityState.Detached:
-                    return ObjectState.Unchanged;
+            case EntityState.Detached:
+                return ObjectState.Unchanged;
 
-                case EntityState.Unchanged:
-                    return ObjectState.Unchanged;
+            case EntityState.Unchanged:
+                return ObjectState.Unchanged;
 
-                case EntityState.Added:
-                    return ObjectState.Added;
+            case EntityState.Added:
+                return ObjectState.Added;
 
-                case EntityState.Deleted:
-                    return ObjectState.Deleted;
+            case EntityState.Deleted:
+                return ObjectState.Deleted;
 
-                case EntityState.Modified:
-                    return ObjectState.Modified;
+            case EntityState.Modified:
+                return ObjectState.Modified;
 
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state));
-            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(state));
         }
     }
 }

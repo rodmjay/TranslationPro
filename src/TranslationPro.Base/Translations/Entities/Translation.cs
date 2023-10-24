@@ -11,13 +11,13 @@ namespace TranslationPro.Base.Translations.Entities;
 
 public class Translation : BaseEntity<Translation>, ITranslation
 {
-    public int Id { get; set; }
     public Guid ApplicationId { get; set; }
     public Application Application { get; set; }
     public int PhraseId { get; set; }
     public Phrase Phrase { get; set; }
-    public string LanguageId { get; set; }
     public Language Language { get; set; }
+    public int Id { get; set; }
+    public string LanguageId { get; set; }
     public DateTime? TranslationDate { get; set; }
     public string Text { get; set; }
 
@@ -26,12 +26,11 @@ public class Translation : BaseEntity<Translation>, ITranslation
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Phrase)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => new { x.ApplicationId, x.PhraseId });
+            .HasForeignKey(x => new {x.ApplicationId, x.PhraseId});
 
         builder.HasOne(x => x.Application)
             .WithMany(x => x.Translations)
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.NoAction);
-
     }
 }

@@ -9,12 +9,11 @@
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace TranslationPro.IdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account;
+
+public class AccessDeniedModel : PageModel
 {
-    public class AccessDeniedModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

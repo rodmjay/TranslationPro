@@ -12,25 +12,24 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.Base.Common.Settings;
 
-namespace TranslationPro.Base.Common.Middleware.Builders
+namespace TranslationPro.Base.Common.Middleware.Builders;
+
+public class SpaBuilder
 {
-    public class SpaBuilder
+    public SpaBuilder(IServiceCollection services,
+        AppSettings settings,
+        IConfiguration configuration,
+        IWebHostEnvironment environment)
     {
-        public SpaBuilder(IServiceCollection services,
-            AppSettings settings,
-            IConfiguration configuration,
-            IWebHostEnvironment environment)
-        {
-            Services = services;
-            AppSettings = settings;
-            Configuration = configuration;
-            Environment = environment;
-        }
-
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
-        public IServiceCollection Services { get; }
-
-        public AppSettings AppSettings { get; set; }
+        Services = services;
+        AppSettings = settings;
+        Configuration = configuration;
+        Environment = environment;
     }
+
+    public IConfiguration Configuration { get; }
+    public IWebHostEnvironment Environment { get; }
+    public IServiceCollection Services { get; }
+
+    public AppSettings AppSettings { get; set; }
 }

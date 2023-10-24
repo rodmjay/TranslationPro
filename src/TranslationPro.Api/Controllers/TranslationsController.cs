@@ -13,14 +13,16 @@ public class TranslationsController : BaseController
 {
     private readonly ITranslationService _translationService;
 
-    public TranslationsController(IServiceProvider serviceProvider, ITranslationService translationService) : base(serviceProvider)
+    public TranslationsController(IServiceProvider serviceProvider, ITranslationService translationService) : base(
+        serviceProvider)
     {
         _translationService = translationService;
     }
 
     [HttpPost]
-    public async Task<Result> SaveTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId, [FromBody] TranslationInput input)
+    public async Task<Result> SaveTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId,
+        [FromBody] TranslationInput input)
     {
-        return await _translationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);  
+        return await _translationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);
     }
 }

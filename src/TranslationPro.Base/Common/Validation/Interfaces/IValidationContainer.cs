@@ -9,16 +9,15 @@
 
 using System.Collections.Generic;
 
-namespace TranslationPro.Base.Common.Validation.Interfaces
-{
-    public interface IValidationContainer
-    {
-        IDictionary<string, IList<string>> ValidationErrors { get; }
-        bool IsValid { get; }
-    }
+namespace TranslationPro.Base.Common.Validation.Interfaces;
 
-    public interface IValidationContainer<out T> : IValidationContainer
-    {
-        T Entity { get; }
-    }
+public interface IValidationContainer
+{
+    IDictionary<string, IList<string>> ValidationErrors { get; }
+    bool IsValid { get; }
+}
+
+public interface IValidationContainer<out T> : IValidationContainer
+{
+    T Entity { get; }
 }

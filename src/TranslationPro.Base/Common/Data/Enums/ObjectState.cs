@@ -8,13 +8,12 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Data.Enums
+namespace TranslationPro.Base.Common.Data.Enums;
+
+public enum ObjectState
 {
-    public enum ObjectState
-    {
-        Unchanged,
-        Added,
-        Modified,
-        Deleted
-    }
+    Unchanged,
+    Added,
+    Modified,
+    Deleted
 }

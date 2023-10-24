@@ -16,7 +16,7 @@ public class Startup : FunctionsStartup
 {
     public override void Configure(IFunctionsHostBuilder builder)
     {
-        string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         var assembly = typeof(HostBuilderExtensions).Assembly;
 
         var config = new ConfigurationBuilder();
@@ -38,6 +38,5 @@ public class Startup : FunctionsStartup
             .AddApplicationDependencies()
             .AddPhraseDependencies()
             .AddTranslationDependencies();
-        
     }
 }

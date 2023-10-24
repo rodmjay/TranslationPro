@@ -9,10 +9,9 @@
 
 using System.Data;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IDbConnectionFactory
 {
-    public interface IDbConnectionFactory
-    {
-        IDbConnection DbConnection { get; }
-    }
+    IDbConnection DbConnection { get; }
 }

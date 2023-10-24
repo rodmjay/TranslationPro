@@ -7,18 +7,18 @@ using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Models;
 
-namespace TranslationPro.Base.Translations.Interfaces
+namespace TranslationPro.Base.Translations.Interfaces;
+
+public interface ITranslationService : IService<Translation>
 {
-    public interface ITranslationService : IService<Translation>
-    {
-        Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input);
-        Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
-            where T : TranslationDto;
+    Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input);
 
-        Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync();
+    Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
+        where T : TranslationDto;
 
-        Task<Result> SaveBulkTranslations(Guid applicationId, List<TranslationResult> input);
+    Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync();
 
-        Task<List<Result>> ProcessAllTranslationsAsync(Guid applicationId);
-    }
+    Task<Result> SaveBulkTranslations(Guid applicationId, List<TranslationResult> input);
+
+    Task<List<Result>> ProcessAllTranslationsAsync(Guid applicationId);
 }

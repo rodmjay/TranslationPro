@@ -14,57 +14,56 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TranslationPro.Base.Common.Middleware.Builders;
 
-namespace TranslationPro.Base.Common.Middleware.Extensions
+namespace TranslationPro.Base.Common.Middleware.Extensions;
+
+public static class MvcClientBuilderExtensions
 {
-    public static class MvcClientBuilderExtensions
+    public static MvcClientBuilder ConfigureMvcClient(this WebAppBuilder builder)
     {
-        public static MvcClientBuilder ConfigureMvcClient(this WebAppBuilder builder)
-        {
-            builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews();
 
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+        JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
-            builder.Services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = "Cookies";
-                    options.DefaultChallengeScheme = "oidc";
-                })
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = builder.AppSettings.Authority;
-
-                    options.ClientId = "mvc";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code";
-
-                    options.Scope.Add("api1");
-
-                    options.SaveTokens = true;
-                });
-
-            return new MvcClientBuilder(builder);
-        }
-
-
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
-            else
-                app.UseExceptionHandler("/Home/Error");
-
-            app.UseStaticFiles();
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+        builder.Services.AddAuthentication(options =>
             {
-                endpoints.MapDefaultControllerRoute()
-                    .RequireAuthorization();
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("Cookies")
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = builder.AppSettings.Authority;
+
+                options.ClientId = "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = "code";
+
+                options.Scope.Add("api1");
+
+                options.SaveTokens = true;
             });
-        }
+
+        return new MvcClientBuilder(builder);
+    }
+
+
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+            app.UseDeveloperExceptionPage();
+        else
+            app.UseExceptionHandler("/Home/Error");
+
+        app.UseStaticFiles();
+
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapDefaultControllerRoute()
+                .RequireAuthorization();
+        });
     }
 }

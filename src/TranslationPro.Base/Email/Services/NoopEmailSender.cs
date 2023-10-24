@@ -10,13 +10,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace TranslationPro.Base.Email.Services
+namespace TranslationPro.Base.Email.Services;
+
+public class NoopEmailSender : IEmailSender
 {
-    public class NoopEmailSender : IEmailSender
+    public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
-        {
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

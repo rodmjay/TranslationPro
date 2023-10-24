@@ -12,46 +12,45 @@ using System.Threading;
 using System.Threading.Tasks;
 using TranslationPro.Base.Users.Entities;
 
-namespace TranslationPro.Base.Users.Services
+namespace TranslationPro.Base.Users.Services;
+
+public partial class UserService
 {
-    public partial class UserService
+    public Task SetPhoneNumberAsync(User user, string phoneNumber, CancellationToken cancellationToken)
     {
-        public Task SetPhoneNumberAsync(User user, string phoneNumber, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if (user == null) throw new ArgumentNullException(nameof(user));
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        if (user == null) throw new ArgumentNullException(nameof(user));
 
-            user.PhoneNumber = phoneNumber;
-            return Task.CompletedTask;
-        }
+        user.PhoneNumber = phoneNumber;
+        return Task.CompletedTask;
+    }
 
-        public Task<bool> GetPhoneNumberConfirmedAsync(User user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if (user == null) throw new ArgumentNullException(nameof(user));
+    public Task<bool> GetPhoneNumberConfirmedAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        if (user == null) throw new ArgumentNullException(nameof(user));
 
-            return Task.FromResult(user.PhoneNumberConfirmed);
-        }
+        return Task.FromResult(user.PhoneNumberConfirmed);
+    }
 
-        public Task SetPhoneNumberConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if (user == null) throw new ArgumentNullException(nameof(user));
+    public Task SetPhoneNumberConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        if (user == null) throw new ArgumentNullException(nameof(user));
 
-            user.PhoneNumberConfirmed = confirmed;
-            return Task.CompletedTask;
-        }
+        user.PhoneNumberConfirmed = confirmed;
+        return Task.CompletedTask;
+    }
 
-        public Task<string> GetPhoneNumberAsync(User user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            if (user == null) throw new ArgumentNullException(nameof(user));
+    public Task<string> GetPhoneNumberAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        if (user == null) throw new ArgumentNullException(nameof(user));
 
-            return Task.FromResult(user.PhoneNumber);
-        }
+        return Task.FromResult(user.PhoneNumber);
     }
 }

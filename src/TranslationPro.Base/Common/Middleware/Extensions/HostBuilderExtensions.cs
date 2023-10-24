@@ -10,7 +10,6 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,112 +21,111 @@ using Serilog.Events;
 using TranslationPro.Base.Common.Extensions;
 using ILogger = Serilog.ILogger;
 
-namespace TranslationPro.Base.Common.Middleware.Extensions
+namespace TranslationPro.Base.Common.Middleware.Extensions;
+
+[ExcludeFromCodeCoverage]
+public static class HostBuilderExtensions
 {
-    [ExcludeFromCodeCoverage]
-    public static class HostBuilderExtensions
+    public static IConfiguration Configuration { get; set; }
+
+    public static void ConfigureLogging(WebHostBuilderContext hostingContext, ILoggingBuilder logging)
     {
-        public static IConfiguration Configuration { get; set; }
+        logging.AddConsole();
 
-        public static void ConfigureLogging(WebHostBuilderContext hostingContext, ILoggingBuilder logging)
+        if (hostingContext.HostingEnvironment.IsDevelopment())
         {
-            logging.AddConsole();
-
-            if (hostingContext.HostingEnvironment.IsDevelopment())
-            {
-                logging.AddDebug();
-                logging.SetMinimumLevel(LogLevel.Debug);
-            }
-            else
-            {
-                logging.SetMinimumLevel(LogLevel.Information);
-            }
-
-            logging.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Information);
-            logging.AddFilter("TranslationPro.Base", LogLevel.Information);
-            logging.AddFilter("IdentityServer4", LogLevel.Warning);
+            logging.AddDebug();
+            logging.SetMinimumLevel(LogLevel.Debug);
+        }
+        else
+        {
+            logging.SetMinimumLevel(LogLevel.Information);
         }
 
-       
-        public static void Configure(HostBuilderContext hostingContext,
-            IConfigurationBuilder config)
+        logging.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Information);
+        logging.AddFilter("TranslationPro.Base", LogLevel.Information);
+        logging.AddFilter("IdentityServer4", LogLevel.Warning);
+    }
+
+
+    public static void Configure(HostBuilderContext hostingContext,
+        IConfigurationBuilder config)
+    {
+        var env = hostingContext.HostingEnvironment;
+        Configure(config, env.EnvironmentName);
+    }
+
+
+    public static void Configure(WebHostBuilderContext hostingContext,
+        IConfigurationBuilder config)
+    {
+        var env = hostingContext.HostingEnvironment;
+        Configure(config, env.EnvironmentName);
+    }
+
+    public static void Configure(IConfigurationBuilder config, string environmentName)
+    {
+        var assembly = typeof(HostBuilderExtensions).Assembly;
+
+        config
+            .AddEmbeddedJsonFile(assembly, "sharedSettings.json")
+            .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
+            .AddJsonFile("appsettings.json", true)
+            .AddJsonFile($"appsettings.{environmentName}.json", true);
+
+        config
+            .AddEnvironmentVariables()
+            .Build();
+    }
+
+
+    public static ILogger CreateLogger()
+    {
+        SelfLog.Enable(msg =>
         {
-            var env = hostingContext.HostingEnvironment;
-            Configure(config, env.EnvironmentName);
+            Debug.Print(msg);
+            Debugger.Break();
+        });
+        return new LoggerConfiguration()
+            .MinimumLevel
+            .Debug()
+            .Enrich
+            .FromLogContext()
+            .WriteTo
+            .Console(LogEventLevel.Debug,
+                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            .WriteTo
+            .File(@"c:\home\logfiles\application\myapp.txt",
+                outputTemplate:
+                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                fileSizeLimitBytes: 1_000_000,
+                rollOnFileSizeLimit: true,
+                shared: true,
+                flushToDiskInterval: TimeSpan.FromSeconds(1))
+            .CreateLogger();
+    }
+
+
+    public static void Init(
+        this IHostBuilder hostBuilder,
+        string initMessage = "Starting Application",
+        string exceptionMessage = "Application terminated unexpectedly"
+    )
+    {
+        Log.Logger = CreateLogger();
+
+        try
+        {
+            Log.Information(initMessage);
+            hostBuilder.Build().Run();
         }
-
-
-        public static void Configure(WebHostBuilderContext hostingContext,
-            IConfigurationBuilder config)
+        catch (Exception ex)
         {
-            var env = hostingContext.HostingEnvironment;
-            Configure(config, env.EnvironmentName);
+            Log.Fatal(ex, exceptionMessage);
         }
-
-        public static void Configure(IConfigurationBuilder config, string environmentName)
+        finally
         {
-            var assembly = typeof(HostBuilderExtensions).Assembly;
-
-            config
-                .AddEmbeddedJsonFile(assembly, "sharedSettings.json")
-                .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile($"appsettings.{environmentName}.json", true);
-
-            config
-                .AddEnvironmentVariables()
-                .Build();
-        }
-
-
-        public static ILogger CreateLogger()
-        {
-            SelfLog.Enable(msg =>
-            {
-                Debug.Print(msg);
-                Debugger.Break();
-            });
-            return new LoggerConfiguration()
-                .MinimumLevel
-                .Debug()
-                .Enrich
-                .FromLogContext()
-                .WriteTo
-                .Console(LogEventLevel.Debug,
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                .WriteTo
-                .File(@"c:\home\logfiles\application\myapp.txt",
-                    outputTemplate:
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                    fileSizeLimitBytes: 1_000_000,
-                    rollOnFileSizeLimit: true,
-                    shared: true,
-                    flushToDiskInterval: TimeSpan.FromSeconds(1))
-                .CreateLogger();
-        }
-
-
-        public static void Init(
-            this IHostBuilder hostBuilder,
-            string initMessage = "Starting Application",
-            string exceptionMessage = "Application terminated unexpectedly"
-        )
-        {
-            Log.Logger = CreateLogger();
-
-            try
-            {
-                Log.Information(initMessage);
-                hostBuilder.Build().Run();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, exceptionMessage);
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            Log.CloseAndFlush();
         }
     }
 }

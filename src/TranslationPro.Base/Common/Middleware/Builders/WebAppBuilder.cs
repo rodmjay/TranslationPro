@@ -14,28 +14,27 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.Base.Common.Settings;
 
-namespace TranslationPro.Base.Common.Middleware.Builders
-{
-    [ExcludeFromCodeCoverage]
-    public class WebAppBuilder
-    {
-        public WebAppBuilder(
-            AppBuilder appBuilder,
-            IWebHostEnvironment environment)
-        {
-            Environment = environment;
-            AppSettings = appBuilder.AppSettings;
-            Services = appBuilder.Services;
-            Configuration = appBuilder.Configuration;
-            ConnectionString = appBuilder.ConnectionString;
-            AssembliesToMap = appBuilder.AssembliesToMap;
-        }
+namespace TranslationPro.Base.Common.Middleware.Builders;
 
-        public IWebHostEnvironment Environment { get; }
-        public List<string> AssembliesToMap { get; set; }
-        public IServiceCollection Services { get; }
-        public IConfiguration Configuration { get; }
-        public string ConnectionString { get; set; }
-        public AppSettings AppSettings { get; set; }
+[ExcludeFromCodeCoverage]
+public class WebAppBuilder
+{
+    public WebAppBuilder(
+        AppBuilder appBuilder,
+        IWebHostEnvironment environment)
+    {
+        Environment = environment;
+        AppSettings = appBuilder.AppSettings;
+        Services = appBuilder.Services;
+        Configuration = appBuilder.Configuration;
+        ConnectionString = appBuilder.ConnectionString;
+        AssembliesToMap = appBuilder.AssembliesToMap;
     }
+
+    public IWebHostEnvironment Environment { get; }
+    public List<string> AssembliesToMap { get; set; }
+    public IServiceCollection Services { get; }
+    public IConfiguration Configuration { get; }
+    public string ConnectionString { get; set; }
+    public AppSettings AppSettings { get; set; }
 }

@@ -1,7 +1,5 @@
-﻿namespace TranslationPro.Base.Permissions.Interfaces
-{
-    public interface IPermissionService
-    {
+﻿namespace TranslationPro.Base.Permissions.Interfaces;
 
-    }
+public interface IPermissionService
+{
 }

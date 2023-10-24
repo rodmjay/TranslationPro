@@ -9,11 +9,10 @@
 
 using System;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IHasCreationTime
 {
-    public interface IHasCreationTime
-    {
-        /// <summary>Creation time of this entity.</summary>
-        DateTime Created { get; set; }
-    }
+    /// <summary>Creation time of this entity.</summary>
+    DateTime Created { get; set; }
 }

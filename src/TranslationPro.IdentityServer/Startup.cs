@@ -18,53 +18,52 @@ using TranslationPro.Base.Email.Extensions;
 using TranslationPro.Base.IdentityServer.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
-namespace TranslationPro.IdentityServer
+namespace TranslationPro.IdentityServer;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
-        {
-            Configuration = configuration;
-            Environment = environment;
-        }
+        Configuration = configuration;
+        Environment = environment;
+    }
 
-        public IWebHostEnvironment Environment { get; }
-        public IConfiguration Configuration { get; }
+    public IWebHostEnvironment Environment { get; }
+    public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            var builder = services.ConfigureApp(Configuration)
-                .AddDatabase<ApplicationContext>()
-                .AddIdentity()
-                .AddAutomapperProfilesFromAssemblies()
-                .AddCaching()
-                .AddUserDependencies();
+    public void ConfigureServices(IServiceCollection services)
+    {
+        var builder = services.ConfigureApp(Configuration)
+            .AddDatabase<ApplicationContext>()
+            .AddIdentity()
+            .AddAutomapperProfilesFromAssemblies()
+            .AddCaching()
+            .AddUserDependencies();
 
-            if (Environment.IsDevelopment())
-                builder.WithNoopEmailSender();
-            else
-                builder.WithSendgridEmailSender();
+        if (Environment.IsDevelopment())
+            builder.WithNoopEmailSender();
+        else
+            builder.WithSendgridEmailSender();
 
-            var webBuilder = builder.ConfigureWebApp(Environment)
-                .AddAuthorization(policy => { policy.RequireAuthenticatedUser(); })
-                .AddSigninDependencies();
-            ;
+        var webBuilder = builder.ConfigureWebApp(Environment)
+            .AddAuthorization(policy => { policy.RequireAuthenticatedUser(); })
+            .AddSigninDependencies();
+        ;
 
-            var idBuilder = webBuilder.ConfigureIdentityServer();
+        var idBuilder = webBuilder.ConfigureIdentityServer();
 
-            var uiBuilder = webBuilder.ConfigureUI(options =>
-                {
-                    options.Conventions.AuthorizeFolder("/Account/Manage", "ApiScope");
-                })
-                .AddCookies()
-                .AddSession()
-                .AddAntiForgery()
-                .AddAuthentication();
-        }
+        var uiBuilder = webBuilder.ConfigureUI(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Account/Manage", "ApiScope");
+            })
+            .AddCookies()
+            .AddSession()
+            .AddAntiForgery()
+            .AddAuthentication();
+    }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context)
-        {
-            IdentityBuilderExtensions.Configure(app, env, context);
-        }
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context)
+    {
+        IdentityBuilderExtensions.Configure(app, env, context);
     }
 }

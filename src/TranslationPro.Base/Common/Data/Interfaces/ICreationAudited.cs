@@ -8,11 +8,10 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface ICreationAudited : IHasCreationTime
 {
-    public interface ICreationAudited : IHasCreationTime
-    {
-        /// <summary>Id of the creator user of this entity.</summary>
-        long? CreatorUserId { get; set; }
-    }
+    /// <summary>Id of the creator user of this entity.</summary>
+    long? CreatorUserId { get; set; }
 }

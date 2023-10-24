@@ -11,22 +11,21 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TranslationPro.Base.Common.Validation.Attributes
+namespace TranslationPro.Base.Common.Validation.Attributes;
+
+[ExcludeFromCodeCoverage]
+public class MinValueAttribute : ValidationAttribute
 {
-    [ExcludeFromCodeCoverage]
-    public class MinValueAttribute : ValidationAttribute
+    private readonly int _minValue;
+
+    public MinValueAttribute(int minValue)
     {
-        private readonly int _minValue;
+        _minValue = minValue;
+    }
 
-        public MinValueAttribute(int minValue)
-        {
-            _minValue = minValue;
-        }
-
-        public override bool IsValid(object value)
-        {
-            var val = Convert.ToDecimal(value);
-            return val >= _minValue;
-        }
+    public override bool IsValid(object value)
+    {
+        var val = Convert.ToDecimal(value);
+        return val >= _minValue;
     }
 }

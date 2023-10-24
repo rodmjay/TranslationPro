@@ -9,11 +9,10 @@
 
 using TranslationPro.Base.Users.Entities;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IUserCreationAudited : ICreationAudited, IHasCreationTime
 {
-    public interface IUserCreationAudited : ICreationAudited, IHasCreationTime
-    {
-        /// <summary>Reference to the creator user of this entity.</summary>
-        User CreatorUser { get; set; }
-    }
+    /// <summary>Reference to the creator user of this entity.</summary>
+    User CreatorUser { get; set; }
 }

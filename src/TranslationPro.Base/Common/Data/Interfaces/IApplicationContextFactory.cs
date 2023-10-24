@@ -10,9 +10,8 @@
 using Microsoft.EntityFrameworkCore.Design;
 using TranslationPro.Base.Common.Data.Contexts;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
 {
-    public interface IApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
-    {
-    }
 }

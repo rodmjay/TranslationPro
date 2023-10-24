@@ -13,35 +13,34 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using TranslationPro.Base.Users.Managers;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Interfaces;
+using TranslationPro.Base.Users.Managers;
 using TranslationPro.Base.Users.Models;
 
-namespace TranslationPro.Base.Users.Services
+namespace TranslationPro.Base.Users.Services;
+
+public class UserAccessor : BaseService<User>, IUserAccessor
 {
-    public class UserAccessor : BaseService<User>, IUserAccessor
+    private readonly UserManager _userManager;
+
+    public UserAccessor(
+        UserManager userManager,
+        IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        private readonly UserManager _userManager;
+        _userManager = userManager;
+    }
 
-        public UserAccessor(
-            UserManager userManager,
-            IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-            _userManager = userManager;
-        }
+    public Task<IUser> GetUser(ClaimsPrincipal principal)
+    {
+        var id = _userManager.GetUserId(principal);
 
-        public Task<IUser> GetUser(ClaimsPrincipal principal)
-        {
-            var id = _userManager.GetUserId(principal);
+        var userId = int.Parse(id);
 
-            var userId = int.Parse(id);
-
-            return _userManager.Users.Where(x => x.Id == userId)
-                .ProjectTo<UserDto>(ProjectionMapping)
-                .Cast<IUser>()
-                .FirstOrDefaultAsync();
-        }
+        return _userManager.Users.Where(x => x.Id == userId)
+            .ProjectTo<UserDto>(ProjectionMapping)
+            .Cast<IUser>()
+            .FirstOrDefaultAsync();
     }
 }

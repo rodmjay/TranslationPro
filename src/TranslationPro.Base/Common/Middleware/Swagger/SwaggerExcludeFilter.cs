@@ -14,24 +14,23 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace TranslationPro.Base.Common.Middleware.Swagger
+namespace TranslationPro.Base.Common.Middleware.Swagger;
+
+[ExcludeFromCodeCoverage]
+public class SwaggerExcludeFilter : ISchemaFilter
 {
-    [ExcludeFromCodeCoverage]
-    public class SwaggerExcludeFilter : ISchemaFilter
+    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-        {
-            if (schema?.Properties == null || context.Type == null)
-                return;
+        if (schema?.Properties == null || context.Type == null)
+            return;
 
-            var excludedProperties = context.Type.GetProperties()
-                .Where(t =>
-                    t.GetCustomAttribute<JsonIgnoreAttribute>(true)
-                    != null);
+        var excludedProperties = context.Type.GetProperties()
+            .Where(t =>
+                t.GetCustomAttribute<JsonIgnoreAttribute>(true)
+                != null);
 
-            foreach (var excludedProperty in excludedProperties)
-                if (schema.Properties.ContainsKey(excludedProperty.Name))
-                    schema.Properties.Remove(excludedProperty.Name);
-        }
+        foreach (var excludedProperty in excludedProperties)
+            if (schema.Properties.ContainsKey(excludedProperty.Name))
+                schema.Properties.Remove(excludedProperty.Name);
     }
 }

@@ -9,11 +9,10 @@
 
 using TranslationPro.Base.Users.Entities;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IUserModificationAudited : IModificationAudited
 {
-    public interface IUserModificationAudited : IModificationAudited
-    {
-        /// <summary>Reference to the last modifier user of this entity.</summary>
-        User LastModifierUser { get; set; }
-    }
+    /// <summary>Reference to the last modifier user of this entity.</summary>
+    User LastModifierUser { get; set; }
 }

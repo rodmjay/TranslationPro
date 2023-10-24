@@ -12,15 +12,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using TranslationPro.Base.Common;
 
-namespace TranslationPro.Base.Users.Managers
+namespace TranslationPro.Base.Users.Managers;
+
+public partial class SignInManager
 {
-    public partial class SignInManager
+    public override async Task SignOutAsync()
     {
-        public override async Task SignOutAsync()
-        {
-            await Context.SignOutAsync(Constants.LocalIdentity.DefaultApplicationScheme);
-            await Context.SignOutAsync(Constants.LocalIdentity.DefaultExternalScheme);
-            await Context.SignOutAsync(IdentityConstants.TwoFactorUserIdScheme);
-        }
+        await Context.SignOutAsync(Constants.LocalIdentity.DefaultApplicationScheme);
+        await Context.SignOutAsync(Constants.LocalIdentity.DefaultExternalScheme);
+        await Context.SignOutAsync(IdentityConstants.TwoFactorUserIdScheme);
     }
 }

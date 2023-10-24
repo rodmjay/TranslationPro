@@ -9,12 +9,11 @@
 
 using TranslationPro.Base.Common.Middleware.Builders;
 
-namespace TranslationPro.Base.IdentityServer.Builders
+namespace TranslationPro.Base.IdentityServer.Builders;
+
+public class LocalIdentityServerBuilder
 {
-    public class LocalIdentityServerBuilder
+    public LocalIdentityServerBuilder(WebAppBuilder webAppBuilder)
     {
-        public LocalIdentityServerBuilder(WebAppBuilder webAppBuilder)
-        {
-        }
     }
 }

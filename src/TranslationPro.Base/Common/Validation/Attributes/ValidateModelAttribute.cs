@@ -9,13 +9,12 @@
 
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace TranslationPro.Base.Common.Validation.Attributes
+namespace TranslationPro.Base.Common.Validation.Attributes;
+
+public class ValidateModelAttribute : ActionFilterAttribute
 {
-    public class ValidateModelAttribute : ActionFilterAttribute
+    public override void OnActionExecuting(ActionExecutingContext context)
     {
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            if (!context.ModelState.IsValid) context.Result = new ValidationFailedResult(context.ModelState);
-        }
+        if (!context.ModelState.IsValid) context.Result = new ValidationFailedResult(context.ModelState);
     }
 }

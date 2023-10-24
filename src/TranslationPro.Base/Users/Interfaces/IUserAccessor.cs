@@ -10,10 +10,9 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace TranslationPro.Base.Users.Interfaces
+namespace TranslationPro.Base.Users.Interfaces;
+
+public interface IUserAccessor
 {
-    public interface IUserAccessor
-    {
-        Task<IUser> GetUser(ClaimsPrincipal principal);
-    }
+    Task<IUser> GetUser(ClaimsPrincipal principal);
 }

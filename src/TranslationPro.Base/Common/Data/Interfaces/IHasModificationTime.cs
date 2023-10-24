@@ -9,11 +9,10 @@
 
 using System;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IHasModificationTime
 {
-    public interface IHasModificationTime
-    {
-        /// <summary>The last modified time for this entity.</summary>
-        DateTime? Updated { get; set; }
-    }
+    /// <summary>The last modified time for this entity.</summary>
+    DateTime? Updated { get; set; }
 }

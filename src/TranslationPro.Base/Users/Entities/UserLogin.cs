@@ -15,26 +15,25 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 
-namespace TranslationPro.Base.Users.Entities
+namespace TranslationPro.Base.Users.Entities;
+
+public class UserLogin : IdentityUserLogin<int>, IEntityTypeConfiguration<UserLogin>, IObjectState
 {
-    public class UserLogin : IdentityUserLogin<int>, IEntityTypeConfiguration<UserLogin>, IObjectState
+    public User User { get; set; }
+
+    public void Configure(EntityTypeBuilder<UserLogin> builder)
     {
-        public User User { get; set; }
-
-        public void Configure(EntityTypeBuilder<UserLogin> builder)
+        builder.HasKey(x => new
         {
-            builder.HasKey(x => new
-            {
-                x.UserId,
-                x.ProviderKey,
-                x.LoginProvider
-            });
+            x.UserId,
+            x.ProviderKey,
+            x.LoginProvider
+        });
 
-            builder.HasOne(x => x.User)
-                .WithMany(x => x.UserLogins)
-                .HasForeignKey(x => x.UserId);
-        }
-
-        [NotMapped][IgnoreDataMember] public ObjectState ObjectState { get; set; }
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.UserLogins)
+            .HasForeignKey(x => x.UserId);
     }
+
+    [NotMapped] [IgnoreDataMember] public ObjectState ObjectState { get; set; }
 }

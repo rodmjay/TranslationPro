@@ -17,65 +17,64 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Users.Managers;
 
-namespace TranslationPro.IdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account;
+
+public class LogOutModel : PageModel
 {
-    public class LogOutModel : PageModel
+    private readonly IClientStore _clientStore;
+    private readonly IEventService _events;
+    private readonly IIdentityServerInteractionService _interaction;
+    private readonly ILogger<LoginModel> _logger;
+    private readonly IAuthenticationSchemeProvider _schemeProvider;
+    private readonly SignInManager _signInManager;
+    private readonly UserManager _userManager;
+
+    public LogOutModel(SignInManager signInManager,
+        IIdentityServerInteractionService interaction,
+        IClientStore clientStore,
+        IAuthenticationSchemeProvider schemeProvider,
+        IEventService events,
+        ILogger<LoginModel> logger,
+        UserManager userManager)
     {
-        private readonly IClientStore _clientStore;
-        private readonly IEventService _events;
-        private readonly IIdentityServerInteractionService _interaction;
-        private readonly ILogger<LoginModel> _logger;
-        private readonly IAuthenticationSchemeProvider _schemeProvider;
-        private readonly SignInManager _signInManager;
-        private readonly UserManager _userManager;
+        _signInManager = signInManager;
+        _interaction = interaction;
+        _clientStore = clientStore;
+        _schemeProvider = schemeProvider;
+        _events = events;
+        _logger = logger;
+        _userManager = userManager;
+    }
 
-        public LogOutModel(SignInManager signInManager,
-            IIdentityServerInteractionService interaction,
-            IClientStore clientStore,
-            IAuthenticationSchemeProvider schemeProvider,
-            IEventService events,
-            ILogger<LoginModel> logger,
-            UserManager userManager)
+    public async Task<IActionResult> OnGetAsync(string logoutId = null)
+    {
+        if (_signInManager.IsSignedIn(User))
         {
-            _signInManager = signInManager;
-            _interaction = interaction;
-            _clientStore = clientStore;
-            _schemeProvider = schemeProvider;
-            _events = events;
-            _logger = logger;
-            _userManager = userManager;
-        }
+            await _signInManager.SignOutAsync();
 
-        public async Task<IActionResult> OnGetAsync(string logoutId = null)
-        {
-            if (_signInManager.IsSignedIn(User))
+            var userId = _userManager.GetUserId(User);
+            var name = _userManager.GetUserName(User);
+
+            await _events.RaiseAsync(new UserLogoutSuccessEvent(userId, name));
+
+            var logoutUrl = "~/";
+
+            if (logoutId != null)
             {
-                await _signInManager.SignOutAsync();
-
-                var userId = _userManager.GetUserId(User);
-                var name = _userManager.GetUserName(User);
-
-                await _events.RaiseAsync(new UserLogoutSuccessEvent(userId, name));
-
-                var logoutUrl = "~/";
-
-                if (logoutId != null)
-                {
-                    var logout = await _interaction.GetLogoutContextAsync(logoutId);
-                    logoutUrl = logout.PostLogoutRedirectUri;
-                }
-
-                return Redirect(logoutUrl);
+                var logout = await _interaction.GetLogoutContextAsync(logoutId);
+                logoutUrl = logout.PostLogoutRedirectUri;
             }
 
-            return Page();
+            return Redirect(logoutUrl);
         }
 
-        public async Task<IActionResult> OnPost()
-        {
-            if (_signInManager.IsSignedIn(User)) await _signInManager.SignOutAsync();
+        return Page();
+    }
 
-            return Redirect("~/");
-        }
+    public async Task<IActionResult> OnPost()
+    {
+        if (_signInManager.IsSignedIn(User)) await _signInManager.SignOutAsync();
+
+        return Redirect("~/");
     }
 }

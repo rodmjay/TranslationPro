@@ -20,77 +20,76 @@ using Newtonsoft.Json;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Validation;
 
-namespace TranslationPro.Base.Common.Middleware
+namespace TranslationPro.Base.Common.Middleware;
+
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly JsonSerializerSettings _jsonSerializerSettings;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly RequestDelegate _next;
+
+
+    public ExceptionMiddleware(
+        RequestDelegate next,
+        ILoggerFactory loggerFactory,
+        IOptions<MvcNewtonsoftJsonOptions> jsonOptions)
     {
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
-        private readonly ILoggerFactory _loggerFactory;
-        private readonly RequestDelegate _next;
+        _next = next;
+        _loggerFactory = loggerFactory;
+        _jsonSerializerSettings = jsonOptions.Value.SerializerSettings;
+    }
 
-
-        public ExceptionMiddleware(
-            RequestDelegate next,
-            ILoggerFactory loggerFactory,
-            IOptions<MvcNewtonsoftJsonOptions> jsonOptions)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        try
         {
-            _next = next;
-            _loggerFactory = loggerFactory;
-            _jsonSerializerSettings = jsonOptions.Value.SerializerSettings;
+            await _next(httpContext);
         }
-
-        public async Task InvokeAsync(HttpContext httpContext)
+        catch (Exception ex)
         {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(httpContext, ex);
-            }
+            await HandleExceptionAsync(httpContext, ex);
         }
+    }
 
-        private static HttpStatusCode GetErrorCode(Exception e)
+    private static HttpStatusCode GetErrorCode(Exception e)
+    {
+        switch (e)
         {
-            switch (e)
-            {
-                case UnauthorizedAccessException _:
-                    return HttpStatusCode.Unauthorized;
-                case ValidationException _:
-                    return HttpStatusCode.BadRequest;
-                case FormatException _:
-                    return HttpStatusCode.BadRequest;
-                case AuthenticationException _:
-                    return HttpStatusCode.Forbidden;
-                case NotImplementedException _:
-                    return HttpStatusCode.NotImplemented;
-                default:
-                    return HttpStatusCode.InternalServerError;
-            }
+            case UnauthorizedAccessException _:
+                return HttpStatusCode.Unauthorized;
+            case ValidationException _:
+                return HttpStatusCode.BadRequest;
+            case FormatException _:
+                return HttpStatusCode.BadRequest;
+            case AuthenticationException _:
+                return HttpStatusCode.Forbidden;
+            case NotImplementedException _:
+                return HttpStatusCode.NotImplemented;
+            default:
+                return HttpStatusCode.InternalServerError;
         }
+    }
 
-        private void LogAndAddException(ValidationResultModel modelResult, Exception exception)
-        {
-            var exLogger = _loggerFactory.CreateLogger(exception.TargetSite.DeclaringType.FullName);
-            exLogger?.LogError(exception, exception.Message);
-            modelResult.Errors.Add(new ValidationError(null, exception.Message));
-        }
+    private void LogAndAddException(ValidationResultModel modelResult, Exception exception)
+    {
+        var exLogger = _loggerFactory.CreateLogger(exception.TargetSite.DeclaringType.FullName);
+        exLogger?.LogError(exception, exception.Message);
+        modelResult.Errors.Add(new ValidationError(null, exception.Message));
+    }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            var modelResult = new ValidationResultModel();
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        var modelResult = new ValidationResultModel();
 
-            if (exception is AggregateException exceptions)
-                foreach (var ex in exceptions.InnerExceptions)
-                    LogAndAddException(modelResult, ex);
-            else
-                LogAndAddException(modelResult, exception);
+        if (exception is AggregateException exceptions)
+            foreach (var ex in exceptions.InnerExceptions)
+                LogAndAddException(modelResult, ex);
+        else
+            LogAndAddException(modelResult, exception);
 
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)GetErrorCode(exception);
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int) GetErrorCode(exception);
 
-            return context.Response.WriteAsync(modelResult.ToJson(_jsonSerializerSettings));
-        }
+        return context.Response.WriteAsync(modelResult.ToJson(_jsonSerializerSettings));
     }
 }

@@ -11,14 +11,13 @@ using AutoMapper;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Models;
 
-namespace TranslationPro.Base.Users.Projections
+namespace TranslationPro.Base.Users.Projections;
+
+public class UserProjections : Profile
 {
-    public class UserProjections : Profile
+    public UserProjections()
     {
-        public UserProjections()
-        {
-            CreateMap<User, UserDto>()
-                .IncludeAllDerived();
-        }
+        CreateMap<User, UserDto>()
+            .IncludeAllDerived();
     }
 }

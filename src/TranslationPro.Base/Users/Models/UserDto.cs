@@ -9,16 +9,15 @@
 
 using TranslationPro.Base.Users.Interfaces;
 
-namespace TranslationPro.Base.Users.Models
+namespace TranslationPro.Base.Users.Models;
+
+public class UserDto : IUser
 {
-    public class UserDto : IUser
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string UserName { get; set; }
+    public string UserName { get; set; }
 
-        public string Email { get; set; }
+    public string Email { get; set; }
 
-        public string PhoneNumber { get; set; }
-    }
+    public string PhoneNumber { get; set; }
 }

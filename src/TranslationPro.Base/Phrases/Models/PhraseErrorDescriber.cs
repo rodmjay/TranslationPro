@@ -6,7 +6,7 @@ public class PhraseErrorDescriber
 {
     public virtual Error PhraseDoesntExist(int id)
     {
-        return new()
+        return new Error
         {
             Code = nameof(PhraseDoesntExist),
             Description = $"Phrase '{id}' doesn't exist"
@@ -15,7 +15,7 @@ public class PhraseErrorDescriber
 
     public virtual Error UnableToDeletePhrase(int id)
     {
-        return new()
+        return new Error
         {
             Code = nameof(UnableToDeletePhrase),
             Description = $"Unable to delete phrase '{id}'"
@@ -24,16 +24,16 @@ public class PhraseErrorDescriber
 
     public virtual Error UnableToCreatePhrase()
     {
-        return new()
+        return new Error
         {
             Code = nameof(UnableToCreatePhrase),
-            Description = $"Unable to create phrase"
+            Description = "Unable to create phrase"
         };
     }
 
     public virtual Error UnableToUpdatePhrase(int id)
     {
-        return new()
+        return new Error
         {
             Code = nameof(UnableToUpdatePhrase),
             Description = $"Unable to update phrase '{id}'"

@@ -2,13 +2,12 @@
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Languages.Models;
 
-namespace TranslationPro.Base.Languages.Projections
+namespace TranslationPro.Base.Languages.Projections;
+
+public class LanguageProjections : Profile
 {
-    public class LanguageProjections : Profile
+    public LanguageProjections()
     {
-        public LanguageProjections()
-        {
-            CreateMap<Language, LanguageDto>();
-        }
+        CreateMap<Language, LanguageDto>();
     }
 }

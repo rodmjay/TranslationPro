@@ -10,13 +10,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace TranslationPro.IdentityServer.Pages.Account
+namespace TranslationPro.IdentityServer.Pages.Account;
+
+[AllowAnonymous]
+public class ForgotPasswordConfirmation : PageModel
 {
-    [AllowAnonymous]
-    public class ForgotPasswordConfirmation : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

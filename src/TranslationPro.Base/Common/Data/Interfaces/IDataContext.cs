@@ -10,14 +10,13 @@
 using System;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IDataContext : IDisposable
 {
-    public interface IDataContext : IDisposable
-    {
-        DatabaseFacade DatabaseFacade { get; }
-        object GetKey<TEntity>(TEntity entity);
-        int SaveChanges();
-        void SyncObjectState<TEntity>(TEntity entity) where TEntity : class, IObjectState;
-        void SyncObjectsStatePostCommit();
-    }
+    DatabaseFacade DatabaseFacade { get; }
+    object GetKey<TEntity>(TEntity entity);
+    int SaveChanges();
+    void SyncObjectState<TEntity>(TEntity entity) where TEntity : class, IObjectState;
+    void SyncObjectsStatePostCommit();
 }

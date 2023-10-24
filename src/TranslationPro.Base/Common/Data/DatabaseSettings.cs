@@ -9,12 +9,11 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace TranslationPro.Base.Common.Data
+namespace TranslationPro.Base.Common.Data;
+
+[ExcludeFromCodeCoverage]
+public class DatabaseSettings
 {
-    [ExcludeFromCodeCoverage]
-    public class DatabaseSettings
-    {
-        public int Timeout { get; set; }
-        public string ConnectionStringName { get; set; }
-    }
+    public int Timeout { get; set; }
+    public string ConnectionStringName { get; set; }
 }

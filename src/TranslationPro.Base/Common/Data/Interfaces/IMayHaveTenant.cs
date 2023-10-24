@@ -8,11 +8,10 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IMayHaveTenant
 {
-    public interface IMayHaveTenant
-    {
-        /// <summary>TenantId of this entity.</summary>
-        int? TenantId { get; set; }
-    }
+    /// <summary>TenantId of this entity.</summary>
+    int? TenantId { get; set; }
 }

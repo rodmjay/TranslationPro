@@ -6,21 +6,21 @@ using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Languages.Interfaces;
 using TranslationPro.Base.Languages.Models;
 
-namespace TranslationPro.Api.Controllers
+namespace TranslationPro.Api.Controllers;
+
+public class LanguagesController : BaseController
 {
-    public class LanguagesController : BaseController
+    private readonly ILanguageService _languageService;
+
+    public LanguagesController(IServiceProvider serviceProvider, ILanguageService languageService) : base(
+        serviceProvider)
     {
-        private readonly ILanguageService _languageService;
+        _languageService = languageService;
+    }
 
-        public LanguagesController(IServiceProvider serviceProvider, ILanguageService languageService) : base(serviceProvider)
-        {
-            _languageService = languageService;
-        }
-
-        [HttpGet]
-        public async Task<List<LanguageDto>> GetLanguages()
-        {
-            return await _languageService.GetLanguagesAsync<LanguageDto>().ConfigureAwait(false);
-        }
+    [HttpGet]
+    public async Task<List<LanguageDto>> GetLanguages()
+    {
+        return await _languageService.GetLanguagesAsync<LanguageDto>().ConfigureAwait(false);
     }
 }

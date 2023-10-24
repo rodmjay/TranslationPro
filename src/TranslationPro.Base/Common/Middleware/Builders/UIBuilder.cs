@@ -10,17 +10,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.Base.Common.Settings;
 
-namespace TranslationPro.Base.Common.Middleware.Builders
-{
-    public class UIBuilder
-    {
-        public UIBuilder(WebAppBuilder serviceBuilder)
-        {
-            Services = serviceBuilder.Services;
-            AppSettings = serviceBuilder.AppSettings;
-        }
+namespace TranslationPro.Base.Common.Middleware.Builders;
 
-        public AppSettings AppSettings { get; }
-        public IServiceCollection Services { get; }
+public class UIBuilder
+{
+    public UIBuilder(WebAppBuilder serviceBuilder)
+    {
+        Services = serviceBuilder.Services;
+        AppSettings = serviceBuilder.AppSettings;
     }
+
+    public AppSettings AppSettings { get; }
+    public IServiceCollection Services { get; }
 }

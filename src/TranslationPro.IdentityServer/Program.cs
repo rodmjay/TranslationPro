@@ -13,28 +13,27 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using TranslationPro.Base.Common.Middleware.Extensions;
 
-namespace TranslationPro.IdentityServer
-{
-    [ExcludeFromCodeCoverage]
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildHost(args)
-                .Init();
-        }
+namespace TranslationPro.IdentityServer;
 
-        public static IHostBuilder BuildHost(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(HostBuilderExtensions.Configure)
-                .ConfigureWebHostDefaults(builder =>
-                {
-                    builder
-                        .ConfigureLogging(HostBuilderExtensions.ConfigureLogging)
-                        .UseSerilog()
-                        .UseStartup<Startup>();
-                });
-        }
+[ExcludeFromCodeCoverage]
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        BuildHost(args)
+            .Init();
+    }
+
+    public static IHostBuilder BuildHost(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration(HostBuilderExtensions.Configure)
+            .ConfigureWebHostDefaults(builder =>
+            {
+                builder
+                    .ConfigureLogging(HostBuilderExtensions.ConfigureLogging)
+                    .UseSerilog()
+                    .UseStartup<Startup>();
+            });
     }
 }

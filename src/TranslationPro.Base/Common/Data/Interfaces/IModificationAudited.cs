@@ -8,11 +8,10 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IModificationAudited : IHasModificationTime
 {
-    public interface IModificationAudited : IHasModificationTime
-    {
-        /// <summary>Last modifier user for this entity.</summary>
-        int? LastModifierUserId { get; set; }
-    }
+    /// <summary>Last modifier user for this entity.</summary>
+    int? LastModifierUserId { get; set; }
 }

@@ -19,90 +19,89 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TranslationPro.Base.Common.Middleware.Builders;
 
-namespace TranslationPro.Base.Common.Middleware.Extensions
+namespace TranslationPro.Base.Common.Middleware.Extensions;
+
+public static class SpaBuilderExtensions
 {
-    public static class SpaBuilderExtensions
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
     {
-        private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
-        {
-            return $"[{nameof(SpaBuilderExtensions)}.{callerName}] - {message}";
-        }
+        return $"[{nameof(SpaBuilderExtensions)}.{callerName}] - {message}";
+    }
 
 
-        public static SpaBuilder AddAuthentication(this SpaBuilder builder)
-        {
-            builder.Services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
+    public static SpaBuilder AddAuthentication(this SpaBuilder builder)
+    {
+        builder.Services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = builder.AppSettings.Authority;
+                options.Audience = builder.AppSettings.Audience;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.Authority = builder.AppSettings.Authority;
-                    options.Audience = builder.AppSettings.Audience;
-                    options.TokenValidationParameters = new TokenValidationParameters
+                    ValidateAudience = false,
+                    NameClaimType = "name",
+                    RoleClaimType = "role"
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = c =>
                     {
-                        ValidateAudience = false,
-                        NameClaimType = "name",
-                        RoleClaimType = "role"
-                    };
-                    options.Events = new JwtBearerEvents
+                        var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<StartupBase>>();
+                        logger.LogTrace("Authentication Failure");
+                        return Task.FromResult(0);
+                    },
+                    OnTokenValidated = c =>
                     {
-                        OnAuthenticationFailed = c =>
-                        {
-                            var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<StartupBase>>();
-                            logger.LogTrace("Authentication Failure");
-                            return Task.FromResult(0);
-                        },
-                        OnTokenValidated = c =>
-                        {
-                            var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<StartupBase>>();
-                            logger.LogTrace("Authentication Success");
-                            return Task.FromResult(0);
-                        }
-                    };
-                });
+                        var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<StartupBase>>();
+                        logger.LogTrace("Authentication Success");
+                        return Task.FromResult(0);
+                    }
+                };
+            });
 
-            return builder;
-        }
+        return builder;
+    }
 
 
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            if (!env.IsDevelopment()) app.UseSpaStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            //app.UseIdentityServer();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    "default",
-                    "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-            });
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment()) spa.UseAngularCliServer("start");
-            });
+            app.UseDeveloperExceptionPage();
+            app.UseMigrationsEndPoint();
         }
+        else
+        {
+            app.UseExceptionHandler("/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        if (!env.IsDevelopment()) app.UseSpaStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+        //app.UseIdentityServer();
+        app.UseAuthorization();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                "default",
+                "{controller}/{action=Index}/{id?}");
+            endpoints.MapRazorPages();
+        });
+
+        app.UseSpa(spa =>
+        {
+            // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            // see https://go.microsoft.com/fwlink/?linkid=864501
+
+            spa.Options.SourcePath = "ClientApp";
+
+            if (env.IsDevelopment()) spa.UseAngularCliServer("start");
+        });
     }
 }

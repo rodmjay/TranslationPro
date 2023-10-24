@@ -1,33 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 
-namespace TranslationPro.Base.Phrases.Entities
+namespace TranslationPro.Base.Phrases.Entities;
+
+public class Phrase : BaseEntity<Phrase>, IPhrase
 {
-    public class Phrase : BaseEntity<Phrase>, IPhrase
+    public Phrase()
     {
-        public Phrase()
-        {
-            Translations = new List<Translation>();
-        }
-        public int Id { get; set; }
-        public Guid ApplicationId { get; set; }
-        public Application Application { get; set; }
-        public string Text { get; set; }
-        public ICollection<Translation> Translations { get; set; }
+        Translations = new List<Translation>();
+    }
 
-        public override void Configure(EntityTypeBuilder<Phrase> builder)
-        {
-            builder.HasKey(t => new { t.ApplicationId, t.Id });
-            
+    public Guid ApplicationId { get; set; }
+    public Application Application { get; set; }
+    public ICollection<Translation> Translations { get; set; }
+    public int Id { get; set; }
+    public string Text { get; set; }
 
-            builder.HasOne(x => x.Application)
-                .WithMany(x => x.Phrases)
-                .HasForeignKey(x => x.ApplicationId);
-        }
+    public override void Configure(EntityTypeBuilder<Phrase> builder)
+    {
+        builder.HasKey(t => new {t.ApplicationId, t.Id});
+
+
+        builder.HasOne(x => x.Application)
+            .WithMany(x => x.Phrases)
+            .HasForeignKey(x => x.ApplicationId);
     }
 }

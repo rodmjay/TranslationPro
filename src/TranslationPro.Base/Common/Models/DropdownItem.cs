@@ -8,11 +8,10 @@
 #endregion
 
 
-namespace TranslationPro.Base.Common.Models
+namespace TranslationPro.Base.Common.Models;
+
+public class DropdownItem
 {
-    public class DropdownItem
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-    }
+    public string Name { get; set; }
+    public string Value { get; set; }
 }

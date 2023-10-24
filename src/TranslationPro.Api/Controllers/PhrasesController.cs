@@ -16,7 +16,8 @@ public class PhrasesController : BaseController
     private readonly IPhraseService _phraseService;
     private readonly ITranslationService _transactionService;
 
-    public PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService, ITranslationService transactionService) : base(serviceProvider)
+    public PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService,
+        ITranslationService transactionService) : base(serviceProvider)
     {
         _phraseService = phraseService;
         _transactionService = transactionService;
@@ -46,19 +47,21 @@ public class PhrasesController : BaseController
         await _transactionService.ProcessAllTranslationsAsync(applicationId);
 
         return result;
-
     }
 
     [HttpGet]
-    public async Task<PagedList<PhraseDto>> GetPhrases([FromRoute] Guid applicationId, [FromQuery] PagingQuery paging, [FromQuery] PhraseFilters filters)
+    public async Task<PagedList<PhraseDto>> GetPhrases([FromRoute] Guid applicationId, [FromQuery] PagingQuery paging,
+        [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging, filters).ConfigureAwait(false);
+        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging, filters)
+            .ConfigureAwait(false);
     }
 
     [HttpGet("{language}")]
-    public async Task<Dictionary<int,string>> GetPhrasesForApplicationAndLanguage([FromRoute] Guid applicationId, [FromRoute]string language)
+    public async Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguage([FromRoute] Guid applicationId,
+        [FromRoute] string language)
     {
         await AssertUserHasAccessToApplication(applicationId);
 

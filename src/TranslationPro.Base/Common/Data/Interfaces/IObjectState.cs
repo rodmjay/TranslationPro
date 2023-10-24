@@ -9,10 +9,9 @@
 
 using TranslationPro.Base.Common.Data.Enums;
 
-namespace TranslationPro.Base.Common.Data.Interfaces
+namespace TranslationPro.Base.Common.Data.Interfaces;
+
+public interface IObjectState
 {
-    public interface IObjectState
-    {
-        public ObjectState ObjectState { get; set; }
-    }
+    public ObjectState ObjectState { get; set; }
 }
