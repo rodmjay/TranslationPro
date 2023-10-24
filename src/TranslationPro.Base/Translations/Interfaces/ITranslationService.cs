@@ -13,12 +13,14 @@ public interface ITranslationService : IService<Translation>
 {
     Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input);
 
+    Task<Result> DeleteTranslation(Guid applicationId, int phraseId, string languageId);
+
     Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
         where T : TranslationDto;
 
-    Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync();
+    Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync(Guid applicationId);
 
-    Task<Result> SaveBulkTranslations(Guid applicationId, List<TranslationResult> input);
+    Task<Result> SaveTranslationResultsAsync(Guid applicationId, List<TranslationResult> input);
 
-    Task<List<Result>> ProcessAllTranslationsAsync(Guid applicationId);
+    Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId);
 }

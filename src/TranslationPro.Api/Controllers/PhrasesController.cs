@@ -31,7 +31,7 @@ public class PhrasesController : BaseController
 
         var result = await _phraseService.BulkUploadPhrases(applicationId, input).ConfigureAwait(false);
 
-        await _transactionService.ProcessAllTranslationsAsync(applicationId);
+        await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
     }
@@ -44,7 +44,7 @@ public class PhrasesController : BaseController
 
         var result = await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
 
-        await _transactionService.ProcessAllTranslationsAsync(applicationId);
+        await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
     }
@@ -57,7 +57,7 @@ public class PhrasesController : BaseController
 
         var result = await _phraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
 
-        await _transactionService.ProcessAllTranslationsAsync(applicationId);
+        await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
     }

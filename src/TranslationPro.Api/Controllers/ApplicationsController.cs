@@ -50,7 +50,7 @@ public class ApplicationsController : BaseController
 
         var result = await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
 
-        await _translationService.ProcessAllTranslationsAsync(applicationId);
+        await _translationService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
     }
