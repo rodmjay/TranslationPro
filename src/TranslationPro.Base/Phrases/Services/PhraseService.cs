@@ -44,7 +44,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
         return phrases.SelectMany(x => x.Translations).ToDictionary(x => x.PhraseId, x => x.Text);
     }
-    
+
     public async Task<Result> BulkUploadPhrases(Guid applicationId, List<string> inputs)
     {
         var phrases = Phrases.Where(x => x.ApplicationId == applicationId).ToList();

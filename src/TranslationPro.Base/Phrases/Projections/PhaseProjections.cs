@@ -13,6 +13,6 @@ public class PhaseProjections : Profile
             .ForMember(x => x.TranslationCount,
                 opt => opt.MapFrom(x => x.Translations.Count))
             .ForMember(x => x.PendingTranslationCount,
-                opt => opt.MapFrom(x => x.Translations.Count(t => t.Text== null)));
+                opt => opt.MapFrom(x => x.Translations.Count(t => t.Text == null)));
     }
 }

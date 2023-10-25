@@ -8,7 +8,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <a href="Identity/Account/Manage">Hello, @UserManager.GetUserName(User)</a>
-    <form method="post" action="Identity/Account/LogOut">
+    <form method="post" action="Identity / Account / LogOut">
         <button type="submit" class="nav-link btn btn-link">Log out</button>
     </form>
 }

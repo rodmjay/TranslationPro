@@ -10,6 +10,7 @@ using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Api.Controllers;
 
+
 public class ApplicationsController : BaseController
 {
     private readonly IApplicationService _service;
@@ -20,13 +21,6 @@ public class ApplicationsController : BaseController
     {
         _service = service;
         _translationService = translationService;
-    }
-
-    [HttpGet("{applicationId}")]
-    public async Task<ApplicationDto> GetApplicationAsync([FromRoute] Guid applicationId)
-    {
-        await AssertUserHasAccessToApplication(applicationId);
-        return await _service.GetApplication<ApplicationDto>(applicationId);
     }
 
     [HttpGet]
