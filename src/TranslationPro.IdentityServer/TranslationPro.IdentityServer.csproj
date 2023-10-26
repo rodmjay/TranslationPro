@@ -31,8 +31,4 @@
 	  <ProjectReference Include="..\TranslationPro.Base\TranslationPro.Base.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Pages\Applications\" />
-	</ItemGroup>
-
 </Project>

@@ -60,7 +60,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         var translation = phrase.Translations.FirstOrDefault(x => x.LanguageId == input.LanguageId);
         if (translation == null)
         {
-            var application = await Applications.Where(x => x.Id == applicationId).FirstOrDefaultAsync();
+            var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
             var langExists = application.Languages.Any(x => x.LanguageId == input.LanguageId);
 
@@ -106,25 +106,45 @@ public class TranslationService : BaseService<Translation>, ITranslationService
             .ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
-    private async Task<Dictionary<string, List<string>>>
-        GetPendingTranslationsForApplicationAsync(Guid applicationId)
+
+    public async Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId)
+    {
+        var results = new List<Result>();
+
+        var pendingTranslations = await GetPendingTranslationsForApplicationAsync(applicationId);
+
+        var application = await _applicationRepository.FindAsync(applicationId);
+
+        foreach (var langKeyValue in pendingTranslations)
+        {
+            var texts = langKeyValue.Value.Select(x => x.ToString()).ToList();
+            var translations = await _googleClient.TranslateTextAsync(texts, langKeyValue.Key);
+            var result = await SaveTranslationResultsAsync(application.Id, translations.ToList());
+            results.Add(result);
+        }
+
+        return results;
+    }
+
+    public async Task<Result> ProcessTranslationsForApplicationLanguageAsync(Guid applicationId, string languageId)
+    {
+        var missingTranslations = await GetPendingTranslationsForLanguageAsync(applicationId, languageId);
+        var translations = await _googleClient.TranslateTextAsync(missingTranslations, languageId);
+   
+        return await SaveTranslationResultsAsync(applicationId, translations.ToList());
+    }
+
+
+    private async Task<Dictionary<string, List<string>>> GetPendingTranslationsForApplicationAsync(Guid applicationId)
     {
         var translations = await Translations
             .Where(x => x.ApplicationId == applicationId && x.TranslationDate == null && x.Text == null).ToListAsync();
 
         var dictionary = translations.GroupBy(a => a.LanguageId)
-                .ToDictionary(group => group.Key, group => group
-                    .Select(translation => translation.Phrase.Text).ToList());
+            .ToDictionary(group => group.Key, group => group
+                .Select(translation => translation.Phrase.Text).ToList());
 
         return dictionary;
-    }
-
-    private async Task<List<string>> GetPendingTranslationsForPhraseAsync(Guid applicationId, int phraseId)
-    {
-        var translations = await Translations
-            .Where(x => x.ApplicationId == applicationId && x.PhraseId == phraseId && x.TranslationDate == null && x.Text == null).ToListAsync();
-
-        return translations.Select(x => x.Phrase.Text).ToList();
     }
 
     private async Task<List<string>> GetPendingTranslationsForLanguageAsync(Guid applicationId, string languageId)
@@ -159,37 +179,4 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         var records = Repository.Commit();
         return Result.Success(records);
     }
-
-    public async Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId)
-    {
-        var results = new List<Result>();
-
-        var pendingTranslations = await GetPendingTranslationsForApplicationAsync(applicationId);
-
-        var application = await _applicationRepository.FirstOrDefaultAsync(x => x.Id == applicationId);
-
-        foreach (var langKeyValue in pendingTranslations)
-        {
-            var texts = langKeyValue.Value.Select(x => x.ToString()).ToList();
-            var translations = await _googleClient.TranslateTextAsync(texts, langKeyValue.Key);
-            var result = await SaveTranslationResultsAsync(application.Id, translations.ToList());
-            results.Add(result);
-        }
-
-        return results;
-    }
-
-    public async Task<List<Result>> ProcessTranslationsForApplicationLanguageAsync(Guid applicationId, string languageId)
-    {
-        var results = new List<Result>();
-        
-        var missingTranslations = await GetPendingTranslationsForLanguageAsync(applicationId, languageId);
-        var translations = await _googleClient.TranslateTextAsync(missingTranslations, languageId);
-        var result = await SaveTranslationResultsAsync(applicationId, translations.ToList());
-
-        results.Add(result);
-
-        return results;
-    }
-    
 }

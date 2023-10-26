@@ -25,5 +25,5 @@ public interface ITranslationService : IService<Translation>
     
     Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId);
 
-    Task<List<Result>> ProcessTranslationsForApplicationLanguageAsync(Guid applicationId, string languageId);
+    Task<Result> ProcessTranslationsForApplicationLanguageAsync(Guid applicationId, string languageId);
 }

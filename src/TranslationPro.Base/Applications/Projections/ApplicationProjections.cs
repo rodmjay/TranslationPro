@@ -18,6 +18,7 @@ public class ApplicationProjections : Profile
         CreateMap<Application, ApplicationDto>()
             .ForMember(x => x.SupportedLanguages, opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId)))
             .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count))
+            .ForMember(x=>x.Languages, opt=>opt.MapFrom(x=>x.Languages))
             .ForMember(x => x.TranslationCount,
                 opt => opt.MapFrom(x => x.Phrases.SelectMany(a => a.Translations).Count()))
             .ForMember(x => x.PendingTranslationCount,
