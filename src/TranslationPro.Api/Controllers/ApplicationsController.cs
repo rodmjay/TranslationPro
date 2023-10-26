@@ -28,6 +28,14 @@ public class ApplicationsController : BaseController
         _translationService = translationService;
     }
 
+    [HttpGet("{applicationId}")]
+    public async Task<ApplicationDto> GetApplication([FromRoute]Guid applicationId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+        var user = await GetCurrentUser();
+        return await _service.GetApplication<ApplicationDto>(applicationId);
+    }
+
     [HttpGet]
     public async Task<List<ApplicationDto>> GetApplicationsAsync()
     {

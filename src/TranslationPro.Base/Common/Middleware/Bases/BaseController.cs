@@ -35,15 +35,14 @@ public class BaseController : ControllerBase
         AppSettings = serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value;
     }
 
-
-    [ActionContext] public ActionContext ActionContext { get; set; }
-
-    protected async Task<bool> AssertUserHasAccessToApplication(Guid applicationId)
+    protected async Task AssertUserHasAccessToApplication(Guid applicationId)
     {
         var user = await GetCurrentUser();
 
-        // todo: add logic here
-        return true;
+        var userHasAccessToApplication = await PermissionService.UserCanAccessApplication(user.Id, applicationId);
+
+        if (!userHasAccessToApplication)
+            throw new UnauthorizedAccessException("User does not have access to application");
     }
 
     protected async Task<IUser> GetCurrentUser()

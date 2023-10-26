@@ -4,8 +4,12 @@
 
 #endregion
 
+using System;
+using System.Threading.Tasks;
+
 namespace TranslationPro.Base.Permissions.Interfaces;
 
 public interface IPermissionService
 {
+    Task<bool> UserCanAccessApplication(int userId, Guid applicationId);
 }
