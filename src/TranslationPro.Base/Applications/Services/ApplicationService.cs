@@ -51,7 +51,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         return Applications.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
-    public async Task<Result> CreateApplicationAsync(int userId, ApplicationInput input)
+    public async Task<Result> CreateApplicationAsync(int userId, CreateApplicationInput input)
     {
         var application = new Application
         {
@@ -60,7 +60,6 @@ public class ApplicationService : BaseService<Application>, IApplicationService
             ObjectState = ObjectState.Added
         };
 
-        // make sure the languages exist in database and remove any junk data
         var languages = await Languages.Where(x => input.Languages.Contains(x.Id)).ToListAsync();
 
         foreach (var lang in input.Languages)
@@ -95,39 +94,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
         existing.Name = input.Name;
         existing.ObjectState = ObjectState.Modified;
-
-        foreach (var lang in existing.Languages)
-        {
-            lang.ObjectState = ObjectState.Deleted;
-
-            if (input.Languages.Contains(lang.LanguageId))
-                lang.ObjectState = ObjectState.Unchanged;
-            else
-                foreach (var translation in existing.Translations.Where(x => x.LanguageId == lang.LanguageId))
-                    translation.ObjectState = ObjectState.Deleted;
-        }
-
-
-        foreach (var lang in input.Languages)
-            if (!existing.Languages.Select(x => x.LanguageId).Contains(lang))
-            {
-                existing.Languages.Add(new ApplicationLanguage
-                {
-                    LanguageId = lang,
-                    ApplicationId = applicationId,
-                    ObjectState = ObjectState.Added
-                });
-
-                foreach (var phrase in existing.Phrases)
-                    phrase.Translations.Add(new Translation
-                    {
-                        LanguageId = lang,
-                        ObjectState = ObjectState.Added,
-                        Text = null,
-                        TranslationDate = null
-                    });
-            }
-
+        
         var records = Repository.InsertOrUpdateGraph(existing, true);
         if (records > 0)
             return Result.Success(existing.Id);

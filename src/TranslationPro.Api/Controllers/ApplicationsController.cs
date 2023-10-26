@@ -43,7 +43,7 @@ public class ApplicationsController : BaseController
     }
 
     [HttpPost]
-    public async Task<Result> CreateApplicationAsync([FromBody] ApplicationInput input)
+    public async Task<Result> CreateApplicationAsync([FromBody] CreateApplicationInput input)
     {
         var user = await GetCurrentUser();
         return await _service.CreateApplicationAsync(user.Id, input).ConfigureAwait(false);
