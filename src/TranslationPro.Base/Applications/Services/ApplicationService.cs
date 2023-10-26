@@ -14,6 +14,7 @@ using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
+using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;
@@ -27,17 +28,20 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 {
     private readonly ApplicationErrorDescriber _errorDescriber;
     private readonly IRepositoryAsync<Language> _languageRepository;
+    private readonly IRepositoryAsync<ApplicationUser> _applicationUserRepository;
 
     public ApplicationService(IServiceProvider serviceProvider, ApplicationErrorDescriber errorDescriber) : base(
         serviceProvider)
     {
         _errorDescriber = errorDescriber;
         _languageRepository = UnitOfWork.RepositoryAsync<Language>();
+        _applicationUserRepository = UnitOfWork.RepositoryAsync<ApplicationUser>();
     }
 
     private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages)
         .Include(x => x.Phrases).Include(x => x.Translations);
 
+    private IQueryable<ApplicationUser> ApplicationUsers => _applicationUserRepository.Queryable().Include(x => x.Application);
     private IQueryable<Language> Languages => _languageRepository.Queryable();
 
 
@@ -55,9 +59,17 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     {
         var application = new Application
         {
-            UserId = userId,
             Name = input.Name,
-            ObjectState = ObjectState.Added
+            ObjectState = ObjectState.Added,
+            Users = new List<ApplicationUser>()
+            {
+                new ApplicationUser()
+                {
+                    UserId = userId,
+                    ObjectState = ObjectState.Added,
+                    Role = ApplicationRole.Owner
+                }
+            }
         };
 
         var languages = await Languages.Where(x => input.Languages.Contains(x.Id)).ToListAsync();
@@ -82,7 +94,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
     public Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationDto
     {
-        return Applications.Where(x => x.UserId == userId).ProjectTo<T>(ProjectionMapping).ToListAsync();
+        return ApplicationUsers.Where(x => x.UserId == userId).Select(x => x.Application).ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
     public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input)
@@ -94,7 +106,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
         existing.Name = input.Name;
         existing.ObjectState = ObjectState.Modified;
-        
+
         var records = Repository.InsertOrUpdateGraph(existing, true);
         if (records > 0)
             return Result.Success(existing.Id);

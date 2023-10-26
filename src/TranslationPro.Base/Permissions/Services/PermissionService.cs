@@ -30,6 +30,6 @@ public class PermissionService : BaseService, IPermissionService
     {
         var user = await Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
 
-        return user != null && user.Applications.Any(x => x.Id == applicationId);
+        return user != null && user.Applications.Any(x => x.ApplicationId == applicationId);
     }
 }

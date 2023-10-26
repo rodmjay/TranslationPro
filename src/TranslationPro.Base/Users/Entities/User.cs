@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TranslationPro.Base.Applications.Entities;
+using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Users.Interfaces;
@@ -37,7 +37,7 @@ public class User : IdentityUser<int>, IEntityTypeConfiguration<User>, IObjectSt
     public ICollection<UserToken> UserTokens { get; set; }
     public ICollection<UserLogin> UserLogins { get; set; }
     public ICollection<UserClaim> UserClaims { get; set; }
-    public ICollection<Application> Applications { get; set; }
+    public ICollection<ApplicationUser> Applications { get; set; }
     public Guid? CurrentApplication { get; set; }
 
     public void Configure(EntityTypeBuilder<User> builder)

@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TranslationPro.Base.ApplicationLanguages.Extensions;
 using TranslationPro.Base.Applications.Extensions;
+using TranslationPro.Base.ApplicationUsers.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
@@ -54,6 +55,7 @@ public class Startup
             .AddLanguageDependencies()
             .AddApplicationDependencies()
             .AddApplicationLanguageDependencies()
+            .AddApplicationUserDependencies()
             .AddPhraseDependencies()
             .AddTranslationDependencies();
 
