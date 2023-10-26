@@ -32,15 +32,14 @@ public class ApplicationsController : BaseController
     public async Task<ApplicationDto> GetApplication([FromRoute]Guid applicationId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var user = await GetCurrentUser();
-        return await _service.GetApplication<ApplicationDto>(applicationId);
+        return await _service.GetApplication<ApplicationDto>(applicationId).ConfigureAwait(false);
     }
 
     [HttpGet]
     public async Task<List<ApplicationDto>> GetApplicationsAsync()
     {
         var user = await GetCurrentUser();
-        return await _service.GetApplicationsForUserAsync<ApplicationDto>(user.Id);
+        return await _service.GetApplicationsForUserAsync<ApplicationDto>(user.Id).ConfigureAwait(false);
     }
 
     [HttpPost]
@@ -56,7 +55,6 @@ public class ApplicationsController : BaseController
         await AssertUserHasAccessToApplication(applicationId);
 
         var result = await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
-
         await _translationService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;

@@ -7,6 +7,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
@@ -27,6 +28,8 @@ public class Translation : BaseEntity<Translation>, ITranslation
     public DateTime? TranslationDate { get; set; }
     public string Text { get; set; }
 
+    public ApplicationLanguage ApplicationLanguage { get; set; }
+
     public override void Configure(EntityTypeBuilder<Translation> builder)
     {
         builder.HasKey(x => x.Id);
@@ -39,5 +42,9 @@ public class Translation : BaseEntity<Translation>, ITranslation
             .WithMany(x => x.Translations)
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(x => x.ApplicationLanguage)
+            .WithMany(x => x.Translations)
+            .HasForeignKey(x => new {x.ApplicationId, x.LanguageId});
     }
 }

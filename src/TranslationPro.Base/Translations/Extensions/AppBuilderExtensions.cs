@@ -4,6 +4,8 @@
 
 #endregion
 
+using System;
+using Google.Cloud.Translation.V2;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Translations.Interfaces;
@@ -18,6 +20,13 @@ public static class AppBuilderExtensions
     {
         builder.Services.TryAddTransient<TranslationErrorDescriber>();
         builder.Services.TryAddScoped<ITranslationService, TranslationService>();
+
+        builder.Services.TryAddSingleton(x =>
+        {
+            var apiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
+            var client = TranslationClient.CreateFromApiKey(apiKey);
+            return client;
+        });
 
         return builder;
     }

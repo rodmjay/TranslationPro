@@ -52,6 +52,7 @@ public class Startup
             .AddPermissionExtensions()
             .AddLanguageDependencies()
             .AddApplicationDependencies()
+            .AddApplicationDependencies()
             .AddPhraseDependencies()
             .AddTranslationDependencies();
 
