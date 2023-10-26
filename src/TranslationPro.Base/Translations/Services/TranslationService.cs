@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,12 +26,13 @@ namespace TranslationPro.Base.Translations.Services;
 
 public class TranslationService : BaseService<Translation>, ITranslationService
 {
-    private readonly TranslationErrorDescriber _translationErrors;
-    private readonly PhraseErrorDescriber _phraseErrors;
     private readonly IRepositoryAsync<Application> _applicationRepository;
+    private readonly PhraseErrorDescriber _phraseErrors;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
+    private readonly TranslationErrorDescriber _translationErrors;
 
-    public TranslationService(IServiceProvider serviceProvider, TranslationErrorDescriber translationErrors, PhraseErrorDescriber phraseErrors) : base(serviceProvider)
+    public TranslationService(IServiceProvider serviceProvider, TranslationErrorDescriber translationErrors,
+        PhraseErrorDescriber phraseErrors) : base(serviceProvider)
     {
         _translationErrors = translationErrors;
         _phraseErrors = phraseErrors;
@@ -36,7 +43,9 @@ public class TranslationService : BaseService<Translation>, ITranslationService
     private IQueryable<Translation> Translations =>
         Repository.Queryable().Include(x => x.Phrase).Include(x => x.Application);
 
-    private IQueryable<Phrase> Phrases => _phraseRepository.Queryable().Include(x=>x.Application).Include(x => x.Translations);
+    private IQueryable<Phrase> Phrases =>
+        _phraseRepository.Queryable().Include(x => x.Application).Include(x => x.Translations);
+
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
 
     /// <summary>
@@ -61,7 +70,8 @@ public class TranslationService : BaseService<Translation>, ITranslationService
             var langExists = application.Languages.Any(x => x.LanguageId == input.LanguageId);
 
             if (!langExists)
-                return Result.Failed(_translationErrors.LanguageDoesntExistInApplication(input.LanguageId, phrase.Application.Name));
+                return Result.Failed(
+                    _translationErrors.LanguageDoesntExistInApplication(input.LanguageId, phrase.Application.Name));
 
             translation = new Translation
             {
@@ -101,7 +111,8 @@ public class TranslationService : BaseService<Translation>, ITranslationService
     public async Task<Dictionary<Guid, Dictionary<string, List<string>>>>
         GetMissingTranslationsByApplicationByLanguageAsync(Guid applicationId)
     {
-        var translations = await Translations.Where(x => x.ApplicationId == applicationId && x.TranslationDate == null && x.Text == null).ToListAsync();
+        var translations = await Translations
+            .Where(x => x.ApplicationId == applicationId && x.TranslationDate == null && x.Text == null).ToListAsync();
 
         var dictionary = translations.GroupBy(translation => translation.ApplicationId)
             .ToDictionary(x => x.Key, x => x.GroupBy(a => a.LanguageId)

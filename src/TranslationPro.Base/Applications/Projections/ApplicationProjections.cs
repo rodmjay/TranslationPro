@@ -1,4 +1,10 @@
-﻿using System.Linq;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using System.Linq;
 using AutoMapper;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Models;

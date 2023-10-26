@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Google.Cloud.Translation.V2;
@@ -18,7 +24,8 @@ public interface ITranslationService : IService<Translation>
     Task<List<T>> GetTranslationsForLanguageAndApplicationAsync<T>(Guid applicationId, string languageId)
         where T : TranslationDto;
 
-    Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync(Guid applicationId);
+    Task<Dictionary<Guid, Dictionary<string, List<string>>>> GetMissingTranslationsByApplicationByLanguageAsync(
+        Guid applicationId);
 
     Task<Result> SaveTranslationResultsAsync(Guid applicationId, List<TranslationResult> input);
 

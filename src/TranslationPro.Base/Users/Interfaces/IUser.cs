@@ -1,12 +1,8 @@
-﻿#region Header
+﻿#region Header Info
 
-// /*
-
-// Author: Rod Johnson, Architect, rodmjay@gmail.com
-// */
+// Copyright 2023 Rod Johnson.  All rights reserved
 
 #endregion
-
 
 namespace TranslationPro.Base.Users.Interfaces;
 

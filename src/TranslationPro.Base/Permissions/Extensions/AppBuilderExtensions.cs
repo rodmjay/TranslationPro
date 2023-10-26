@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Permissions.Interfaces;

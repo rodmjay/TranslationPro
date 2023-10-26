@@ -1,4 +1,10 @@
-﻿using TranslationPro.Base.Common.Models;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using TranslationPro.Base.Common.Models;
 
 namespace TranslationPro.Base.Phrases.Models;
 

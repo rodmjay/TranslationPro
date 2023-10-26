@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using System;
 using Newtonsoft.Json;
 using TranslationPro.Base.Translations.Interfaces;
 

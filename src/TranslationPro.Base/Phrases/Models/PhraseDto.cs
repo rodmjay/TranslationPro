@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using System.Collections.Generic;
 using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Base.Translations.Models;
 

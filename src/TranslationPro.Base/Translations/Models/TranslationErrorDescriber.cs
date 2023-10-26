@@ -1,4 +1,10 @@
-﻿using TranslationPro.Base.Common.Models;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using TranslationPro.Base.Common.Models;
 
 namespace TranslationPro.Base.Translations.Models;
 
@@ -12,6 +18,7 @@ public class TranslationErrorDescriber
             Description = $"Language '{language}' doesn't exist in application '{application}"
         };
     }
+
     public virtual Error TranslationDoesntExist(string text)
     {
         return new Error
