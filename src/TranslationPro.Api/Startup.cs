@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TranslationPro.Base.ApplicationLanguages.Extensions;
 using TranslationPro.Base.Applications.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
@@ -52,7 +53,7 @@ public class Startup
             .AddPermissionExtensions()
             .AddLanguageDependencies()
             .AddApplicationDependencies()
-            .AddApplicationDependencies()
+            .AddApplicationLanguageDependencies()
             .AddPhraseDependencies()
             .AddTranslationDependencies();
 

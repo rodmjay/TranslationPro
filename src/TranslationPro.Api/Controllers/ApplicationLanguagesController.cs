@@ -19,7 +19,7 @@ public class ApplicationLanguagesController : BaseController
 {
     private readonly IApplicationLanguageService _service;
 
-    protected ApplicationLanguagesController(IServiceProvider serviceProvider, IApplicationLanguageService service) : base(serviceProvider)
+    public ApplicationLanguagesController(IServiceProvider serviceProvider, IApplicationLanguageService service) : base(serviceProvider)
     {
         _service = service;
     }

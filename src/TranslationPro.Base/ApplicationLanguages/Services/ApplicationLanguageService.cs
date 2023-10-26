@@ -25,12 +25,12 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
         private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
             .Include(x => x.Phrases).Include(x => x.Translations);
 
+        private IQueryable<ApplicationLanguage> ApplicationLanguages =>
+            Repository.Queryable().Include(x => x.Translations);
+
         public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input)
         {
-            var application = await Applications.Where(x => x.Id == applicationId).FirstOrDefaultAsync();
-
-            if (application == null)
-                return Result.Failed();
+            var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
             var appLanguage = application.Languages.FirstOrDefault(x => x.LanguageId == input.Language);
             if (appLanguage != null)
@@ -58,15 +58,30 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
             }
 
             var records = Repository.InsertOrUpdateGraph(appLanguage, true);
-            if(records > 0)
+            if (records > 0)
                 return Result.Success();
 
             return Result.Failed();
         }
 
-        public Task<Result> RemoveLanguageFromApplication(Guid applicationId, ApplicationLanguageInput input)
+        public async Task<Result> RemoveLanguageFromApplication(Guid applicationId, ApplicationLanguageInput input)
         {
-            throw new NotImplementedException();
+            var applicationLanguage = await ApplicationLanguages
+                .Where(x => x.ApplicationId == applicationId && x.LanguageId == input.Language)
+                .FirstAsync();
+
+            applicationLanguage.ObjectState = ObjectState.Deleted;
+
+            foreach (var translation in applicationLanguage.Translations)
+            {
+                translation.ObjectState = ObjectState.Deleted;
+            }
+
+            var records = Repository.InsertOrUpdateGraph(applicationLanguage, true);
+            if(records > 0)
+                return Result.Success();
+
+            return Result.Failed();
         }
     }
 }
