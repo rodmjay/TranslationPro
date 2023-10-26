@@ -15,6 +15,7 @@ using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.ApplicationUsers.Entities;
+using TranslationPro.Base.ApplicationUsers.Enums;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Models;

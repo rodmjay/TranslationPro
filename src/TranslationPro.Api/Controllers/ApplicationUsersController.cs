@@ -14,7 +14,7 @@ using TranslationPro.Base.Common.Models;
 
 namespace TranslationPro.Api.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("v1.0/applications/{applicationId}/users")]
+[Route("v1.0/applications/{applicationId}/users")]
 public class ApplicationUsersController : BaseController
 {
     private readonly IApplicationUserService _applicationUserService;

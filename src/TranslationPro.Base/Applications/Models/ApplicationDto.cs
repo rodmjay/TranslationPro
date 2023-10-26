@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.Applications.Interfaces;
+using TranslationPro.Base.ApplicationUsers.Entities;
+using TranslationPro.Base.ApplicationUsers.Models;
 
 namespace TranslationPro.Base.Applications.Models;
 
@@ -21,4 +23,5 @@ public class ApplicationDto : IApplication
     public string Name { get; set; }
 
     public List<ApplicationLanguageDto> Languages { get; set; }
+    public List<ApplicationUserDto> Users { get; set; }
 }

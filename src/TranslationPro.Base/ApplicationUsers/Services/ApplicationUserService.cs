@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.ApplicationUsers.Entities;
+using TranslationPro.Base.ApplicationUsers.Enums;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
 using TranslationPro.Base.ApplicationUsers.Models;
 using TranslationPro.Base.Common.Data.Enums;
