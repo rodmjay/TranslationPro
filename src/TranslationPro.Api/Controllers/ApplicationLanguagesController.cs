@@ -11,17 +11,20 @@ using TranslationPro.Base.ApplicationLanguages.Interfaces;
 using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
+using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/languages")]
 public class ApplicationLanguagesController : BaseController
 {
-    private readonly IApplicationLanguageService _service;
+    private readonly IApplicationLanguageService _applicationLanguageService;
+    private readonly ITranslationService _translationService;
 
-    public ApplicationLanguagesController(IServiceProvider serviceProvider, IApplicationLanguageService service) : base(serviceProvider)
+    public ApplicationLanguagesController(IServiceProvider serviceProvider, IApplicationLanguageService applicationLanguageService, ITranslationService translationService) : base(serviceProvider)
     {
-        _service = service;
+        _applicationLanguageService = applicationLanguageService;
+        _translationService = translationService;
     }
 
     [HttpPost]
@@ -30,8 +33,8 @@ public class ApplicationLanguagesController : BaseController
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _service.AddLanguageToApplication(applicationId, input);
-
+        var result = await _applicationLanguageService.AddLanguageToApplication(applicationId, input);
+        await _translationService.ProcessTranslationsForApplicationLanguageAsync(applicationId, input.Language);
         return result;
     }
 
@@ -41,7 +44,7 @@ public class ApplicationLanguagesController : BaseController
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _service.RemoveLanguageFromApplication(applicationId, input);
+        var result = await _applicationLanguageService.RemoveLanguageFromApplication(applicationId, input);
 
         return result;
     }

@@ -49,13 +49,19 @@ public class ApplicationsController : BaseController
         return await _service.CreateApplicationAsync(user.Id, input).ConfigureAwait(false);
     }
 
+    [HttpDelete("{applicationId}")]
+    public async Task<Result> DeleteApplicationAsync([FromRoute] Guid applicationId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+        return await _service.DeleteApplicationAsync(applicationId).ConfigureAwait(false);
+    }
+
     [HttpPut("{applicationId}")]
     public async Task<Result> UpdateApplicationAsync([FromRoute] Guid applicationId, [FromBody] ApplicationInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-
         var result = await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
-        await _translationService.ProcessTranslationsForApplicationAsync(applicationId);
+      
 
         return result;
     }
