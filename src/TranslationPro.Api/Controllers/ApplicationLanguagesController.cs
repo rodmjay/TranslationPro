@@ -22,7 +22,9 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
     private readonly IApplicationLanguageService _applicationLanguageService;
     private readonly ITranslationService _translationService;
 
-    public ApplicationLanguagesController(IServiceProvider serviceProvider, IApplicationLanguageService applicationLanguageService, ITranslationService translationService) : base(serviceProvider)
+    public ApplicationLanguagesController(IServiceProvider serviceProvider,
+        IApplicationLanguageService applicationLanguageService, ITranslationService translationService) : base(
+        serviceProvider)
     {
         _applicationLanguageService = applicationLanguageService;
         _translationService = translationService;
@@ -44,7 +46,6 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
         [FromRoute] string languageId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-
         var result = await _applicationLanguageService.RemoveLanguageFromApplication(applicationId, languageId);
 
         return result;

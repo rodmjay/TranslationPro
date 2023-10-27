@@ -6,7 +6,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.ApplicationUsers.Models;
 using TranslationPro.Base.Common.Models;
 

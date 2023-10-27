@@ -6,7 +6,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.Common.Models;
 
@@ -18,5 +17,5 @@ public interface IApplicationLanguagesController
         ApplicationLanguageInput input);
 
     Task<Result> RemoveLanguageFromApplicationAsync(Guid applicationId,
-       string languageId);
+        string languageId);
 }

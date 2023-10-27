@@ -30,6 +30,7 @@ public class TranslationsController : BaseController, ITranslationsController
     public async Task<Result> SaveTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId,
         [FromBody] TranslationInput input)
     {
+        await AssertUserHasAccessToApplication(applicationId);
         return await _translationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);
     }
 }

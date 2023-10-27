@@ -13,24 +13,20 @@ using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
-using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Api.Controllers;
 
 public class ApplicationsController : BaseController, IApplicationsController
 {
     private readonly IApplicationService _service;
-    private readonly ITranslationService _translationService;
 
-    public ApplicationsController(IServiceProvider serviceProvider, IApplicationService service,
-        ITranslationService translationService) : base(serviceProvider)
+    public ApplicationsController(IServiceProvider serviceProvider, IApplicationService service) : base(serviceProvider)
     {
         _service = service;
-        _translationService = translationService;
     }
 
     [HttpGet("{applicationId}")]
-    public async Task<ApplicationDto> GetApplicationAsync([FromRoute]Guid applicationId)
+    public async Task<ApplicationDto> GetApplicationAsync([FromRoute] Guid applicationId)
     {
         await AssertUserHasAccessToApplication(applicationId);
         return await _service.GetApplication<ApplicationDto>(applicationId).ConfigureAwait(false);
@@ -61,9 +57,6 @@ public class ApplicationsController : BaseController, IApplicationsController
     public async Task<Result> UpdateApplicationAsync([FromRoute] Guid applicationId, [FromBody] ApplicationInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var result = await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
-      
-
-        return result;
+        return await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);
     }
 }

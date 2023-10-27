@@ -20,7 +20,8 @@ public class ApplicationUsersController : BaseController, IApplicationUsersContr
 {
     private readonly IApplicationUserService _applicationUserService;
 
-    public ApplicationUsersController(IServiceProvider serviceProvider, IApplicationUserService applicationUserService) : base(serviceProvider)
+    public ApplicationUsersController(IServiceProvider serviceProvider, IApplicationUserService applicationUserService)
+        : base(serviceProvider)
     {
         _applicationUserService = applicationUserService;
     }
@@ -28,6 +29,7 @@ public class ApplicationUsersController : BaseController, IApplicationUsersContr
     [HttpPost]
     public async Task<Result> InviteUserAsync([FromRoute] Guid applicationId, [FromBody] CreateApplicationUser input)
     {
+        await AssertUserHasAccessToApplication(applicationId);
         return await _applicationUserService.InviteUserAsync(applicationId, input).ConfigureAwait(false);
     }
 }
