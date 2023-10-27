@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
@@ -41,6 +42,11 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         PhraseFilters filters) where T : PhraseDto
     {
         return this.PaginateAsync<Phrase, T>(x => x.ApplicationId == applicationId, filters.GetExpression(), paging);
+    }
+
+    public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseDto
+    {
+        return Phrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId).ProjectTo<T>(ProjectionMapping).FirstAsync();
     }
 
     public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)

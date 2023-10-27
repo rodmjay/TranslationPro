@@ -30,6 +30,13 @@ public class PhrasesController : BaseController, IPhrasesController
         _transactionService = transactionService;
     }
 
+    [HttpGet("{phraseId:int}")]
+    public async Task<PhraseDto> GetPhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+        return await _phraseService.GetPhraseAsync<PhraseDto>(applicationId, phraseId);
+    }
+
     [HttpPost("bulk")]
     public async Task<Result> BulkUploadAsync([FromRoute] Guid applicationId,
         [FromBody] List<string> input)

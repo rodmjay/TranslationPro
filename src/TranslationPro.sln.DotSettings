@@ -3,4 +3,5 @@
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=780AB4B582015A4296AAFB0EE4F055CC/RelativePath/@EntryValue">..\resharper.DotSettings</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=780AB4B582015A4296AAFB0EE4F055CC/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File780AB4B582015A4296AAFB0EE4F055CC/@KeyIndexDefined">True</s:Boolean>
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File780AB4B582015A4296AAFB0EE4F055CC/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File780AB4B582015A4296AAFB0EE4F055CC/RelativePriority/@EntryValue">1</s:Double>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=casa/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

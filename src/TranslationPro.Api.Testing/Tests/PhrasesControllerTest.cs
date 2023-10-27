@@ -4,10 +4,13 @@
 
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;
 
@@ -22,17 +25,25 @@ public class PhrasesControllerTest : BaseApiTest
     [TestFixture]
     public class TheCreatePhraseMethod : BaseApiTest
     {
-        [Test]
-        public async Task CanCreatePhrase()
+        [TestCaseSource(typeof(PhraseTestCases), nameof(PhraseTestCases.PhrasesWithTranslations))]
+        public async Task CanCreatePhraseWithTranslations(PhraseInput input, Dictionary<string, string> translations)
         {
-            var input = new PhraseInput()
-            {
-                Text = "hello"
-            };
 
             var result = await CreatePhraseAsync(ApplicationId, input);
 
             Assert.IsTrue(result.Succeeded);
+
+            var phrase = await GetPhraseAsync(ApplicationId, int.Parse(result.Id.ToString()));
+
+            foreach (var kvp in translations)
+            {
+                var foundTranslation = phrase.Translations.FirstOrDefault(x => x.LanguageId == kvp.Key);
+                Assert.IsNotNull(foundTranslation);
+
+                Assert.AreEqual(kvp.Value, foundTranslation.Text);
+            }
+
+            Assert.IsNotNull(phrase);
         }
     }
 

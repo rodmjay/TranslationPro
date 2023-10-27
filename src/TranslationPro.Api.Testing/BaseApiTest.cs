@@ -123,6 +123,11 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
 
     #region Phrases
 
+    public Task<PhraseDto> GetPhraseAsync(Guid applicationId, int phraseId)
+    {
+        return DoGet<PhraseDto>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
+    }
+
     public Task<Result> BulkUploadAsync(Guid applicationId, List<string> input)
     {
         return DoPost<List<string>, Result>($"{ApplicationUrl}/{applicationId}/phrases/bulk", input);

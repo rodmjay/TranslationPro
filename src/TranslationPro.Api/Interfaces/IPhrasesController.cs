@@ -15,6 +15,9 @@ namespace TranslationPro.Api.Interfaces;
 
 public interface IPhrasesController
 {
+
+    Task<PhraseDto> GetPhraseAsync(Guid applicationId, int phraseId);
+
     Task<Result> BulkUploadAsync(Guid applicationId,
         [FromBody] List<string> input);
 

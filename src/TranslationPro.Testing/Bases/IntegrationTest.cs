@@ -114,6 +114,7 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
         Assert.True(response.IsSuccessStatusCode);
 
         var result = response.Content.DeserializeObject<TOutput>();
+
         return result;
     }
 
