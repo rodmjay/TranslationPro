@@ -60,7 +60,7 @@ public class ApplicationsControllerTest : BaseApiTest
             var updateResult = await UpdateApplicationAsync(Guid.Parse(result.Id.ToString()), input);
             Assert.IsTrue(updateResult.Succeeded);
 
-            var application = await GetApplication(Guid.Parse(updateResult.Id.ToString()));
+            var application = await GetApplicationAsync(Guid.Parse(updateResult.Id.ToString()));
 
             Assert.IsNotNull(application);
 
@@ -89,7 +89,7 @@ public class ApplicationsControllerTest : BaseApiTest
         public async Task CanGetApplication()
         {
             var id = Guid.Parse(ApplicationResult.Id.ToString());
-            var result = await GetApplication(id);
+            var result = await GetApplicationAsync(id);
 
             Assert.IsNotNull(result);
 

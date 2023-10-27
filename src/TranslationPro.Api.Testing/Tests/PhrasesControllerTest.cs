@@ -4,10 +4,7 @@
 
 #endregion
 
-using System;
 using System.Threading.Tasks;
-using EllipticCurve;
-using FluentValidation.Internal;
 using NUnit.Framework;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Phrases.Models;
@@ -33,7 +30,7 @@ public class PhrasesControllerTest : BaseApiTest
                 Text = "hello"
             };
 
-            var result = await CreatePhrase(ApplicationId, input);
+            var result = await CreatePhraseAsync(ApplicationId, input);
 
             Assert.IsTrue(result.Succeeded);
         }
@@ -49,11 +46,11 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await CreatePhrase(ApplicationId, input);
+            var createResult = await CreatePhraseAsync(ApplicationId, input);
 
             input.Text = "goodbye";
 
-            var updateResult = await UpdatePhrase(ApplicationId, int.Parse(createResult.Id.ToString()), input);
+            var updateResult = await UpdatePhraseAsync(ApplicationId, int.Parse(createResult.Id.ToString()), input);
 
             Assert.IsTrue(updateResult.Succeeded);
         }
@@ -69,9 +66,9 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await CreatePhrase(ApplicationId, input);
+            var createResult = await CreatePhraseAsync(ApplicationId, input);
 
-            var phrases = await GetPhrases(ApplicationId, new PagingQuery(), new PhraseFilters());
+            var phrases = await GetPhrasesAsync(ApplicationId, new PagingQuery(), new PhraseFilters());
 
             Assert.AreEqual(1, phrases.Items.Count);
 
@@ -88,9 +85,9 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await CreatePhrase(ApplicationId, input);
+            var createResult = await CreatePhraseAsync(ApplicationId, input);
 
-            var phrases = await GetPhrasesForApplicationAndLanguage(ApplicationId, "en");
+            var phrases = await GetPhrasesForApplicationAndLanguageAsync(ApplicationId, "en");
 
             Assert.AreEqual(1, phrases.Count);
         }
@@ -106,9 +103,9 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await CreatePhrase(ApplicationId, input);
+            var createResult = await CreatePhraseAsync(ApplicationId, input);
 
-            var deleteResult = await DeletePhrase(ApplicationId, int.Parse(createResult.Id.ToString()));
+            var deleteResult = await DeletePhraseAsync(ApplicationId, int.Parse(createResult.Id.ToString()));
 
             Assert.IsTrue(deleteResult.Succeeded);
         }

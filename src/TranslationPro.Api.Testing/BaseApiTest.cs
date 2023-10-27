@@ -55,7 +55,7 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
 
     protected string LanguageUrl = "/v1.0/languages";
 
-    public async Task<List<LanguageDto>> GetLanguages()
+    public async Task<List<LanguageDto>> GetLanguagesAsync()
     {
         var response = await ApiClient.GetAsync(LanguageUrl);
 
@@ -73,7 +73,7 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return CreateApplicationAsync(ApplicationTestCases.CreateApplication);
     }
 
-    public Task<ApplicationDto> GetApplication(Guid applicationId)
+    public Task<ApplicationDto> GetApplicationAsync(Guid applicationId)
     {
         return DoGet<ApplicationDto>($"{ApplicationUrl}/{applicationId}");
     }
@@ -101,12 +101,12 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
     #endregion
 
     #region Application Languages
-    public Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input)
+    public Task<Result> AddLanguageToApplicationAsync(Guid applicationId, ApplicationLanguageInput input)
     {
         return DoPost<ApplicationLanguageInput, Result>($"{ApplicationUrl}/{applicationId}/languages", input);
     }
 
-    public Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
+    public Task<Result> RemoveLanguageFromApplicationAsync(Guid applicationId, string languageId)
     {
         return DoDelete<Result>($"{ApplicationUrl}/{applicationId}/languages/{languageId}");
     }
@@ -114,7 +114,7 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
     #endregion
 
     #region Application Users
-    public Task<Result> InviteUser(Guid applicationId, CreateApplicationUser input)
+    public Task<Result> InviteUserAsync(Guid applicationId, CreateApplicationUser input)
     {
         return DoPost<CreateApplicationUser, Result>($"{ApplicationUrl}/{applicationId}/users", input);
     }
@@ -123,33 +123,33 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
 
     #region Phrases
 
-    public Task<Result> BulkUpload(Guid applicationId, List<string> input)
+    public Task<Result> BulkUploadAsync(Guid applicationId, List<string> input)
     {
         return DoPost<List<string>, Result>($"{ApplicationUrl}/{applicationId}/phrases/bulk", input);
     }
 
-    public Task<Result> CreatePhrase(Guid applicationId, PhraseInput input)
+    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseInput input)
     {
         return DoPost<PhraseInput, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
-    public Task<Result> UpdatePhrase(Guid applicationId, int phraseId, PhraseInput input)
+    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseInput input)
     {
         return DoPut<PhraseInput, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
-    public Task<PagedList<PhraseDto>> GetPhrases(Guid applicationId, PagingQuery paging, PhraseFilters filters)
+    public Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
     {
         return DoGet<PagedList<PhraseDto>>($"{ApplicationUrl}/{applicationId}/phrases");
     }
 
-    public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguage(Guid applicationId, string language)
+    public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId, string language)
     {
         return DoGet<Dictionary<int, string>>($"{ApplicationUrl}/{applicationId}/phrases/{language}");
 
     }
 
-    public Task<Result> DeletePhrase(Guid applicationId, int phraseId)
+    public Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)
     {
         return DoDelete<Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
@@ -159,7 +159,7 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
     #region Translations
     public Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input)
     {
-        return DoPost<TranslationInput, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        return DoPut<TranslationInput, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
 
     }
 

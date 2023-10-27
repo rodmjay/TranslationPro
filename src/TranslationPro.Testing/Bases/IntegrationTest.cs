@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using TranslationPro.Base.Common.Data.Contexts;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Testing.Extensions;
 using TranslationPro.Testing.Services;
 
@@ -35,7 +34,7 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
     {
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
         InitializeIdentityServerProxy();
-        InitializeAPI();
+        InitializeApi();
     }
 
     protected IServiceProvider ServiceProvider { get; private set; }
@@ -71,7 +70,7 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
         _identityServerWebHostProxy = new IdentityServerWebHostProxy(webHostBuilder);
     }
 
-    private void InitializeAPI()
+    private void InitializeApi()
     {
         var apiWebHostBuilder = WebHost.CreateDefaultBuilder()
             .ConfigureAppConfiguration(CustomWebHostBuilderExtensions.Configure<TFixture>)

@@ -15,20 +15,20 @@ namespace TranslationPro.Api.Interfaces;
 
 public interface IPhrasesController
 {
-    Task<Result> BulkUpload(Guid applicationId,
+    Task<Result> BulkUploadAsync(Guid applicationId,
         [FromBody] List<string> input);
 
-    Task<Result> CreatePhrase(Guid applicationId,
+    Task<Result> CreatePhraseAsync(Guid applicationId,
         [FromBody] PhraseInput input);
 
-    Task<Result> UpdatePhrase(Guid applicationId, int phraseId,
+    Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId,
         [FromBody] PhraseInput input);
 
-    Task<PagedList<PhraseDto>> GetPhrases(Guid applicationId, PagingQuery paging,
+    Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
         [FromQuery] PhraseFilters filters);
 
-    Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguage(Guid applicationId,
+    Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId,
         string language);
 
-    Task<Result> DeletePhrase(Guid applicationId, int phraseId);
+    Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
 }

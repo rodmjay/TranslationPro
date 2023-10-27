@@ -12,5 +12,5 @@ namespace TranslationPro.Api.Interfaces;
 
 public interface ILanguagesController
 {
-    Task<List<LanguageDto>> GetLanguages();
+    Task<List<LanguageDto>> GetLanguagesAsync();
 }

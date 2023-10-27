@@ -26,7 +26,7 @@ public class LanguagesController : BaseController, ILanguagesController
     }
 
     [HttpGet]
-    public async Task<List<LanguageDto>> GetLanguages()
+    public async Task<List<LanguageDto>> GetLanguagesAsync()
     {
         return await _languageService.GetLanguagesAsync<LanguageDto>().ConfigureAwait(false);
     }

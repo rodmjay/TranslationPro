@@ -29,7 +29,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
     }
 
     [HttpPost]
-    public async Task<Result> AddLanguageToApplication([FromRoute] Guid applicationId,
+    public async Task<Result> AddLanguageToApplicationAsync([FromRoute] Guid applicationId,
         [FromBody] ApplicationLanguageInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
@@ -40,7 +40,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
     }
 
     [HttpDelete("{languageId}")]
-    public async Task<Result> RemoveLanguageFromApplication([FromRoute] Guid applicationId,
+    public async Task<Result> RemoveLanguageFromApplicationAsync([FromRoute] Guid applicationId,
         [FromRoute] string languageId)
     {
         await AssertUserHasAccessToApplication(applicationId);

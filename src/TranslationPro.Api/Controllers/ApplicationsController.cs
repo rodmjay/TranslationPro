@@ -30,7 +30,7 @@ public class ApplicationsController : BaseController, IApplicationsController
     }
 
     [HttpGet("{applicationId}")]
-    public async Task<ApplicationDto> GetApplication([FromRoute]Guid applicationId)
+    public async Task<ApplicationDto> GetApplicationAsync([FromRoute]Guid applicationId)
     {
         await AssertUserHasAccessToApplication(applicationId);
         return await _service.GetApplication<ApplicationDto>(applicationId).ConfigureAwait(false);

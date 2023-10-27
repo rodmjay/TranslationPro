@@ -7,7 +7,6 @@
 using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TranslationPro.Base.Applications.Entities;
 
 namespace TranslationPro.Api.Testing.Tests;
 

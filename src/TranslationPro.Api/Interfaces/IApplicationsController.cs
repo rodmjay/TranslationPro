@@ -15,7 +15,7 @@ namespace TranslationPro.Api.Interfaces;
 
 public interface IApplicationsController
 {
-    Task<ApplicationDto> GetApplication(Guid applicationId);
+    Task<ApplicationDto> GetApplicationAsync(Guid applicationId);
     Task<List<ApplicationDto>> GetApplicationsAsync();
     Task<Result> CreateApplicationAsync(CreateApplicationInput input);
     Task<Result> DeleteApplicationAsync(Guid applicationId);

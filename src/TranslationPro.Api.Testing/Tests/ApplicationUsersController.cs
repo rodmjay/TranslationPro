@@ -4,7 +4,6 @@
 
 #endregion
 
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Base.ApplicationUsers.Models;
@@ -27,7 +26,7 @@ public class ApplicationUsersController : BaseApiTest
                 Email = "test@test.com"
             };
 
-            var result = await InviteUser(ApplicationId, invitation);
+            var result = await InviteUserAsync(ApplicationId, invitation);
 
             Assert.IsTrue(result.Succeeded);
         }

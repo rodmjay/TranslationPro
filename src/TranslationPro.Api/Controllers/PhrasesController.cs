@@ -31,7 +31,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpPost("bulk")]
-    public async Task<Result> BulkUpload([FromRoute] Guid applicationId,
+    public async Task<Result> BulkUploadAsync([FromRoute] Guid applicationId,
         [FromBody] List<string> input)
     {
         await AssertUserHasAccessToApplication(applicationId);
@@ -44,7 +44,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpPost]
-    public async Task<Result> CreatePhrase([FromRoute] Guid applicationId,
+    public async Task<Result> CreatePhraseAsync([FromRoute] Guid applicationId,
         [FromBody] PhraseInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
@@ -57,7 +57,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpPut("{phraseId}")]
-    public async Task<Result> UpdatePhrase([FromRoute] Guid applicationId, [FromRoute] int phraseId,
+    public async Task<Result> UpdatePhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId,
         [FromBody] PhraseInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);
@@ -70,7 +70,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet]
-    public async Task<PagedList<PhraseDto>> GetPhrases([FromRoute] Guid applicationId, [FromQuery] PagingQuery paging,
+    public async Task<PagedList<PhraseDto>> GetPhrasesAsync([FromRoute] Guid applicationId, [FromQuery] PagingQuery paging,
         [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
@@ -80,7 +80,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet("{language}")]
-    public async Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguage([FromRoute] Guid applicationId,
+    public async Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync([FromRoute] Guid applicationId,
         [FromRoute] string language)
     {
         await AssertUserHasAccessToApplication(applicationId);
@@ -89,7 +89,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpDelete("{phraseId}")]
-    public async Task<Result> DeletePhrase([FromRoute] Guid applicationId, [FromRoute] int phraseId)
+    public async Task<Result> DeletePhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
 

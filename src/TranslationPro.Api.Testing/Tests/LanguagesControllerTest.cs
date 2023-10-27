@@ -4,7 +4,6 @@
 
 #endregion
 
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -19,7 +18,7 @@ public class LanguagesControllerTest : BaseApiTest
         [Test]
         public async Task CanGetLanguages()
         {
-            var languages = await GetLanguages();
+            var languages = await GetLanguagesAsync();
 
             Assert.AreEqual(26, languages.Count);
         }
