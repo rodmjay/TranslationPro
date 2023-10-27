@@ -4,7 +4,10 @@
 
 #endregion
 
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using TranslationPro.Base.ApplicationUsers.Models;
 
 namespace TranslationPro.Api.Testing.Tests;
 
@@ -14,5 +17,19 @@ public class ApplicationUsersController : BaseApiTest
     [TestFixture]
     public class TheInviteUserMethod : BaseApiTest
     {
+        [Test]
+        public async Task CanInviteUser()
+        {
+            var invitation = new CreateApplicationUser()
+            {
+                FirstName = "test",
+                LastName = "test",
+                Email = "test@test.com"
+            };
+
+            var result = await InviteUser(ApplicationId, invitation);
+
+            Assert.IsTrue(result.Succeeded);
+        }
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Phrases.Interfaces;
@@ -17,7 +18,7 @@ using TranslationPro.Base.Translations.Interfaces;
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/phrases")]
-public class PhrasesController : BaseController
+public class PhrasesController : BaseController, IPhrasesController
 {
     private readonly IPhraseService _phraseService;
     private readonly ITranslationService _transactionService;
@@ -43,7 +44,7 @@ public class PhrasesController : BaseController
     }
 
     [HttpPost]
-    public async Task<Result> CreatePhrase([FromRoute] Guid applicationId, [FromRoute] int translationId,
+    public async Task<Result> CreatePhrase([FromRoute] Guid applicationId,
         [FromBody] PhraseInput input)
     {
         await AssertUserHasAccessToApplication(applicationId);

@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Translations.Interfaces;
@@ -15,7 +16,7 @@ using TranslationPro.Base.Translations.Models;
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/phrases/{phraseId}/translations")]
-public class TranslationsController : BaseController
+public class TranslationsController : BaseController, ITranslationsController
 {
     private readonly ITranslationService _translationService;
 

@@ -64,10 +64,10 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
             return Result.Failed();
         }
 
-        public async Task<Result> RemoveLanguageFromApplication(Guid applicationId, ApplicationLanguageInput input)
+        public async Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
         {
             var applicationLanguage = await ApplicationLanguages
-                .Where(x => x.ApplicationId == applicationId && x.LanguageId == input.Language)
+                .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
                 .FirstAsync();
 
             applicationLanguage.ObjectState = ObjectState.Deleted;

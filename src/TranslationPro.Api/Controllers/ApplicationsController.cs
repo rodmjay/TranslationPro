@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -16,7 +17,7 @@ using TranslationPro.Base.Translations.Interfaces;
 
 namespace TranslationPro.Api.Controllers;
 
-public class ApplicationsController : BaseController
+public class ApplicationsController : BaseController, IApplicationsController
 {
     private readonly IApplicationService _service;
     private readonly ITranslationService _translationService;

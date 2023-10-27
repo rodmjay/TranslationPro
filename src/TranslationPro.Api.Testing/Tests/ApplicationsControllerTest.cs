@@ -9,7 +9,6 @@ using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Base.Applications.Models;
-using TranslationPro.Testing.Extensions;
 using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;
@@ -23,11 +22,9 @@ public class ApplicationsControllerTest : BaseApiTest
         [TestCaseSource(typeof(ApplicationTestCases), nameof(ApplicationTestCases.CreateModels))]
         public async Task RunTestCases(CreateApplicationInput input, HttpStatusCode code)
         {
-            var content = input.SerializeToUTF8Json();
+            var response = await CreateApplicationAsync(input);
 
-            var response = await ApiClient.PostAsync(ApplicationUrl, content);
-
-            Assert.AreEqual(response.StatusCode, code);
+            Assert.IsTrue(response.Succeeded);
         }
     }
 
@@ -37,13 +34,13 @@ public class ApplicationsControllerTest : BaseApiTest
         [Test]
         public async Task CanDeleteApplication()
         {
-            var applications = await GetApplications();
+            var applications = await GetApplicationsAsync();
 
             Assert.AreEqual(1, applications.Count);
-            var deleteApplicationMethod = await DeleteApplication(Guid.Parse(ApplicationResult.Id.ToString()));
+            var deleteApplicationMethod = await DeleteApplicationAsync(Guid.Parse(ApplicationResult.Id.ToString()));
             Assert.IsTrue(deleteApplicationMethod.Succeeded);
 
-            applications = await GetApplications();
+            applications = await GetApplicationsAsync();
 
             Assert.AreEqual(0, applications.Count);
         }
@@ -59,8 +56,8 @@ public class ApplicationsControllerTest : BaseApiTest
             {
                 Name = "Updated"
             };
-            var result = await CreateApplication();
-            var updateResult = await UpdateApplication(Guid.Parse(result.Id.ToString()), input);
+            var result = await CreateDefaultApplication();
+            var updateResult = await UpdateApplicationAsync(Guid.Parse(result.Id.ToString()), input);
             Assert.IsTrue(updateResult.Succeeded);
 
             var application = await GetApplication(Guid.Parse(updateResult.Id.ToString()));
@@ -77,7 +74,7 @@ public class ApplicationsControllerTest : BaseApiTest
         [Test]
         public async Task CanGetApplications()
         {
-            var result = await GetApplications();
+            var result = await GetApplicationsAsync();
 
             Assert.IsNotNull(result);
 

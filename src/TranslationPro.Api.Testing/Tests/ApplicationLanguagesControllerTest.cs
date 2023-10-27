@@ -4,7 +4,10 @@
 
 #endregion
 
+using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using TranslationPro.Base.Applications.Entities;
 
 namespace TranslationPro.Api.Testing.Tests;
 
@@ -14,10 +17,22 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
     [TestFixture]
     public class TheAddLanguageToApplicationMethod : BaseApiTest
     {
+        [Test]
+        public async Task CanAddLanguageToApplication()
+        {
+            var applicationId = Guid.Parse(ApplicationResult.Id.ToString());
+
+
+        }
     }
 
     [TestFixture]
     public class TheRemoveLanguageFromApplicationMethod : BaseApiTest
     {
+        [Test]
+        public async Task CanRemoveLanguageFromApplication()
+        {
+
+        }
     }
 }

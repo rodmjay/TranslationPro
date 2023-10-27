@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
 using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -16,7 +17,7 @@ using TranslationPro.Base.Translations.Interfaces;
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/languages")]
-public class ApplicationLanguagesController : BaseController
+public class ApplicationLanguagesController : BaseController, IApplicationLanguagesController
 {
     private readonly IApplicationLanguageService _applicationLanguageService;
     private readonly ITranslationService _translationService;
@@ -38,13 +39,13 @@ public class ApplicationLanguagesController : BaseController
         return result;
     }
 
-    [HttpDelete]
+    [HttpDelete("{languageId}")]
     public async Task<Result> RemoveLanguageFromApplication([FromRoute] Guid applicationId,
-        [FromBody] ApplicationLanguageInput input)
+        [FromRoute] string languageId)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _applicationLanguageService.RemoveLanguageFromApplication(applicationId, input);
+        var result = await _applicationLanguageService.RemoveLanguageFromApplication(applicationId, languageId);
 
         return result;
     }

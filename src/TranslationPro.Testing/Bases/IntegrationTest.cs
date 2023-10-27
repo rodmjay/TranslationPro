@@ -17,7 +17,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 using TranslationPro.Base.Common.Data.Contexts;
+using TranslationPro.Base.Common.Models;
 using TranslationPro.Testing.Extensions;
 using TranslationPro.Testing.Services;
 
@@ -95,6 +97,44 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
                 "openid");
 
         return tokenResponse.AccessToken;
+    }
+
+    protected async Task<TOutput> DoPost<TInput, TOutput>(string url, TInput input)
+    {
+        var content = input.SerializeToUTF8Json();
+        var response = await ApiClient.PostAsync(url, content);
+        Assert.True(response.IsSuccessStatusCode);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
+    }
+
+    protected async Task<TOutput> DoGet<TOutput>(string url)
+    {
+        var response = await ApiClient.GetAsync(url);
+        Assert.True(response.IsSuccessStatusCode);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
+    }
+
+    protected async Task<TOutput> DoPut<TInput, TOutput>(string url, TInput input)
+    {
+        var content = input.SerializeToUTF8Json();
+        var response = await ApiClient.PutAsync(url, content);
+        Assert.True(response.IsSuccessStatusCode);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
+    }
+
+    protected async Task<TOutput> DoDelete<TOutput>(string url)
+    {
+        var response = await ApiClient.DeleteAsync(url);
+        Assert.True(response.IsSuccessStatusCode);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
     }
 
     protected async Task ResetDatabase()

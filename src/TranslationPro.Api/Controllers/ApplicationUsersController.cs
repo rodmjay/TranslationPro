@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
 using TranslationPro.Base.ApplicationUsers.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -15,7 +16,7 @@ using TranslationPro.Base.Common.Models;
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/users")]
-public class ApplicationUsersController : BaseController
+public class ApplicationUsersController : BaseController, IApplicationUsersController
 {
     private readonly IApplicationUserService _applicationUserService;
 
