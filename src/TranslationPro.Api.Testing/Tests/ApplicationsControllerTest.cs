@@ -57,13 +57,30 @@ namespace TranslationPro.Api.Testing.Tests
         [TestFixture]
         public class TheGetApplicationsAsyncMethod : ApplicationsControllerTest
         {
+            [Test]
+            public async Task CanGetApplications()
+            {
+                var result = await GetApplications();
 
+                Assert.IsNotNull(result);
+
+                Assert.AreEqual(1, result.Count);
+            }
         }
 
         [TestFixture]
         public class TheGetApplicationAsyncMethod : ApplicationsControllerTest
         {
+            [Test]
+            public async Task CanGetApplication()
+            {
+                var id = Guid.Parse(ApplicationResult.Id.ToString());
+                var result = await GetApplication(id);
 
+                Assert.IsNotNull(result);
+
+                Assert.AreEqual("Test", result.Name);
+            }
         }
     }
 }

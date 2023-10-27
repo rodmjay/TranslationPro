@@ -8,6 +8,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using NUnit.Framework;
@@ -64,6 +65,20 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>
         var inputContent = input.SerializeToUTF8Json();
         var updateResponse = await ApiClient.PutAsync($"{ApplicationUrl}/{applicationId}", inputContent);
         return updateResponse.Content.DeserializeObject<Result>();
+    }
+
+    protected async Task<List<ApplicationDto>> GetApplications()
+    {
+        var response = await ApiClient.GetAsync(ApplicationUrl);
+
+        return response.Content.DeserializeObject<List<ApplicationDto>>();
+    }
+
+    protected async Task<ApplicationDto> GetApplication(Guid applicationId)
+    {
+        var response = await ApiClient.GetAsync($"{ApplicationUrl}/{applicationId}");
+
+        return response.Content.DeserializeObject<ApplicationDto>();
     }
 
     #endregion
