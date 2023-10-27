@@ -7,9 +7,11 @@
 
 #endregion
 
+using System;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using NUnit.Framework;
+using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Models;
 using TranslationPro.Testing.Bases;
 using TranslationPro.Testing.Extensions;
@@ -49,6 +51,19 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>
 
         var result = response.Content.DeserializeObject<Result>();
         return result;
+    }
+
+    protected async Task<Result> DeleteApplication(Guid applicationId)
+    {
+        var updateResponse = await ApiClient.DeleteAsync($"{ApplicationUrl}/{applicationId}");
+        return updateResponse.Content.DeserializeObject<Result>();
+    }
+
+    protected async Task<Result> UpdateApplication(Guid applicationId, ApplicationInput input)
+    {
+        var inputContent = input.SerializeToUTF8Json();
+        var updateResponse = await ApiClient.PutAsync($"{ApplicationUrl}/{applicationId}", inputContent);
+        return updateResponse.Content.DeserializeObject<Result>();
     }
 
     #endregion
