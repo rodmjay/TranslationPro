@@ -117,7 +117,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
     public async Task<Result> DeleteApplicationAsync(Guid applicationId)
     {
-        var succeeded = await Repository.DeleteAsync(x => x.Id == applicationId);
+        var succeeded = await Repository.DeleteAsync(x => x.Id == applicationId, true);
         return succeeded ? Result.Success() : Result.Failed();
     }
 }

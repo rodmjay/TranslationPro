@@ -1,9 +1,6 @@
-﻿#region Header
+﻿#region Header Info
 
-// /*
-// Copyright (c) 2022 Rational Alliance. All rights reserved.
-// Author: Rod Johnson, Architect, Solution Stream
-// */
+// Copyright 2023 Rod Johnson.  All rights reserved
 
 #endregion
 
@@ -20,7 +17,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Testing.Extensions;
 using TranslationPro.Testing.Services;
@@ -55,8 +51,8 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
             {
                 new(_clientConfiguration.Secret.Sha256())
             },
-            AllowedScopes = new[] { "api1", "profile", "openid" },
-            AllowedGrantTypes = new[] { GrantType.ClientCredentials, GrantType.ResourceOwnerPassword },
+            AllowedScopes = new[] {"api1", "profile", "openid"},
+            AllowedGrantTypes = new[] {GrantType.ClientCredentials, GrantType.ResourceOwnerPassword},
             AccessTokenType = AccessTokenType.Jwt,
             AccessTokenLifetime = 7200,
             AllowOfflineAccess = true
@@ -113,5 +109,4 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
         await using var context = new ApplicationContext(_context);
         await context.Database.EnsureDeletedAsync();
     }
-    
 }

@@ -1,9 +1,6 @@
-﻿#region Header
+﻿#region Header Info
 
-// /*
-// Copyright (c) 2022 Rational Alliance. All rights reserved.
-// Author: Rod Johnson, Architect, Solution Stream
-// */
+// Copyright 2023 Rod Johnson.  All rights reserved
 
 #endregion
 

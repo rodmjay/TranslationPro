@@ -1,9 +1,6 @@
-﻿#region Header
+﻿#region Header Info
 
-// /*
-// Copyright (c) 2022 Rational Alliance. All rights reserved.
-// Author: Rod Johnson, Architect, Solution Stream
-// */
+// Copyright 2023 Rod Johnson.  All rights reserved
 
 #endregion
 
@@ -44,6 +41,7 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>
     #region Applications
 
     protected string ApplicationUrl = "/v1.0/applications";
+
     protected async Task<Result> CreateApplication()
     {
         var content = ApplicationTestCases.CreateApplication.SerializeToUTF8Json();

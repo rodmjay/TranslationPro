@@ -10,7 +10,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
 	</ItemGroup>
-		<ItemGroup>
+	<ItemGroup>
 		<None Remove="appsettings.json" />
 	</ItemGroup>
 
@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\TranslationPro.Api\TranslationPro.Api.csproj" />
-	  <ProjectReference Include="..\TranslationPro.Testing\TranslationPro.Testing.csproj" />
+		<ProjectReference Include="..\TranslationPro.Api\TranslationPro.Api.csproj" />
+		<ProjectReference Include="..\TranslationPro.Testing\TranslationPro.Testing.csproj" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,10 @@
-﻿using NUnit.Framework;
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+using NUnit.Framework;
 
 namespace TranslationPro.Api.Testing.Tests;
 
@@ -8,6 +14,5 @@ public class ApplicationUsersController : BaseApiTest
     [TestFixture]
     public class TheInviteUserMethod : BaseApiTest
     {
-
     }
 }
