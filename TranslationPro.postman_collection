@@ -1,0 +1,612 @@
+{
+	"info": {
+		"_postman_id": "a64e53cb-2220-4d99-aadb-c466d00d97f5",
+		"name": "Translation Pro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "713547",
+		"_collection_link": "https://lively-crescent-51503.postman.co/workspace/TranslationPro~b9b68e0c-bfab-4c08-a218-e4951e0c314f/collection/713547-a64e53cb-2220-4d99-aadb-c466d00d97f5?action=share&source=collection_link&creator=713547"
+	},
+	"item": [
+		{
+			"name": "Identity",
+			"item": [
+				{
+					"name": "Get Identity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/identity",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"identity"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Languages",
+			"item": [
+				{
+					"name": "Get Languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/languages",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"languages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applications",
+			"item": [
+				{
+					"name": "Get Application",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"application_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Body contains id\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test\",\r\n    \"languages\":[\r\n        \"en\",\r\n        \"es\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomCompanyName}}\",\r\n    \"languages\":[\r\n        \"es\",\"fr\",\"de\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Phrases",
+			"item": [
+				{
+					"name": "Get Phrases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Language File (spanish)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/es",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"es"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Language File (Dutch)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/nl",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"nl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Language File (german)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/de",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"de"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Language File (english)'",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/en",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"en"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Phrase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"phrase_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Body contains id\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"{{$randomBsNoun}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Phrase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"phrase_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Body contains id\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Help2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/{{phrase_id}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"{{phrase_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Phrase",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/{{phrase_id}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"{{phrase_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Translations",
+			"item": [
+				{
+					"name": "Save Translation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Hola\",\r\n    \"languageId\": \"es\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/phrases/{{phrase_id}}/translations",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"phrases",
+								"{{phrase_id}}",
+								"translations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application Languages",
+			"item": [
+				{
+					"name": "Add Application Language (es)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"language\": \"es\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/languages",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"languages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application Users",
+			"item": [
+				{
+					"name": "Invite User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"test@test.com\",\r\n  \"firstName\":\"test\",\r\n  \"lastName\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1.0/applications/{{application_id}}/users",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.0",
+								"applications",
+								"{{application_id}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"access_token\", jsonData.access_token);\r",
+							"\r",
+							"pm.test(\"Body contains access_token\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_secret",
+							"value": "secret",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid api1 profile",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "admin@admin.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "ASDFasdf!",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "postman",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{identityUrl}}/connect/token",
+					"host": [
+						"{{identityUrl}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
