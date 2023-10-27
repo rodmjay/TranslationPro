@@ -11,6 +11,7 @@ using IdentityModel.Client;
 using NUnit.Framework;
 using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Models;
+using TranslationPro.Base.Languages.Models;
 using TranslationPro.Testing.Bases;
 using TranslationPro.Testing.Extensions;
 using TranslationPro.Testing.TestCases;
@@ -37,6 +38,19 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>
     {
         await DeleteDatabase();
     }
+
+    #region Languages
+
+    protected string LanguageUrl = "/v1.0/languages";
+
+    protected async Task<List<LanguageDto>> GetLanguages()
+    {
+        var response = await ApiClient.GetAsync(LanguageUrl);
+
+        return response.Content.DeserializeObject<List<LanguageDto>>();
+    }
+
+    #endregion
 
     #region Applications
 
