@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Base.Applications.Models;
+using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;
@@ -37,11 +38,23 @@ public class ApplicationsControllerTest : BaseApiTest
             var applications = await GetApplicationsAsync();
 
             Assert.AreEqual(1, applications.Count);
-            var deleteApplicationMethod = await DeleteApplicationAsync(Guid.Parse(ApplicationResult.Id.ToString()));
-            Assert.IsTrue(deleteApplicationMethod.Succeeded);
+
+            var createPhraseResult = await CreatePhraseAsync(ApplicationId, new PhraseInput()
+            {
+                Text = "hello world"
+            });
+
+            var application = await GetApplicationAsync(ApplicationId);
+
+            Assert.AreEqual(1, application.PhraseCount);
+
+            var deleteResult = await DeleteApplicationAsync(Guid.Parse(ApplicationResult.Id.ToString()));
+            Assert.IsTrue(deleteResult.Succeeded);
+
+           
 
             applications = await GetApplicationsAsync();
-
+            
             Assert.AreEqual(0, applications.Count);
         }
     }

@@ -52,8 +52,8 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
             {
                 new(_clientConfiguration.Secret.Sha256())
             },
-            AllowedScopes = new[] {"api1", "profile", "openid"},
-            AllowedGrantTypes = new[] {GrantType.ClientCredentials, GrantType.ResourceOwnerPassword},
+            AllowedScopes = new[] { "api1", "profile", "openid" },
+            AllowedGrantTypes = new[] { GrantType.ClientCredentials, GrantType.ResourceOwnerPassword },
             AccessTokenType = AccessTokenType.Jwt,
             AccessTokenLifetime = 7200,
             AllowOfflineAccess = true

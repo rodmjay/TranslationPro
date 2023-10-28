@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -80,6 +81,7 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet("{language}")]
+    [AllowAnonymous]
     public async Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync([FromRoute] Guid applicationId,
         [FromRoute] string language)
     {

@@ -35,13 +35,12 @@ public class Translation : BaseEntity<Translation>, ITranslation
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Phrase)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => new {x.ApplicationId, x.PhraseId})
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(x => new {x.ApplicationId, x.PhraseId});
 
         builder.HasOne(x => x.Application)
             .WithMany(x => x.Translations)
             .HasForeignKey(x => x.ApplicationId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.ApplicationLanguage)
             .WithMany(x => x.Translations)
