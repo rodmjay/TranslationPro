@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="bootstrap.sass" Version="4.3.1" />
+		<PackageReference Include="bootstrap.sass" Version="5.3.2" />
 	</ItemGroup>
 
 	<ItemGroup>

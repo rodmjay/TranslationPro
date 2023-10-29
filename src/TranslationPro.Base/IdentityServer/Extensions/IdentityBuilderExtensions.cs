@@ -109,7 +109,6 @@ public static class IdentityBuilderExtensions
         {
             app.UseDeveloperExceptionPage();
             app.UseMigrationsEndPoint();
-            app.UseBrowserLink();
         }
         else
         {
