@@ -7,9 +7,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Validation;
 using IdentityModel;
-using IdentityServer4.Models;
-using IdentityServer4.Validation;
 
 namespace TranslationPro.Testing.Services;
 

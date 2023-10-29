@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.ApplicationUsers.Models;

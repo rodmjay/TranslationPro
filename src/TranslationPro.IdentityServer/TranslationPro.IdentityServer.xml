@@ -4,7 +4,7 @@
         <name>TranslationPro.IdentityServer</name>
     </assembly>
     <members>
-        <member name="M:TranslationPro.IdentityServer.Extensions.Extensions.IsNativeClient(IdentityServer4.Models.AuthorizationRequest)">
+        <member name="M:TranslationPro.IdentityServer.Extensions.Extensions.IsNativeClient(Duende.IdentityServer.Models.AuthorizationRequest)">
             <summary>
                 Checks if the redirect URI is for a native client.
             </summary>

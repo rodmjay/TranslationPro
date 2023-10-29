@@ -8,10 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using IdentityServer4.Contrib.AspNetCore.Testing.Builder;
-using IdentityServer4.Contrib.AspNetCore.Testing.Configuration;
-using IdentityServer4.Contrib.AspNetCore.Testing.Services;
-using IdentityServer4.Models;
+using alsami.Duende.IdentityServer.AspNetCore.Testing.Builder;
+using alsami.Duende.IdentityServer.AspNetCore.Testing.Configuration;
+using alsami.Duende.IdentityServer.AspNetCore.Testing.Services;
+using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -65,7 +65,7 @@ public abstract class IntegrationTest<TFixture, TStartup> where TStartup : class
             .AddIdentityResources(new IdentityResources.OpenId(), new IdentityResources.Profile())
             .UseResourceOwnerPasswordValidator(typeof(SimpleResourceOwnerPasswordValidator))
             .UseProfileService(typeof(SimpleProfileService))
-            .CreateWebHostBuider();
+            .CreateWebHostBuilder();
 
         _identityServerWebHostProxy = new IdentityServerWebHostProxy(webHostBuilder);
     }

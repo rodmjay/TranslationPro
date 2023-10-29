@@ -6,8 +6,8 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
-using IdentityServer4.Services;
-using IdentityServer4.Validation;
+using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

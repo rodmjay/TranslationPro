@@ -4,17 +4,16 @@
 
 #endregion
 
-using IdentityServer4.EntityFramework.Entities;
-using IdentityServer4.EntityFramework.Extensions;
-using IdentityServer4.EntityFramework.Interfaces;
-using IdentityServer4.EntityFramework.Options;
+using Duende.IdentityServer.EntityFramework.Entities;
+using Duende.IdentityServer.EntityFramework.Extensions;
+using Duende.IdentityServer.EntityFramework.Interfaces;
+using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Seeding.Extensions;
 using TranslationPro.Base.Users.Entities;
-
 namespace TranslationPro.Base.Common.Data.Contexts;
 
 public class ApplicationContext : BaseContext<ApplicationContext>, IConfigurationDbContext, IPersistedGrantDbContext
@@ -43,10 +42,13 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
     public DbSet<ApiResource> ApiResources { get; set; }
 
     public DbSet<ApiScope> ApiScopes { get; set; }
+    public DbSet<IdentityProvider> IdentityProviders { get; set; }
 
     public DbSet<PersistedGrant> PersistedGrants { get; set; }
 
     public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+    public DbSet<Key> Keys { get; set; }
+    public DbSet<ServerSideSession> ServerSideSessions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

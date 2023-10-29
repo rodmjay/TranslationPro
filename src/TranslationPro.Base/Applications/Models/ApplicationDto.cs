@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.Applications.Interfaces;
-using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.ApplicationUsers.Models;
 
 namespace TranslationPro.Base.Applications.Models;

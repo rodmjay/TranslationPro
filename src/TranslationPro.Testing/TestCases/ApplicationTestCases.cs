@@ -5,7 +5,6 @@
 #endregion
 
 using System.Net;
-using Microsoft.Extensions.ObjectPool;
 using TranslationPro.Base.Applications.Models;
 
 namespace TranslationPro.Testing.TestCases;
