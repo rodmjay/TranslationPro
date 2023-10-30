@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +73,11 @@ namespace TranslationPro.Base.ApplicationUsers.Services
                 return Result.Success();
 
             return Result.Failed();
+        }
+
+        public Task<List<T>> GetUsersForApplication<T>(Guid applicationId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

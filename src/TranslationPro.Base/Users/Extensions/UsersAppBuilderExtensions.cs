@@ -84,11 +84,16 @@ public static class UsersAppBuilderExtensions
 
         builder.Services.TryAddScoped<RoleManager<Role>, RoleManager>();
         builder.Services.TryAddScoped<RoleManager>();
+        
+        builder.Services.TryAddScoped<SignInManager>();
 
         builder.Services.TryAddTransient<IUserValidator<User>, DuplicateEmailValidator>();
         builder.Services.TryAddTransient<IUserValidator<User>, DuplicateUserNameValidator>();
 
         builder.Services.TryAddScoped<IUserAccessor, UserAccessor>();
+
+        builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ApplicationContext>();
 
         return builder;
     }

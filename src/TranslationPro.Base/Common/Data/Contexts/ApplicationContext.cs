@@ -20,6 +20,8 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
 {
     private readonly ILoggerFactory _loggerFactory;
 
+    private static string IdentityServerSchema = "IdentityServer";
+
     public ApplicationContext(
         DbContextOptions<ApplicationContext> options, ILoggerFactory loggerFactory) :
         base(options)
@@ -61,33 +63,37 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
 
         var configurationOptions = new ConfigurationStoreOptions
         {
-            Client = new TableConfiguration(nameof(Client), "IdentityServer"),
-            ApiResource = new TableConfiguration(nameof(ApiResource), "IdentityServer"),
-            ApiResourceClaim = new TableConfiguration(nameof(ApiResourceClaim), "IdentityServer"),
-            ApiResourceProperty = new TableConfiguration(nameof(ApiResourceProperty), "IdentityServer"),
-            ApiResourceScope = new TableConfiguration(nameof(ApiResourceScope), "IdentityServer"),
-            ApiResourceSecret = new TableConfiguration(nameof(ApiResourceSecret), "IdentityServer"),
-            ApiScope = new TableConfiguration(nameof(ApiScope), "IdentityServer"),
-            ApiScopeClaim = new TableConfiguration(nameof(ApiScopeClaim), "IdentityServer"),
-            ApiScopeProperty = new TableConfiguration(nameof(ApiScopeProperty), "IdentityServer"),
-            IdentityResource = new TableConfiguration(nameof(IdentityResource), "IdentityServer"),
-            ClientClaim = new TableConfiguration(nameof(ClientClaim), "IdentityServer"),
-            ClientCorsOrigin = new TableConfiguration(nameof(ClientCorsOrigin), "IdentityServer"),
-            ClientGrantType = new TableConfiguration(nameof(ClientGrantType), "IdentityServer"),
-            ClientIdPRestriction = new TableConfiguration(nameof(ClientIdPRestriction), "IdentityServer"),
+            Client = new TableConfiguration(nameof(Client), IdentityServerSchema),
+            ApiResource = new TableConfiguration(nameof(ApiResource), IdentityServerSchema),
+            ApiResourceClaim = new TableConfiguration(nameof(ApiResourceClaim), IdentityServerSchema),
+            ApiResourceProperty = new TableConfiguration(nameof(ApiResourceProperty), IdentityServerSchema),
+            ApiResourceScope = new TableConfiguration(nameof(ApiResourceScope), IdentityServerSchema),
+            ApiResourceSecret = new TableConfiguration(nameof(ApiResourceSecret), IdentityServerSchema),
+            ApiScope = new TableConfiguration(nameof(ApiScope), IdentityServerSchema),
+            ApiScopeClaim = new TableConfiguration(nameof(ApiScopeClaim), IdentityServerSchema),
+            ApiScopeProperty = new TableConfiguration(nameof(ApiScopeProperty), IdentityServerSchema),
+            IdentityResource = new TableConfiguration(nameof(IdentityResource), IdentityServerSchema),
+            ClientClaim = new TableConfiguration(nameof(ClientClaim), IdentityServerSchema),
+            ClientCorsOrigin = new TableConfiguration(nameof(ClientCorsOrigin), IdentityServerSchema),
+            ClientGrantType = new TableConfiguration(nameof(ClientGrantType), IdentityServerSchema),
+            ClientIdPRestriction = new TableConfiguration(nameof(ClientIdPRestriction), IdentityServerSchema),
             ClientPostLogoutRedirectUri =
-                new TableConfiguration(nameof(ClientPostLogoutRedirectUri), "IdentityServer"),
-            ClientProperty = new TableConfiguration(nameof(ClientProperty), "IdentityServer"),
-            ClientRedirectUri = new TableConfiguration(nameof(ClientRedirectUri), "IdentityServer"),
-            ClientScopes = new TableConfiguration("ClientScopes", "IdentityServer"),
-            ClientSecret = new TableConfiguration(nameof(ClientSecret), "IdentityServer"),
-            IdentityResourceClaim = new TableConfiguration(nameof(IdentityResourceClaim), "IdentityServer"),
-            IdentityResourceProperty = new TableConfiguration(nameof(IdentityResourceProperty), "IdentityServer")
+                new TableConfiguration(nameof(ClientPostLogoutRedirectUri), IdentityServerSchema),
+            ClientProperty = new TableConfiguration(nameof(ClientProperty), IdentityServerSchema),
+            ClientRedirectUri = new TableConfiguration(nameof(ClientRedirectUri), IdentityServerSchema),
+            ClientScopes = new TableConfiguration(nameof(ClientScope), IdentityServerSchema),
+            ClientSecret = new TableConfiguration(nameof(ClientSecret), IdentityServerSchema),
+            IdentityResourceClaim = new TableConfiguration(nameof(IdentityResourceClaim), IdentityServerSchema),
+            IdentityResourceProperty = new TableConfiguration(nameof(IdentityResourceProperty), IdentityServerSchema),
+            IdentityProvider = new TableConfiguration(nameof(IdentityProvider), IdentityServerSchema)
+
         };
         var operationalStoreOptions = new OperationalStoreOptions
         {
-            DeviceFlowCodes = new TableConfiguration(nameof(DeviceFlowCodes), "IdentityServer"),
-            PersistedGrants = new TableConfiguration(nameof(PersistedGrants), "IdentityServer")
+            DeviceFlowCodes = new TableConfiguration(nameof(DeviceFlowCodes), IdentityServerSchema),
+            PersistedGrants = new TableConfiguration(nameof(PersistedGrant), IdentityServerSchema),
+            ServerSideSessions = new TableConfiguration(nameof(ServerSideSession), IdentityServerSchema),
+            Keys = new TableConfiguration(nameof(Key), IdentityServerSchema)
         };
 
         builder.ConfigureClientContext(configurationOptions);

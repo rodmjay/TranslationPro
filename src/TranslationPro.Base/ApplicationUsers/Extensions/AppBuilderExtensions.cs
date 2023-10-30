@@ -17,7 +17,7 @@ public static class AppBuilderExtensions
     public static AppBuilder AddApplicationUserDependencies(this AppBuilder builder)
     {
         builder.Services.TryAddTransient<ApplicationUserErrorDescriber>();
-        builder.Services.TryAddScoped<IApplicationUserService, ApplicationUserService>();
+        builder.Services.TryAddScoped<IApplicationUserService, ApplicationUserService>();   
         return builder;
     }
 }

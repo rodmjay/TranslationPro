@@ -1,0 +1,42 @@
+﻿@page "/languages"
+@using TranslationPro.Web.Data
+@using TranslationPro.Base.Languages.Interfaces
+@using TranslationPro.Base.Languages.Models
+@inject ILanguageService LanguageService
+
+<PageTitle>Languages</PageTitle>
+
+<h1>Languages</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (languages == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+       
+        <tbody>
+            @foreach (var language in languages)
+            {
+                <tr>
+                    <td>@language.Name</td>
+                    <td>
+                        <button class="btn btn-primary">Add To Application</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<LanguageDto>? languages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        languages = await LanguageService.GetLanguagesAsync<LanguageDto>();
+    }
+}
