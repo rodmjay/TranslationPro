@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Languages\Shared\" />
+    <Folder Include="Areas\Application\Shared\" />
   </ItemGroup>
 
 </Project>

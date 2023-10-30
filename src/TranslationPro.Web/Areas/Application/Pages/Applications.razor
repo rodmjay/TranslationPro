@@ -1,0 +1,50 @@
+﻿@page "/applications"
+@inherits AuthenticatedPage
+
+
+<h3>Applications</h3>
+
+
+
+@if (_applications == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Languages</th>
+                <th>Phrases</th>
+                <th>Translations</th>
+                <th>Pending Translations</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var application in _applications)
+        {
+            <tr>
+                <td>
+                    <NavLink href="@($"/application/{application.Id}/users")">@application.Name</NavLink>
+                    
+                </td>
+                    <td>@application.SupportedLanguages.Count</td>
+                <td>
+                        <NavLink href="@($"/application/{application.Id}/phrases")">@application.PhraseCount</NavLink>
+                    
+                    
+                </td>
+                    <td>@application.TranslationCount</td>
+                    <td>@application.PendingTranslationCount</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+}

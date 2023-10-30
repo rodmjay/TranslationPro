@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>TranslationPro.Web</PageTitle>
+<PageTitle>TranslationPro</PageTitle>
 
 <div class="page">
     <div class="sidebar">
@@ -12,6 +12,26 @@
             <LoginDisplay />
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
+        <AuthorizeView>
+            
+            <div class="container border-1">
+                This is authorized content
+                
+                Choose Application 
+                @if (_applications != null)
+                {
+                    <select class="form-control" onchange="@Click()">
+                        @foreach (var application in _applications)
+                        {
+                            <option>@application.Name</option>
+                        }
+                    </select>
+                }
+
+               
+            </div>
+        </AuthorizeView>
+        
 
         <article class="content px-4">
             @Body

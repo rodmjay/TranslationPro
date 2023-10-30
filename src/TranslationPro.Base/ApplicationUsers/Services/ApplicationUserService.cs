@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.ApplicationUsers.Enums;
@@ -77,7 +78,9 @@ namespace TranslationPro.Base.ApplicationUsers.Services
 
         public Task<List<T>> GetUsersForApplication<T>(Guid applicationId)
         {
-            throw new NotImplementedException();
+            return ApplicationUsers.Where(x => x.ApplicationId == applicationId).ProjectTo<T>(ProjectionMapping)
+                .ToListAsync();
+
         }
     }
 }

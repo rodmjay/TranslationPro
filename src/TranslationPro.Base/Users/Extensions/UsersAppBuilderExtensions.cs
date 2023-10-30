@@ -92,8 +92,6 @@ public static class UsersAppBuilderExtensions
 
         builder.Services.TryAddScoped<IUserAccessor, UserAccessor>();
 
-        builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-            .AddEntityFrameworkStores<ApplicationContext>();
 
         return builder;
     }

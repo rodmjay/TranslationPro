@@ -1,0 +1,33 @@
+﻿@page "/application/{applicationId:guid}/phrases"
+@inherits AuthenticatedPage
+<PageTitle>Languages</PageTitle>
+
+<h1>Phrases</h1>
+
+@if (_phrases == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (_phrases.TotalItems == 0)
+    {
+        <p>There are no phrases</p>
+    }
+    else
+    {
+        <table class="table">
+       
+            <tbody>
+            @foreach (var phrase in _phrases.Items)
+            {
+                <tr>
+                    <td>@phrase.Text</td>
+                   
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
+}
