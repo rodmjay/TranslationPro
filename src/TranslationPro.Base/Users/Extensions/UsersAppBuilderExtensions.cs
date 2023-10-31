@@ -56,7 +56,7 @@ public static class UsersAppBuilderExtensions
             .AddClaimsPrincipalFactory<UserRoleClaimsPrincipalFactory>()
             .AddRoleManager<RoleManager>()
             .AddUserManager<UserManager>()
-            .AddSignInManager<SignInManager>();
+            .AddSignInManager<SignInManager<User>>();
 
         builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
             opt.TokenLifespan = TimeSpan.FromHours(24));
@@ -84,7 +84,8 @@ public static class UsersAppBuilderExtensions
 
         builder.Services.TryAddScoped<RoleManager<Role>, RoleManager>();
         builder.Services.TryAddScoped<RoleManager>();
-        
+
+        builder.Services.TryAddScoped<SignInManager<User>, SignInManager>();
         builder.Services.TryAddScoped<SignInManager>();
 
         builder.Services.TryAddTransient<IUserValidator<User>, DuplicateEmailValidator>();
