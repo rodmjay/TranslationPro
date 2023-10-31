@@ -1,0 +1,59 @@
+﻿@page "/applications/{applicationId:guid}"
+@inherits AuthenticatedPage
+
+
+
+
+
+@if (_application == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Application: @_application.Name</h3>
+
+
+    <table class="table">
+       
+        <tbody>
+        <tr>
+            <th>
+                Languages:
+            </th>
+            <td>
+                Languages:
+                <ul>
+                    @foreach (var lang in _application.SupportedLanguages)
+                    {
+                        <li>@lang</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Users:
+            </th>
+            <td>
+                <NavLink href="@($"/application/{_application.Id}/users")">@_application.Users.Count</NavLink>
+
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Phrases:
+            </th>
+            <td>
+                <NavLink href="@($"/application/{_application.Id}/phrases")">@_application.PhraseCount</NavLink>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+}

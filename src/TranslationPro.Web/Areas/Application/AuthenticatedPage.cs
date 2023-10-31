@@ -15,14 +15,14 @@ namespace TranslationPro.Web.Areas.Application
         public AuthenticationStateProvider? StateProvider { get; set; }
 
         [CascadingParameter]
-        public IUser CurrentUser { get; set; }
+        public IUser? CurrentUser { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var authState = await StateProvider
+            var authState = await StateProvider!
                 .GetAuthenticationStateAsync();
             
-            CurrentUser = await UserManager.GetUserAsync(authState.User);
+            CurrentUser = await UserManager!.GetUserAsync(authState.User);
         }
     }
 }

@@ -1,0 +1,41 @@
+﻿@page "/application/{applicationId:guid}/phrases/{phraseId:int}/translations"
+@inherits AuthenticatedPage
+<PageTitle>Languages</PageTitle>
+
+<h1>Phrases</h1>
+
+@if (_phrase == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (_phrase.TranslationCount == 0)
+    {
+        <p>There are no translations</p>
+    }
+    else
+    {
+        <p>
+            Phrase: @_phrase.Text
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Language</th>
+                    <th>Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var translation in _phrase.Translations)
+                {
+                    <tr>
+                        <td>@translation.LanguageName</td>
+                        <td>@translation.Text</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+}
