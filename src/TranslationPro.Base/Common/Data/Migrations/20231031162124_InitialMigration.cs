@@ -1,10 +1,16 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TranslationPro.Base.Common.Data.Migrations
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace TranslationPro.Base.Common.data.migrations
 {
+    /// <inheritdoc />
     public partial class InitialMigration : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -23,6 +29,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     AllowedAccessTokenSigningAlgorithms = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    RequireResourceIndicator = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -46,11 +53,27 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Required = table.Column<bool>(type: "bit", nullable: false),
                     Emphasize = table.Column<bool>(type: "bit", nullable: false),
-                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false)
+                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApiScope", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Application",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Application", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,6 +98,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     AllowPlainTextPkce = table.Column<bool>(type: "bit", nullable: false),
                     RequireRequestObject = table.Column<bool>(type: "bit", nullable: false),
                     AllowAccessTokensViaBrowser = table.Column<bool>(type: "bit", nullable: false),
+                    RequireDPoP = table.Column<bool>(type: "bit", nullable: false),
+                    DPoPValidationMode = table.Column<int>(type: "int", nullable: false),
+                    DPoPClockSkew = table.Column<TimeSpan>(type: "time", nullable: false),
                     FrontChannelLogoutUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     FrontChannelLogoutSessionRequired = table.Column<bool>(type: "bit", nullable: false),
                     BackChannelLogoutUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
@@ -96,12 +122,16 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     AlwaysSendClientClaims = table.Column<bool>(type: "bit", nullable: false),
                     ClientClaimsPrefix = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     PairWiseSubjectSalt = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    InitiateLoginUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     UserSsoLifetime = table.Column<int>(type: "int", nullable: true),
                     UserCodeType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DeviceCodeLifetime = table.Column<int>(type: "int", nullable: false),
+                    CibaLifetime = table.Column<int>(type: "int", nullable: true),
+                    PollingInterval = table.Column<int>(type: "int", nullable: true),
+                    CoordinateLifetimeWithUserSession = table.Column<bool>(type: "bit", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     NonEditable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -130,6 +160,27 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IdentityProviders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Scheme = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Enabled = table.Column<bool>(type: "bit", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityProviders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityResource",
                 schema: "IdentityServer",
                 columns: table => new
@@ -153,6 +204,25 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Key",
+                schema: "IdentityServer",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Version = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Use = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Algorithm = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    IsX509Certificate = table.Column<bool>(type: "bit", nullable: false),
+                    DataProtected = table.Column<bool>(type: "bit", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Key", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Language",
                 columns: table => new
                 {
@@ -169,7 +239,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Key = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     SessionId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -182,7 +254,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                    table.PrimaryKey("PK_PersistedGrants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,6 +270,28 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServerSideSession",
+                schema: "IdentityServer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Key = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Scheme = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SubjectId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SessionId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Renewed = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Expires = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServerSideSession", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -368,6 +462,25 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Phrase",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Phrase", x => new { x.ApplicationId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Phrase_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ClientClaim",
                 schema: "IdentityServer",
                 columns: table => new
@@ -463,7 +576,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PostLogoutRedirectUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    PostLogoutRedirectUri = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -508,7 +621,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RedirectUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    RedirectUri = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -524,7 +637,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClientScopes",
+                name: "ClientScope",
                 schema: "IdentityServer",
                 columns: table => new
                 {
@@ -535,9 +648,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClientScopes", x => x.Id);
+                    table.PrimaryKey("PK_ClientScope", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClientScopes_Client_ClientId",
+                        name: "FK_ClientScope_Client_ClientId",
                         column: x => x.ClientId,
                         principalSchema: "IdentityServer",
                         principalTable: "Client",
@@ -617,6 +730,30 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ApplicationLanguage",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationLanguage", x => new { x.ApplicationId, x.LanguageId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationLanguage_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationLanguage_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Language",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleClaim",
                 columns: table => new
                 {
@@ -638,19 +775,26 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Application",
+                name: "ApplicationUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ApiKey = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    InvitationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    InvitationReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Application", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationUser", x => new { x.ApplicationId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_Application_User_UserId",
+                        name: "FK_ApplicationUser_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUser_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -743,49 +887,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationLanguage",
-                columns: table => new
-                {
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationLanguage", x => new { x.ApplicationId, x.LanguageId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationLanguage_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalTable: "Application",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationLanguage_Language_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Language",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phrase",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phrase", x => new { x.ApplicationId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_Phrase_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalTable: "Application",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Translation",
                 columns: table => new
                 {
@@ -801,16 +902,21 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     table.PrimaryKey("PK_Translation", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Translation_ApplicationLanguage_ApplicationId_LanguageId",
+                        columns: x => new { x.ApplicationId, x.LanguageId },
+                        principalTable: "ApplicationLanguage",
+                        principalColumns: new[] { "ApplicationId", "LanguageId" });
+                    table.ForeignKey(
                         name: "FK_Translation_Application_ApplicationId",
                         column: x => x.ApplicationId,
                         principalTable: "Application",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Translation_Language_LanguageId",
                         column: x => x.LanguageId,
                         principalTable: "Language",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Translation_Phrase_ApplicationId_PhraseId",
                         columns: x => new { x.ApplicationId, x.PhraseId },
@@ -820,12 +926,64 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                schema: "IdentityServer",
+                table: "ApiScope",
+                columns: new[] { "Id", "Created", "Description", "DisplayName", "Emphasize", "Enabled", "LastAccessed", "Name", "NonEditable", "Required", "ShowInDiscoveryDocument", "Updated" },
+                values: new object[] { 1, new DateTime(2023, 10, 31, 16, 21, 24, 685, DateTimeKind.Utc).AddTicks(5065), null, "My API", false, true, null, "api1", false, false, true, null });
+
+            migrationBuilder.InsertData(
+                schema: "IdentityServer",
+                table: "Client",
+                columns: new[] { "Id", "AbsoluteRefreshTokenLifetime", "AccessTokenLifetime", "AccessTokenType", "AllowAccessTokensViaBrowser", "AllowOfflineAccess", "AllowPlainTextPkce", "AllowRememberConsent", "AllowedIdentityTokenSigningAlgorithms", "AlwaysIncludeUserClaimsInIdToken", "AlwaysSendClientClaims", "AuthorizationCodeLifetime", "BackChannelLogoutSessionRequired", "BackChannelLogoutUri", "CibaLifetime", "ClientClaimsPrefix", "ClientId", "ClientName", "ClientUri", "ConsentLifetime", "CoordinateLifetimeWithUserSession", "Created", "DPoPClockSkew", "DPoPValidationMode", "Description", "DeviceCodeLifetime", "EnableLocalLogin", "Enabled", "FrontChannelLogoutSessionRequired", "FrontChannelLogoutUri", "IdentityTokenLifetime", "IncludeJwtId", "InitiateLoginUri", "LastAccessed", "LogoUri", "NonEditable", "PairWiseSubjectSalt", "PollingInterval", "ProtocolType", "RefreshTokenExpiration", "RefreshTokenUsage", "RequireClientSecret", "RequireConsent", "RequireDPoP", "RequirePkce", "RequireRequestObject", "SlidingRefreshTokenLifetime", "UpdateAccessTokenClaimsOnRefresh", "Updated", "UserCodeType", "UserSsoLifetime" },
+                values: new object[,]
+                {
+                    { 1, 2592000, 400000, 0, false, false, false, true, null, true, true, 300, true, null, null, "", "postman", null, null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 532, DateTimeKind.Unspecified).AddTicks(8105), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, true, false, false, true, false, 1296000, false, null, null, null },
+                    { 2, 2592000, 3600, 0, false, false, false, true, null, true, true, 300, true, null, null, "client_", "client", null, null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 642, DateTimeKind.Unspecified).AddTicks(7421), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, true, false, false, true, false, 1296000, false, null, null, null },
+                    { 3, 2592000, 3600, 0, false, false, false, true, null, true, true, 300, true, null, null, "client_", "mvc", null, null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 645, DateTimeKind.Unspecified).AddTicks(5968), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, true, false, false, true, false, 1296000, false, null, null, null },
+                    { 4, 2592000, 3600, 0, false, false, false, true, null, true, false, 300, true, null, null, "client_", "js", "JavaScript Client", null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 653, DateTimeKind.Unspecified).AddTicks(7956), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, false, false, false, true, false, 1296000, false, null, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "IdentityServer",
+                table: "IdentityResource",
+                columns: new[] { "Id", "Created", "Description", "DisplayName", "Emphasize", "Enabled", "Name", "NonEditable", "Required", "ShowInDiscoveryDocument", "Updated" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 9, 17, 3, 58, 20, 206, DateTimeKind.Unspecified).AddTicks(3232), "Your user profile information (first name, last name, etc.)", "User profile", true, true, "profile", false, false, true, null },
+                    { 2, new DateTime(2021, 9, 17, 3, 58, 20, 185, DateTimeKind.Unspecified).AddTicks(7082), null, "Your user identifier", false, true, "openid", false, true, true, null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Language",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
+                    { "ar", "Arabic" },
+                    { "cs", "Czech" },
+                    { "da", "Danish" },
+                    { "de", "German" },
+                    { "el", "Greek" },
                     { "en", "English" },
-                    { "es", "Spanish;Castilian" }
+                    { "es", "Spanish" },
+                    { "fi", "Finnish" },
+                    { "fr", "French" },
+                    { "hi", "Hindi" },
+                    { "hu", "Hungarian" },
+                    { "it", "Italian" },
+                    { "iw", "Hebrew" },
+                    { "ja", "Japanese" },
+                    { "ko", "Korean" },
+                    { "nl", "Dutch" },
+                    { "no", "Norwegian" },
+                    { "pl", "Polish" },
+                    { "pt", "Portugese" },
+                    { "ru", "Russian" },
+                    { "sv", "Swedish" },
+                    { "th", "Thai" },
+                    { "tr", "Turkish" },
+                    { "vi", "Vietnamese" },
+                    { "zh-CN", "Chinese (Simplified)" },
+                    { "zh-TW", "Chinese (Traditional)" }
                 });
 
             migrationBuilder.InsertData(
@@ -840,44 +998,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CurrentApplication", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "20f1b6e7-64b7-4658-9f5a-ca9b73da374e", null, "admin@admin.com", true, "Rod", "Johnson", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEIVVeEi6VZ2YB3JUwyExMUFOL9E6rS4Px8AHXK0osa6ncEsGkS0mFtBesBmGurNFuA==", "123-123-1234", false, "", false, "admin@admin.com" });
-
-            migrationBuilder.InsertData(
-                schema: "IdentityServer",
-                table: "ApiScope",
-                columns: new[] { "Id", "Description", "DisplayName", "Emphasize", "Enabled", "Name", "Required", "ShowInDiscoveryDocument" },
-                values: new object[] { 1, null, "My API", false, true, "api1", false, true });
-
-            migrationBuilder.InsertData(
-                schema: "IdentityServer",
-                table: "Client",
-                columns: new[] { "Id", "AbsoluteRefreshTokenLifetime", "AccessTokenLifetime", "AccessTokenType", "AllowAccessTokensViaBrowser", "AllowOfflineAccess", "AllowPlainTextPkce", "AllowRememberConsent", "AllowedIdentityTokenSigningAlgorithms", "AlwaysIncludeUserClaimsInIdToken", "AlwaysSendClientClaims", "AuthorizationCodeLifetime", "BackChannelLogoutSessionRequired", "BackChannelLogoutUri", "ClientClaimsPrefix", "ClientId", "ClientName", "ClientUri", "ConsentLifetime", "Created", "Description", "DeviceCodeLifetime", "EnableLocalLogin", "Enabled", "FrontChannelLogoutSessionRequired", "FrontChannelLogoutUri", "IdentityTokenLifetime", "IncludeJwtId", "LastAccessed", "LogoUri", "NonEditable", "PairWiseSubjectSalt", "ProtocolType", "RefreshTokenExpiration", "RefreshTokenUsage", "RequireClientSecret", "RequireConsent", "RequirePkce", "RequireRequestObject", "SlidingRefreshTokenLifetime", "UpdateAccessTokenClaimsOnRefresh", "Updated", "UserCodeType", "UserSsoLifetime" },
-                values: new object[,]
-                {
-                    { 1, 2592000, 400000, 0, false, false, false, true, null, true, true, 300, true, null, "", "postman", null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 532, DateTimeKind.Unspecified).AddTicks(8105), null, 300, true, true, true, null, 300, true, null, null, false, null, "oidc", 1, 1, true, false, true, false, 1296000, false, null, null, null },
-                    { 2, 2592000, 3600, 0, false, false, false, true, null, true, true, 300, true, null, "client_", "client", null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 642, DateTimeKind.Unspecified).AddTicks(7421), null, 300, true, true, true, null, 300, true, null, null, false, null, "oidc", 1, 1, true, false, true, false, 1296000, false, null, null, null },
-                    { 3, 2592000, 3600, 0, false, false, false, true, null, true, true, 300, true, null, "client_", "mvc", null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 645, DateTimeKind.Unspecified).AddTicks(5968), null, 300, true, true, true, null, 300, true, null, null, false, null, "oidc", 1, 1, true, false, true, false, 1296000, false, null, null, null },
-                    { 4, 2592000, 3600, 0, false, false, false, true, null, true, false, 300, true, null, "client_", "js", "JavaScript Client", null, null, new DateTime(2021, 9, 18, 13, 12, 13, 653, DateTimeKind.Unspecified).AddTicks(7956), null, 300, true, true, true, null, 300, true, null, null, false, null, "oidc", 1, 1, false, false, true, false, 1296000, false, null, null, null }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "IdentityServer",
-                table: "IdentityResource",
-                columns: new[] { "Id", "Created", "Description", "DisplayName", "Emphasize", "Enabled", "Name", "NonEditable", "Required", "ShowInDiscoveryDocument", "Updated" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2021, 9, 17, 3, 58, 20, 206, DateTimeKind.Unspecified).AddTicks(3232), "Your user profile information (first name, last name, etc.)", "User profile", true, true, "profile", false, false, true, null },
-                    { 2, new DateTime(2021, 9, 17, 3, 58, 20, 185, DateTimeKind.Unspecified).AddTicks(7082), null, "Your user identifier", false, true, "openid", false, true, true, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "UserRole",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[,]
-                {
-                    { 2, 1 },
-                    { 1, 1 }
-                });
+                values: new object[] { 1, 0, "4a1f1ee5-0ce2-4b5d-88be-4373574ef024", null, "admin@admin.com", true, "Rod", "Johnson", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEKWd/iQx36LYevmQZ7567wkLZT31FgSYJiEiNwdMi9oYappMoiWnbGCOZOsbO5325g==", "123-123-1234", false, "GHCMP3XRBQUGXXFNLNP4UCVZAHL73RZ6", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 schema: "IdentityServer",
@@ -891,10 +1012,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "Id", "ClientId", "GrantType" },
                 values: new object[,]
                 {
-                    { 2, 4, "authorization_code" },
-                    { 4, 3, "authorization_code" },
                     { 1, 1, "password" },
-                    { 3, 2, "client_credentials" }
+                    { 2, 4, "authorization_code" },
+                    { 3, 2, "client_credentials" },
+                    { 4, 3, "authorization_code" }
                 });
 
             migrationBuilder.InsertData(
@@ -919,20 +1040,20 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
             migrationBuilder.InsertData(
                 schema: "IdentityServer",
-                table: "ClientScopes",
+                table: "ClientScope",
                 columns: new[] { "Id", "ClientId", "Scope" },
                 values: new object[,]
                 {
+                    { 1, 3, "openid" },
                     { 2, 2, "api1" },
-                    { 9, 4, "api1" },
-                    { 8, 4, "profile" },
+                    { 3, 3, "api1" },
                     { 4, 1, "api1" },
                     { 5, 1, "profile" },
+                    { 6, 1, "openid" },
                     { 7, 4, "openid" },
-                    { 10, 3, "profile" },
-                    { 3, 3, "api1" },
-                    { 1, 3, "openid" },
-                    { 6, 1, "openid" }
+                    { 8, 4, "profile" },
+                    { 9, 4, "api1" },
+                    { 10, 3, "profile" }
                 });
 
             migrationBuilder.InsertData(
@@ -941,9 +1062,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "Id", "ClientId", "Created", "Description", "Expiration", "Type", "Value" },
                 values: new object[,]
                 {
-                    { 3, 3, new DateTime(2021, 9, 17, 13, 19, 6, 568, DateTimeKind.Unspecified).AddTicks(1345), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" },
                     { 1, 1, new DateTime(2021, 9, 17, 13, 19, 6, 414, DateTimeKind.Unspecified).AddTicks(3771), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" },
-                    { 2, 2, new DateTime(2021, 9, 17, 13, 19, 6, 564, DateTimeKind.Unspecified).AddTicks(8731), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" }
+                    { 2, 2, new DateTime(2021, 9, 17, 13, 19, 6, 564, DateTimeKind.Unspecified).AddTicks(8731), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" },
+                    { 3, 3, new DateTime(2021, 9, 17, 13, 19, 6, 568, DateTimeKind.Unspecified).AddTicks(1345), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" }
                 });
 
             migrationBuilder.InsertData(
@@ -952,21 +1073,30 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "Id", "IdentityResourceId", "Type" },
                 values: new object[,]
                 {
-                    { 15, 2, "sub" },
-                    { 14, 1, "updated_at" },
-                    { 13, 1, "locale" },
-                    { 12, 1, "zoneinfo" },
-                    { 11, 1, "birthdate" },
-                    { 10, 1, "gender" },
-                    { 6, 1, "middle_name" },
-                    { 8, 1, "family_name" },
-                    { 7, 1, "given_name" },
-                    { 5, 1, "nickname" },
-                    { 4, 1, "preferred_username" },
-                    { 3, 1, "profile" },
+                    { 1, 1, "website" },
                     { 2, 1, "picture" },
+                    { 3, 1, "profile" },
+                    { 4, 1, "preferred_username" },
+                    { 5, 1, "nickname" },
+                    { 6, 1, "middle_name" },
+                    { 7, 1, "given_name" },
+                    { 8, 1, "family_name" },
                     { 9, 1, "name" },
-                    { 1, 1, "website" }
+                    { 10, 1, "gender" },
+                    { 11, 1, "birthdate" },
+                    { 12, 1, "zoneinfo" },
+                    { 13, 1, "locale" },
+                    { 14, 1, "updated_at" },
+                    { 15, 2, "sub" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -977,22 +1107,25 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceClaim_ApiResourceId",
+                name: "IX_ApiResourceClaim_ApiResourceId_Type",
                 schema: "IdentityServer",
                 table: "ApiResourceClaim",
-                column: "ApiResourceId");
+                columns: new[] { "ApiResourceId", "Type" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceProperty_ApiResourceId",
+                name: "IX_ApiResourceProperty_ApiResourceId_Key",
                 schema: "IdentityServer",
                 table: "ApiResourceProperty",
-                column: "ApiResourceId");
+                columns: new[] { "ApiResourceId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceScope_ApiResourceId",
+                name: "IX_ApiResourceScope_ApiResourceId_Scope",
                 schema: "IdentityServer",
                 table: "ApiResourceScope",
-                column: "ApiResourceId");
+                columns: new[] { "ApiResourceId", "Scope" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiResourceSecret_ApiResourceId",
@@ -1008,26 +1141,28 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeClaim_ScopeId",
+                name: "IX_ApiScopeClaim_ScopeId_Type",
                 schema: "IdentityServer",
                 table: "ApiScopeClaim",
-                column: "ScopeId");
+                columns: new[] { "ScopeId", "Type" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeProperty_ScopeId",
+                name: "IX_ApiScopeProperty_ScopeId_Key",
                 schema: "IdentityServer",
                 table: "ApiScopeProperty",
-                column: "ScopeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Application_UserId",
-                table: "Application",
-                column: "UserId");
+                columns: new[] { "ScopeId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationLanguage_LanguageId",
                 table: "ApplicationLanguage",
                 column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUser_UserId",
+                table: "ApplicationUser",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Client_ClientId",
@@ -1037,52 +1172,60 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientClaim_ClientId",
+                name: "IX_ClientClaim_ClientId_Type_Value",
                 schema: "IdentityServer",
                 table: "ClientClaim",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Type", "Value" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientCorsOrigin_ClientId",
+                name: "IX_ClientCorsOrigin_ClientId_Origin",
                 schema: "IdentityServer",
                 table: "ClientCorsOrigin",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Origin" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientGrantType_ClientId",
+                name: "IX_ClientGrantType_ClientId_GrantType",
                 schema: "IdentityServer",
                 table: "ClientGrantType",
-                column: "ClientId");
+                columns: new[] { "ClientId", "GrantType" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientIdPRestriction_ClientId",
+                name: "IX_ClientIdPRestriction_ClientId_Provider",
                 schema: "IdentityServer",
                 table: "ClientIdPRestriction",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Provider" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientPostLogoutRedirectUri_ClientId",
+                name: "IX_ClientPostLogoutRedirectUri_ClientId_PostLogoutRedirectUri",
                 schema: "IdentityServer",
                 table: "ClientPostLogoutRedirectUri",
-                column: "ClientId");
+                columns: new[] { "ClientId", "PostLogoutRedirectUri" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientProperty_ClientId",
+                name: "IX_ClientProperty_ClientId_Key",
                 schema: "IdentityServer",
                 table: "ClientProperty",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientRedirectUri_ClientId",
+                name: "IX_ClientRedirectUri_ClientId_RedirectUri",
                 schema: "IdentityServer",
                 table: "ClientRedirectUri",
-                column: "ClientId");
+                columns: new[] { "ClientId", "RedirectUri" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientScopes_ClientId",
+                name: "IX_ClientScope_ClientId_Scope",
                 schema: "IdentityServer",
-                table: "ClientScopes",
-                column: "ClientId");
+                table: "ClientScope",
+                columns: new[] { "ClientId", "Scope" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientSecret_ClientId",
@@ -1111,22 +1254,44 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceClaim_IdentityResourceId",
+                name: "IX_IdentityResourceClaim_IdentityResourceId_Type",
                 schema: "IdentityServer",
                 table: "IdentityResourceClaim",
-                column: "IdentityResourceId");
+                columns: new[] { "IdentityResourceId", "Type" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceProperty_IdentityResourceId",
+                name: "IX_IdentityResourceProperty_IdentityResourceId_Key",
                 schema: "IdentityServer",
                 table: "IdentityResourceProperty",
-                column: "IdentityResourceId");
+                columns: new[] { "IdentityResourceId", "Key" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Key_Use",
+                schema: "IdentityServer",
+                table: "Key",
+                column: "Use");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersistedGrants_ConsumedTime",
+                schema: "IdentityServer",
+                table: "PersistedGrants",
+                column: "ConsumedTime");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
                 schema: "IdentityServer",
                 table: "PersistedGrants",
                 column: "Expiration");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersistedGrants_Key",
+                schema: "IdentityServer",
+                table: "PersistedGrants",
+                column: "Key",
+                unique: true,
+                filter: "[Key] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId_ClientId_Type",
@@ -1144,6 +1309,42 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 name: "IX_RoleClaim_RoleId",
                 table: "RoleClaim",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerSideSession_DisplayName",
+                schema: "IdentityServer",
+                table: "ServerSideSession",
+                column: "DisplayName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerSideSession_Expires",
+                schema: "IdentityServer",
+                table: "ServerSideSession",
+                column: "Expires");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerSideSession_Key",
+                schema: "IdentityServer",
+                table: "ServerSideSession",
+                column: "Key",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerSideSession_SessionId",
+                schema: "IdentityServer",
+                table: "ServerSideSession",
+                column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerSideSession_SubjectId",
+                schema: "IdentityServer",
+                table: "ServerSideSession",
+                column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Translation_ApplicationId_LanguageId",
+                table: "Translation",
+                columns: new[] { "ApplicationId", "LanguageId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Translation_ApplicationId_PhraseId",
@@ -1166,6 +1367,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "RoleId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -1193,7 +1395,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "ApplicationLanguage");
+                name: "ApplicationUser");
 
             migrationBuilder.DropTable(
                 name: "ClientClaim",
@@ -1224,7 +1426,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "ClientScopes",
+                name: "ClientScope",
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
@@ -1236,6 +1438,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
+                name: "IdentityProviders");
+
+            migrationBuilder.DropTable(
                 name: "IdentityResourceClaim",
                 schema: "IdentityServer");
 
@@ -1244,11 +1449,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
+                name: "Key",
+                schema: "IdentityServer");
+
+            migrationBuilder.DropTable(
                 name: "PersistedGrants",
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
                 name: "RoleClaim");
+
+            migrationBuilder.DropTable(
+                name: "ServerSideSession",
+                schema: "IdentityServer");
 
             migrationBuilder.DropTable(
                 name: "Translation");
@@ -1282,7 +1495,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "Language");
+                name: "ApplicationLanguage");
 
             migrationBuilder.DropTable(
                 name: "Phrase");
@@ -1291,10 +1504,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "Application");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Language");
+
+            migrationBuilder.DropTable(
+                name: "Application");
         }
     }
 }

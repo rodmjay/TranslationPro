@@ -8,7 +8,7 @@ using TranslationPro.Base.Common.Data.Contexts;
 
 #nullable disable
 
-namespace TranslationPro.Base.Common.Data.Migrations
+namespace TranslationPro.Base.Common.data.migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -247,7 +247,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 10, 30, 21, 22, 52, 759, DateTimeKind.Utc).AddTicks(504),
+                            Created = new DateTime(2023, 10, 31, 16, 21, 24, 685, DateTimeKind.Utc).AddTicks(5065),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -1443,7 +1443,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("SubjectId", "SessionId", "Type");
 
-                    b.ToTable("PersistedGrant", "IdentityServer");
+                    b.ToTable("PersistedGrants", "IdentityServer");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ServerSideSession", b =>
@@ -1884,7 +1884,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "20f1b6e7-64b7-4658-9f5a-ca9b73da374e",
+                            ConcurrencyStamp = "4a1f1ee5-0ce2-4b5d-88be-4373574ef024",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Rod",
@@ -1892,10 +1892,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIVVeEi6VZ2YB3JUwyExMUFOL9E6rS4Px8AHXK0osa6ncEsGkS0mFtBesBmGurNFuA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKWd/iQx36LYevmQZ7567wkLZT31FgSYJiEiNwdMi9oYappMoiWnbGCOZOsbO5325g==",
                             PhoneNumber = "123-123-1234",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
+                            SecurityStamp = "GHCMP3XRBQUGXXFNLNP4UCVZAHL73RZ6",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });

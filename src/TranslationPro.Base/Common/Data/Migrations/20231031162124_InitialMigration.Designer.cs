@@ -7,26 +7,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
-namespace TranslationPro.Base.Common.Data.Migrations
+#nullable disable
+
+namespace TranslationPro.Base.Common.data.migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20231026145049_AddRelationshipTranslationToApplicationLanguage")]
-    partial class AddRelationshipTranslationToApplicationLanguage
+    [Migration("20231031162124_InitialMigration")]
+    partial class InitialMigration
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResource", b =>
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AllowedAccessTokenSigningAlgorithms")
                         .HasMaxLength(100)
@@ -57,6 +62,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<bool>("NonEditable")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("RequireResourceIndicator")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("ShowInDiscoveryDocument")
                         .HasColumnType("bit");
 
@@ -71,12 +79,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("ApiResource", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -88,17 +97,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApiResourceId");
+                    b.HasIndex("ApiResourceId", "Type")
+                        .IsUnique();
 
                     b.ToTable("ApiResourceClaim", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -115,17 +126,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApiResourceId");
+                    b.HasIndex("ApiResourceId", "Key")
+                        .IsUnique();
 
                     b.ToTable("ApiResourceProperty", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceScope", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceScope", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -137,17 +150,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApiResourceId");
+                    b.HasIndex("ApiResourceId", "Scope")
+                        .IsUnique();
 
                     b.ToTable("ApiResourceScope", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceSecret", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceSecret", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -179,12 +194,16 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("ApiResourceSecret", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScope", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScope", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
@@ -200,16 +219,25 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LastAccessed")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("NonEditable")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Required")
                         .HasColumnType("bit");
 
                     b.Property<bool>("ShowInDiscoveryDocument")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -222,21 +250,24 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         new
                         {
                             Id = 1,
+                            Created = new DateTime(2023, 10, 31, 16, 21, 24, 685, DateTimeKind.Utc).AddTicks(5065),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
                             Name = "api1",
+                            NonEditable = false,
                             Required = false,
                             ShowInDiscoveryDocument = true
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScopeClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ScopeId")
                         .HasColumnType("int");
@@ -248,17 +279,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScopeId");
+                    b.HasIndex("ScopeId", "Type")
+                        .IsUnique();
 
                     b.ToTable("ApiScopeClaim", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScopeProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -275,17 +308,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScopeId");
+                    b.HasIndex("ScopeId", "Key")
+                        .IsUnique();
 
                     b.ToTable("ApiScopeProperty", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.Client", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AbsoluteRefreshTokenLifetime")
                         .HasColumnType("int");
@@ -328,6 +363,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
+                    b.Property<int?>("CibaLifetime")
+                        .HasColumnType("int");
+
                     b.Property<string>("ClientClaimsPrefix")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -348,8 +386,17 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<int?>("ConsentLifetime")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("CoordinateLifetimeWithUserSession")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("DPoPClockSkew")
+                        .HasColumnType("time");
+
+                    b.Property<int>("DPoPValidationMode")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
@@ -377,6 +424,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<bool>("IncludeJwtId")
                         .HasColumnType("bit");
 
+                    b.Property<string>("InitiateLoginUri")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
                     b.Property<DateTime?>("LastAccessed")
                         .HasColumnType("datetime2");
 
@@ -390,6 +441,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("PairWiseSubjectSalt")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("PollingInterval")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProtocolType")
                         .IsRequired()
@@ -406,6 +460,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("RequireConsent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RequireDPoP")
                         .HasColumnType("bit");
 
                     b.Property<bool>("RequirePkce")
@@ -455,6 +512,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             ClientClaimsPrefix = "",
                             ClientId = "postman",
                             Created = new DateTime(2021, 9, 18, 13, 12, 13, 532, DateTimeKind.Unspecified).AddTicks(8105),
+                            DPoPClockSkew = new TimeSpan(0, 0, 5, 0, 0),
+                            DPoPValidationMode = 0,
                             DeviceCodeLifetime = 300,
                             EnableLocalLogin = true,
                             Enabled = true,
@@ -467,6 +526,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             RefreshTokenUsage = 1,
                             RequireClientSecret = true,
                             RequireConsent = false,
+                            RequireDPoP = false,
                             RequirePkce = true,
                             RequireRequestObject = false,
                             SlidingRefreshTokenLifetime = 1296000,
@@ -489,6 +549,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             ClientClaimsPrefix = "client_",
                             ClientId = "client",
                             Created = new DateTime(2021, 9, 18, 13, 12, 13, 642, DateTimeKind.Unspecified).AddTicks(7421),
+                            DPoPClockSkew = new TimeSpan(0, 0, 5, 0, 0),
+                            DPoPValidationMode = 0,
                             DeviceCodeLifetime = 300,
                             EnableLocalLogin = true,
                             Enabled = true,
@@ -501,6 +563,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             RefreshTokenUsage = 1,
                             RequireClientSecret = true,
                             RequireConsent = false,
+                            RequireDPoP = false,
                             RequirePkce = true,
                             RequireRequestObject = false,
                             SlidingRefreshTokenLifetime = 1296000,
@@ -523,6 +586,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             ClientClaimsPrefix = "client_",
                             ClientId = "mvc",
                             Created = new DateTime(2021, 9, 18, 13, 12, 13, 645, DateTimeKind.Unspecified).AddTicks(5968),
+                            DPoPClockSkew = new TimeSpan(0, 0, 5, 0, 0),
+                            DPoPValidationMode = 0,
                             DeviceCodeLifetime = 300,
                             EnableLocalLogin = true,
                             Enabled = true,
@@ -535,6 +600,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             RefreshTokenUsage = 1,
                             RequireClientSecret = true,
                             RequireConsent = false,
+                            RequireDPoP = false,
                             RequirePkce = true,
                             RequireRequestObject = false,
                             SlidingRefreshTokenLifetime = 1296000,
@@ -558,6 +624,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             ClientId = "js",
                             ClientName = "JavaScript Client",
                             Created = new DateTime(2021, 9, 18, 13, 12, 13, 653, DateTimeKind.Unspecified).AddTicks(7956),
+                            DPoPClockSkew = new TimeSpan(0, 0, 5, 0, 0),
+                            DPoPValidationMode = 0,
                             DeviceCodeLifetime = 300,
                             EnableLocalLogin = true,
                             Enabled = true,
@@ -570,6 +638,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             RefreshTokenUsage = 1,
                             RequireClientSecret = false,
                             RequireConsent = false,
+                            RequireDPoP = false,
                             RequirePkce = true,
                             RequireRequestObject = false,
                             SlidingRefreshTokenLifetime = 1296000,
@@ -577,12 +646,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -599,17 +669,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "Type", "Value")
+                        .IsUnique();
 
                     b.ToTable("ClientClaim", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientCorsOrigin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -621,7 +693,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "Origin")
+                        .IsUnique();
 
                     b.ToTable("ClientCorsOrigin", "IdentityServer");
 
@@ -634,12 +707,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientGrantType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -651,7 +725,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "GrantType")
+                        .IsUnique();
 
                     b.ToTable("ClientGrantType", "IdentityServer");
 
@@ -682,12 +757,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientIdPRestriction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -699,29 +775,32 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "Provider")
+                        .IsUnique();
 
                     b.ToTable("ClientIdPRestriction", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("PostLogoutRedirectUri")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "PostLogoutRedirectUri")
+                        .IsUnique();
 
                     b.ToTable("ClientPostLogoutRedirectUri", "IdentityServer");
 
@@ -740,12 +819,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -762,29 +842,32 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "Key")
+                        .IsUnique();
 
                     b.ToTable("ClientProperty", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientRedirectUri", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("RedirectUri")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "RedirectUri")
+                        .IsUnique();
 
                     b.ToTable("ClientRedirectUri", "IdentityServer");
 
@@ -803,12 +886,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientScope", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -820,9 +904,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId", "Scope")
+                        .IsUnique();
 
-                    b.ToTable("ClientScopes", "IdentityServer");
+                    b.ToTable("ClientScope", "IdentityServer");
 
                     b.HasData(
                         new
@@ -887,12 +972,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientSecret", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -950,7 +1036,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
                 {
                     b.Property<string>("UserCode")
                         .HasMaxLength(200)
@@ -1000,12 +1086,53 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("DeviceFlowCodes", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResource", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityProvider", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastAccessed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("NonEditable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Scheme")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityProviders");
+                });
+
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -1076,12 +1203,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResourceClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResourceClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("IdentityResourceId")
                         .HasColumnType("int");
@@ -1093,7 +1221,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityResourceId");
+                    b.HasIndex("IdentityResourceId", "Type")
+                        .IsUnique();
 
                     b.ToTable("IdentityResourceClaim", "IdentityServer");
 
@@ -1190,12 +1319,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResourceProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResourceProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("IdentityResourceId")
                         .HasColumnType("int");
@@ -1212,16 +1342,55 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityResourceId");
+                    b.HasIndex("IdentityResourceId", "Key")
+                        .IsUnique();
 
                     b.ToTable("IdentityResourceProperty", "IdentityServer");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.PersistedGrant", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Key", b =>
                 {
-                    b.Property<string>("Key")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Algorithm")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DataProtected")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsX509Certificate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Use")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Use");
+
+                    b.ToTable("Key", "IdentityServer");
+                });
+
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("ClientId")
                         .IsRequired()
@@ -1246,6 +1415,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<DateTime?>("Expiration")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Key")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("SessionId")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -1259,15 +1432,81 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Key");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumedTime");
 
                     b.HasIndex("Expiration");
+
+                    b.HasIndex("Key")
+                        .IsUnique()
+                        .HasFilter("[Key] IS NOT NULL");
 
                     b.HasIndex("SubjectId", "ClientId", "Type");
 
                     b.HasIndex("SubjectId", "SessionId", "Type");
 
                     b.ToTable("PersistedGrants", "IdentityServer");
+                });
+
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ServerSideSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("Renewed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Scheme")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SessionId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayName");
+
+                    b.HasIndex("Expires");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("ServerSideSession", "IdentityServer");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", b =>
@@ -1285,6 +1524,30 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("ApplicationLanguage");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.ApplicationUsers.Entities.ApplicationUser", b =>
+                {
+                    b.Property<Guid>("ApplicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("InvitationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("InvitationReceivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ApplicationUser");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Applications.Entities.Application", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1294,12 +1557,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Application");
                 });
@@ -1469,8 +1727,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
@@ -1502,8 +1761,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
@@ -1539,8 +1799,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -1562,8 +1823,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -1625,7 +1887,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "20f1b6e7-64b7-4658-9f5a-ca9b73da374e",
+                            ConcurrencyStamp = "4a1f1ee5-0ce2-4b5d-88be-4373574ef024",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Rod",
@@ -1633,10 +1895,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIVVeEi6VZ2YB3JUwyExMUFOL9E6rS4Px8AHXK0osa6ncEsGkS0mFtBesBmGurNFuA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKWd/iQx36LYevmQZ7567wkLZT31FgSYJiEiNwdMi9oYappMoiWnbGCOZOsbO5325g==",
                             PhoneNumber = "123-123-1234",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
+                            SecurityStamp = "GHCMP3XRBQUGXXFNLNP4UCVZAHL73RZ6",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -1646,8 +1908,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -1730,9 +1993,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("UserToken");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceClaim", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.ApiResource", "ApiResource")
                         .WithMany("UserClaims")
                         .HasForeignKey("ApiResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1741,9 +2004,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("ApiResource");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceProperty", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.ApiResource", "ApiResource")
                         .WithMany("Properties")
                         .HasForeignKey("ApiResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1752,9 +2015,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("ApiResource");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceScope", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceScope", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.ApiResource", "ApiResource")
                         .WithMany("Scopes")
                         .HasForeignKey("ApiResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1763,9 +2026,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("ApiResource");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceSecret", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceSecret", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.ApiResource", "ApiResource")
                         .WithMany("Secrets")
                         .HasForeignKey("ApiResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1774,9 +2037,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("ApiResource");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScopeClaim", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiScope", "Scope")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.ApiScope", "Scope")
                         .WithMany("UserClaims")
                         .HasForeignKey("ScopeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1785,9 +2048,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Scope");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScopeProperty", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiScope", "Scope")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.ApiScope", "Scope")
                         .WithMany("Properties")
                         .HasForeignKey("ScopeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1796,9 +2059,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Scope");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientClaim", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("Claims")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1807,9 +2070,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientCorsOrigin", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("AllowedCorsOrigins")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1818,9 +2081,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientGrantType", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("AllowedGrantTypes")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1829,9 +2092,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientIdPRestriction", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("IdentityProviderRestrictions")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1840,9 +2103,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("PostLogoutRedirectUris")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1851,9 +2114,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientProperty", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("Properties")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1862,9 +2125,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientRedirectUri", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("RedirectUris")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1873,9 +2136,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientScope", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("AllowedScopes")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1884,9 +2147,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientSecret", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.Client", "Client")
                         .WithMany("ClientSecrets")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1895,9 +2158,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResourceClaim", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResourceClaim", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.IdentityResource", "IdentityResource")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.IdentityResource", "IdentityResource")
                         .WithMany("UserClaims")
                         .HasForeignKey("IdentityResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1906,9 +2169,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("IdentityResource");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResourceProperty", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResourceProperty", b =>
                 {
-                    b.HasOne("IdentityServer4.EntityFramework.Entities.IdentityResource", "IdentityResource")
+                    b.HasOne("Duende.IdentityServer.EntityFramework.Entities.IdentityResource", "IdentityResource")
                         .WithMany("Properties")
                         .HasForeignKey("IdentityResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1936,13 +2199,21 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Applications.Entities.Application", b =>
+            modelBuilder.Entity("TranslationPro.Base.ApplicationUsers.Entities.ApplicationUser", b =>
                 {
+                    b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
+                        .WithMany("Users")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TranslationPro.Base.Users.Entities.User", "User")
                         .WithMany("Applications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Application");
 
                     b.Navigation("User");
                 });
@@ -1963,7 +2234,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
                         .WithMany("Translations")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
@@ -2052,7 +2323,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResource", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResource", b =>
                 {
                     b.Navigation("Properties");
 
@@ -2063,14 +2334,14 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("UserClaims");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScope", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScope", b =>
                 {
                     b.Navigation("Properties");
 
                     b.Navigation("UserClaims");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.Client", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Client", b =>
                 {
                     b.Navigation("AllowedCorsOrigins");
 
@@ -2091,7 +2362,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("RedirectUris");
                 });
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResource", b =>
+            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResource", b =>
                 {
                     b.Navigation("Properties");
 
@@ -2110,6 +2381,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Phrases");
 
                     b.Navigation("Translations");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Languages.Entities.Language", b =>

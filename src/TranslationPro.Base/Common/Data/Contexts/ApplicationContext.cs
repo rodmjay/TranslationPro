@@ -91,7 +91,7 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
         var operationalStoreOptions = new OperationalStoreOptions
         {
             DeviceFlowCodes = new TableConfiguration("DeviceFlowCodes", IdentityServerSchema),
-            PersistedGrants = new TableConfiguration("PersistedGrant", IdentityServerSchema),
+            PersistedGrants = new TableConfiguration("PersistedGrants", IdentityServerSchema),
             ServerSideSessions = new TableConfiguration("ServerSideSession", IdentityServerSchema),
             Keys = new TableConfiguration("Key", IdentityServerSchema)
         };
