@@ -59,6 +59,12 @@ public class Startup
             .AddPhraseDependencies()
             .AddTranslationDependencies();
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+        });
+
+
         var webAppBuilder = builder.ConfigureWebApp(Environment);
 
         var restBuilder = webAppBuilder.ConfigureRest()

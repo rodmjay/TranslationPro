@@ -1,0 +1,31 @@
+﻿@page "/applications"
+
+<h3>ApplicationList</h3>
+
+
+@if (Applications == null)
+{
+    <p>Loading Applications...</p>
+}
+else
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var app in Applications)
+        {
+            <tr>
+                <td>@app.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+  
+}
+@code {
+
+}

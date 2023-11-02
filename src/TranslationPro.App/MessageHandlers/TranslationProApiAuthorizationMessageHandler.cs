@@ -10,7 +10,7 @@ namespace TranslationPro.App.MessageHandlers
             : base(provider, navigation)
         {
             ConfigureHandler(
-                  authorizedUrls: new[] { "https://localhost:44340/" });
+                  authorizedUrls: new[] { "https://localhost:44329/" });
         }
     }
 }

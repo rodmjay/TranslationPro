@@ -10,7 +10,6 @@ namespace TranslationPro.Shared.Policies
         {
             return new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
-                .RequireClaim("scope", "api1")
                 .Build();
         }
     }
