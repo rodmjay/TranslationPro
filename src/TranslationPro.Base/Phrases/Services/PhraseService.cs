@@ -14,13 +14,13 @@ using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Extensions;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Phrases.Interfaces;
-using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Phrases;
 
 namespace TranslationPro.Base.Phrases.Services;
 

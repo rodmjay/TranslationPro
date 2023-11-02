@@ -7,7 +7,7 @@
 using System.Linq;
 using AutoMapper;
 using TranslationPro.Base.Phrases.Entities;
-using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Shared.Phrases;
 
 namespace TranslationPro.Base.Phrases.Projections;
 

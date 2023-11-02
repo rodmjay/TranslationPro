@@ -7,7 +7,7 @@
 using System.Linq;
 using AutoMapper;
 using TranslationPro.Base.Applications.Entities;
-using TranslationPro.Base.Applications.Models;
+using TranslationPro.Shared.Applications;
 
 namespace TranslationPro.Base.Applications.Projections;
 

@@ -1,3 +1,4 @@
 ﻿Id,PostLogoutRedirectUri,ClientId
 1,https://localhost:5002/signout-callback-oidc,3
 2,https://localhost:5003/index.html,4
+3,https://localhost:44330/index.html,5

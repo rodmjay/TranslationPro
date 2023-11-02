@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Phrases.Interfaces;
-using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Base.Translations.Interfaces;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Phrases;
 
 namespace TranslationPro.Api.Controllers;
 

@@ -13,6 +13,7 @@ using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Shared.Applications;
 
 namespace TranslationPro.Base.Applications.Entities;
 

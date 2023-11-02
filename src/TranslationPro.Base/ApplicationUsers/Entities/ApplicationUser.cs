@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
-using TranslationPro.Base.ApplicationUsers.Enums;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Users.Entities;
+using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.ApplicationUsers.Entities
 {

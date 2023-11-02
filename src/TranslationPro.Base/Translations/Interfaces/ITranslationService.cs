@@ -7,10 +7,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Base.Translations.Models;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Translations;
 
 namespace TranslationPro.Base.Translations.Interfaces;
 

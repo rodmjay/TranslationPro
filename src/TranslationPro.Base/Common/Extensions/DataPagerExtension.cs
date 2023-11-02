@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Queries;
 using TranslationPro.Base.Common.Services.Interfaces;
+using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Base.Common.Extensions;
 

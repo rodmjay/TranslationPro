@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TranslationPro.Base.ApplicationLanguages.Entities;
-using TranslationPro.Base.ApplicationLanguages.Models;
+using TranslationPro.Shared.ApplicationLanguages;
 
 namespace TranslationPro.Base.ApplicationLanguages.Projections
 {

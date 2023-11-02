@@ -6,9 +6,10 @@
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
-using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.ApplicationLanguages.Services;
+using TranslationPro.Base.Applications;
 using TranslationPro.Base.Common.Middleware.Builders;
+using TranslationPro.Shared.ApplicationLanguages;
 
 namespace TranslationPro.Base.ApplicationLanguages.Extensions;
 
@@ -16,7 +17,6 @@ public static class AppBuilderExtensions
 {
     public static AppBuilder AddApplicationLanguageDependencies(this AppBuilder builder)
     {
-        builder.Services.TryAddTransient<ApplicationLanguageErrorDescriber>();
         builder.Services.TryAddScoped<IApplicationLanguageService, ApplicationLanguageService>();
         return builder;
     }

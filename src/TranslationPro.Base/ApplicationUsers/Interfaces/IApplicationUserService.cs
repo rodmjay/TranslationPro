@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.ApplicationUsers.Entities;
-using TranslationPro.Base.ApplicationUsers.Models;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Interfaces;
+using TranslationPro.Shared.ApplicationUsers;
+using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Base.ApplicationUsers.Interfaces
 {

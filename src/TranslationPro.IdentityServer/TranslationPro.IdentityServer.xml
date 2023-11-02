@@ -10,5 +10,10 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:TranslationPro.IdentityServer.Home.HomeController.Error(System.String)">
+            <summary>
+            Shows the error page
+            </summary>
+        </member>
     </members>
 </doc>

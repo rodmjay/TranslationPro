@@ -5,7 +5,7 @@
 #endregion
 
 using System.Collections.Generic;
-using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Shared.Phrases;
 
 namespace TranslationPro.Testing.TestCases;
 

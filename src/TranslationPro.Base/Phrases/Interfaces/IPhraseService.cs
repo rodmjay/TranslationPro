@@ -7,10 +7,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
-using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Phrases;
 
 namespace TranslationPro.Base.Phrases.Interfaces;
 

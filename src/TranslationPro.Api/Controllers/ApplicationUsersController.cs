@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
-using TranslationPro.Base.ApplicationUsers.Models;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Common.Models;
+using TranslationPro.Shared.ApplicationUsers;
+using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Api.Controllers;
 

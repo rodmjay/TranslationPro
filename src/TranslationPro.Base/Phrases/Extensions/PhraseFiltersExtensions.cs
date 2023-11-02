@@ -8,7 +8,7 @@ using System;
 using System.Linq.Expressions;
 using TranslationPro.Base.Common.Queries;
 using TranslationPro.Base.Phrases.Entities;
-using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Shared.Phrases;
 
 namespace TranslationPro.Base.Phrases.Extensions;
 

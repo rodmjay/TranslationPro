@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.ApplicationUsers.Entities;
-using TranslationPro.Base.ApplicationUsers.Enums;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
-using TranslationPro.Base.ApplicationUsers.Models;
 using TranslationPro.Base.Common.Data.Enums;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Managers;
+using TranslationPro.Shared.ApplicationUsers;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.ApplicationUsers.Services
 {

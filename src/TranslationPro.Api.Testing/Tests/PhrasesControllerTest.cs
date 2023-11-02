@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TranslationPro.Base.Common.Models;
-using TranslationPro.Base.Phrases.Models;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Phrases;
 using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;

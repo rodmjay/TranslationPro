@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
-using TranslationPro.Base.ApplicationLanguages.Models;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Shared.ApplicationLanguages;
+using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Base.ApplicationLanguages.Services
 {

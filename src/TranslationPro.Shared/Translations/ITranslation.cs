@@ -1,0 +1,15 @@
+﻿#region Header Info
+
+// Copyright 2023 Rod Johnson.  All rights reserved
+
+#endregion
+
+namespace TranslationPro.Shared.Translations;
+
+public interface ITranslation
+{
+    int Id { get; set; }
+    string Text { get; set; }
+    public string LanguageId { get; set; }
+    DateTime? TranslationDate { get; set; }
+}

@@ -13,16 +13,16 @@ using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Interfaces;
-using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.ApplicationUsers.Entities;
-using TranslationPro.Base.ApplicationUsers.Enums;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Common.Models;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Shared.Applications;
+using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.Applications.Services;
 

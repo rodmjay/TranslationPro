@@ -5,10 +5,11 @@
 #endregion
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using TranslationPro.Base.Applications.Models;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Permissions.Interfaces;
 using TranslationPro.Base.Permissions.Services;
+using TranslationPro.Shared.Applications;
+using ApplicationErrorDescriber = TranslationPro.Base.Applications.ApplicationErrorDescriber;
 
 namespace TranslationPro.Base.Permissions.Extensions;
 

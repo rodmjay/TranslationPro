@@ -8,7 +8,7 @@ using TranslationPro.Base.Common.Data.Contexts;
 
 #nullable disable
 
-namespace TranslationPro.Base.Common.data.migrations
+namespace TranslationPro.Base.common.data.migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -247,7 +247,7 @@ namespace TranslationPro.Base.Common.data.migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 10, 31, 16, 21, 24, 685, DateTimeKind.Utc).AddTicks(5065),
+                            Created = new DateTime(2023, 11, 2, 3, 28, 0, 977, DateTimeKind.Utc).AddTicks(4014),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -640,6 +640,44 @@ namespace TranslationPro.Base.Common.data.migrations
                             RequireRequestObject = false,
                             SlidingRefreshTokenLifetime = 1296000,
                             UpdateAccessTokenClaimsOnRefresh = false
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AbsoluteRefreshTokenLifetime = 2592000,
+                            AccessTokenLifetime = 3600,
+                            AccessTokenType = 0,
+                            AllowAccessTokensViaBrowser = false,
+                            AllowOfflineAccess = false,
+                            AllowPlainTextPkce = false,
+                            AllowRememberConsent = true,
+                            AlwaysIncludeUserClaimsInIdToken = true,
+                            AlwaysSendClientClaims = false,
+                            AuthorizationCodeLifetime = 300,
+                            BackChannelLogoutSessionRequired = true,
+                            ClientClaimsPrefix = "client_",
+                            ClientId = "translationpro",
+                            ClientName = "TranslationPro",
+                            Created = new DateTime(2021, 9, 18, 13, 12, 13, 653, DateTimeKind.Unspecified).AddTicks(7956),
+                            DPoPClockSkew = new TimeSpan(0, 0, 5, 0, 0),
+                            DPoPValidationMode = 0,
+                            DeviceCodeLifetime = 300,
+                            EnableLocalLogin = true,
+                            Enabled = true,
+                            FrontChannelLogoutSessionRequired = true,
+                            IdentityTokenLifetime = 300,
+                            IncludeJwtId = true,
+                            NonEditable = false,
+                            ProtocolType = "oidc",
+                            RefreshTokenExpiration = 1,
+                            RefreshTokenUsage = 1,
+                            RequireClientSecret = false,
+                            RequireConsent = false,
+                            RequireDPoP = false,
+                            RequirePkce = true,
+                            RequireRequestObject = false,
+                            SlidingRefreshTokenLifetime = 1296000,
+                            UpdateAccessTokenClaimsOnRefresh = false
                         });
                 });
 
@@ -701,6 +739,12 @@ namespace TranslationPro.Base.Common.data.migrations
                             Id = 1,
                             ClientId = 4,
                             Origin = "https://localhost:5003"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClientId = 5,
+                            Origin = "https://localhost:44330"
                         });
                 });
 
@@ -750,6 +794,12 @@ namespace TranslationPro.Base.Common.data.migrations
                         {
                             Id = 4,
                             ClientId = 3,
+                            GrantType = "authorization_code"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClientId = 5,
                             GrantType = "authorization_code"
                         });
                 });
@@ -813,6 +863,12 @@ namespace TranslationPro.Base.Common.data.migrations
                             Id = 2,
                             ClientId = 4,
                             PostLogoutRedirectUri = "https://localhost:5003/index.html"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClientId = 5,
+                            PostLogoutRedirectUri = "https://localhost:44330/index.html"
                         });
                 });
 
@@ -880,6 +936,12 @@ namespace TranslationPro.Base.Common.data.migrations
                             Id = 2,
                             ClientId = 4,
                             RedirectUri = "https://localhost:5003/callback.html"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClientId = 5,
+                            RedirectUri = "https://localhost:44330/authentication/login-callback"
                         });
                 });
 
@@ -966,6 +1028,24 @@ namespace TranslationPro.Base.Common.data.migrations
                             Id = 10,
                             ClientId = 3,
                             Scope = "profile"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ClientId = 5,
+                            Scope = "api1"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ClientId = 5,
+                            Scope = "profile"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ClientId = 5,
+                            Scope = "openid"
                         });
                 });
 

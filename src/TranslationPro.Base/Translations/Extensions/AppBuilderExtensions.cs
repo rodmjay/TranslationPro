@@ -9,7 +9,6 @@ using Google.Cloud.Translation.V2;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Translations.Interfaces;
-using TranslationPro.Base.Translations.Models;
 using TranslationPro.Base.Translations.Services;
 
 namespace TranslationPro.Base.Translations.Extensions;

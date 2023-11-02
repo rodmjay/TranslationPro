@@ -5,7 +5,7 @@
 #endregion
 
 using System.Linq;
-using TranslationPro.Base.Common.Models;
+using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Base.Common.Extensions;
 

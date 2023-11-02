@@ -6,8 +6,8 @@
 
 using System;
 using System.Threading.Tasks;
-using TranslationPro.Base.ApplicationUsers.Models;
-using TranslationPro.Base.Common.Models;
+using TranslationPro.Shared.ApplicationUsers;
+using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Api.Interfaces;
 

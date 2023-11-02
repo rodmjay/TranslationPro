@@ -7,7 +7,6 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Phrases.Interfaces;
-using TranslationPro.Base.Phrases.Models;
 using TranslationPro.Base.Phrases.Services;
 
 namespace TranslationPro.Base.Phrases.Extensions;
