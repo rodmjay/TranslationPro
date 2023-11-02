@@ -8,10 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Languages.Interfaces;
-using TranslationPro.Base.Languages.Models;
+using TranslationPro.Shared.Controllers;
+using TranslationPro.Shared.Languages;
 
 namespace TranslationPro.Api.Controllers;
 

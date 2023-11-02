@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using TranslationPro.Base.Common.Data.Contexts;
+using TranslationPro.Shared.Extensions;
 using TranslationPro.Testing.Extensions;
 using TranslationPro.Testing.Services;
 

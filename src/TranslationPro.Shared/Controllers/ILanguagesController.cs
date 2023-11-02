@@ -4,11 +4,9 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TranslationPro.Base.Languages.Models;
+using TranslationPro.Shared.Languages;
 
-namespace TranslationPro.Api.Interfaces;
+namespace TranslationPro.Shared.Controllers;
 
 public interface ILanguagesController
 {

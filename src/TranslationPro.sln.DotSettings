@@ -1,4 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/CodeEditing/SuppressNullableWarningFix/Enabled/@EntryValue">False</s:Boolean>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=780AB4B582015A4296AAFB0EE4F055CC/AbsolutePath/@EntryValue">C:\DEV\TranslationPro\src\resharper.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=780AB4B582015A4296AAFB0EE4F055CC/RelativePath/@EntryValue">..\resharper.DotSettings</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=780AB4B582015A4296AAFB0EE4F055CC/@KeyIndexDefined">True</s:Boolean>

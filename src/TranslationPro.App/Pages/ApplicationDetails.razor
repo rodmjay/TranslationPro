@@ -1,0 +1,32 @@
+﻿
+@inherits ApplicationDetailsBase
+@page "/applications/{ApplicationId:guid}"
+
+@if (Application == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>@Application.Name</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Phrases:</th>
+            <td><NavLink href="@{$"applications/{ApplicationId}/phrases"}">
+                @Application.PhraseCount
+            </NavLink></td>
+           
+        </tr>
+        <tr>
+            <th>Users:</th>
+            <td>
+                <NavLink href="@{$"applications/{ApplicationId}/users"}">
+                    @Application.Users.Count
+                </NavLink>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+}

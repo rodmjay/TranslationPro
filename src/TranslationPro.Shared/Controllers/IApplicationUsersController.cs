@@ -4,12 +4,10 @@
 
 #endregion
 
-using System;
-using System.Threading.Tasks;
 using TranslationPro.Shared.ApplicationUsers;
 using TranslationPro.Shared.Common;
 
-namespace TranslationPro.Api.Interfaces;
+namespace TranslationPro.Shared.Controllers;
 
 public interface IApplicationUsersController
 {

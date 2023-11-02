@@ -4,9 +4,7 @@
 
 #endregion
 
-using TranslationPro.Base.Languages.Interfaces;
-
-namespace TranslationPro.Base.Languages.Models;
+namespace TranslationPro.Shared.Languages;
 
 public class LanguageDto : ILanguage
 {

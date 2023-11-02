@@ -9,7 +9,7 @@
 }
 else
 {
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -19,7 +19,11 @@ else
         @foreach (var app in Applications)
         {
             <tr>
-                <td>@app.Name</td>
+
+                <td>
+                        <NavLink href="@{$"applications/{@app.Id}"}">@app.Name</NavLink>
+                  
+                </td>
             </tr>
         }
         </tbody>

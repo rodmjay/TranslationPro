@@ -10,6 +10,7 @@ using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Interfaces;
 using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Shared.Languages;
 
 namespace TranslationPro.Base.Languages.Entities;
 

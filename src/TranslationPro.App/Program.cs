@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using TranslationPro.App;
 using TranslationPro.App.MessageHandlers;
-using TranslationPro.App.Services;
+using TranslationPro.App.Proxies;
+using TranslationPro.Shared.Controllers;
 using TranslationPro.Shared.Policies;
+
+namespace TranslationPro.App;
 
 public class Program
 {
@@ -27,7 +29,27 @@ public class Program
             builder.Configuration.Bind("UserOptions", options.UserOptions);
         });
 
-        builder.Services.AddHttpClient<IApplicationServiceProxy, ApplicationServiceProxy>(
+        builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
+                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+
+        builder.Services.AddHttpClient<IApplicationLanguagesController, ApplicationLanguagesProxy>(
+                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+
+        builder.Services.AddHttpClient<IApplicationUsersController, ApplicationUsersProxy>(
+                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+
+        builder.Services.AddHttpClient<ILanguagesController, LanguagesProxy>(
+                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+
+        builder.Services.AddHttpClient<IPhrasesController, PhrasesProxy>(
+                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+
+        builder.Services.AddHttpClient<ITranslationsController, TranslationsProxy>(
                 client => client.BaseAddress = new Uri("https://localhost:44329/"))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
@@ -42,4 +64,3 @@ public class Program
         await builder.Build().RunAsync();
     }
 }
-

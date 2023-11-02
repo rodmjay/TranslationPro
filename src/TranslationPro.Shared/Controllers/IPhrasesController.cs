@@ -4,14 +4,10 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Phrases;
 
-namespace TranslationPro.Api.Interfaces;
+namespace TranslationPro.Shared.Controllers;
 
 public interface IPhrasesController
 {
@@ -19,16 +15,16 @@ public interface IPhrasesController
     Task<PhraseDto> GetPhraseAsync(Guid applicationId, int phraseId);
 
     Task<Result> BulkUploadAsync(Guid applicationId,
-        [FromBody] List<string> input);
+         List<string> input);
 
     Task<Result> CreatePhraseAsync(Guid applicationId,
-        [FromBody] PhraseInput input);
+        PhraseInput input);
 
     Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId,
-        [FromBody] PhraseInput input);
+        PhraseInput input);
 
     Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
-        [FromQuery] PhraseFilters filters);
+         PhraseFilters filters);
 
     Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId,
         string language);

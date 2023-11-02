@@ -1,0 +1,36 @@
+﻿@page "/applications/{ApplicationId:guid}/users"
+@inherits ApplicationDetailsBase
+
+<h3>ApplicationUsers</h3>
+
+@if (Application == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>
+        Back to <NavLink href="@{$"/applications/{ApplicationId}"}">Application</NavLink>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Application.Users)
+        {
+            <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Status</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+}

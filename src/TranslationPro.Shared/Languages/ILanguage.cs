@@ -4,7 +4,7 @@
 
 #endregion
 
-namespace TranslationPro.Base.Languages.Interfaces;
+namespace TranslationPro.Shared.Languages;
 
 public interface ILanguage
 {

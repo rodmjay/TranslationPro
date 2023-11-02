@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
-using TranslationPro.App.Services;
 using TranslationPro.Shared.Applications;
+using TranslationPro.Shared.Controllers;
 
 namespace TranslationPro.App.Pages
 {
@@ -10,14 +10,14 @@ namespace TranslationPro.App.Pages
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public IEnumerable<ApplicationDto> Applications { get; set; }
+        public IEnumerable<ApplicationDto>? Applications { get; set; }
 
         [Inject]
-        public IApplicationServiceProxy ApplicationService { get; set; }
+        public IApplicationsController? ApplicationService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Applications = (await ApplicationService.GetApplications()).ToList();
+            Applications = (await ApplicationService!.GetApplicationsAsync()).ToList();
         }
     }
 }

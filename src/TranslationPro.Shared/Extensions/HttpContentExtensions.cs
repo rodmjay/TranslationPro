@@ -4,11 +4,10 @@
 
 #endregion
 
-using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace TranslationPro.Testing.Extensions;
+namespace TranslationPro.Shared.Extensions;
 
 public static class HttpContentExtensions
 {

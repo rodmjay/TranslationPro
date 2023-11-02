@@ -1,0 +1,32 @@
+﻿
+@page "/applications/{ApplicationId:guid}/phrases"
+@inherits ApplicationDetailsBase
+
+<h3>Phrases</h3>
+
+@if (Phrases == null)
+{
+    <p>Loading Phrases...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Phrase</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var phrase in Phrases.Items)
+        {
+            <tr>
+                <td>@phrase.Text</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+}

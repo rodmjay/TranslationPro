@@ -4,12 +4,10 @@
 
 #endregion
 
-using System;
-using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Translations;
 
-namespace TranslationPro.Api.Interfaces;
+namespace TranslationPro.Shared.Controllers;
 
 public interface ITranslationsController
 {

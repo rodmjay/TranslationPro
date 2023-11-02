@@ -7,11 +7,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TranslationPro.Api.Interfaces;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Shared.ApplicationUsers;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Controllers;
 
 namespace TranslationPro.Api.Controllers;
 

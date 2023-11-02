@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IAccessTokenProvider TokenProvider
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<AuthorizeView>
+    <Authorized>
+        <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
+        <form method="post" action="Identity/Account/Logout">
+            <button type="submit" class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+           
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <NavLink 
+                 href="https://localhost:44319/Identity/Account/Register">
+            Register
+        </NavLink>
+        <NavLink href="authentication/login"> Log in
+        </NavLink>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+
+    private async Task WriteToken()
+    {
+        var tokenResult = await TokenProvider.RequestAccessToken();
+        if (tokenResult.TryGetToken(out var token))
+        {
+            System.Diagnostics.Debug.WriteLine(token.Value);
+        }
+    }
+
+
+}

@@ -4,14 +4,10 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Shared.Applications;
 using TranslationPro.Shared.Common;
 
-namespace TranslationPro.Api.Interfaces;
+namespace TranslationPro.Shared.Controllers;
 
 public interface IApplicationsController
 {
@@ -19,5 +15,5 @@ public interface IApplicationsController
     Task<List<ApplicationDto>> GetApplicationsAsync();
     Task<Result> CreateApplicationAsync(CreateApplicationInput input);
     Task<Result> DeleteApplicationAsync(Guid applicationId);
-    Task<Result> UpdateApplicationAsync(Guid applicationId, [FromBody] ApplicationInput input);
+    Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input);
 }
