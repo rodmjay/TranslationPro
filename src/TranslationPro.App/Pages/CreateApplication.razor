@@ -1,0 +1,17 @@
+﻿@page "/applications/create"
+
+<h3>Create Application</h3>
+
+<EditForm Model="Input">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="mb-3">
+        
+        <label for="name" class="form-label">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="Input.Name"></InputText>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add</button>
+
+</EditForm>

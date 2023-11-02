@@ -11,26 +11,54 @@ else
             <li class="breadcrumb-item active" aria-current="page">Applications</li>
         </ol>
     </nav>
+    <p>
+        <NavLink class="btn btn-primary" href="/applications/create">Create Application</NavLink>
+    </p>
     <table class="table">
         <thead>
-        <tr>
-            <th>Name</th>
-        </tr>
+            <tr>
+                <th>Name</th>
+                <th>Languages</th>
+                <th>Users</th>
+                <th>Phrases</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var app in Applications)
-        {
-            <tr>
+            @foreach (var app in Applications)
+            {
+                <tr>
 
-                <td>
+                    <td>
                         <NavLink href="@{$"applications/{@app.Id}"}">@app.Name</NavLink>
-                  
-                </td>
-            </tr>
-        }
+
+                    </td>
+                    <td>
+                        <NavLink href="@{$"applications/{@app.Id}/languages"}">@app.Languages.Count</NavLink>
+
+                    </td>
+                    <td>
+                        <NavLink href="@{$"applications/{@app.Id}/users"}">@app.Users.Count</NavLink>
+
+                    </td>
+                    <td>
+                        <NavLink href="@{$"applications/{@app.Id}/phrases"}">@app.PhraseCount</NavLink>
+
+                    </td>
+                    <td class="btn-group-sm">
+                        <a href="#"
+                           class="btn btn-outline-primary">
+                            Edit
+                        </a>
+                        <button class="btn btn-outline-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-  
+
 }
 @code {
 

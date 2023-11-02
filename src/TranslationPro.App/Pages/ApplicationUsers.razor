@@ -1,8 +1,6 @@
 ﻿@page "/applications/{ApplicationId:guid}/users"
 @inherits ApplicationDetailsBase
 
-<h3>ApplicationUsers</h3>
-
 @if (Application == null)
 {
     <p>Loading...</p>
@@ -21,6 +19,7 @@ else
             <tr>
                 <th>Name</th>
                 <th>Status</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +27,16 @@ else
         {
             <tr>
                     <td>@user.Name</td>
-                    <td>@user.Status</td>
+                <td>@user.Status</td>
+                    <td class="btn-group-sm">
+                        <a href="#"
+                           class="btn btn-outline-primary">
+                            Edit
+                        </a>
+                        <button class="btn btn-outline-danger">
+                            Delete
+                        </button>
+                    </td>
             </tr>
         }
         </tbody>
