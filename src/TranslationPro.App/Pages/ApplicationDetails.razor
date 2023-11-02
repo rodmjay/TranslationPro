@@ -14,6 +14,12 @@ else
             <li class="breadcrumb-item active" aria-current="page">@Application.Name</li>
         </ol>
     </nav>
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+          
+        <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/phrases/create")">Create Phrase</NavLink>
+        <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/users/invite")">Invite User</NavLink>
+        <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/languages")">Add Language</NavLink>
+    </div>
     <table class="table">
         <tbody>
             <tr>

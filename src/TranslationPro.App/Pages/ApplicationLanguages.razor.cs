@@ -9,6 +9,9 @@ namespace TranslationPro.App.Pages
     {
         [Inject]
         public ILanguagesController LanguagesController { get; set; }
+
+        [Inject]
+        public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
          
         public List<LanguageDto> Languages { get; set; }
 
@@ -17,6 +20,25 @@ namespace TranslationPro.App.Pages
             await base.OnInitializedAsync();
 
             Languages = await LanguagesController.GetLanguagesAsync();
+        }
+
+        private async Task HandleEnableClick(string langage)
+        {
+            var result = await ApplicationLanguagesController.AddLanguageToApplicationAsync(ApplicationId,
+                new ApplicationLanguageInput()
+                {
+                    Language = langage
+                });
+
+            await OnInitializedAsync();
+        }
+
+        private async Task HandleDisableClick(string langage)
+        {
+            var result = await ApplicationLanguagesController.RemoveLanguageFromApplicationAsync(ApplicationId,
+                langage);
+
+            await OnInitializedAsync();
         }
     }
 }

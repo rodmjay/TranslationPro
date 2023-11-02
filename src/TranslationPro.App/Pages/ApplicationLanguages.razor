@@ -39,11 +39,11 @@ else
                     <td>
                         @if (!Application.SupportedLanguages.Contains(lang.Id))
                         {
-                            <button class="btn-primary btn">Enable</button>
+                            <button @onclick="()=>HandleEnableClick(lang.Id)" class="btn-primary btn">Enable</button>
                         }
                         else
                         {
-                            <button class="btn-danger btn">Disable</button>
+                                <button @onclick="()=>HandleDisableClick(lang.Id)" class="btn-danger btn">Disable</button>
                         }
                     </td>
                 </tr>

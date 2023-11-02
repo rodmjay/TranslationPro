@@ -17,13 +17,17 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
     internal class ApplicationLanguageService : BaseService<ApplicationLanguage>, IApplicationLanguageService
     {
         private readonly IRepositoryAsync<Application> _applicationRepository;
+        private readonly IRepositoryAsync<Translation> _translationRepository;
         public ApplicationLanguageService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
+            _translationRepository = UnitOfWork.RepositoryAsync<Translation>();
         }
 
         private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
             .Include(x => x.Phrases).Include(x => x.Translations);
+
+        private IQueryable<Translation> Translations => _translationRepository.Queryable();
 
         private IQueryable<ApplicationLanguage> ApplicationLanguages =>
             Repository.Queryable().Include(x => x.Translations);
@@ -66,16 +70,23 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 
         public async Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
         {
+            var translations = await Translations
+                .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
+                .ToListAsync();
+
+            foreach (var translation in translations)
+            {
+                _translationRepository.Delete(translation, false);
+            }
+
+            var count = _translationRepository.Commit();
+
             var applicationLanguage = await ApplicationLanguages
                 .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
                 .FirstAsync();
 
             applicationLanguage.ObjectState = ObjectState.Deleted;
-
-            foreach (var translation in applicationLanguage.Translations)
-            {
-                translation.ObjectState = ObjectState.Deleted;
-            }
+            
 
             var records = Repository.InsertOrUpdateGraph(applicationLanguage, true);
             if(records > 0)

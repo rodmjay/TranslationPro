@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.13" />
-	  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <Compile Remove="Languages\**" />
+    <EmbeddedResource Remove="Languages\**" />
+    <None Remove="Languages\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Languages\" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.13" />
+	  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
