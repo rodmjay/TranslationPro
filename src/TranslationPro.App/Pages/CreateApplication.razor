@@ -4,7 +4,12 @@
    
 }
 
-<h3>Create Application</h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+        <li class="breadcrumb-item active" aria-current="page">Create Application</li>
+    </ol>
+</nav>
 
 <EditForm Model="Input" OnSubmit="HandleSubmit">
     <DataAnnotationsValidator />

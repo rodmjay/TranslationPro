@@ -1,5 +1,4 @@
-﻿
-@inherits ApplicationDetailsBase
+﻿@inherits ApplicationDetailsBase
 @page "/applications/{ApplicationId:guid}"
 
 @if (Application == null)
@@ -10,43 +9,79 @@ else
 {
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+            <li class="breadcrumb-item">
+                <NavLink href="@{
+                                                           $"/applications"
+                                                       }">Applications</NavLink>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">@Application.Name</li>
         </ol>
     </nav>
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-          
-        <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/phrases/create")">Create Phrase</NavLink>
-        <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/users/invite")">Invite User</NavLink>
-        <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/languages")">Add Language</NavLink>
+
+
+    <p>
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+
+            <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/phrases/create")">Create Phrase</NavLink>
+            <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/users/invite")">Invite User</NavLink>
+            <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/languages")">Add Language</NavLink>
+        </div>
+    </p>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 mb-5">
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Phrases</h5>
+
+                        <NavLink href="@{
+                        $"applications/{ApplicationId}/phrases"
+ }">
+                            <h1 class=" display-6">@Application.PhraseCount</h1>
+                        </NavLink>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 mb-5">
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Languages</h5>
+
+                        <NavLink href="@{
+                        $"applications/{ApplicationId}/languages"
+ }">
+                            <h1 class=" display-6">@Application.Languages.Count</h1>
+                        </NavLink>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 mb-5">
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Users</h5>
+
+                        <NavLink href="@{
+                                       $"applications/{ApplicationId}/users"
+                                   }">
+                            <h1 class=" display-6">@Application.Users.Count</h1>
+                        </NavLink>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 mb-5">
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Translations</h5>
+                        <h1 class=" display-6">@Application.TranslationCount</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Languages:</th>
-                <td>
-                    <NavLink href="@{$"applications/{ApplicationId}/languages"}">
-                        @Application.Languages.Count
-                    </NavLink>
-                </td>
 
-            </tr>
-        <tr>
-            <th>Phrases:</th>
-            <td>
-                <NavLink href="@{$"applications/{ApplicationId}/phrases"}">
-                    @Application.PhraseCount
-                </NavLink></td>
-
-        </tr>
-        <tr>
-            <th>Users:</th>
-            <td>
-                <NavLink href="@{$"applications/{ApplicationId}/users"}">
-                    @Application.Users.Count
-                </NavLink>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 }

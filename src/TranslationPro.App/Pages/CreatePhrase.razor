@@ -1,6 +1,18 @@
 ﻿@inherits ApplicationDetailsBase
 @page "/applications/{ApplicationId:guid}/phrases/create"
-<h3>CreatePhrase</h3>
+
+@if (Application != null)
+{
+    
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}/phrases"}">Phrases</NavLink></li>
+            <li class="breadcrumb-item active" aria-current="page">Create Phrase</li>
+        </ol>
+    </nav>
+}
 
 <EditForm Model="Input" OnSubmit="HandleSubmit">
     <DataAnnotationsValidator />
@@ -8,7 +20,7 @@
 
     <div class="mb-3">
 
-        <label for="name" class="form-label">Name</label>
+        <label for="name" class="form-label">Text to Translate</label>
         <InputText id="name" class="form-control" @bind-Value="Input.Text"></InputText>
     </div>
     

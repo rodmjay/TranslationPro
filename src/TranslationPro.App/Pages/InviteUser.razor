@@ -1,7 +1,24 @@
 ﻿@page "/applications/{ApplicationId:guid}/users/invite"
 @inherits ApplicationDetailsBase
 
-<h3>InviteUser</h3>
+@if (Application != null)
+{
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><NavLink href="@{
+                $"/applications"
+}">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{
+                $"/applications/{ApplicationId}"
+}">@Application.Name</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{
+                $"/applications/{ApplicationId}/users"
+}">Users</NavLink></li>
+            <li class="breadcrumb-item active" aria-current="page">Invite User</li>
+        </ol>
+    </nav>
+}
 <EditForm Model="Input" OnSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
