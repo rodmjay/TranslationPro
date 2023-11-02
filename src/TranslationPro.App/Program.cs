@@ -42,8 +42,7 @@ public class Program
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ILanguagesController, LanguagesProxy>(
-                client => client.BaseAddress = new Uri("https://localhost:44329/"))
-            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+            client => client.BaseAddress = new Uri("https://localhost:44329/"));
 
         builder.Services.AddHttpClient<IPhrasesController, PhrasesProxy>(
                 client => client.BaseAddress = new Uri("https://localhost:44329/"))

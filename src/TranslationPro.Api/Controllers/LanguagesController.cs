@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Languages.Interfaces;
@@ -26,6 +27,7 @@ public class LanguagesController : BaseController, ILanguagesController
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<List<LanguageDto>> GetLanguagesAsync()
     {
         return await _languageService.GetLanguagesAsync<LanguageDto>().ConfigureAwait(false);

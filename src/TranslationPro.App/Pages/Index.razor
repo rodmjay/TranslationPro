@@ -2,8 +2,16 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Welcome To Translation Pro</h1>
+<p>Easily Translate your website into any of the following languages</p>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (Languages != null)
+{
+    <ul class="list-group">
+        
+        @foreach (var lang in Languages)
+        {
+            <li class="list-group-item">@lang.Name</li>
+        }
+    </ul>
+}

@@ -1,6 +1,6 @@
 ﻿@page "/applications"
 
-@if (Applications == null)
+@if (Apps == null)
 {
     <p>Loading Applications...</p>
 }
@@ -25,7 +25,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var app in Applications)
+            @foreach (var app in Apps)
             {
                 <tr>
 

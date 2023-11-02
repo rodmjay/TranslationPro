@@ -5,19 +5,19 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Pages
 {
-    public partial class ApplicationList
+    public partial class Applications
     {
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public IEnumerable<ApplicationDto>? Applications { get; set; }
+        public IEnumerable<ApplicationDto>? Apps { get; set; }
 
         [Inject]
         public IApplicationsController? ApplicationService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Applications = (await ApplicationService!.GetApplicationsAsync()).ToList();
+            Apps = (await ApplicationService!.GetApplicationsAsync()).ToList();
         }
     }
 }
