@@ -4,14 +4,13 @@
 
 #endregion
 
-using TranslationPro.Shared.ApplicationLanguages;
-using TranslationPro.Shared.ApplicationUsers;
+using TranslationPro.Shared.Interfaces;
 
-namespace TranslationPro.Shared.Applications;
+namespace TranslationPro.Shared.Models;
 
 public class ApplicationDto : IApplication
 {
-    public List<string> SupportedLanguages { get; set; }
+    public List<string>? SupportedLanguages { get; set; }
     public int PhraseCount { get; set; }
     public int TranslationCount { get; set; }
     public int PendingTranslationCount { get; set; }

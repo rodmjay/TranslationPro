@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Translations.Interfaces;
-using TranslationPro.Shared.ApplicationLanguages;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Controllers;
+using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Controllers;
 

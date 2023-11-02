@@ -8,9 +8,8 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Languages.Interfaces;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Shared.Languages;
+using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Languages.Entities;
 

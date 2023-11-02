@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using TranslationPro.Shared.Applications;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Controllers;
+using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Proxies
 {

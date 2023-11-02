@@ -4,7 +4,8 @@
 
 #endregion
 
-namespace TranslationPro.Shared.ApplicationLanguages;
+
+namespace TranslationPro.Shared.Models;
 
 public class ApplicationLanguageInput
 {

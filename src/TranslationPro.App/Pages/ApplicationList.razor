@@ -1,14 +1,16 @@
 ﻿@page "/applications"
 
-<h3>ApplicationList</h3>
-
-
 @if (Applications == null)
 {
     <p>Loading Applications...</p>
 }
 else
 {
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Applications</li>
+        </ol>
+    </nav>
     <table class="table">
         <thead>
         <tr>

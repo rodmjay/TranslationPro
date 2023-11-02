@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using TranslationPro.Shared.Enums;
 
-namespace TranslationPro.Shared.ApplicationUsers
+namespace TranslationPro.Shared.Models
 {
     public class ApplicationUserDto
     {

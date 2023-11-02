@@ -5,9 +5,10 @@
 #endregion
 
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Phrases;
+using TranslationPro.Shared.Filters;
+using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Shared.Controllers;
+namespace TranslationPro.Shared.Interfaces;
 
 public interface IPhrasesController
 {

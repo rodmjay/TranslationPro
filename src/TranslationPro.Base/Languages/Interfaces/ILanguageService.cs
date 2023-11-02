@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Languages.Entities;
-using TranslationPro.Shared.Languages;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Languages.Interfaces;
 

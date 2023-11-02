@@ -1,6 +1,6 @@
-﻿using TranslationPro.Shared.Controllers;
-using TranslationPro.Shared.Extensions;
-using TranslationPro.Shared.Languages;
+﻿using TranslationPro.Shared.Extensions;
+using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Proxies;
 

@@ -5,7 +5,7 @@
 #endregion
 
 using System.Net;
-using TranslationPro.Shared.Applications;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Testing.TestCases;
 

@@ -6,7 +6,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace TranslationPro.Shared.Applications;
+namespace TranslationPro.Shared.Models;
 
 public class ApplicationInput
 {

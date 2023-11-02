@@ -4,10 +4,10 @@
 
 #endregion
 
-using TranslationPro.Shared.ApplicationLanguages;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Shared.Controllers;
+namespace TranslationPro.Shared.Interfaces;
 
 public interface IApplicationLanguagesController
 {

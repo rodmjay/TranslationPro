@@ -4,7 +4,8 @@
 
 #endregion
 
-namespace TranslationPro.Shared.Phrases;
+
+namespace TranslationPro.Shared.Filters;
 
 public class PhraseFilters
 {

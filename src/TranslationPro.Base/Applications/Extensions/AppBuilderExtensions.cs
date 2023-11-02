@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Applications.Interfaces;
 using TranslationPro.Base.Applications.Services;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Shared.Applications;
 
 namespace TranslationPro.Base.Applications.Extensions;
 

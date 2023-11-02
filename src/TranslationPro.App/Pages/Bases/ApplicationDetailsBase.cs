@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
-using TranslationPro.Shared.Applications;
-using TranslationPro.Shared.Controllers;
+using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Pages.Bases
 {
-
-
     public class ApplicationDetailsBase : ComponentBase
     {
         [Parameter]

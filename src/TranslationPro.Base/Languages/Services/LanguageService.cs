@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Languages.Interfaces;
-using TranslationPro.Shared.Languages;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Languages.Services;
 

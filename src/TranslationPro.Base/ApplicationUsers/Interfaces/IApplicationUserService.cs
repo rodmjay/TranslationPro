@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Services.Interfaces;
-using TranslationPro.Shared.ApplicationUsers;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.ApplicationUsers.Interfaces
 {

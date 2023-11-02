@@ -20,9 +20,9 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Shared.Applications;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Applications.Services;
 

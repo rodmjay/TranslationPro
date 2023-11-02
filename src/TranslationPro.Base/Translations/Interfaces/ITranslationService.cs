@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Translations;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Interfaces;
 

@@ -7,9 +7,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
 using TranslationPro.Base.ApplicationLanguages.Services;
-using TranslationPro.Base.Applications;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Shared.ApplicationLanguages;
 
 namespace TranslationPro.Base.ApplicationLanguages.Extensions;
 

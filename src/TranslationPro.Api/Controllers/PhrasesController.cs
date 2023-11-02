@@ -13,8 +13,9 @@ using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Controllers;
-using TranslationPro.Shared.Phrases;
+using TranslationPro.Shared.Filters;
+using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Controllers;
 

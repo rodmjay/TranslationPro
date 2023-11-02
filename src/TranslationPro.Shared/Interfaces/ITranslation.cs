@@ -4,7 +4,7 @@
 
 #endregion
 
-namespace TranslationPro.Shared.Translations;
+namespace TranslationPro.Shared.Interfaces;
 
 public interface ITranslation
 {

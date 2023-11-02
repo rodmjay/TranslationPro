@@ -1,4 +1,4 @@
-﻿namespace TranslationPro.Shared.ApplicationLanguages
+﻿namespace TranslationPro.Shared.Models
 {
     public class ApplicationLanguageDto
     {

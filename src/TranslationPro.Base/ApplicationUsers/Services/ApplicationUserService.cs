@@ -10,9 +10,9 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Managers;
-using TranslationPro.Shared.ApplicationUsers;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.ApplicationUsers.Services
 {

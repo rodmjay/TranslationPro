@@ -6,7 +6,7 @@
 
 using AutoMapper;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Shared.Translations;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Projections;
 

@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TranslationPro.Shared.ApplicationUsers;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Testing.Tests;
 

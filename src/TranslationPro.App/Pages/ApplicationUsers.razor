@@ -9,9 +9,13 @@
 }
 else
 {
-    <p>
-        Back to <NavLink href="@{$"/applications/{ApplicationId}"}">Application</NavLink>
-    </p>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
+            <li class="breadcrumb-item active" aria-current="page">Users</li>
+        </ol>
+    </nav>
     <table class="table">
         <thead>
             <tr>

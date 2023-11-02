@@ -1,0 +1,40 @@
+﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}"
+@inherits PhraseDetailsBase
+
+@if (Phrase == null)
+{
+    <p>Loading Phrase...</p>
+}
+else
+{
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}/phrases"}">Phrases</NavLink></li>
+            <li class="breadcrumb-item active" aria-current="page">@Phrase.Text</li>
+        </ol>
+    </nav>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Text</th>
+                <th>Language</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var translation in Phrase.Translations)
+            {
+                <tr>
+                    <td>@translation.Text</td>
+                    <td>@translation.LanguageName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+}

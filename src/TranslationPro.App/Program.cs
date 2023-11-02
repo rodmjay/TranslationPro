@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TranslationPro.App.MessageHandlers;
 using TranslationPro.App.Proxies;
-using TranslationPro.Shared.Controllers;
+using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Policies;
 
 namespace TranslationPro.App;

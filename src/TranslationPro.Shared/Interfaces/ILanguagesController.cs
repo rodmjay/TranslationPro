@@ -4,9 +4,9 @@
 
 #endregion
 
-using TranslationPro.Shared.Languages;
+using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Shared.Controllers;
+namespace TranslationPro.Shared.Interfaces;
 
 public interface ILanguagesController
 {

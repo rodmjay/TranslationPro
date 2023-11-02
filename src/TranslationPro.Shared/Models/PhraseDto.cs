@@ -4,9 +4,9 @@
 
 #endregion
 
-using TranslationPro.Shared.Translations;
+using TranslationPro.Shared.Interfaces;
 
-namespace TranslationPro.Shared.Phrases;
+namespace TranslationPro.Shared.Models;
 
 public class PhraseDto : IPhrase
 {

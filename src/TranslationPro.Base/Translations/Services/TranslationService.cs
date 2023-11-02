@@ -20,7 +20,7 @@ using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Translations;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Services;
 

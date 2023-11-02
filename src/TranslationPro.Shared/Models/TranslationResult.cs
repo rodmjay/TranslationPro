@@ -4,4 +4,5 @@
 
 #endregion
 
-namespace TranslationPro.Shared.Translations;
+
+namespace TranslationPro.Shared.Models;

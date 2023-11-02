@@ -9,8 +9,8 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Shared.ApplicationLanguages;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.ApplicationLanguages.Services
 {

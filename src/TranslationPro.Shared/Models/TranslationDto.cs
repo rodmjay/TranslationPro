@@ -5,8 +5,9 @@
 #endregion
 
 using Newtonsoft.Json;
+using TranslationPro.Shared.Interfaces;
 
-namespace TranslationPro.Shared.Translations;
+namespace TranslationPro.Shared.Models;
 
 public class TranslationDto : ITranslation
 {

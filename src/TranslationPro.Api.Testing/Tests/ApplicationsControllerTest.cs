@@ -8,8 +8,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TranslationPro.Shared.Applications;
-using TranslationPro.Shared.Phrases;
+using TranslationPro.Shared.Models;
 using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;
