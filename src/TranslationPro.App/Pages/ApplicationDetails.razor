@@ -16,12 +16,22 @@ else
     </nav>
     <table class="table">
         <tbody>
+            <tr>
+                <th>Languages:</th>
+                <td>
+                    <NavLink href="@{$"applications/{ApplicationId}/languages"}">
+                        @Application.Languages.Count
+                    </NavLink>
+                </td>
+
+            </tr>
         <tr>
             <th>Phrases:</th>
-            <td><NavLink href="@{$"applications/{ApplicationId}/phrases"}">
-                @Application.PhraseCount
-            </NavLink></td>
-           
+            <td>
+                <NavLink href="@{$"applications/{ApplicationId}/phrases"}">
+                    @Application.PhraseCount
+                </NavLink></td>
+
         </tr>
         <tr>
             <th>Users:</th>
