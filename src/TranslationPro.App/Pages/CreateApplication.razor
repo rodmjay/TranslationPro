@@ -1,8 +1,12 @@
 ﻿@page "/applications/create"
 
+@code {
+   
+}
+
 <h3>Create Application</h3>
 
-<EditForm Model="Input">
+<EditForm Model="Input" OnSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     
@@ -12,6 +16,20 @@
         <InputText id="name" class="form-control" @bind-Value="Input.Name"></InputText>
     </div>
     
+    <div class="mb-3">
+        <label for="mslct" class="form-label">Languages (hold shift to select multiple)</label>
+        <select id="mslct" class="form-select" @onchange="OnChangeSelection" multiple style="width:100%;">
+            @if (Languages != null)
+            {
+                foreach (var language in Languages)
+                {
+                    <option selected="@(selection.Contains(language.Id))" value="@language.Id">@language.Name</option>
+                }
+            }
+        </select>
+    </div>
+
+
     <button type="submit" class="btn btn-primary">Add</button>
 
 </EditForm>
