@@ -30,13 +30,9 @@ else
                         <div class="card-body">
                             <h5 class="card-title">@app.Name</h5>
                             <ul class="list-group list-group-flush">
+                                
                                 <li class="list-group-item">
-                                    <NavLink href="@{ $"applications/{@app.Id}/phrases" }" class="">Manage Phrases</NavLink></li>
-                                <li class="list-group-item">
-                                    <NavLink href="@{ $"applications/{@app.Id}/users" }" class="">Manage Users</NavLink>
-                                </li>
-                                <li class="list-group-item">
-                                    <NavLink href="@{ $"applications/{@app.Id}/languages" }" class="">Manage Languages</NavLink>
+                                    <NavLink href="@{ $"applications/{@app.Id}" }" class="btn">Manage Application</NavLink>
                                 </li>
                             </ul>
                         </div>
