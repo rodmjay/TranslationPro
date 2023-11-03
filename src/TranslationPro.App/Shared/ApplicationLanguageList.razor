@@ -1,0 +1,27 @@
+﻿@if (Application != null && Languages != null)
+{
+
+    <ul class="list-inline">
+        @if (Languages != null)
+        {
+            @foreach (var lang in Languages)
+            {
+                <li class="list-inline-item">
+                    @if (!Application.SupportedLanguages.Contains(lang.Id))
+                    {
+                        <button @onclick="()=>HandleEnableClick(lang.Id)" class="border-primary btn">Enable @lang.Name</button>
+                    }
+                    else
+                    {
+                        <button @onclick="()=>HandleDisableClick(lang.Id)" class="border-danger btn">Disable @lang.Name</button>
+                    }
+                </li>
+            }
+        }
+    </ul>
+    
+}
+else
+{
+    <p>Loading...</p>
+}

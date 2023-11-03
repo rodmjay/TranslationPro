@@ -1,17 +1,36 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
+<div class="container-fluid badge-info" >
+    <div class="row justify-content-between">
+        <div class="col-4">
+            Logo Here
+        </div>
+        <div class="col-4">
             <LoginDisplay></LoginDisplay>
         </div>
+    </div>
+</div>
 
+<AuthorizeView>
+    <Authorized>
+        <div class="container-fluid bg-dark" >
+            <div class="row justify-content-between">
+                <div class="col-4">
+                </div>
+                <div class="col-4">
+                    <ApplicationSelector></ApplicationSelector>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+<div class="page">
+
+    <main>
         <article class="content px-4">
             @Body
         </article>
+
     </main>
 </div>
+

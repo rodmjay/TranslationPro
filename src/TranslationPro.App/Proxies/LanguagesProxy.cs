@@ -1,4 +1,7 @@
-﻿using TranslationPro.Shared.Extensions;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using TranslationPro.Shared.Extensions;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 

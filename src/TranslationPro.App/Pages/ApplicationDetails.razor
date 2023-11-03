@@ -35,12 +35,7 @@ else
 
                     <div class="card-body">
                         <h5 class="card-title">Phrases</h5>
-
-                        <NavLink href="@{
-                        $"applications/{ApplicationId}/phrases"
- }">
-                            <h1 class=" display-6">@Application.PhraseCount</h1>
-                        </NavLink>
+                        <h1 class=" display-6">@Application.PhraseCount</h1>
                     </div>
                 </div>
             </div>
@@ -49,12 +44,7 @@ else
 
                     <div class="card-body">
                         <h5 class="card-title">Languages</h5>
-
-                        <NavLink href="@{
-                        $"applications/{ApplicationId}/languages"
- }">
-                            <h1 class=" display-6">@Application.Languages.Count</h1>
-                        </NavLink>
+                        <h1 class=" display-6">@Application.Languages.Count</h1>
                     </div>
                 </div>
             </div>
@@ -63,12 +53,7 @@ else
 
                     <div class="card-body">
                         <h5 class="card-title">Users</h5>
-
-                        <NavLink href="@{
-                                       $"applications/{ApplicationId}/users"
-                                   }">
-                            <h1 class=" display-6">@Application.Users.Count</h1>
-                        </NavLink>
+                        <h1 class=" display-6">@Application.Users.Count</h1>
                     </div>
                 </div>
             </div>
@@ -80,6 +65,14 @@ else
                         <h1 class=" display-6">@Application.TranslationCount</h1>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <PhraseList ApplicationId="ApplicationId"></PhraseList>
+            </div>
+            <div class="col-4">
+                <ApplicationLanguageList LanguagesChanged="LoadData"></ApplicationLanguageList>
             </div>
         </div>
     </div>

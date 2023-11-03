@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using TranslationPro.App.Pages.Bases;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;

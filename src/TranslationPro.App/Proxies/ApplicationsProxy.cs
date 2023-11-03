@@ -1,4 +1,8 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
@@ -7,7 +11,6 @@ namespace TranslationPro.App.Proxies
 {
     public class ApplicationsProxy : BaseProxy, IApplicationsController
     {
-        protected string ApplicationUrl = "/v1.0/applications";
 
 
         public ApplicationsProxy(HttpClient httpClient) : base(httpClient)

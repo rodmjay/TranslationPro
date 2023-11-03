@@ -1,5 +1,11 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
 using TranslationPro.App.MessageHandlers;
 using TranslationPro.App.Proxies;
 using TranslationPro.Shared.Interfaces;
@@ -52,6 +58,7 @@ public class Program
                 client => client.BaseAddress = new Uri("https://localhost:44329/"))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
+        builder.Services.AddIWProtectedBrowserStorageAsSingleton();
 
         builder.Services.AddAuthorizationCore(authorizationOptions =>
         {

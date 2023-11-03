@@ -22,34 +22,5 @@ else
             <li class="breadcrumb-item active" aria-current="page">Languages</li>
         </ol>
     </nav>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Language</th>
-                <th>Is Enabled</th>
-            </tr>
-        </thead>
-        <tbody>
-        @if (@Languages != null)
-        {
-            @foreach (var lang in Languages)
-            {
-                <tr>
-                    <td>@lang.Name</td>
-                    <td>
-                        @if (!Application.SupportedLanguages.Contains(lang.Id))
-                        {
-                            <button @onclick="()=>HandleEnableClick(lang.Id)" class="btn-primary btn">Enable</button>
-                        }
-                        else
-                        {
-                                <button @onclick="()=>HandleDisableClick(lang.Id)" class="btn-danger btn">Disable</button>
-                        }
-                    </td>
-                </tr>
-            }
-        }
-        
-        </tbody>
-    </table>
+    
 }

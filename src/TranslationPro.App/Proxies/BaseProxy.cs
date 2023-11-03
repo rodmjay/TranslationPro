@@ -4,6 +4,8 @@
 
 #endregion
 
+using System.Net.Http;
+using System.Threading.Tasks;
 using TranslationPro.Shared.Extensions;
 
 namespace TranslationPro.App.Proxies;

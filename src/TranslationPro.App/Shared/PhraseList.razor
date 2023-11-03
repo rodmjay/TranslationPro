@@ -1,0 +1,52 @@
+﻿
+@if (Phrases == null)
+{
+    <p>Loading Phrases...</p>
+}
+else
+{
+
+    
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Phrase</th>
+            <th>Translations</th>
+            <th>Pending Translations</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var phrase in Phrases.Items)
+        {
+            <tr>
+                <td>@phrase.Id</td>
+                <td>
+                    <NavLink href="@{$"/applications/{ApplicationId}/phrases/{@phrase.Id}"}">
+                        @phrase.Text
+                    </NavLink>
+                </td>
+                <td>@phrase.TranslationCount</td>
+                <td>@phrase.PendingTranslationCount</td>
+                <td class="btn-group-sm">
+                    <a href="#"
+                       class="btn btn-outline-primary">
+                        Edit
+                    </a>
+                    <button class="btn btn-outline-danger">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5">Total Items: @Phrases.TotalItems</td>
+        </tr>
+        </tfoot>
+    </table>
+
+
+}

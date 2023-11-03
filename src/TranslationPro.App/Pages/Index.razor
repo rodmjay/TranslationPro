@@ -1,17 +1,26 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Translation Pro</PageTitle>
 
-<h1>Welcome To Translation Pro</h1>
-<p>Easily Translate your website into any of the following languages</p>
 
-@if (Languages != null)
-{
-    <ul class="list-group">
+<AuthorizeView>
+    <NotAuthorized>
         
-        @foreach (var lang in Languages)
+        <h1>Welcome To Translation Pro</h1>
+        <p>Easily Translate your website into any of the following languages</p>
+
+        @if (Languages != null)
         {
-            <li class="list-group-item">@lang.Name</li>
+            <ul class="list-group">
+        
+                @foreach (var lang in Languages)
+                {
+                    <li class="list-group-item">@lang.Name</li>
+                }
+            </ul>
         }
-    </ul>
-}
+    </NotAuthorized>
+    <Authorized>
+        <ApplicationList></ApplicationList>
+    </Authorized>
+</AuthorizeView>
