@@ -1,0 +1,83 @@
+﻿@page "/applications/{ApplicationId:guid}/phrases"
+@inherits ApplicationDetailsBase
+
+@if (PhraseList == null)
+{
+    <p>Loading Phrases...</p>
+}
+else
+{
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
+            <li class="breadcrumb-item active" aria-current="page">Phrases</li>
+        </ol>
+    </nav>
+    <p>
+        <NavLink class="btn btn-primary" href="@($"/applications/{ApplicationId}/phrases/create")">Create Phrase</NavLink>
+    </p>
+
+    <ul class="pagination mt-3">
+        <li class="page-item @(PhraseList.CurrentPage == 1 ? "disabled" : "")">
+            <NavLink class="page-link" href="@{
+            $"/applications/{@Application.Id}/phrases/?page={(PhraseList.CurrentPage - 1)}"
+}">
+                Previous
+            </NavLink>
+        </li>
+        @for (int i = 1; i <= PhraseList.CurrentPage; i++)
+        {
+            <li class="page-item @(PhraseList.CurrentPage == i ? "active" : "")">
+                <NavLink class="page-link" href="@{ $"/applications/{Application.Id}/phrases/?page={i}"}">@i
+                </NavLink>
+            </li>
+        }
+        <li class="page-item @(PhraseList.CurrentPage == PhraseList.TotalPages ? "disabled" : "")">
+            <NavLink class="page-link" href="@{ $"/applications/{Application.Id}/phrases/?page={(PhraseList.CurrentPage + 1)}"}">Next
+            </NavLink>
+        </li>
+    </ul>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Phrase</th>
+            <th>Translations</th>
+            <th>Pending Translations</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var phrase in PhraseList.Items)
+        {
+            <tr>
+                <td>@phrase.Id</td>
+                <td>
+                    <NavLink href="@{$"/applications/{ApplicationId}/phrases/{@phrase.Id}"}">
+                        @phrase.Text
+                    </NavLink>
+                </td>
+                <td>@phrase.TranslationCount</td>
+                <td>@phrase.PendingTranslationCount</td>
+                <td class="btn-group-sm">
+                    <a href="#"
+                       class="btn btn-outline-primary">
+                        Edit
+                    </a>
+                    <button class="btn btn-outline-danger">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5">Total Items: @PhraseList.TotalItems</td>
+        </tr>
+        </tfoot>
+    </table>
+}
