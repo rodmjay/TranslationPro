@@ -21,9 +21,9 @@ namespace TranslationPro.App.Pages
             await LoadData();
         }
 
-        public async Task LoadData()
+        protected override async Task LoadData()
         {
-
+            await base.LoadData();
             Phrase = await PhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
         }
     }
