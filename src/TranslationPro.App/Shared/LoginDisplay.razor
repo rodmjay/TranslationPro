@@ -14,14 +14,14 @@
     <AuthorizeView>
         <Authorized>
             
-            <a class="text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Test
+            <a class="text-white dropdown-toggle" href="https://localhost:44319/Account/Manage" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @context.User.Identity?.Name
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 @*<a class="dropdown-item" href="#">Item</a>
                         <a class="dropdown-item" href="#">Item</a>*@
                 @*<div class="dropdown-divider"></div>*@
-                <form method="post" action="~/Account/LogOut">
+                <form method="post" action="https://localhost:44319/Account/LogOut">
                     <button type="submit" class="ss-manage-nav-link nav-link btn btn-link">
                         <i data-feather="log-out"></i>
                         <span>

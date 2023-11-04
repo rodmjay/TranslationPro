@@ -10,25 +10,26 @@ else
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
-            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}/phrases"}">Phrases</NavLink></li>
             <li class="breadcrumb-item active" aria-current="page">@Phrase.Text</li>
         </ol>
     </nav>
     <h3>@Phrase.Id: @Phrase.Text</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Text</th>
+        <tr>
                 <th>Language</th>
+            <th>Text</th>
 
-            </tr>
+
+        </tr>
         </thead>
         <tbody>
             @foreach (var translation in Phrase.Translations)
             {
                 <tr>
+                    <th>@translation.LanguageName</th>
                     <td>@translation.Text</td>
-                    <td>@translation.LanguageName</td>
+
                 </tr>
             }
         </tbody>

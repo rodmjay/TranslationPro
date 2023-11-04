@@ -1,25 +1,30 @@
 ﻿@if (Application != null && Languages != null)
 {
 
-    <ul class="list-inline">
-        @if (Languages != null)
+
+    @if (Languages != null)
+    {
+        @foreach (var lang in Languages)
         {
-            @foreach (var lang in Languages)
-            {
-                <li class="list-inline-item">
-                    @if (!Application.SupportedLanguages.Contains(lang.Id))
-                    {
-                        <button @onclick="()=>HandleEnableClick(lang.Id)" class="border-primary btn">Enable @lang.Name</button>
-                    }
-                    else
-                    {
-                        <button @onclick="()=>HandleDisableClick(lang.Id)" class="border-danger btn">Disable @lang.Name</button>
-                    }
-                </li>
-            }
+            <div class="form-check">
+
+                @if (!Application.SupportedLanguages.Contains(lang.Id))
+                {
+                    <input @onclick="()=>HandleEnableClick(lang.Id)" class="form-check-input" type="checkbox" value="@lang.Id" id="@lang.Id">
+                }
+                else
+                {
+                    <input @onclick="()=>HandleDisableClick(lang.Id)" class="form-check-input" checked type="checkbox" value="@lang.Id" id="@lang.Id">
+                }
+
+                <label class="form-check-label" for="@lang.Id">
+                    @lang.Name
+                </label>
+            </div>
         }
-    </ul>
-    
+    }
+
+
 }
 else
 {
