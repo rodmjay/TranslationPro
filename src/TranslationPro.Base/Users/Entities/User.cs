@@ -18,7 +18,7 @@ using TranslationPro.Base.Users.Interfaces;
 
 namespace TranslationPro.Base.Users.Entities;
 
-public class User : IdentityUser<int>, IEntityTypeConfiguration<User>, IObjectState,
+public partial class User : IdentityUser<int>, IEntityTypeConfiguration<User>, IObjectState,
     IUser
 {
     public User()

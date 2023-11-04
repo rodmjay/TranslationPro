@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
 #nullable disable
 
-namespace TranslationPro.Base.common.data.migrations
+namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231104205652_AddedStripeEntities")]
+    partial class AddedStripeEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,7 +250,7 @@ namespace TranslationPro.Base.common.data.migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 11, 4, 21, 0, 50, 579, DateTimeKind.Utc).AddTicks(2889),
+                            Created = new DateTime(2023, 11, 4, 20, 56, 52, 518, DateTimeKind.Utc).AddTicks(1238),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -1892,13 +1895,7 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("StripeCustomer");
                 });
@@ -2268,7 +2265,7 @@ namespace TranslationPro.Base.common.data.migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -2313,6 +2310,8 @@ namespace TranslationPro.Base.common.data.migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("User");
 
@@ -2687,17 +2686,6 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCustomer", b =>
-                {
-                    b.HasOne("TranslationPro.Base.Users.Entities.User", "User")
-                        .WithOne("Customer")
-                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeCustomer", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
                 {
                     b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
@@ -2840,6 +2828,15 @@ namespace TranslationPro.Base.common.data.migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Users.Entities.User", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.UserClaim", b =>
@@ -3024,8 +3021,6 @@ namespace TranslationPro.Base.common.data.migrations
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.User", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("Customer");
 
                     b.Navigation("UserClaims");
 
