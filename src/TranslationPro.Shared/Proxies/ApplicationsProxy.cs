@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using TranslationPro.Shared.Common;
+﻿using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.App.Proxies
+namespace TranslationPro.Shared.Proxies
 {
     public class ApplicationsProxy : BaseProxy, IApplicationsController
     {

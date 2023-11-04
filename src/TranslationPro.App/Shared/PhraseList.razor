@@ -6,7 +6,21 @@
 else
 {
 
-    
+    <ul class="pagination mt-3">
+        <li class="page-item @(Phrases.CurrentPage == 1 ? "disabled" : "")">
+            <button class="page-link" @onclick="()=>HandlePageNavigation(Phrases.CurrentPage-1)">Previous</button>
+        </li>
+        @for (int i = 1; i <= Phrases.TotalPages; i++)
+        {
+            var local = i;
+            <li class="page-item @(Phrases.CurrentPage == i ? "active" : "")">
+                <button class="page-link"  @onclick="(()=>HandlePageNavigation(local))">@local</button>
+            </li>
+        }
+        <li class="page-item @(Phrases.CurrentPage == Phrases.TotalPages ? "disabled" : "")">
+            <button class="page-link" @onclick="()=>HandlePageNavigation(Phrases.CurrentPage+1)">Next</button>
+        </li>
+    </ul>
     <table class="table table-striped">
         <thead>
         <tr>

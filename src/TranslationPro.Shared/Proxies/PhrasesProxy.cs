@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using TranslationPro.Shared.Common;
+﻿using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
+using TranslationPro.Shared.Helpers;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.App.Proxies;
+namespace TranslationPro.Shared.Proxies;
 
 public class PhrasesProxy : BaseProxy, IPhrasesController
 {
@@ -34,7 +31,8 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
 
     public Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
     {
-        return DoGet<PagedList<PhraseDto>>($"{ApplicationUrl}/{applicationId}/phrases");
+        var querystring = UrlHelper.CombineObjectsToUrl(paging, filters);
+        return DoGet<PagedList<PhraseDto>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
     }
 
     public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId, string language)

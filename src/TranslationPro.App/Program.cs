@@ -7,9 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
 using TranslationPro.App.MessageHandlers;
-using TranslationPro.App.Proxies;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Policies;
+using TranslationPro.Shared.Proxies;
 
 namespace TranslationPro.App;
 

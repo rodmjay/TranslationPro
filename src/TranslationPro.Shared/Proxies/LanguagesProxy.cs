@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using TranslationPro.Shared.Extensions;
+﻿using TranslationPro.Shared.Extensions;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.App.Proxies;
+namespace TranslationPro.Shared.Proxies;
 
 public class LanguagesProxy : BaseProxy, ILanguagesController
 {

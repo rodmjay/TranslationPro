@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -13,6 +15,11 @@ public partial class ApplicationList
     [CascadingParameter]
     Task<AuthenticationState> authenticationStateTask { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IIWLocalStorageService LocalStorage { get; set; }
     public IEnumerable<ApplicationDto>? Apps { get; set; }
 
     [Inject]
@@ -20,6 +27,10 @@ public partial class ApplicationList
 
     protected override async Task OnInitializedAsync()
     {
-        Apps = (await ApplicationService!.GetApplicationsAsync()).ToList();
+        Guid? applicationId = LocalStorage.GetItem<Guid?>("ApplicationId");
+        if (applicationId != null)
+        {
+            NavigationManager.NavigateTo($"/applications/{applicationId.Value}");
+        }
     }
 }
