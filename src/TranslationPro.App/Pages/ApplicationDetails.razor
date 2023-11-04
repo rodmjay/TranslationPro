@@ -22,83 +22,80 @@ else
             <NavLink class="btn btn-outline-primary" href="@($"/applications/{ApplicationId}/users/invite")">Invite User</NavLink>
         </div>
     </p>
+    <div class="row">
+        <div class="col-sm-3 mb-5">
+            <div class="card">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 mb-5">
-                <div class="card">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Phrases</h5>
-                        <h1 class=" display-6">@Application.PhraseCount</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 mb-5">
-                <div class="card">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Languages</h5>
-                        <h1 class=" display-6">@Application.Languages.Count</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 mb-5">
-                <div class="card">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Users</h5>
-                        <h1 class=" display-6">@Application.Users.Count</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 mb-5">
-                <div class="card">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Translations</h5>
-                        <h1 class=" display-6">@Application.TranslationCount</h1>
-                    </div>
+                <div class="card-body">
+                    <h5 class="card-title">Phrases</h5>
+                    <h1 class=" display-6">@Application.PhraseCount</h1>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-8">
-                <h3>Phrases</h3>
-                <PhraseList ApplicationId="ApplicationId"></PhraseList>
-            </div>
-            <div class="col-4">
+        <div class="col-sm-3 mb-5">
+            <div class="card">
 
-                <div class="accordion accordion-flush" id="accordionFlushExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                Languages (@Application.Languages.Count)
-                            </button>
-                        </h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <ApplicationLanguageList LanguagesChanged="LoadData"></ApplicationLanguageList>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                               Users (@Application.Users.Count)
-                            </button>
-                        </h2>
-                        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <ApplicationUserList></ApplicationUserList>
-                            </div>
-                        </div>
-                    </div>
-                    
+                <div class="card-body">
+                    <h5 class="card-title">Languages</h5>
+                    <h1 class=" display-6">@Application.Languages.Count</h1>
                 </div>
-                
+            </div>
+        </div>
+        <div class="col-sm-3 mb-5">
+            <div class="card">
+
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <h1 class=" display-6">@Application.Users.Count</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 mb-5">
+            <div class="card">
+
+                <div class="card-body">
+                    <h5 class="card-title">Translations</h5>
+                    <h1 class=" display-6">@Application.TranslationCount</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <h3>Phrases</h3>
+            <PhraseList ApplicationId="ApplicationId"></PhraseList>
+        </div>
+        <div class="col-4">
+
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Languages (@Application.Languages.Count)
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <ApplicationLanguageList LanguagesChanged="LoadData"></ApplicationLanguageList>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Users (@Application.Users.Count)
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <ApplicationUserList></ApplicationUserList>
+                        </div>
+                    </div>
+                </div>
 
             </div>
+
+
         </div>
     </div>
 
