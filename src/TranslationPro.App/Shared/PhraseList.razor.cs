@@ -22,7 +22,7 @@ namespace TranslationPro.App.Shared
         [Inject]
         public NavigationManager NavManager { get; set; }
         
-        private PagingQuery Paging = new PagingQuery();
+        private PagingQuery _paging = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -31,14 +31,14 @@ namespace TranslationPro.App.Shared
 
         public async Task LoadData()
         {
-            Phrases = await PhrasesController.GetPhrasesAsync(ApplicationId, Paging, new PhraseFilters());
+            Phrases = await PhrasesController.GetPhrasesAsync(ApplicationId, _paging, new PhraseFilters());
 
             StateHasChanged();
         }
 
         public async Task HandlePageNavigation(int page)
         {
-            Paging.Page = page;
+            _paging.Page = page;
             await LoadData();
         }
         

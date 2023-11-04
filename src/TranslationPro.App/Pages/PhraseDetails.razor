@@ -19,7 +19,7 @@ else
         <tr>
                 <th>Language</th>
             <th>Text</th>
-
+            <th></th>
 
         </tr>
         </thead>
@@ -29,7 +29,12 @@ else
                 <tr>
                     <th>@translation.LanguageName</th>
                     <td>@translation.Text</td>
-
+                    <td class="btn-group">
+                        <NavLink href="@{$"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{translation.LanguageId}"}"
+                           class="btn btn-outline-primary">
+                            Edit
+                        </NavLink>
+                    </td>
                 </tr>
             }
         </tbody>
