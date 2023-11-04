@@ -11,7 +11,7 @@ namespace TranslationPro.App.Shared
     public partial class ApplicationSelector
     {
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager NavigationManager { get;set; }
         [Inject]
         public IIWLocalStorageService LocalStorage { get; set; }
 

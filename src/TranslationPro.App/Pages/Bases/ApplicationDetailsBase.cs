@@ -19,7 +19,7 @@ namespace TranslationPro.App.Pages.Bases
 
         protected ApplicationDto Application;
 
-        protected async override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             await LoadData();
         }
@@ -29,7 +29,7 @@ namespace TranslationPro.App.Pages.Bases
             await OnInitializedAsync();
         }
 
-        protected async Task LoadData()
+        protected virtual async Task LoadData()
         {
             if (ApplicationId != Guid.Empty)
             {

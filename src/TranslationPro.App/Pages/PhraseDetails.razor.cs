@@ -16,9 +16,13 @@ namespace TranslationPro.App.Pages
         public int PhraseId { get; set; }
         public PhraseDto Phrase { get; set; }
 
-        protected async override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
+            await LoadData();
+        }
+
+        public async Task LoadData()
+        {
 
             Phrase = await PhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
         }

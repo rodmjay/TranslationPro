@@ -17,19 +17,26 @@ namespace TranslationPro.App.Shared
         [Inject]
         public IPhrasesController PhrasesController { get; set; }
 
-        private PagedList<PhraseDto> Phrases { get; set; }
+        public PagedList<PhraseDto> Phrases { get; set; }
 
         [Inject]
         public NavigationManager NavManager { get; set; }
         
-
         protected override async Task OnParametersSetAsync()
         {
+            await LoadData();
+        }
 
+        public async Task LoadData()
+        {
             Phrases = await PhrasesController.GetPhrasesAsync(ApplicationId, new PagingQuery()
             {
                 Size = 100
             }, new PhraseFilters());
+
+
+            StateHasChanged();
         }
+        
     }
 }
