@@ -5,23 +5,45 @@
 @inject SignOutSessionStateManager SignOutManager
 @inject IConfiguration Configuration
 
-<AuthorizeView>
-    <Authorized>
-        <a href="https://localhost:44319/Account/Manage">Hello, @context.User.Identity?.Name!</a>
-        <form method="post" action="Identity/Account/Logout">
-            <button type="submit" class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
-           
-        </form>
-    </Authorized>
-    <NotAuthorized>
-        <NavLink 
-                 href="https://localhost:44319/Identity/Account/Register">
-            Register
-        </NavLink>
-        <NavLink href="authentication/login"> Log in
-        </NavLink>
-    </NotAuthorized>
-</AuthorizeView>
+
+
+
+
+<div class="nav-item dropdown d-inline-block mx-2">
+    
+    <AuthorizeView>
+        <Authorized>
+            
+            <a class="text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Test
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @*<a class="dropdown-item" href="#">Item</a>
+                        <a class="dropdown-item" href="#">Item</a>*@
+                @*<div class="dropdown-divider"></div>*@
+                <form method="post" action="~/Account/LogOut">
+                    <button type="submit" class="ss-manage-nav-link nav-link btn btn-link">
+                        <i data-feather="log-out"></i>
+                        <span>
+                            Log Out
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <NavLink class="text-white"
+                href="https://localhost:44319/Identity/Account/Register">
+                Register
+            </NavLink>
+            <NavLink class="text-white" href="authentication/login">
+                Log in
+            </NavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+    
+
+</div>
 
 @code {
     private async Task BeginSignOut(MouseEventArgs args)

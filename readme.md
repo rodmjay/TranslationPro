@@ -86,5 +86,10 @@ You will need to generate your own translation key and store in environmet varia
 ## Collaboration Information
 
 1. Please contact rodmjay@gmail.com if you would like to be added to the postman team
+1. 
+
+## Building SASS Files
+You will need to install the Web Compiler 2022+ extension.  You can find it here
+https://marketplace.visualstudio.com/items?itemName=Failwyn.WebCompiler64
 
 

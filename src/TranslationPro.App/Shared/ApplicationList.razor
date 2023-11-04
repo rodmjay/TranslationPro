@@ -23,23 +23,6 @@ else
                     </div>
                 </div>
             </div>
-            @foreach (var app in Apps)
-            {
-                <div class="col-sm-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">@app.Name</h5>
-                            <ul class="list-group list-group-flush">
-                                
-                                <li class="list-group-item">
-                                    <NavLink href="@{ $"applications/{@app.Id}" }" class="btn">Manage Application</NavLink>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
-
         </div>
     </div>
     

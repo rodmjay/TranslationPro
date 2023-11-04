@@ -22,11 +22,22 @@ namespace TranslationPro.App.Shared
 
         public Guid? CurrentApplicationId { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        public async Task LoadData()
         {
             CurrentApplicationId = LocalStorage.GetItem<Guid?>("ApplicationId");
 
             Applications = await ApplicationsProxy.GetApplicationsAsync();
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            await LoadData();
+        }
+        
+
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadData();
         }
 
         public void DoStuff(ChangeEventArgs e)
