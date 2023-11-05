@@ -29,7 +29,26 @@ public class StripeCard : BaseEntity<StripeCard>, IHasId, IHasCustomer
     public string Name { get; set; }
     public string Brand { get; set; }
     public string CvcCheck { get; set; }
-    public int ExpMonth { get; set; }
-    public int ExpYear { get; set; }
-
+    public long ExpMonth { get; set; }
+    public long ExpYear { get; set; }
+    public bool? Deleted { get; internal set; }
+    public bool? DefaultForCurrency { get; set; }
+    public string Description { get; set; }
+    public string Country { get; set; }
+    public string Currency { get; set; }
+    public string AddressZipCheck { get; set; }
+    public string AddressZip { get; set; }
+    public string AddressState { get; set; }
+    public string AddressLine2 { get; set; }
+    public string AddressLine1Check { get; set; }
+    public string AddressLine1 { get; set; }
+    public string AddressCountry { get; set; }
+    public string AddressCity { get; set; }
+    public string DynamicLast4 { get; set; }
+    public string Fingerprint { get; set; }
+    public string Funding { get; set; }
+    public string Iin { get; set; }
+    public string Issuer { get; set; }
+    public string Status { get; set; }
+    public string TokenizationMethod { get; set; }
 }

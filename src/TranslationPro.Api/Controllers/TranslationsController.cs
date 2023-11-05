@@ -28,7 +28,7 @@ public class TranslationsController : BaseController, ITranslationsController
 
     [HttpPost]
     public async Task<Result> SaveTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId,
-        [FromBody] TranslationInput input)
+        [FromBody] TranslationOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
         return await _translationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);

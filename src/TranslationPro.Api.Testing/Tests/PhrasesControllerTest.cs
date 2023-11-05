@@ -27,7 +27,7 @@ public class PhrasesControllerTest : BaseApiTest
     public class TheCreatePhraseMethod : BaseApiTest
     {
         [TestCaseSource(typeof(PhraseTestCases), nameof(PhraseTestCases.PhrasesWithTranslations))]
-        public async Task CanCreatePhraseWithTranslations(PhraseInput input, Dictionary<string, string> translations)
+        public async Task CanCreatePhraseWithTranslations(PhraseOptions input, Dictionary<string, string> translations)
         {
 
             var result = await CreatePhraseAsync(ApplicationId, input);
@@ -54,7 +54,7 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanUpdatePhrase()
         {
-            var input = new PhraseInput()
+            var input = new PhraseOptions()
             {
                 Text = "hello"
             };
@@ -74,7 +74,7 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanGetPhrases()
         {
-            var input = new PhraseInput()
+            var input = new PhraseOptions()
             {
                 Text = "hello"
             };
@@ -93,7 +93,7 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanGetPhrasesForApplicationAndLanguage()
         {
-            var input = new PhraseInput()
+            var input = new PhraseOptions()
             {
                 Text = "hello"
             };
@@ -111,7 +111,7 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanDeletePhrase()
         {
-            var input = new PhraseInput()
+            var input = new PhraseOptions()
             {
                 Text = "hello"
             };

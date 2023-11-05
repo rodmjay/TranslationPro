@@ -8,9 +8,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TranslationPro.Shared.Models;
 
-public class TranslationInput
+public class ApplicationOptions
 {
-    [Required][MinLength(2)] public string Text { get; set; }
+    [Required][MinLength(3)] public string Name { get; set; }
 
-    [MinLength(2)][Required] public string LanguageId { get; set; }
 }

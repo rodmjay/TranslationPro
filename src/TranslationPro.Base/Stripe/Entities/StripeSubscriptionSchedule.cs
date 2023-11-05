@@ -1,14 +1,13 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Stripe.Entities;
 
-public class StripeSchedule : BaseEntity<StripeSchedule>, IHasId, IHasCustomer
+public class StripeSubscriptionSchedule : BaseEntity<StripeSubscriptionSchedule>, IHasId, IHasCustomer
 {
-    public override void Configure(EntityTypeBuilder<StripeSchedule> builder)
+    public override void Configure(EntityTypeBuilder<StripeSubscriptionSchedule> builder)
     {
         builder.HasKey(x => x.Id);
 

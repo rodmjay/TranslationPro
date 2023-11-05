@@ -2,5 +2,5 @@
 
 public interface IAmount
 {
-    int Amount { get; set; }
+    long Amount { get; set; }
 }

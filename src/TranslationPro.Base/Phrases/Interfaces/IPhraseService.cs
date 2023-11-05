@@ -22,8 +22,8 @@ public interface IPhraseService : IService<Phrase>
 
     Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseDto;
     Task<Result> BulkUploadPhrases(Guid applicationId, List<string> phrases);
-    Task<Result> CreatePhraseAsync(Guid applicationId, PhraseInput input);
-    Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseInput input);
+    Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input);
+    Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input);
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
     Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language);
 }

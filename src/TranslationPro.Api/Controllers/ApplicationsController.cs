@@ -40,7 +40,7 @@ public class ApplicationsController : BaseController, IApplicationsController
     }
 
     [HttpPost]
-    public async Task<Result> CreateApplicationAsync([FromBody] CreateApplicationInput input)
+    public async Task<Result> CreateApplicationAsync([FromBody] ApplicationCreateOptions input)
     {
         var user = await GetCurrentUser();
         return await _service.CreateApplicationAsync(user.Id, input).ConfigureAwait(false);
@@ -54,7 +54,7 @@ public class ApplicationsController : BaseController, IApplicationsController
     }
 
     [HttpPut("{applicationId}")]
-    public async Task<Result> UpdateApplicationAsync([FromRoute] Guid applicationId, [FromBody] ApplicationInput input)
+    public async Task<Result> UpdateApplicationAsync([FromRoute] Guid applicationId, [FromBody] ApplicationOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
         return await _service.UpdateApplicationAsync(applicationId, input).ConfigureAwait(false);

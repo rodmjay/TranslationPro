@@ -19,10 +19,10 @@ public interface IPhrasesController
          List<string> input);
 
     Task<Result> CreatePhraseAsync(Guid applicationId,
-        PhraseInput input);
+        PhraseOptions input);
 
     Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId,
-        PhraseInput input);
+        PhraseOptions input);
 
     Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
          PhraseFilters filters);

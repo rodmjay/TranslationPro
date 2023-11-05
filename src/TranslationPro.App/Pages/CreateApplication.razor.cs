@@ -19,7 +19,7 @@ namespace TranslationPro.App.Pages
 
         [Inject]
         public ILanguagesController LanguagesController { get; set; }
-        public CreateApplicationInput Input { get; set; } = new CreateApplicationInput();
+        public ApplicationCreateOptions Input { get; set; } = new ApplicationCreateOptions();
          
         public List<LanguageDto> Languages { get; set; }
         private List<string> selection = new();

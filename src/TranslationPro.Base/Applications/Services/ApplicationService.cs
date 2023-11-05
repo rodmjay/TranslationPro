@@ -61,7 +61,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         return Applications.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
-    public async Task<Result> CreateApplicationAsync(int userId, CreateApplicationInput input)
+    public async Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
     {
         var application = new Application
         {
@@ -103,7 +103,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         return ApplicationUsers.Where(x => x.UserId == userId).Select(x => x.Application).ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
-    public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input)
+    public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationOptions input)
     {
         var existing = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 

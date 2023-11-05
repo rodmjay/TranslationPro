@@ -97,7 +97,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
     }
 
 
-    public async Task<Result> CreatePhraseAsync(Guid applicationId, PhraseInput input)
+    public async Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
         // does phrase already exist?
         var existing = await Phrases.Where(x => x.ApplicationId == applicationId && x.Text == input.Text)
@@ -137,7 +137,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         return Result.Failed(_errorDescriber.UnableToCreatePhrase());
     }
 
-    public async Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseInput input)
+    public async Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)
     {
         var existing = await Phrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
             .FirstOrDefaultAsync();

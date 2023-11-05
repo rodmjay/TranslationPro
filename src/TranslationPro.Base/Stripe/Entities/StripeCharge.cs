@@ -27,5 +27,51 @@ public class StripeCharge : BaseEntity<StripeCharge>, IHasId, ILiveMode, IHasCus
     public string CustomerId { get; set; }
     public string InvoiceId { get; set; }
     public StripeInvoice Invoice { get; set; }
-    public int Amount { get; set; }
+    
+    public long Amount { get; set; }
+    
+    public long AmountCaptured { get; set; }
+    
+    public long AmountRefunded { get; set; }
+    
+    
+    public string AuthorizationCode { get; set; }
+    
+    public string CalculatedStatementDescriptor { get; set; }
+    
+    public bool Captured { get; set; }
+    
+    public long Created { get; set; } 
+    
+    public string Currency { get; set; }
+    
+    public string Description { get; set; }
+    
+    public bool Disputed { get; set; }
+    
+    public string FailureCode { get; set; }
+    
+    public string FailureMessage { get; set; }
+    
+    //public ChargeOutcome Outcome { get; set; }
+    
+    public bool Paid { get; set; }
+    
+    public string PaymentMethod { get; set; }
+    
+    public string ReceiptEmail { get; set; }
+    
+    public string ReceiptNumber { get; set; }
+    
+    public string ReceiptUrl { get; set; }
+    
+    public bool Refunded { get; set; }
+    
+    public string StatementDescriptor { get; set; }
+    
+    public string StatementDescriptorSuffix { get; set; }
+    
+    public string Status { get; set; }
+    
+
 }

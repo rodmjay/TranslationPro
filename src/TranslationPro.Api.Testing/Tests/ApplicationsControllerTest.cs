@@ -20,7 +20,7 @@ public class ApplicationsControllerTest : BaseApiTest
     public class TheCreateApplicationAsyncMethod : ApplicationsControllerTest
     {
         [TestCaseSource(typeof(ApplicationTestCases), nameof(ApplicationTestCases.CreateModels))]
-        public async Task RunTestCases(CreateApplicationInput input, HttpStatusCode code)
+        public async Task RunTestCases(ApplicationCreateOptions input, HttpStatusCode code)
         {
             var response = await CreateApplicationAsync(input);
 
@@ -38,7 +38,7 @@ public class ApplicationsControllerTest : BaseApiTest
 
             Assert.AreEqual(1, applications.Count);
 
-            var createPhraseResult = await CreatePhraseAsync(ApplicationId, new PhraseInput()
+            var createPhraseResult = await CreatePhraseAsync(ApplicationId, new PhraseOptions()
             {
                 Text = "hello world"
             });
@@ -64,7 +64,7 @@ public class ApplicationsControllerTest : BaseApiTest
         [Test]
         public async Task CanUpdateApplication()
         {
-            var input = new ApplicationInput
+            var input = new ApplicationOptions
             {
                 Name = "Updated"
             };

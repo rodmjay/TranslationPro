@@ -6,9 +6,9 @@ namespace TranslationPro.Shared.Proxies;
 
 public class ApplicationUsersProxy : BaseProxy, IApplicationUsersController
 {
-    public Task<Result> InviteUserAsync(Guid applicationId, CreateApplicationUser input)
+    public Task<Result> InviteUserAsync(Guid applicationId, ApplicationUserCreateOptions input)
     {
-        return DoPost<CreateApplicationUser, Result>($"{ApplicationUrl}/{applicationId}/users", input);
+        return DoPost<ApplicationUserCreateOptions, Result>($"{ApplicationUrl}/{applicationId}/users", input);
     }
 
     public ApplicationUsersProxy(HttpClient httpClient) : base(httpClient)

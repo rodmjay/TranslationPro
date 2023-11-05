@@ -247,7 +247,7 @@ namespace TranslationPro.Base.common.data.migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 11, 4, 21, 0, 50, 579, DateTimeKind.Utc).AddTicks(2889),
+                            Created = new DateTime(2023, 11, 5, 7, 21, 10, 887, DateTimeKind.Utc).AddTicks(9570),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -1805,7 +1805,37 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AddressCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine1Check")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressState")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressZip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressZipCheck")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerId")
@@ -1814,16 +1844,46 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("CvcCheck")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExpMonth")
-                        .HasColumnType("int");
+                    b.Property<bool?>("DefaultForCurrency")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ExpYear")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DynamicLast4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ExpMonth")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpYear")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Fingerprint")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Funding")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Iin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Issuer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Last4")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenizationMethod")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1838,17 +1898,77 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountCaptured")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountRefunded")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AuthorizationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CalculatedStatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Captured")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("Created")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Disputed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FailureCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FailureMessage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InvoiceId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("LiveMode")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Refunded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatementDescriptorSuffix")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1864,6 +1984,45 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long?>("AmountOff")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Created")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Duration")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("DurationInMonths")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("MaxRedemptions")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("PercentOff")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long?>("RedeemBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TimesRedeemed")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("StripeCoupon");
@@ -1874,13 +2033,28 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
+                    b.Property<long>("Balance")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Created")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Balance")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("Delinquent")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoicePrefix")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LiveMode")
@@ -1889,7 +2063,13 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("NextInvoiceSequence")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxExempt")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
@@ -1901,6 +2081,26 @@ namespace TranslationPro.Base.common.data.migrations
                         .IsUnique();
 
                     b.ToTable("StripeCustomer");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StripeDiscount");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDispute", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StripeDispute");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
@@ -1933,7 +2133,7 @@ namespace TranslationPro.Base.common.data.migrations
                     b.ToTable("StripeInvoice");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLine", b =>
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -1945,7 +2145,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("StripeInvoiceLine");
+                    b.ToTable("StripeInvoiceLineItem");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
@@ -1953,8 +2153,8 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("CaptureMethod")
                         .HasColumnType("nvarchar(max)");
@@ -2096,21 +2296,6 @@ namespace TranslationPro.Base.common.data.migrations
                     b.ToTable("StripeRefund");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSchedule", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("StripeSchedule");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSession", b =>
                 {
                     b.Property<string>("Id")
@@ -2152,6 +2337,21 @@ namespace TranslationPro.Base.common.data.migrations
                     b.HasIndex("SubscriptionId");
 
                     b.ToTable("StripeSubscriptionItem");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("StripeSubscriptionSchedule");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Translation", b =>
@@ -2695,6 +2895,39 @@ namespace TranslationPro.Base.common.data.migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeAddress", "Address", b1 =>
+                        {
+                            b1.Property<string>("StripeCustomerId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line1")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line2")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripeCustomerId");
+
+                            b1.ToTable("StripeCustomer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripeCustomerId");
+                        });
+
+                    b.Navigation("Address");
+
                     b.Navigation("User");
                 });
 
@@ -2707,7 +2940,7 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLine", b =>
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
                 {
                     b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
                         .WithMany("Lines")
@@ -2773,15 +3006,6 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Navigation("Charge");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSchedule", b =>
-                {
-                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
-                        .WithMany("Schedules")
-                        .HasForeignKey("CustomerId");
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
                 {
                     b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
@@ -2798,6 +3022,15 @@ namespace TranslationPro.Base.common.data.migrations
                         .HasForeignKey("SubscriptionId");
 
                     b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("Schedules")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Translation", b =>

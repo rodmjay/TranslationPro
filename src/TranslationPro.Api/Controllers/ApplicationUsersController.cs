@@ -27,7 +27,7 @@ public class ApplicationUsersController : BaseController, IApplicationUsersContr
     }
 
     [HttpPost]
-    public async Task<Result> InviteUserAsync([FromRoute] Guid applicationId, [FromBody] CreateApplicationUser input)
+    public async Task<Result> InviteUserAsync([FromRoute] Guid applicationId, [FromBody] ApplicationUserCreateOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
         return await _applicationUserService.InviteUserAsync(applicationId, input).ConfigureAwait(false);

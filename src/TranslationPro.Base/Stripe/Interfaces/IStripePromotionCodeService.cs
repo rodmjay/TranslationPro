@@ -3,7 +3,7 @@ using TranslationPro.Base.Stripe.Entities;
 
 namespace TranslationPro.Base.Stripe.Interfaces;
 
-public interface ISubscriptionService : IService<StripeSubscription>
+public interface IStripePromotionCodeService : IService<StripePromotionCode>
 {
 
 }

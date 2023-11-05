@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
@@ -19,7 +18,7 @@ public class StripeInvoice : BaseEntity<StripeInvoice>, IHasId, ICreatedTimestam
             .WithMany(x => x.Invoices)
             .HasForeignKey(x => x.CustomerId);
     }
-    public ICollection<StripeInvoiceLine> Lines { get; set; }
+    public ICollection<StripeInvoiceLineItem> Lines { get; set; }
     public ICollection<StripePaymentIntent> PaymentIntents { get; set; }
     public string Id { get; set; }
     public int Created { get; set; }

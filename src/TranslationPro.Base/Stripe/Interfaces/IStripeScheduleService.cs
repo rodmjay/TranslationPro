@@ -3,7 +3,7 @@ using TranslationPro.Base.Stripe.Entities;
 
 namespace TranslationPro.Base.Stripe.Interfaces;
 
-public interface IInvoiceService : IService<StripeInvoice>
+public interface IStripeScheduleService : IService<StripeSubscriptionSchedule>
 {
 
 }

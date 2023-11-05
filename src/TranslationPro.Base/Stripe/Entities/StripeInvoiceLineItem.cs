@@ -1,14 +1,13 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Stripe.Entities;
 
-public class StripeInvoiceLine : BaseEntity<StripeInvoiceLine>, IHasInvoice, IHasId
+public class StripeInvoiceLineItem : BaseEntity<StripeInvoiceLineItem>, IHasInvoice, IHasId
 {
-    public override void Configure(EntityTypeBuilder<StripeInvoiceLine> builder)
+    public override void Configure(EntityTypeBuilder<StripeInvoiceLineItem> builder)
     {
         builder.HasKey(x => x.Id);
 

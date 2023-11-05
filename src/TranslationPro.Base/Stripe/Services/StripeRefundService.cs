@@ -5,15 +5,14 @@
 #endregion
 
 using System;
-using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Stripe.Entities;
 using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Stripe.Services;
 
-public class SubscriptionService : BaseService<StripeSubscription>, ISubscriptionService
+public class StripeRefundService : StripeService<StripeRefund>, IStripeRefundService
 {
-    public SubscriptionService(IServiceProvider serviceProvider) : base(serviceProvider)
+    public StripeRefundService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
     }
 }

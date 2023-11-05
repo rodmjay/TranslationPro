@@ -10,7 +10,7 @@ namespace TranslationPro.Base.ApplicationUsers.Interfaces
 {
     public interface IApplicationUserService : IService<ApplicationUser>
     {
-        Task<Result> InviteUserAsync(Guid applicationId, CreateApplicationUser input);
+        Task<Result> InviteUserAsync(Guid applicationId, ApplicationUserCreateOptions input);
 
         Task<List<T>> GetUsersForApplication<T>(Guid applicationId);
     }

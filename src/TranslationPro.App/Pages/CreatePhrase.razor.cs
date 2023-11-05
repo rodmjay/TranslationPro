@@ -11,7 +11,7 @@ namespace TranslationPro.App.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        public PhraseInput Input { get; set; } = new PhraseInput();
+        public PhraseOptions Input { get; set; } = new PhraseOptions();
 
         [Inject]
         public IPhrasesController PhraseProxy { get; set; }

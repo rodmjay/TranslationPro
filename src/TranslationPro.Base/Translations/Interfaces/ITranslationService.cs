@@ -16,7 +16,7 @@ namespace TranslationPro.Base.Translations.Interfaces;
 
 public interface ITranslationService : IService<Translation>
 {
-    Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input);
+    Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input);
 
     Task<Result> DeleteTranslation(Guid applicationId, int phraseId, string languageId);
 

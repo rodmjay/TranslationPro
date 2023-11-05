@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Stripe.Interfaces;
@@ -23,7 +22,7 @@ public class StripePaymentIntent : BaseEntity<StripePaymentIntent>,
     }
 
     public string Id { get; set; }
-    public int Amount { get; set; }
+    public long Amount { get; set; }
     public string CaptureMethod { get; set; }
     public string ConfirmationMethod { get; set; }
 

@@ -20,7 +20,7 @@ public static class ApplicationTestCases
         }
     };
 
-    public static CreateApplicationInput CreateApplication =>
+    public static ApplicationCreateOptions CreateApplication =>
         new()
         {
             Name = "Test",

@@ -12,5 +12,5 @@ namespace TranslationPro.Shared.Interfaces;
 public interface ITranslationsController
 {
     Task<Result> SaveTranslation(Guid applicationId, int phraseId,
-        TranslationInput input);
+        TranslationOptions input);
 }

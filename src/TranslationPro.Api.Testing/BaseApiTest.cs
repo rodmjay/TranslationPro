@@ -79,9 +79,9 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return DoGet<List<ApplicationDto>>(ApplicationUrl);
     }
 
-    public Task<Result> CreateApplicationAsync(CreateApplicationInput input)
+    public Task<Result> CreateApplicationAsync(ApplicationCreateOptions input)
     {
-        return DoPost<CreateApplicationInput, Result>(ApplicationUrl, input);
+        return DoPost<ApplicationCreateOptions, Result>(ApplicationUrl, input);
     }
 
     public Task<Result> DeleteApplicationAsync(Guid applicationId)
@@ -89,9 +89,9 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return DoDelete<Result>($"{ApplicationUrl}/{applicationId}");
     }
 
-    public Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input)
+    public Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationOptions input)
     {
-        return DoPut<ApplicationInput, Result>($"{ApplicationUrl}/{applicationId}", input);
+        return DoPut<ApplicationOptions, Result>($"{ApplicationUrl}/{applicationId}", input);
     }
 
     #endregion
@@ -110,9 +110,9 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
     #endregion
 
     #region Application Users
-    public Task<Result> InviteUserAsync(Guid applicationId, CreateApplicationUser input)
+    public Task<Result> InviteUserAsync(Guid applicationId, ApplicationUserCreateOptions input)
     {
-        return DoPost<CreateApplicationUser, Result>($"{ApplicationUrl}/{applicationId}/users", input);
+        return DoPost<ApplicationUserCreateOptions, Result>($"{ApplicationUrl}/{applicationId}/users", input);
     }
 
     #endregion
@@ -129,14 +129,14 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return DoPost<List<string>, Result>($"{ApplicationUrl}/{applicationId}/phrases/bulk", input);
     }
 
-    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseInput input)
+    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
-        return DoPost<PhraseInput, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
+        return DoPost<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
-    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseInput input)
+    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)
     {
-        return DoPut<PhraseInput, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
     public Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
@@ -158,9 +158,9 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
     #endregion
 
     #region Translations
-    public Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input)
+    public Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
     {
-        return DoPut<TranslationInput, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        return DoPut<TranslationOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
 
     }
 

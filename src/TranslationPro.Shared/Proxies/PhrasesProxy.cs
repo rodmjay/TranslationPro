@@ -19,14 +19,14 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoPost<List<string>, Result>($"{ApplicationUrl}/{applicationId}/phrases/bulk", input);
     }
 
-    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseInput input)
+    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
-        return DoPost<PhraseInput, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
+        return DoPost<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
-    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseInput input)
+    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)
     {
-        return DoPut<PhraseInput, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
     public Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)

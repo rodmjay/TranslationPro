@@ -11,5 +11,5 @@ namespace TranslationPro.Shared.Interfaces;
 
 public interface IApplicationUsersController
 {
-    Task<Result> InviteUserAsync(Guid applicationId, CreateApplicationUser input);
+    Task<Result> InviteUserAsync(Guid applicationId, ApplicationUserCreateOptions input);
 }

@@ -14,6 +14,7 @@ using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Languages.Extensions;
 using TranslationPro.Base.Permissions.Extensions;
 using TranslationPro.Base.Phrases.Extensions;
+using TranslationPro.Base.Stripe.Extensions;
 using TranslationPro.Base.Translations.Extensions;
 
 namespace TranslationPro.Functions;
@@ -43,6 +44,7 @@ public class Startup : FunctionsStartup
             .AddLanguageDependencies()
             .AddApplicationDependencies()
             .AddPhraseDependencies()
-            .AddTranslationDependencies();
+            .AddTranslationDependencies()
+            .AddStripeDependencies();
     }
 }

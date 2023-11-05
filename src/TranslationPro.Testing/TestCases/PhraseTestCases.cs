@@ -24,7 +24,7 @@ public static class PhraseTestCases
         }
     };
 
-    public static PhraseInput CreatePhrase =>
+    public static PhraseOptions CreatePhrase =>
         new()
         {
             Text = "house"

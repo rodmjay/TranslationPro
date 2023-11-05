@@ -51,7 +51,7 @@ public class PhrasesController : BaseController, IPhrasesController
 
     [HttpPost]
     public async Task<Result> CreatePhraseAsync([FromRoute] Guid applicationId,
-        [FromBody] PhraseInput input)
+        [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
         var result = await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
@@ -62,7 +62,7 @@ public class PhrasesController : BaseController, IPhrasesController
 
     [HttpPut("{phraseId}")]
     public async Task<Result> UpdatePhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId,
-        [FromBody] PhraseInput input)
+        [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
         var result = await _phraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);

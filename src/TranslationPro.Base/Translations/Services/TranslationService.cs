@@ -50,7 +50,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
     
-    public async Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationInput input)
+    public async Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
     {
         var phrase = await Phrases.Where(x => x.Id == phraseId).FirstOrDefaultAsync();
 

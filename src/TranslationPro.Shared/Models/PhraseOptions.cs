@@ -7,7 +7,7 @@
 
 namespace TranslationPro.Shared.Models;
 
-public class PhraseInput
+public class PhraseOptions
 {
     public string Text { get; set; }
 }

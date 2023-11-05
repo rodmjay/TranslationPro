@@ -16,7 +16,7 @@ namespace TranslationPro.App.Pages
 
         public TranslationDto Translation { get; set; }
 
-        public TranslationInput Input { get; set; } = new();
+        public TranslationOptions Input { get; set; } = new();
 
         [Inject]
         public ITranslationsController TranslationController { get; set; }

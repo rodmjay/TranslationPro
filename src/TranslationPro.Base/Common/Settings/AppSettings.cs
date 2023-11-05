@@ -10,7 +10,7 @@ using TranslationPro.Base.Email.Settings;
 
 namespace TranslationPro.Base.Common.Settings;
 
-public class AppSettings
+public partial class AppSettings
 {
     public string ApiUrl { get; set; }
     public string JsClientUrl { get; set; }

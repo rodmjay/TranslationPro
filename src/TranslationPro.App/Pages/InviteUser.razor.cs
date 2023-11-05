@@ -11,7 +11,7 @@ namespace TranslationPro.App.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        public CreateApplicationUser Input { get; set; } = new CreateApplicationUser();
+        public ApplicationUserCreateOptions Input { get; set; } = new ApplicationUserCreateOptions();
 
         [Inject]
         public IApplicationUsersController ApplicationsUsersController { get; set; }

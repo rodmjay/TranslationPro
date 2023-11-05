@@ -19,7 +19,7 @@ public class ApplicationUsersController : BaseApiTest
         [Test]
         public async Task CanInviteUser()
         {
-            var invitation = new CreateApplicationUser()
+            var invitation = new ApplicationUserCreateOptions()
             {
                 FirstName = "test",
                 LastName = "test",

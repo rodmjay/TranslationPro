@@ -19,13 +19,13 @@ public class TranslationsControllerTest : BaseApiTest
         [Test]
         public async Task CanSaveTranslation()
         {
-            var input = new PhraseInput()
+            var input = new PhraseOptions()
             {
                 Text = "hello"
             };
             var createResult = await CreatePhraseAsync(ApplicationId, input);
 
-            var input2 = new TranslationInput()
+            var input2 = new TranslationOptions()
             {
                 LanguageId = "es",
                 Text = "hola mae"

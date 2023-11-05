@@ -22,9 +22,9 @@ namespace TranslationPro.Shared.Proxies
             return await DoGet<List<ApplicationDto>>($"{ApplicationUrl}");
         }
 
-        public Task<Result> CreateApplicationAsync(CreateApplicationInput input)
+        public Task<Result> CreateApplicationAsync(ApplicationCreateOptions input)
         {
-            return DoPost<CreateApplicationInput, Result>(ApplicationUrl, input);
+            return DoPost<ApplicationCreateOptions, Result>(ApplicationUrl, input);
         }
 
         public Task<Result> DeleteApplicationAsync(Guid applicationId)
@@ -32,9 +32,9 @@ namespace TranslationPro.Shared.Proxies
             return DoDelete<Result>($"{ApplicationUrl}/{applicationId}");
         }
 
-        public Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationInput input)
+        public Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationOptions input)
         {
-            return DoPut<ApplicationInput, Result>($"{ApplicationUrl}/{applicationId}", input);
+            return DoPut<ApplicationOptions, Result>($"{ApplicationUrl}/{applicationId}", input);
         }
     }
 }

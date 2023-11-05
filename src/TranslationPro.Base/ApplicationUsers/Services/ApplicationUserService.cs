@@ -30,7 +30,7 @@ namespace TranslationPro.Base.ApplicationUsers.Services
         private IQueryable<ApplicationUser> ApplicationUsers =>
             Repository.Queryable().Include(x => x.User).Include(x => x.Application);
 
-        public async Task<Result> InviteUserAsync(Guid applicationId, CreateApplicationUser input)
+        public async Task<Result> InviteUserAsync(Guid applicationId, ApplicationUserCreateOptions input)
         {
             var applicationUser = await ApplicationUsers.Where(x=>x.User.Email == input.Email && x.ApplicationId == applicationId).FirstOrDefaultAsync();
 
