@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TranslationPro.App.Pages.Bases;
+using TranslationPro.App.Bases;
 using TranslationPro.App.Shared;
 
 namespace TranslationPro.App.Pages

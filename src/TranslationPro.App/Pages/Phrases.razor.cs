@@ -1,4 +1,4 @@
-﻿using TranslationPro.App.Pages.Bases;
+﻿using TranslationPro.App.Bases;
 
 namespace TranslationPro.App.Pages
 {

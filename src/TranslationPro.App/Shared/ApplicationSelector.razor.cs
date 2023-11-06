@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
@@ -40,12 +41,9 @@ namespace TranslationPro.App.Shared
             await LoadData();
         }
 
-        public void DoStuff(ChangeEventArgs e)
+        public void HandleApplicationChange(ChangeEventArgs e)
         {
-            var applicationId = Guid.Parse(e.Value.ToString());
-            LocalStorage.SetItem<Guid>("ApplicationId", applicationId);
-
-            NavigationManager.NavigateTo($"/applications/{applicationId}");
+            NavigationManager.NavigateTo($"/redirect/{e.Value}");
         }
     }
 }

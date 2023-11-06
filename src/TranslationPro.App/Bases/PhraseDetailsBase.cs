@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.App.Pages.Bases;
+namespace TranslationPro.App.Bases;
 
 public class PhraseDetailsBase : ApplicationDetailsBase
 {

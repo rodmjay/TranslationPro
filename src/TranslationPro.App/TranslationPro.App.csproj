@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+	  <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +28,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TranslationPro.Shared\TranslationPro.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Authorized\" />
+    <Folder Include="Pages\Unauthorized\" />
   </ItemGroup>
 
 </Project>

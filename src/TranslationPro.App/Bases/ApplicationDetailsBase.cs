@@ -5,7 +5,7 @@ using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.App.Pages.Bases
+namespace TranslationPro.App.Bases
 {
     public class ApplicationDetailsBase : ComponentBase
     {
