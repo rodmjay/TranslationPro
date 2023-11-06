@@ -112,7 +112,7 @@ public class Startup
                 };
             })
             .AddSwagger(Assembly.GetAssembly(GetType()))
-            .AddCors(builder.AppSettings.JsClientUrl,
+            .AddCors(
                 builder.AppSettings.Authority,
                 builder.AppSettings.AppUrl);
     }

@@ -2,11 +2,10 @@
   "ConnectionStrings": {
     "DefaultConnection": "<StoredInAzure>"
   },
-  "Stripe": {
-    "PublicKey": "pk_test_51O8nvSDGyTHfODiYsM301ojdxnPSmdJ7fl8IB2RBjX3fVmWqm8KFCeZQeAcmE49jZnjllm1v8ae2RZBOxfXdUW2V00z9OY89Yv",
-    "SecretKeyEnvironmentVariableName": "TranslationProStripeSecretTest"
-  },
   "AppSettings": {
-    "ASPNETCORE_ENVIRONMENT": "Testing"
+    "ASPNETCORE_ENVIRONMENT": "Testing",
+    "Authority": "https://translationpro-id-test.azurewebsites.net",
+    "ApiUrl": "https://translationpro-id-test.azurewebsites.net",
+    "AppUrl": "https://translationpro-app-test.azurewebsites.net"
   }
 }
