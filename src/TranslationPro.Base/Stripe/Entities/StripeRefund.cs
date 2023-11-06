@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Stripe.Interfaces;
@@ -9,6 +10,7 @@ public class StripeRefund : BaseEntity<StripeRefund>, IHasCharge, IHasId
 {
     public override void Configure(EntityTypeBuilder<StripeRefund> builder)
     {
+        builder.ToTable(nameof(Refund), "Stripe");
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Charge)
             .WithMany(x => x.Refunds)

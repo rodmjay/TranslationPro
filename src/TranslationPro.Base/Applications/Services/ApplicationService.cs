@@ -51,7 +51,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     private IQueryable<Language> Languages => _languageRepository.Queryable();
 
 
-    public Task<T> GetApplication<T>(Guid applicationId) where T : ApplicationDto
+    public Task<T> GetApplication<T>(Guid applicationId) where T : ApplicationOutput
     {
         return Applications.Where(x => x.Id == applicationId).ProjectTo<T>(ProjectionMapping).FirstOrDefaultAsync();
     }
@@ -98,7 +98,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         return Result.Failed(_errorDescriber.UnableToCreateApplication());
     }
 
-    public Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationDto
+    public Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationOutput
     {
         return ApplicationUsers.Where(x => x.UserId == userId).Select(x => x.Application).ProjectTo<T>(ProjectionMapping).ToListAsync();
     }

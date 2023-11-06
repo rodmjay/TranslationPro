@@ -51,11 +51,11 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
 
     protected string LanguageUrl = "/v1.0/languages";
 
-    public async Task<List<LanguageDto>> GetLanguagesAsync()
+    public async Task<List<LanguageOutput>> GetLanguagesAsync()
     {
         var response = await ApiClient.GetAsync(LanguageUrl);
 
-        return response.Content.DeserializeObject<List<LanguageDto>>();
+        return response.Content.DeserializeObject<List<LanguageOutput>>();
     }
 
     #endregion
@@ -69,14 +69,14 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return CreateApplicationAsync(ApplicationTestCases.CreateApplication);
     }
 
-    public Task<ApplicationDto> GetApplicationAsync(Guid applicationId)
+    public Task<ApplicationOutput> GetApplicationAsync(Guid applicationId)
     {
-        return DoGet<ApplicationDto>($"{ApplicationUrl}/{applicationId}");
+        return DoGet<ApplicationOutput>($"{ApplicationUrl}/{applicationId}");
     }
 
-    public Task<List<ApplicationDto>> GetApplicationsAsync()
+    public Task<List<ApplicationOutput>> GetApplicationsAsync()
     {
-        return DoGet<List<ApplicationDto>>(ApplicationUrl);
+        return DoGet<List<ApplicationOutput>>(ApplicationUrl);
     }
 
     public Task<Result> CreateApplicationAsync(ApplicationCreateOptions input)
@@ -119,9 +119,9 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
 
     #region Phrases
 
-    public Task<PhraseDto> GetPhraseAsync(Guid applicationId, int phraseId)
+    public Task<PhraseOutput> GetPhraseAsync(Guid applicationId, int phraseId)
     {
-        return DoGet<PhraseDto>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
+        return DoGet<PhraseOutput>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
     public Task<Result> BulkUploadAsync(Guid applicationId, List<string> input)
@@ -139,9 +139,9 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
-    public Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
+    public Task<PagedList<PhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
     {
-        return DoGet<PagedList<PhraseDto>>($"{ApplicationUrl}/{applicationId}/phrases");
+        return DoGet<PagedList<PhraseOutput>>($"{ApplicationUrl}/{applicationId}/phrases");
     }
 
     public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId, string language)

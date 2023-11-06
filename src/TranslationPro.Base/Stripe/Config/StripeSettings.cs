@@ -9,7 +9,6 @@ namespace TranslationPro.Base.Stripe.Config;
 
 public class StripeSettings
 {
-    public string ApiKey { get; set; }
-    public string ClientId { get; set; }
-    public string ApiBase { get; set; }
+    public string SecretKeyEnvironmentVariableName { get; set; }
+    public bool UseWebHooks { get; set; }
 }

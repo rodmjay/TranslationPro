@@ -13,10 +13,10 @@ namespace TranslationPro.App.Pages
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public IEnumerable<ApplicationDto>? Apps { get; set; }
+        public IEnumerable<ApplicationOutput> Apps { get; set; }
 
         [Inject]
-        public IApplicationsController? ApplicationService { get; set; }
+        public IApplicationsController ApplicationService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

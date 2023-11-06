@@ -4,6 +4,8 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace TranslationPro.Shared.Common;
 
 public class PagedList<TModel>

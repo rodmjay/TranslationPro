@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Shared.Models

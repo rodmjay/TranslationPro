@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
@@ -10,6 +11,8 @@ public class StripeCharge : BaseEntity<StripeCharge>, IHasId, ILiveMode, IHasCus
 {
     public override void Configure(EntityTypeBuilder<StripeCharge> builder)
     {
+        builder.ToTable(nameof(Charge), "Stripe");
+
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Customer)
@@ -19,6 +22,8 @@ public class StripeCharge : BaseEntity<StripeCharge>, IHasId, ILiveMode, IHasCus
         builder.HasOne(x => x.Invoice)
             .WithMany(x => x.Charges)
             .HasForeignKey(x => x.InvoiceId);
+
+        builder.OwnsOne(x => x.Outcome);
     }
     public ICollection<StripeRefund> Refunds { get; set; }
     public string Id { get; set; }
@@ -53,7 +58,7 @@ public class StripeCharge : BaseEntity<StripeCharge>, IHasId, ILiveMode, IHasCus
     
     public string FailureMessage { get; set; }
     
-    //public ChargeOutcome Outcome { get; set; }
+    public StripeChargeOutcome Outcome { get; set; }
     
     public bool Paid { get; set; }
     

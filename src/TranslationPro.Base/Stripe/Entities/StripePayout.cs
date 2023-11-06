@@ -4,6 +4,7 @@
 
 #endregion
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
@@ -14,6 +15,7 @@ public class StripePayout : BaseEntity<StripePayout>, IHasId
 {
     public override void Configure(EntityTypeBuilder<StripePayout> builder)
     {
+        builder.ToTable(nameof(Payout), "Stripe");
         builder.HasKey(x => x.Id);
     }
 

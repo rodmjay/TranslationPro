@@ -23,14 +23,14 @@ namespace TranslationPro.App.Shared
 
         [Inject]
         public IIWLocalStorageService LocalStorage { get; set; }
-        public List<LanguageDto> Languages { get; set; }
+        public List<LanguageOutput> Languages { get; set; }
 
         [Parameter]
         public EventCallback LanguagesChanged { get; set; }
 
         public Guid ApplicationId => LocalStorage.GetItem<Guid>("ApplicationId");
 
-        public ApplicationDto Application { get; set; }
+        public ApplicationOutput Application { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

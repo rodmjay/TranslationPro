@@ -33,10 +33,10 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet("{phraseId:int}")]
-    public async Task<PhraseDto> GetPhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
+    public async Task<PhraseOutput> GetPhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseService.GetPhraseAsync<PhraseDto>(applicationId, phraseId);
+        return await _phraseService.GetPhraseAsync<PhraseOutput>(applicationId, phraseId);
     }
 
     [HttpPost("bulk")]
@@ -72,12 +72,12 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet]
-    public async Task<PagedList<PhraseDto>> GetPhrasesAsync([FromRoute] Guid applicationId,
+    public async Task<PagedList<PhraseOutput>> GetPhrasesAsync([FromRoute] Guid applicationId,
         [FromQuery] PagingQuery paging,
         [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseService.GetPhrasesForApplicationAsync<PhraseDto>(applicationId, paging, filters)
+        return await _phraseService.GetPhrasesForApplicationAsync<PhraseOutput>(applicationId, paging, filters)
             .ConfigureAwait(false);
     }
 

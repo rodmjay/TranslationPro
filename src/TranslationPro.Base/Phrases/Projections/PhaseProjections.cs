@@ -15,7 +15,7 @@ public class PhaseProjections : Profile
 {
     public PhaseProjections()
     {
-        CreateMap<Phrase, PhraseDto>()
+        CreateMap<Phrase, PhraseOutput>()
             .ForMember(x => x.TranslationCount,
                 opt => opt.MapFrom(x => x.Translations.Count))
             .ForMember(x => x.PendingTranslationCount,

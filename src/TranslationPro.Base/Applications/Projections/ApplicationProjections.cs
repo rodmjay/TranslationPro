@@ -15,7 +15,7 @@ public class ApplicationProjections : Profile
 {
     public ApplicationProjections()
     {
-        CreateMap<Application, ApplicationDto>()
+        CreateMap<Application, ApplicationOutput>()
             .ForMember(x => x.SupportedLanguages, opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId)))
             .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count))
             .ForMember(x=>x.Users, opt=>opt.MapFrom(x=>x.Users))

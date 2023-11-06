@@ -14,6 +14,6 @@ public class LanguageProjections : Profile
 {
     public LanguageProjections()
     {
-        CreateMap<Language, LanguageDto>();
+        CreateMap<Language, LanguageOutput>();
     }
 }

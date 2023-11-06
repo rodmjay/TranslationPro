@@ -40,12 +40,12 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
     private IQueryable<Phrase> Phrases => Repository.Queryable().Include(x => x.Translations);
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
-        PhraseFilters filters) where T : PhraseDto
+        PhraseFilters filters) where T : PhraseOutput
     {
         return this.PaginateAsync<Phrase, T>(x => x.ApplicationId == applicationId, filters.GetExpression(), paging);
     }
 
-    public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseDto
+    public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseOutput
     {
         return Phrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId).ProjectTo<T>(ProjectionMapping).FirstAsync();
     }

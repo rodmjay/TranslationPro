@@ -25,7 +25,7 @@ public class LanguageService : BaseService<Language>, ILanguageService
 
     private IQueryable<Language> Languages => Repository.Queryable();
 
-    public Task<List<T>> GetLanguagesAsync<T>() where T : LanguageDto
+    public Task<List<T>> GetLanguagesAsync<T>() where T : LanguageOutput
     {
         return Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }

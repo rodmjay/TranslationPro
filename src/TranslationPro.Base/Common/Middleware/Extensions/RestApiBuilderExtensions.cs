@@ -137,7 +137,7 @@ public static class RestApiBuilderExtensions
 
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseCors("Open");
+        app.UseCors();
 
         app.UseEndpoints(endpoints =>
         {

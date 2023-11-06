@@ -14,7 +14,7 @@ namespace TranslationPro.App.Pages
         [Parameter]
         public string LanguageId { get; set; }
 
-        public TranslationDto Translation { get; set; }
+        public TranslationOutput Translation { get; set; }
 
         public TranslationOptions Input { get; set; } = new();
 

@@ -85,7 +85,7 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
             ClientSecret = new TableConfiguration("ClientSecret", IdentityServerSchema),
             IdentityResourceClaim = new TableConfiguration("IdentityResourceClaim", IdentityServerSchema),
             IdentityResourceProperty = new TableConfiguration("IdentityResourceProperty", IdentityServerSchema),
-            IdentityProvider = new TableConfiguration("IdentityProvider", IdentityServerSchema)
+            IdentityProvider = new TableConfiguration("IdentityProvider", IdentityServerSchema),
 
         };
         var operationalStoreOptions = new OperationalStoreOptions

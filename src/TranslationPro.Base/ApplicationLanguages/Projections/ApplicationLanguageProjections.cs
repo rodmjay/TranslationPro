@@ -8,8 +8,8 @@ namespace TranslationPro.Base.ApplicationLanguages.Projections
     {
         public ApplicationLanguageProjections()
         {
-            CreateMap<ApplicationLanguage, ApplicationLanguageDto>()
-                .ForMember(x=>x.Translations, opt=>opt.MapFrom(x=>x.Translations.Count));
+            CreateMap<ApplicationLanguage, ApplicationLanguageOutput>()
+                .ForMember(x=>x.TranslationCount, opt=>opt.MapFrom(x=>x.Translations.Count));
         }
     }
 }

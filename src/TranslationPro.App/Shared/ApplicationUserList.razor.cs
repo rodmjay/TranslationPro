@@ -27,7 +27,7 @@ namespace TranslationPro.App.Shared
 
         public Guid ApplicationId => LocalStorage.GetItem<Guid>("ApplicationId");
 
-        public ApplicationDto Application { get; set; }
+        public ApplicationOutput Application { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

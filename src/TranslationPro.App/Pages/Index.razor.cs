@@ -12,7 +12,7 @@ namespace TranslationPro.App.Pages
         public ILanguagesController LanguagesController { get; set; }
 
 
-        public List<LanguageDto> Languages { get; set; }
+        public List<LanguageOutput> Languages { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

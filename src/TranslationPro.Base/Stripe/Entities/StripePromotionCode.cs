@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Stripe.Interfaces;
@@ -9,6 +10,7 @@ public class StripePromotionCode : BaseEntity<StripePromotionCode>, IHasId, IHas
 {
     public override void Configure(EntityTypeBuilder<StripePromotionCode> builder)
     {
+        builder.ToTable(nameof(PromotionCode), "Stripe");
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.Coupon)
             .WithMany(x => x.PromotionCodes)

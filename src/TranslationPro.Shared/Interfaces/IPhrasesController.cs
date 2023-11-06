@@ -4,6 +4,9 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
@@ -13,7 +16,7 @@ namespace TranslationPro.Shared.Interfaces;
 public interface IPhrasesController
 {
 
-    Task<PhraseDto> GetPhraseAsync(Guid applicationId, int phraseId);
+    Task<PhraseOutput> GetPhraseAsync(Guid applicationId, int phraseId);
 
     Task<Result> BulkUploadAsync(Guid applicationId,
          List<string> input);
@@ -24,7 +27,7 @@ public interface IPhrasesController
     Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId,
         PhraseOptions input);
 
-    Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
+    Task<PagedList<PhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
          PhraseFilters filters);
 
     Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId,

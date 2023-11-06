@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
@@ -10,10 +11,12 @@ public class StripeCoupon : BaseEntity<StripeCoupon>, IHasId, ICreatedTimestamp,
 {
     public override void Configure(EntityTypeBuilder<StripeCoupon> builder)
     {
+        builder.ToTable(nameof(Coupon), "Stripe");
         builder.HasKey(x => x.Id);
     }
-
+    public ICollection<StripeDiscount> Discounts { get; set; }
     public ICollection<StripePromotionCode> PromotionCodes { get; set; }
+    public ICollection<StripeCouponProduct> Products { get; set; }
     public string Id { get; set; }
     public long? AmountOff { get; set; }
     public string Currency { get; set; }

@@ -4,6 +4,7 @@
 
 #endregion
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
@@ -15,6 +16,8 @@ public class StripeCard : BaseEntity<StripeCard>, IHasId, IHasCustomer
 {
     public override void Configure(EntityTypeBuilder<StripeCard> builder)
     {
+        builder.ToTable(nameof(Card), "Stripe");
+
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Customer)

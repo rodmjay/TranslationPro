@@ -82,6 +82,10 @@ namespace TranslationPro.Base.Stripe
         public const string ProductDeleted = "product.deleted";
         public const string ProductUpdated = "product.updated";
 
+        public const string CardCreated = "card.created";
+        public const string CardDeleted = "card.deleted";
+        public const string CardUpdated = "card.updated";
+
         public const string PromotionCodeCreated = "promotion_code.created";
         public const string PromotionCodeUpdated = "promotion_code.updated";
 

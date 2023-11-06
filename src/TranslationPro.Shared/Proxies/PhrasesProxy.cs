@@ -1,4 +1,8 @@
-﻿using TranslationPro.Shared.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Helpers;
 using TranslationPro.Shared.Interfaces;
@@ -9,9 +13,9 @@ namespace TranslationPro.Shared.Proxies;
 public class PhrasesProxy : BaseProxy, IPhrasesController
 {
 
-    public Task<PhraseDto> GetPhraseAsync(Guid applicationId, int phraseId)
+    public Task<PhraseOutput> GetPhraseAsync(Guid applicationId, int phraseId)
     {
-        return DoGet<PhraseDto>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
+        return DoGet<PhraseOutput>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
     public Task<Result> BulkUploadAsync(Guid applicationId, List<string> input)
@@ -29,10 +33,10 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
-    public Task<PagedList<PhraseDto>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
+    public Task<PagedList<PhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
     {
         var querystring = UrlHelper.CombineObjectsToUrl(paging, filters);
-        return DoGet<PagedList<PhraseDto>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
+        return DoGet<PagedList<PhraseOutput>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
     }
 
     public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId, string language)

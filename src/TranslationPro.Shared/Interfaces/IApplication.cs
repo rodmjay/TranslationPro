@@ -5,6 +5,8 @@
 #endregion
 
 
+using System;
+
 namespace TranslationPro.Shared.Interfaces;
 
 public interface IApplication

@@ -17,7 +17,7 @@ namespace TranslationPro.App.Pages.Bases
         [Inject]
         public IApplicationsController ApplicationService { get; set; }
 
-        protected ApplicationDto Application;
+        protected ApplicationOutput Application;
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,6 +37,11 @@ namespace TranslationPro.App.Pages.Bases
             }
 
             Application = await ApplicationService.GetApplicationAsync(ApplicationId);
+
+            if (Application == null || Application.Id == Guid.Empty)
+            {
+                await LocalStorage.RemoveItemAsync("ApplicationId");
+            }
         }
     }
 }

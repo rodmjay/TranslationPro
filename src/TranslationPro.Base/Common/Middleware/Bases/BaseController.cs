@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SendGrid.Helpers.Errors.Model;
 using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Permissions.Interfaces;
 using TranslationPro.Base.Users.Interfaces;
@@ -42,7 +43,7 @@ public class BaseController : ControllerBase
         var userHasAccessToApplication = await PermissionService.UserCanAccessApplication(user.Id, applicationId);
 
         if (!userHasAccessToApplication)
-            throw new UnauthorizedAccessException("User does not have access to application");
+            throw new ForbiddenException("User does not have access to application");
     }
 
     protected async Task<IUser> GetCurrentUser()

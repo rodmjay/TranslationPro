@@ -26,17 +26,17 @@ public class ApplicationsController : BaseController, IApplicationsController
     }
 
     [HttpGet("{applicationId}")]
-    public async Task<ApplicationDto> GetApplicationAsync([FromRoute] Guid applicationId)
+    public async Task<ApplicationOutput> GetApplicationAsync([FromRoute] Guid applicationId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _service.GetApplication<ApplicationDto>(applicationId).ConfigureAwait(false);
+        return await _service.GetApplication<ApplicationOutput>(applicationId).ConfigureAwait(false);
     }
 
     [HttpGet]
-    public async Task<List<ApplicationDto>> GetApplicationsAsync()
+    public async Task<List<ApplicationOutput>> GetApplicationsAsync()
     {
         var user = await GetCurrentUser();
-        return await _service.GetApplicationsForUserAsync<ApplicationDto>(user.Id).ConfigureAwait(false);
+        return await _service.GetApplicationsForUserAsync<ApplicationOutput>(user.Id).ConfigureAwait(false);
     }
 
     [HttpPost]

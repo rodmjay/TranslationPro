@@ -9,39 +9,67 @@
 
 
 
-<div class="nav-item dropdown d-inline-block mx-2">
-    
-    <AuthorizeView>
-        <Authorized>
-            
-            <a class="text-white dropdown-toggle" href="https://localhost:44319/Account/Manage" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @context.User.Identity?.Name
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                @*<a class="dropdown-item" href="#">Item</a>
-                        <a class="dropdown-item" href="#">Item</a>*@
-                @*<div class="dropdown-divider"></div>*@
-                <form method="post" action="https://localhost:44319/Account/LogOut">
-                    <button type="submit" class="ss-manage-nav-link nav-link btn btn-link">
-                        <i data-feather="log-out"></i>
-                        <span>
-                            Log Out
-                        </span>
-                    </button>
-                </form>
+<div class="d-inline-block mx-2">
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <AuthorizeView>
+                    <Authorized>
+
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="text-white nav-link" href="https://localhost:44319/Account/Manage">
+                                    @context.User.Identity?.Name
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="text-white nav-link" @onclick="BeginSignOut">
+                                    Log Out
+                                </a>
+                            </li>
+                        </ul>
+
+                    </Authorized>
+                    <NotAuthorized>
+
+
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <NavLink class="nav-link text-white" ActiveClass="active" href="">Home</NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link text-white" ActiveClass="active" href="products">Pricing</NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black">|</a>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link text-white"
+                                         href="https://localhost:44319/Identity/Account/Register">
+                                    Register
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+
+                                <NavLink class="nav-link text-white" href="authentication/login">
+                                    Log in
+                                </NavLink>
+                            </li>
+                        </ul>
+
+
+                    </NotAuthorized>
+                </AuthorizeView>
             </div>
-        </Authorized>
-        <NotAuthorized>
-            <NavLink class="text-white"
-                href="https://localhost:44319/Identity/Account/Register">
-                Register
-            </NavLink>
-            <NavLink class="text-white" href="authentication/login">
-                Log in
-            </NavLink>
-        </NotAuthorized>
-    </AuthorizeView>
-    
+        </div>
+    </nav>
+
+
+
 
 </div>
 

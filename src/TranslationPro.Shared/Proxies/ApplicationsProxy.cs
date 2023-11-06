@@ -1,4 +1,8 @@
-﻿using TranslationPro.Shared.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -12,14 +16,14 @@ namespace TranslationPro.Shared.Proxies
         {
         }
         
-        public Task<ApplicationDto> GetApplicationAsync(Guid applicationId)
+        public Task<ApplicationOutput> GetApplicationAsync(Guid applicationId)
         {
-            return DoGet<ApplicationDto>($"{ApplicationUrl}/{applicationId}");
+            return DoGet<ApplicationOutput>($"{ApplicationUrl}/{applicationId}");
         }
 
-        public async Task<List<ApplicationDto>> GetApplicationsAsync()
+        public async Task<List<ApplicationOutput>> GetApplicationsAsync()
         {
-            return await DoGet<List<ApplicationDto>>($"{ApplicationUrl}");
+            return await DoGet<List<ApplicationOutput>>($"{ApplicationUrl}");
         }
 
         public Task<Result> CreateApplicationAsync(ApplicationCreateOptions input)

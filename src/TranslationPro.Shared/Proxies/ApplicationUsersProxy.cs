@@ -1,4 +1,7 @@
-﻿using TranslationPro.Shared.Common;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 

@@ -6,28 +6,16 @@
     </ol>
 </nav>
 
-@if (Apps == null)
-{
-    <p>Loading Applications...</p>
-}
-else
-{
-    <div class="container-fluid">
-        <div class="row">
+<div class="container-fluid">
+    <div class="row">
 
-            <div class="col-sm-4 mb-5">
-                <div class="card bg-dark text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Create New Application</h5>
-                        <NavLink class="btn btn-primary" href="/applications/create">Create Application</NavLink>
-                    </div>
+        <div class="col-sm-4 mb-5">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Create New Application</h5>
+                    <NavLink class="btn btn-primary" href="/applications/create">Create Application</NavLink>
                 </div>
             </div>
         </div>
     </div>
-    
-
-}
-@code {
-
-}
+</div>

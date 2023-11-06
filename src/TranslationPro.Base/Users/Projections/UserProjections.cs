@@ -14,7 +14,8 @@ public class UserProjections : Profile
 {
     public UserProjections()
     {
-        CreateMap<User, UserDto>()
+        CreateMap<User, UserOutput>()
+            //.ForMember(x => x.Customer, opt => opt.)
             .IncludeAllDerived();
     }
 }

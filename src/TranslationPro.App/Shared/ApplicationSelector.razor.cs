@@ -18,7 +18,7 @@ namespace TranslationPro.App.Shared
         [Inject]
         public IApplicationsController ApplicationsProxy { get; set; }
 
-        public List<ApplicationDto> Applications { get; set; }
+        public List<ApplicationOutput> Applications { get; set; }
 
         public Guid? CurrentApplicationId { get; set; }
 

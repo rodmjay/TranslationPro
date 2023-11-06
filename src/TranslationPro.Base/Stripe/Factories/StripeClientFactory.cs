@@ -1,4 +1,5 @@
-﻿using Stripe;
+﻿using System;
+using Stripe;
 using TranslationPro.Base.Stripe.Config;
 
 namespace TranslationPro.Base.Stripe.Factories
@@ -7,10 +8,9 @@ namespace TranslationPro.Base.Stripe.Factories
     {
         public static StripeClient GetFromSettings(StripeSettings config)
         {
-            return new StripeClient(
-                apiKey: config.ApiKey,
-                clientId: config.ClientId,
-                apiBase: config.ApiBase);
+            var apiKey = Environment.GetEnvironmentVariable(config.SecretKeyEnvironmentVariableName);
+
+            return new StripeClient(apiKey: apiKey);
         }
     }
 }

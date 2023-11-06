@@ -28,8 +28,8 @@ public class LanguagesController : BaseController, ILanguagesController
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<List<LanguageDto>> GetLanguagesAsync()
+    public async Task<List<LanguageOutput>> GetLanguagesAsync()
     {
-        return await _languageService.GetLanguagesAsync<LanguageDto>().ConfigureAwait(false);
+        return await _languageService.GetLanguagesAsync<LanguageOutput>().ConfigureAwait(false);
     }
 }

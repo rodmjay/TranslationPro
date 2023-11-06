@@ -21,7 +21,7 @@ public interface ITranslationService : IService<Translation>
     Task<Result> DeleteTranslation(Guid applicationId, int phraseId, string languageId);
 
     Task<List<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId)
-        where T : TranslationDto;
+        where T : TranslationOutput;
     
     Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId);
 

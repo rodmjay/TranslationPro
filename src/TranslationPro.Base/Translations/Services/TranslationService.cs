@@ -100,7 +100,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
     }
 
     public Task<List<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId)
-        where T : TranslationDto
+        where T : TranslationOutput
     {
         return Translations.Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
             .ProjectTo<T>(ProjectionMapping).ToListAsync();

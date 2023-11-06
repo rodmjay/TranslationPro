@@ -8,7 +8,7 @@ using TranslationPro.Base.Common.Data.Contexts;
 
 #nullable disable
 
-namespace TranslationPro.Base.common.data.migrations
+namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -247,7 +247,7 @@ namespace TranslationPro.Base.common.data.migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 11, 5, 7, 21, 10, 887, DateTimeKind.Utc).AddTicks(9570),
+                            Created = new DateTime(2023, 11, 6, 1, 45, 36, 939, DateTimeKind.Utc).AddTicks(113),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -1890,7 +1890,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("StripeCard");
+                    b.ToTable("Card", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCharge", b =>
@@ -1976,7 +1976,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("StripeCharge");
+                    b.ToTable("Charge", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCoupon", b =>
@@ -2025,7 +2025,22 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StripeCoupon");
+                    b.ToTable("Coupon", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCouponProduct", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CouponId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProductId", "CouponId");
+
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("CouponProduct", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCustomer", b =>
@@ -2080,7 +2095,7 @@ namespace TranslationPro.Base.common.data.migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("StripeCustomer");
+                    b.ToTable("Customer", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
@@ -2088,9 +2103,14 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CouponId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("StripeDiscount");
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("Discount", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDispute", b =>
@@ -2100,7 +2120,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StripeDispute");
+                    b.ToTable("Dispute", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
@@ -2108,11 +2128,50 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AccountCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("AmountCaptured")
                         .HasColumnType("int");
 
+                    b.Property<long>("AmountDue")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountPaid")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountRemaining")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountShipping")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ApplicationFeeAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AttemptCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Attempted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AutoAdvance")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BillingReason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Captured")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ChargeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CollectionMethod")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Created")
                         .HasColumnType("int");
@@ -2120,17 +2179,136 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerTaxExempt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EffectiveAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("EndingBalance")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Footer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HostedInvoiceUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoicePdf")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("NextPaymentAttempt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PaidOutOfBand")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("PostPaymentCreditNotesAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PrePaymentCreditNotesAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Refunded")
                         .HasColumnType("bit");
 
+                    b.Property<long>("StartingBalance")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubscriptionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Subtotal")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("SubtotalExcludingTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("Tax")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Total")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TotalExcludingTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("WebhooksDeliveredAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ChargeId");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("StripeInvoice");
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("Invoice", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceDiscount", b =>
+                {
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceId", "DiscountId");
+
+                    b.HasIndex("DiscountId")
+                        .IsUnique();
+
+                    b.ToTable("InvoiceDiscount", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
@@ -2138,14 +2316,75 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AmountExcludingTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Discountable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("InvoiceId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PriceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Proration")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("Quantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SubscriptionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SubscriptionItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("UnitAmountExcludingTax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("StripeInvoiceLineItem");
+                    b.HasIndex("PriceId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("SubscriptionItemId");
+
+                    b.ToTable("InvoiceLineItem", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItemDiscount", b =>
+                {
+                    b.Property<string>("InvoiceLineItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceLineItemId", "DiscountId");
+
+                    b.HasIndex("DiscountId")
+                        .IsUnique();
+
+                    b.ToTable("InvoiceItemDiscount", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
@@ -2172,18 +2411,40 @@ namespace TranslationPro.Base.common.data.migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("InvoiceId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LiveMode")
                         .HasColumnType("bit");
+
+                    b.Property<string>("StripeInvoiceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("InvoiceId");
+                    b.HasIndex("StripeInvoiceId");
 
-                    b.ToTable("StripePaymentIntent");
+                    b.ToTable("PaymentIntent", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", b =>
+                {
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceId", "PaymentIntentId");
+
+                    b.HasIndex("InvoiceId")
+                        .IsUnique();
+
+                    b.HasIndex("PaymentIntentId")
+                        .IsUnique();
+
+                    b.ToTable("InvoicePaymentIntent", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLink", b =>
@@ -2191,9 +2452,85 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowPromotionCodes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BillingAddressCollection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerCreation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Livemode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentMethodCollection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubmitType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("StripePaymentLink");
+                    b.ToTable("PaymentLink", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("AmountDiscount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountSubtotal")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountTotal")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentLinkId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PriceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long?>("Quantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StripePaymentLinkLineItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentLinkId");
+
+                    b.HasIndex("PriceId");
+
+                    b.HasIndex("StripePaymentLinkLineItemId");
+
+                    b.ToTable("LineItem", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", b =>
@@ -2213,7 +2550,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("StripePaymentMethod");
+                    b.ToTable("PaymentMethod", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePayout", b =>
@@ -2223,7 +2560,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StripePayout");
+                    b.ToTable("Payout", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePrice", b =>
@@ -2234,14 +2571,50 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<string>("BillingScheme")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LookupKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nickname")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TaxBehavior")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TiersMode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("UnitAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("UnitAmountDecimal")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("StripePrice");
+                    b.ToTable("Price", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProduct", b =>
@@ -2250,6 +2623,12 @@ namespace TranslationPro.Base.common.data.migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Deleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Description")
@@ -2261,9 +2640,37 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("StripeProduct");
+                    b.ToTable("StripeProduct", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProductFeature", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProductId", "Name");
+
+                    b.ToTable("ProductFeature", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePromotionCode", b =>
@@ -2278,7 +2685,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasIndex("CouponId");
 
-                    b.ToTable("StripePromotionCode");
+                    b.ToTable("PromotionCode", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeRefund", b =>
@@ -2293,7 +2700,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasIndex("ChargeId");
 
-                    b.ToTable("StripeRefund");
+                    b.ToTable("Refund", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSession", b =>
@@ -2303,7 +2710,24 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StripeSession");
+                    b.ToTable("Session", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSetupIntent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique()
+                        .HasFilter("[CustomerId] IS NOT NULL");
+
+                    b.ToTable("SetupIntent", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
@@ -2311,14 +2735,86 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal?>("ApplicationFeePercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("BillingCycleAnchor")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CancelAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("CancelAtPeriodEnd")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CollectionMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CurrentPeriodEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CurrentPeriodStart")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<long?>("DaysUntilDue")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("EndedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("NextPendingInvoiceItemInvoice")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethodId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ScheduleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TrialEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("TrialStart")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("StripeSubscription");
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("Subscription", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", b =>
@@ -2326,17 +2822,31 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PriceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Quantity")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("SubscriptionId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PriceId");
+
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("StripeSubscriptionItem");
+                    b.ToTable("SubscriptionItem", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
@@ -2344,14 +2854,38 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EndBehavior")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ReleasedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReleasedSubscription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("StripeSubscriptionSchedule");
+                    b.ToTable("SubscriptionSchedule", "Stripe");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Translation", b =>
@@ -2882,9 +3416,61 @@ namespace TranslationPro.Base.common.data.migrations
                         .WithMany("Charges")
                         .HasForeignKey("InvoiceId");
 
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeChargeOutcome", "Outcome", b1 =>
+                        {
+                            b1.Property<string>("StripeChargeId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("NetworkStatus")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Reason")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("RiskLevel")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<long>("RiskScore")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("SellerMessage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Type")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripeChargeId");
+
+                            b1.ToTable("Charge", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripeChargeId");
+                        });
+
                     b.Navigation("Customer");
 
                     b.Navigation("Invoice");
+
+                    b.Navigation("Outcome");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCouponProduct", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCoupon", "Coupon")
+                        .WithMany("Products")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeProduct", "Product")
+                        .WithMany("Coupons")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Coupon");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCustomer", b =>
@@ -2920,7 +3506,7 @@ namespace TranslationPro.Base.common.data.migrations
 
                             b1.HasKey("StripeCustomerId");
 
-                            b1.ToTable("StripeCustomer");
+                            b1.ToTable("Customer", "Stripe");
 
                             b1.WithOwner()
                                 .HasForeignKey("StripeCustomerId");
@@ -2931,13 +3517,86 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCoupon", "Coupon")
+                        .WithMany("Discounts")
+                        .HasForeignKey("CouponId");
+
+                    b.Navigation("Coupon");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
                 {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCharge", "Charge")
+                        .WithMany()
+                        .HasForeignKey("ChargeId");
+
                     b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
                         .WithMany("Invoices")
                         .HasForeignKey("CustomerId");
 
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscription", "Subscription")
+                        .WithMany("Invoices")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeAddress", "CustomerAddress", b1 =>
+                        {
+                            b1.Property<string>("StripeInvoiceId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line1")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line2")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripeInvoiceId");
+
+                            b1.ToTable("Invoice", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripeInvoiceId");
+                        });
+
+                    b.Navigation("Charge");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("CustomerAddress");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceDiscount", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeDiscount", "Discount")
+                        .WithOne("InvoiceDiscount")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeInvoiceDiscount", "DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                        .WithMany("Discounts")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
@@ -2946,7 +3605,44 @@ namespace TranslationPro.Base.common.data.migrations
                         .WithMany("Lines")
                         .HasForeignKey("InvoiceId");
 
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePrice", "Price")
+                        .WithMany("InvoiceLineItems")
+                        .HasForeignKey("PriceId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscription", "Subscription")
+                        .WithMany("InvoiceLineItems")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", "SubscriptionItem")
+                        .WithMany("InvoiceLineItems")
+                        .HasForeignKey("SubscriptionItemId");
+
                     b.Navigation("Invoice");
+
+                    b.Navigation("Price");
+
+                    b.Navigation("Subscription");
+
+                    b.Navigation("SubscriptionItem");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItemDiscount", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeDiscount", "Discount")
+                        .WithOne("InvoiceLineItemDiscount")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItemDiscount", "DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", "InvoiceLineItem")
+                        .WithMany("Discounts")
+                        .HasForeignKey("InvoiceLineItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("InvoiceLineItem");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
@@ -2955,13 +3651,49 @@ namespace TranslationPro.Base.common.data.migrations
                         .WithMany("PaymentIntents")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", null)
                         .WithMany("PaymentIntents")
-                        .HasForeignKey("InvoiceId");
+                        .HasForeignKey("StripeInvoiceId");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                        .WithOne("PaymentIntent")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", "InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", "PaymentIntent")
+                        .WithOne("Invoice")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", "PaymentIntentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Invoice");
+
+                    b.Navigation("PaymentIntent");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentLink", "PaymentLink")
+                        .WithMany("LineItems")
+                        .HasForeignKey("PaymentLinkId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePrice", "Price")
+                        .WithMany("PaymentLinkLineItems")
+                        .HasForeignKey("PriceId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", null)
+                        .WithMany("LineItems")
+                        .HasForeignKey("StripePaymentLinkLineItemId");
+
+                    b.Navigation("PaymentLink");
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", b =>
@@ -2985,6 +3717,47 @@ namespace TranslationPro.Base.common.data.migrations
                         .WithMany("Prices")
                         .HasForeignKey("ProductId");
 
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripePriceRecurring", "Recurring", b1 =>
+                        {
+                            b1.Property<string>("StripePriceId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("AggregateUsage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Interval")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<long>("IntervalCount")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long?>("TrialPeriodDays")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("UsageType")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripePriceId");
+
+                            b1.ToTable("Price", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripePriceId");
+                        });
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Recurring");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProductFeature", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeProduct", "Product")
+                        .WithMany("Features")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Product");
                 });
 
@@ -3006,20 +3779,53 @@ namespace TranslationPro.Base.common.data.migrations
                     b.Navigation("Charge");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSetupIntent", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithOne("SetupIntent")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeSetupIntent", "CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
                 {
                     b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
                         .WithMany("Subscriptions")
                         .HasForeignKey("CustomerId");
 
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeDiscount", "Discount")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", "PaymentMethod")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("PaymentMethodId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", "Schedule")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("ScheduleId");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", b =>
                 {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePrice", "Price")
+                        .WithMany("SubscriptionItems")
+                        .HasForeignKey("PriceId");
+
                     b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscription", "Subscription")
                         .WithMany("Items")
                         .HasForeignKey("SubscriptionId");
+
+                    b.Navigation("Price");
 
                     b.Navigation("Subscription");
                 });
@@ -3208,6 +4014,10 @@ namespace TranslationPro.Base.common.data.migrations
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCoupon", b =>
                 {
+                    b.Navigation("Discounts");
+
+                    b.Navigation("Products");
+
                     b.Navigation("PromotionCodes");
                 });
 
@@ -3225,6 +4035,17 @@ namespace TranslationPro.Base.common.data.migrations
 
                     b.Navigation("Schedules");
 
+                    b.Navigation("SetupIntent");
+
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
+                {
+                    b.Navigation("InvoiceDiscount");
+
+                    b.Navigation("InvoiceLineItemDiscount");
+
                     b.Navigation("Subscriptions");
                 });
 
@@ -3232,19 +4053,75 @@ namespace TranslationPro.Base.common.data.migrations
                 {
                     b.Navigation("Charges");
 
+                    b.Navigation("Discounts");
+
                     b.Navigation("Lines");
+
+                    b.Navigation("PaymentIntent");
 
                     b.Navigation("PaymentIntents");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
+                {
+                    b.Navigation("Discounts");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
+                {
+                    b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLink", b =>
+                {
+                    b.Navigation("LineItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", b =>
+                {
+                    b.Navigation("LineItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePrice", b =>
+                {
+                    b.Navigation("InvoiceLineItems");
+
+                    b.Navigation("PaymentLinkLineItems");
+
+                    b.Navigation("SubscriptionItems");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProduct", b =>
                 {
+                    b.Navigation("Coupons");
+
+                    b.Navigation("Features");
+
                     b.Navigation("Prices");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
                 {
+                    b.Navigation("InvoiceLineItems");
+
+                    b.Navigation("Invoices");
+
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", b =>
+                {
+                    b.Navigation("InvoiceLineItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
+                {
+                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.Role", b =>

@@ -1,52 +1,12 @@
 ﻿@inherits LayoutComponentBase
+@layout EmptyLayout
+@using Microsoft.AspNetCore.Components.Sections
 
 
-<div class="container-fluid ss-account-container h-100">
-    
-    
-    <nav class="sticky-top py-1 bg-ss-dark text-white">
-        <div class="container d-flex flex-row justify-content-between align-items-center">
-
-            <a class="py-2  d-inline-block" asp-page="/Account/Manage/Index">
-                <img src="assets/logo.png" id="logo"/>
-            </a>
-
-            <div class="py-2 d-inline-block">
-                
-                <LoginDisplay></LoginDisplay>
-
-                
-
-            </div>
+<div class="container ss-manage-content-container bg-white shadow ss-rounded mt-3">
+    <div class="row flex-nowrap">
+        <div class="col-md-12 col-lg-12 p-md-4 p-lg-5 p-3">
+            @Body
         </div>
-    </nav>
-
-    <AuthorizeView>
-        <Authorized>
-            
-            <div class="container ss-manage-header-container  bg-white shadow ss-rounded">
-                <div class="row d-flex flex-md-row flex-column justify-content-between align-items-center p-3 px-1 my-3 mt-4">
-                    <h2 class="my-auto">
-                        <ApplicationSelector></ApplicationSelector>
-                    </h2>
-                </div>
-
-            </div>
-            
-        </Authorized>
-    </AuthorizeView>
-    
-    
-    <div class="container ss-manage-content-container bg-white shadow ss-rounded">
-        <div class="row flex-nowrap">
-            
-            <div class="col-md-12 col-lg-12 p-md-4 p-lg-5 p-3">
-                @Body
-            </div>
-        </div>
-
     </div>
-  
-
 </div>
-

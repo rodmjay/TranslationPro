@@ -4,9 +4,11 @@
 
 #endregion
 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Users.Entities;
+using TranslationPro.Base.Users.Models;
 
 namespace TranslationPro.Base.Users.Interfaces;
 
@@ -25,4 +27,5 @@ public interface IUserService : IService<User>,
     IUserSecurityStampStore<User>,
     IUserAuthenticationTokenStore<User>
 {
+    Task<T> GetUserById<T>(int id) where T : UserOutput;
 }

@@ -36,7 +36,7 @@ public class UserAccessor : BaseService<User>, IUserAccessor
         var userId = int.Parse(id);
 
         return _userManager.Users.Where(x => x.Id == userId)
-            .ProjectTo<UserDto>(ProjectionMapping)
+            .ProjectTo<UserOutput>(ProjectionMapping)
             .Cast<IUser>()
             .FirstOrDefaultAsync();
     }

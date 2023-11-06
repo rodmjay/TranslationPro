@@ -4,6 +4,8 @@
 
 #endregion
 
+using System;
+using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 

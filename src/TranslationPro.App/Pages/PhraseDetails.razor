@@ -1,6 +1,6 @@
 ﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}"
 @inherits PhraseDetailsBase
-
+@layout ApplicationLayout
 @if (Phrase == null)
 {
     <p>Loading Phrase...</p>

@@ -14,5 +14,5 @@ namespace TranslationPro.Base.Languages.Interfaces;
 
 public interface ILanguageService : IService<Language>
 {
-    Task<List<T>> GetLanguagesAsync<T>() where T : LanguageDto;
+    Task<List<T>> GetLanguagesAsync<T>() where T : LanguageOutput;
 }

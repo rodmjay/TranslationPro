@@ -24,6 +24,7 @@ using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Languages.Extensions;
 using TranslationPro.Base.Permissions.Extensions;
 using TranslationPro.Base.Phrases.Extensions;
+using TranslationPro.Base.Stripe.Extensions;
 using TranslationPro.Base.Translations.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
@@ -57,7 +58,8 @@ public class Startup
             .AddApplicationLanguageDependencies()
             .AddApplicationUserDependencies()
             .AddPhraseDependencies()
-            .AddTranslationDependencies();
+            .AddTranslationDependencies()
+            .AddStripeDependencies();
 
         services.AddCors(options =>
         {
@@ -112,7 +114,7 @@ public class Startup
             .AddSwagger(Assembly.GetAssembly(GetType()))
             .AddCors(builder.AppSettings.JsClientUrl,
                 builder.AppSettings.Authority,
-                builder.AppSettings.MvcClientUrl);
+                builder.AppSettings.AppUrl);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context,

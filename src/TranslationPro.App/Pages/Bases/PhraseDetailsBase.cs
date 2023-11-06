@@ -19,7 +19,7 @@ public class PhraseDetailsBase : ApplicationDetailsBase
     [Parameter]
     public int PhraseId { get; set; }
 
-    public PhraseDto Phrase { get; set; }
+    public PhraseOutput Phrase { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

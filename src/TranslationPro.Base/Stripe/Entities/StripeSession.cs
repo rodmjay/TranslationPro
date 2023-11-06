@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
 
@@ -8,6 +9,7 @@ public class StripeSession : BaseEntity<StripeSession>, IHasId
 {
     public override void Configure(EntityTypeBuilder<StripeSession> builder)
     {
+        builder.ToTable("Session", "Stripe");
         builder.HasKey(x => x.Id);
     }
 

@@ -6,14 +6,17 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Interfaces;
+using TranslationPro.Base.Users.Models;
 
 namespace TranslationPro.Base.Users.Services;
 
@@ -49,6 +52,11 @@ public partial class UserService : BaseService<User>, IUserService
     {
         UnitOfWork.Dispose();
         _disposed = true;
+    }
+
+    public Task<T> GetUserById<T>(int id) where T : UserOutput
+    {
+        return Users.Where(x => x.Id == id).ProjectTo<T>(ProjectionMapping).FirstAsync();
     }
 
     private Task<User> FindUserAsync(int userId, CancellationToken cancellationToken)

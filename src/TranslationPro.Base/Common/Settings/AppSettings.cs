@@ -14,7 +14,7 @@ public partial class AppSettings
 {
     public string ApiUrl { get; set; }
     public string JsClientUrl { get; set; }
-    public string MvcClientUrl { get; set; }
+    public string AppUrl { get; set; }
     public string Name { get; set; }
     public string Authority { get; set; }
     public string Audience { get; set; }

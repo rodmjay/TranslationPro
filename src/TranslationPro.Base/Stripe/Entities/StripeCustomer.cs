@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Stripe;
 using TranslationPro.Base.Common.Data.Bases;
@@ -24,8 +25,11 @@ public class StripeCustomer : BaseEntity<StripeCustomer>, IHasId, ILiveMode
     public User User { get; set; }
     public int UserId { get; set; }
 
+    public StripeSetupIntent SetupIntent { get; set; }
+
     public override void Configure(EntityTypeBuilder<StripeCustomer> builder)
     {
+        builder.ToTable(nameof(Customer), "Stripe");
         builder.HasKey(e => e.Id);
 
         builder.HasOne(x => x.User)

@@ -20,10 +20,10 @@ public partial class ApplicationList
 
     [Inject]
     public IIWLocalStorageService LocalStorage { get; set; }
-    public IEnumerable<ApplicationDto>? Apps { get; set; }
+    public IEnumerable<ApplicationOutput> Apps { get; set; }
 
     [Inject]
-    public IApplicationsController? ApplicationService { get; set; }
+    public IApplicationsController ApplicationService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
