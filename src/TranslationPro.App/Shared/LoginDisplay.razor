@@ -22,9 +22,11 @@
 
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="text-white nav-link" href="https://localhost:44319/Account/Manage">
+                                <NavLink class="text-white nav-link" href="@{
+                                    $"{AuthorityUrl}/Account/Manage"
+}">
                                     @context.User.Identity?.Name
-                                </a>
+                                </NavLink>
                             </li>
                             <li class="nav-item">
                                 <a class="text-white nav-link" @onclick="BeginSignOut">
@@ -48,8 +50,8 @@
                                 <a class="nav-link text-black">|</a>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link text-white"
-                                         href="https://localhost:44319/Identity/Account/Register">
+
+                                <NavLink class="text-white nav-link" href="@{$"{AuthorityUrl}/Identity/Account/Register"}">
                                     Register
                                 </NavLink>
                             </li>
@@ -74,6 +76,14 @@
 </div>
 
 @code {
+
+    private string AuthorityUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthorityUrl = Configuration["OidcConfiguation:Authority"];
+    }
+
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
