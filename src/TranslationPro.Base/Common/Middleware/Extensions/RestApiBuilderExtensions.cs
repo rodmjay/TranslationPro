@@ -100,7 +100,7 @@ public static class RestApiBuilderExtensions
         {
             options.AddDefaultPolicy(
                 opts => opts
-                    .WithOrigins(origins)
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
             );
