@@ -21,6 +21,4 @@ public partial class AppSettings
     public CacheSettings Cache { get; set; }
     public SendGridSettings SendGrid { get; set; }
     public string CodeSigningThumbprint { get; set; }
-
-    public string IdentityEndpoint => ApiUrl + "/v1.0/identity";
 }
