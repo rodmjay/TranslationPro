@@ -22,11 +22,9 @@
 
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <NavLink class="text-white nav-link" href="@{
-                                    $"{AuthorityUrl}/Account/Manage"
-}">
+                                <button class="text-white nav-link" @onclick="HandleProfileClick">
                                     @context.User.Identity?.Name
-                                </NavLink>
+                                </button>
                             </li>
                             <li class="nav-item">
                                 <a class="text-white nav-link" @onclick="BeginSignOut">
@@ -50,10 +48,11 @@
                                 <a class="nav-link text-black">|</a>
                             </li>
                             <li class="nav-item">
-
-                                <NavLink class="text-white nav-link" href="@{$"{AuthorityUrl}/Identity/Account/Register"}">
+                                
+                                <button class="text-white nav-link" @onclick="HandleRegisterClick">
                                     Register
-                                </NavLink>
+                                </button>
+
                             </li>
                             <li class="nav-item">
 
@@ -99,5 +98,15 @@
         }
     }
 
+
+    private void HandleRegisterClick()
+    {
+        Navigation.NavigateTo("authentication/register");
+    }
+
+    private void HandleProfileClick()
+    {
+        Navigation.NavigateTo("authentication/profile");
+    }
 
 }

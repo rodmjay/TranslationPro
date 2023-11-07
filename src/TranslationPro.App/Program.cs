@@ -33,6 +33,7 @@ public class Program
         {
             builder.Configuration.Bind("OidcConfiguration", options.ProviderOptions);
             builder.Configuration.Bind("UserOptions", options.UserOptions);
+            builder.Configuration.Bind("AuthenticationPaths", options.AuthenticationPaths);
         });
 
         builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
