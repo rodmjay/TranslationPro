@@ -36,26 +36,26 @@ public class Program
         });
 
         builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
-                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<IApplicationLanguagesController, ApplicationLanguagesProxy>(
-                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<IApplicationUsersController, ApplicationUsersProxy>(
-                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ILanguagesController, LanguagesProxy>(
-            client => client.BaseAddress = new Uri("https://localhost:44329/"));
+            client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]));
 
         builder.Services.AddHttpClient<IPhrasesController, PhrasesProxy>(
-                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ITranslationsController, TranslationsProxy>(
-                client => client.BaseAddress = new Uri("https://localhost:44329/"))
+                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddIWProtectedBrowserStorageAsSingleton();
