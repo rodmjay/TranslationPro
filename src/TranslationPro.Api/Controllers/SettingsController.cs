@@ -5,6 +5,7 @@
 #endregion
 
 using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using TranslationPro.Base.Common.Middleware.Bases;
@@ -12,6 +13,7 @@ using TranslationPro.Base.Common.Settings;
 
 namespace TranslationPro.Api.Controllers;
 
+[AllowAnonymous]
 public class SettingsController : BaseController
 {
     private readonly AppSettings _settings;
