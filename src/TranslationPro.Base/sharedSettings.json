@@ -11,7 +11,7 @@
     "ASPNETCORE_ENVIRONMENT": "Development",
     "Database": {
       "Timeout": 30,
-      "ConnectionStringName": "DefaultConnection",
+      "ConnectionStringName": "DefaultConnection"
     },
     "Stripe": {
       "SecretKeyEnvironmentVariableName": "TranslationProStripeSecretDev"

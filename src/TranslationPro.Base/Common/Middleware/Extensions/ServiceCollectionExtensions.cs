@@ -31,6 +31,8 @@ public static class ServiceCollectionExtensions
 
         Log.Logger.Debug(GetLogMessage($"Application: {appSettings.Name}"));
 
+        Log.Logger.Debug(GetLogMessage($"Authority: {appSettings.Authority}"));
+
         services.Configure<AppSettings>(settingsSection);
         services.AddOptions();
 
