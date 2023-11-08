@@ -34,16 +34,8 @@ public class Program
             builder.Configuration.Bind("AuthenticationPaths", options.AuthenticationPaths);
         });
 
-        builder.Services.AddAuthorizationCore(authorizationOptions =>
-        {
-            authorizationOptions.AddPolicy(
-                Policies.CanAccessApis,
-                Policies.CanAccessApi());
-        });
-
         var url = new Uri(builder.Configuration["ApiBase"]);
-
-
+        
         builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
                 client => client.BaseAddress = url)
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();

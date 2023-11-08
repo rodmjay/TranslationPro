@@ -22,12 +22,12 @@
 
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <button class="btn-link text-white nav-link" @onclick="HandleProfileClick">
+                                <a class="btn-link text-white nav-link" @onclick="HandleProfileClick">
                                     @context.User.Identity?.Name
-                                </button>
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="text-white nav-link" @onclick="BeginSignOut">
+                                <a class="text-white nav-link" @onclick="HandleSignOutClick">
                                     Log Out
                                 </a>
                             </li>
@@ -48,7 +48,7 @@
                                 <a class="nav-link text-black">|</a>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link text-white" href="authentication/register">
+                                <NavLink class="nav-link text-white" @onclick="HandleRegisterClick">
                                     Register
                                 </NavLink>
 
@@ -82,30 +82,20 @@
         AuthorityUrl = Configuration["OidcConfiguration:Authority"];
     }
 
-    private async Task BeginSignOut(MouseEventArgs args)
+    private async Task HandleSignOutClick(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
     }
-
-    private async Task WriteToken()
-    {
-        var tokenResult = await TokenProvider.RequestAccessToken();
-        if (tokenResult.TryGetToken(out var token))
-        {
-            System.Diagnostics.Debug.WriteLine(token.Value);
-        }
-    }
-
-
+    
     private void HandleRegisterClick()
     {
-        Navigation.NavigateTo("authentication/register");
+        Navigation.NavigateTo(Configuration["AuthenticationPaths:RemoteRegisterPath"]);
     }
 
     private void HandleProfileClick()
     {
-        Navigation.NavigateTo("authentication/profile");
+        Navigation.NavigateTo(Configuration["AuthenticationPaths:RemoteProfilePath"]);
     }
 
 }
