@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
 
@@ -23,6 +24,7 @@ public class Language : BaseEntity<Language>, ILanguage
 
     public ICollection<ApplicationLanguage> Applications { get; set; }
     public ICollection<Translation> Translations { get; set; }
+    public ICollection<EngineLanguage> Engines { get; set; }
     public string Name { get; set; }
     public string Id { get; set; }
 

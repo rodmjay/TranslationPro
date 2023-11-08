@@ -21,7 +21,8 @@ namespace TranslationPro.App.Shared
 
         public List<ApplicationOutput> Applications { get; set; }
 
-        public Guid? CurrentApplicationId { get; set; }
+        [CascadingParameter(Name="ApplicationId")]
+        public Guid ApplicationId { get; set; }
 
         public async Task LoadData()
         {

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
@@ -28,6 +29,7 @@ public class Application : BaseEntity<Application>, IApplication
 
     public ICollection<ApplicationLanguage> Languages { get; set; }
     public ICollection<Translation> Translations { get; set; }
+    public ICollection<ApplicationEngine> Engines { get; set; }
     public List<Phrase> Phrases { get; set; }
    
     public Guid Id { get; set; }

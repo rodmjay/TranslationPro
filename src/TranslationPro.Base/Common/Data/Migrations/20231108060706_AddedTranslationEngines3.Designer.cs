@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231108060706_AddedTranslationEngines3")]
+    partial class AddedTranslationEngines3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,7 +250,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 11, 8, 6, 10, 14, 678, DateTimeKind.Utc).AddTicks(6373),
+                            Created = new DateTime(2023, 11, 8, 6, 7, 5, 269, DateTimeKind.Utc).AddTicks(7379),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -1652,138 +1655,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.HasIndex("EngineId");
 
                     b.ToTable("EngineLanguage");
-
-                    b.HasData(
-                        new
-                        {
-                            LanguageId = "en",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "es",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "fr",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "de",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "zh-CN",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "zh-TW",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ja",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ko",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ru",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ar",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "hi",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "pt",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "it",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "nl",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "sv",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "no",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "da",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "fi",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "el",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "tr",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "iw",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "th",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "vi",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "pl",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "cs",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "hu",
-                            EngineId = 1
-                        });
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Languages.Entities.Language", b =>

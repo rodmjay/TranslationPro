@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231108060052_AddedTranslationEngines2")]
+    partial class AddedTranslationEngines2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,7 +250,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 11, 8, 6, 10, 14, 678, DateTimeKind.Utc).AddTicks(6373),
+                            Created = new DateTime(2023, 11, 8, 6, 0, 52, 74, DateTimeKind.Utc).AddTicks(3714),
                             DisplayName = "My API",
                             Emphasize = false,
                             Enabled = true,
@@ -1621,168 +1624,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         {
                             Id = 1,
                             Name = "Google Cloud Translate"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Azure Translator by Microsoft"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Amazon Translate"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "DeepL"
-                        });
-                });
-
-            modelBuilder.Entity("TranslationPro.Base.Engines.Entities.EngineLanguage", b =>
-                {
-                    b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("EngineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LanguageId", "EngineId");
-
-                    b.HasIndex("EngineId");
-
-                    b.ToTable("EngineLanguage");
-
-                    b.HasData(
-                        new
-                        {
-                            LanguageId = "en",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "es",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "fr",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "de",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "zh-CN",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "zh-TW",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ja",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ko",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ru",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "ar",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "hi",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "pt",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "it",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "nl",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "sv",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "no",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "da",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "fi",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "el",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "tr",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "iw",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "th",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "vi",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "pl",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "cs",
-                            EngineId = 1
-                        },
-                        new
-                        {
-                            LanguageId = "hu",
-                            EngineId = 1
                         });
                 });
 
@@ -3557,25 +3398,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Engine");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Engines.Entities.EngineLanguage", b =>
-                {
-                    b.HasOne("TranslationPro.Base.Engines.Entities.Engine", "Engine")
-                        .WithMany("Languages")
-                        .HasForeignKey("EngineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
-                        .WithMany("Engines")
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Engine");
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
                 {
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
@@ -4201,15 +4023,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
             modelBuilder.Entity("TranslationPro.Base.Engines.Entities.Engine", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("Languages");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Languages.Entities.Language", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("Engines");
 
                     b.Navigation("Translations");
                 });

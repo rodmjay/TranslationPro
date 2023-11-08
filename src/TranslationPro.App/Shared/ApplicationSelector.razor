@@ -12,7 +12,7 @@
 
                         @foreach (var application in Applications)
                         {
-                            if (application.Id == CurrentApplicationId)
+                            if (application.Id == ApplicationId)
                             {
                                 <option value="@application.Id" selected>@application.Name</option>
                             }

@@ -21,6 +21,8 @@
 		<None Remove="Seeding\csv\clients.csv" />
 		<None Remove="Seeding\csv\clientScopes.csv" />
 		<None Remove="Seeding\csv\clientSecrets.csv" />
+		<None Remove="Seeding\csv\engineLanguages.csv" />
+		<None Remove="Seeding\csv\engines.csv" />
 		<None Remove="Seeding\csv\identityResourceClaims.csv" />
 		<None Remove="Seeding\csv\identityResources.csv" />
 		<None Remove="Seeding\csv\languages.csv" />
@@ -34,6 +36,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Seeding\csv\engineLanguages.csv">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Seeding\csv\engines.csv">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
 		<EmbeddedResource Include="Seeding\csv\apiScopes.csv">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>

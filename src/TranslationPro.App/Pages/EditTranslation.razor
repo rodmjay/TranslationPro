@@ -2,6 +2,14 @@
 @inherits PhraseDetailsBase
 @layout ApplicationLayout
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
+        <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
+        <li class="breadcrumb-item active" aria-current="page">@Phrase.Text</li>
+    </ol>
+</nav>
+
 @if (Translation != null)
 {
     <h3>Edit Translation: @Translation.Text (@Translation.LanguageName)</h3>

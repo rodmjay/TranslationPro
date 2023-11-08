@@ -11,6 +11,7 @@ using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Seeding.Extensions;
 using TranslationPro.Base.Users.Entities;
@@ -101,6 +102,12 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
         builder.ConfigurePersistedGrantContext(operationalStoreOptions);
     }
 
+    private void SeedEngines(ModelBuilder builder)
+    {
+        builder.Entity<Engine>().Seed("engines.csv");
+        builder.Entity<EngineLanguage>().Seed("engineLanguages.csv");
+    }
+
     private void SeedIdentityServer(ModelBuilder builder)
     {
         builder.Entity<Client>()
@@ -146,5 +153,6 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
         SeedIdentityServer(builder);
         SeedLanguages(builder);
         SeedUsersAndRoles(builder);
+        SeedEngines(builder);
     }
 }
