@@ -9,8 +9,6 @@ namespace TranslationPro.App.Bases
 {
     public class ApplicationDetailsBase : ComponentBase
     {
-        [Inject]
-        public IIWLocalStorageService LocalStorage { get; set; }
         [Parameter]
         public Guid ApplicationId { get; set; }
 
@@ -31,17 +29,7 @@ namespace TranslationPro.App.Bases
 
         protected virtual async Task LoadData()
         {
-            if (ApplicationId != Guid.Empty)
-            {
-                await LocalStorage.SetItemAsync("ApplicationId", ApplicationId);
-            }
-
             Application = await ApplicationService.GetApplicationAsync(ApplicationId);
-
-            if (Application == null || Application.Id == Guid.Empty)
-            {
-                await LocalStorage.RemoveItemAsync("ApplicationId");
-            }
         }
     }
 }

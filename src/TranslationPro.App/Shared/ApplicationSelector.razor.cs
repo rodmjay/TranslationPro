@@ -21,8 +21,10 @@ namespace TranslationPro.App.Shared
 
         public List<ApplicationOutput> Applications { get; set; }
 
-        [CascadingParameter(Name="ApplicationId")]
-        public Guid ApplicationId { get; set; }
+        [CascadingParameter]
+        public RouteData RouteData { get; set; }
+        
+        private Guid? ApplicationId { get; set; }
 
         public async Task LoadData()
         {
@@ -31,6 +33,11 @@ namespace TranslationPro.App.Shared
 
         protected override async Task OnParametersSetAsync()
         {
+            if (RouteData.RouteValues.ContainsKey("ApplicationId"))
+            {
+                ApplicationId = Guid.Parse(RouteData.RouteValues["ApplicationId"].ToString());
+            }
+
             await LoadData();
         }
         
