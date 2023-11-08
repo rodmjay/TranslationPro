@@ -23,9 +23,7 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-
-
+        
         builder.Services
             .AddTransient<TranslationProApiAuthorizationMessageHandler>();
 
@@ -36,27 +34,37 @@ public class Program
             builder.Configuration.Bind("AuthenticationPaths", options.AuthenticationPaths);
         });
 
+        builder.Services.AddAuthorizationCore(authorizationOptions =>
+        {
+            authorizationOptions.AddPolicy(
+                Policies.CanAccessApis,
+                Policies.CanAccessApi());
+        });
+
+        var url = new Uri(builder.Configuration["ApiBase"]);
+
+
         builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
-                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
+                client => client.BaseAddress = url)
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<IApplicationLanguagesController, ApplicationLanguagesProxy>(
-                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
+                client => client.BaseAddress = url)
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<IApplicationUsersController, ApplicationUsersProxy>(
-                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
+                client => client.BaseAddress = url)
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ILanguagesController, LanguagesProxy>(
-            client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]));
+            client => client.BaseAddress = url);
 
         builder.Services.AddHttpClient<IPhrasesController, PhrasesProxy>(
-                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
+                client => client.BaseAddress = url)
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ITranslationsController, TranslationsProxy>(
-                client => client.BaseAddress = new Uri(builder.Configuration["ApiBase"]))
+                client => client.BaseAddress = url)
             .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
 
         builder.Services.AddIWProtectedBrowserStorageAsSingleton();

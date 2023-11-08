@@ -35,8 +35,16 @@ public class ApplicationsController : BaseController, IApplicationsController
     [HttpGet]
     public async Task<List<ApplicationOutput>> GetApplicationsAsync()
     {
-        var user = await GetCurrentUser();
-        return await _service.GetApplicationsForUserAsync<ApplicationOutput>(user.Id).ConfigureAwait(false);
+        try
+        {
+            var user = await GetCurrentUser();
+            return await _service.GetApplicationsForUserAsync<ApplicationOutput>(user.Id).ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     [HttpPost]

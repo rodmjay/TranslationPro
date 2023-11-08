@@ -11,7 +11,7 @@ namespace TranslationPro.App.MessageHandlers
             : base(provider, navigation)
         {
             ConfigureHandler(
-                  authorizedUrls: new[] { config["OidcConfiguration:Authority"] });
+                  authorizedUrls: new[] { config["ApiBase"] });
         }
     }
 }

@@ -7,6 +7,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -15,12 +16,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using TranslationPro.Base.Common.Extensions;
+using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Validation;
 
 namespace TranslationPro.Base.Common.Middleware;
 
 public class ExceptionMiddleware
 {
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+    {
+        return $"[{nameof(ExceptionMiddleware)}.{callerName}] - {message}";
+    }
+
     private readonly JsonSerializerSettings _jsonSerializerSettings;
     private readonly ILoggerFactory _loggerFactory;
     private readonly RequestDelegate _next;

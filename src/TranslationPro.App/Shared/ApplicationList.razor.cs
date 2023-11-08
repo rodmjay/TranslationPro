@@ -27,10 +27,6 @@ public partial class ApplicationList
 
     protected override async Task OnInitializedAsync()
     {
-        Guid? applicationId = LocalStorage.GetItem<Guid?>("ApplicationId");
-        if (applicationId != null)
-        {
-            NavigationManager.NavigateTo($"/applications/{applicationId.Value}");
-        }
+        Apps = await ApplicationService.GetApplicationsAsync();
     }
 }

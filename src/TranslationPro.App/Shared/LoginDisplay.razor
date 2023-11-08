@@ -22,7 +22,7 @@
 
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <button class="text-white nav-link" @onclick="HandleProfileClick">
+                                <button class="btn-link text-white nav-link" @onclick="HandleProfileClick">
                                     @context.User.Identity?.Name
                                 </button>
                             </li>
@@ -48,10 +48,9 @@
                                 <a class="nav-link text-black">|</a>
                             </li>
                             <li class="nav-item">
-                                
-                                <button class="text-white nav-link" @onclick="HandleRegisterClick">
+                                <NavLink class="nav-link text-white" href="authentication/register">
                                     Register
-                                </button>
+                                </NavLink>
 
                             </li>
                             <li class="nav-item">
