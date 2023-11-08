@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using TranslationPro.Base.ApplicationLanguages.Services;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
 using TranslationPro.Base.Common.Data.Enums;
@@ -18,13 +21,24 @@ namespace TranslationPro.Base.ApplicationUsers.Services
 {
     public class ApplicationUserService : BaseService<ApplicationUser>, IApplicationUserService
     {
+        private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+        {
+            return $"[{nameof(ApplicationUserService)}.{callerName}] - {message}";
+        }
+
+
         private readonly UserManager _userManager;
         private readonly ApplicationUserErrorDescriber _errorDescriber;
+        private readonly ILogger<ApplicationUserService> _logger;
 
-        public ApplicationUserService(IServiceProvider serviceProvider, UserManager userManager, ApplicationUserErrorDescriber errorDescriber) : base(serviceProvider)
+        public ApplicationUserService(IServiceProvider serviceProvider, 
+            UserManager userManager, 
+            ApplicationUserErrorDescriber errorDescriber,
+            ILogger<ApplicationUserService> logger) : base(serviceProvider)
         {
             _userManager = userManager;
             _errorDescriber = errorDescriber;
+            _logger = logger;
         }
 
         private IQueryable<ApplicationUser> ApplicationUsers =>
@@ -32,6 +46,8 @@ namespace TranslationPro.Base.ApplicationUsers.Services
 
         public async Task<Result> InviteUserAsync(Guid applicationId, ApplicationUserCreateOptions input)
         {
+            _logger.LogInformation(GetLogMessage("Inviting user: {0} to application: {1}"), input.Email, applicationId);
+
             var applicationUser = await ApplicationUsers.Where(x=>x.User.Email == input.Email && x.ApplicationId == applicationId).FirstOrDefaultAsync();
 
             if (applicationUser != null)

@@ -16,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using TranslationPro.Base.Common.Extensions;
-using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Validation;
 
 namespace TranslationPro.Base.Common.Middleware;

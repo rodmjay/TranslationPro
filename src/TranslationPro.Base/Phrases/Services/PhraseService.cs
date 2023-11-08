@@ -7,9 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
@@ -27,12 +29,19 @@ namespace TranslationPro.Base.Phrases.Services;
 
 public class PhraseService : BaseService<Phrase>, IPhraseService
 {
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+    {
+        return $"[{nameof(PhraseService)}.{callerName}] - {message}";
+    }
+
     private readonly IRepositoryAsync<Application> _applicationRepository;
     private readonly PhraseErrorDescriber _errorDescriber;
+    private readonly ILogger<PhraseService> _logger;
 
-    public PhraseService(IServiceProvider serviceProvider, PhraseErrorDescriber errorDescriber) : base(serviceProvider)
+    public PhraseService(IServiceProvider serviceProvider, PhraseErrorDescriber errorDescriber, ILogger<PhraseService> logger) : base(serviceProvider)
     {
         _errorDescriber = errorDescriber;
+        _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
     }
 
@@ -99,6 +108,8 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
     public async Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
+        _logger.LogInformation(GetLogMessage("Creating Phrase: {0}"), input.Text);
+
         // does phrase already exist?
         var existing = await Phrases.Where(x => x.ApplicationId == applicationId && x.Text == input.Text)
             .FirstOrDefaultAsync();

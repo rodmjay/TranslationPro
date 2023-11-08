@@ -41,19 +41,12 @@ public static class HostBuilderExtensions
 
         logging.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Information);
         logging.AddFilter("TranslationPro.Base", LogLevel.Information);
+        logging.AddFilter("TranslationPro.Shared", LogLevel.Information);
         logging.AddFilter("IdentityServer4", LogLevel.Warning);
     }
 
 
     public static void Configure(HostBuilderContext hostingContext,
-        IConfigurationBuilder config)
-    {
-        var env = hostingContext.HostingEnvironment;
-        Configure(config, env.EnvironmentName);
-    }
-
-
-    public static void Configure(WebHostBuilderContext hostingContext,
         IConfigurationBuilder config)
     {
         var env = hostingContext.HostingEnvironment;

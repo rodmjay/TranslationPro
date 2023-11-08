@@ -1,7 +1,15 @@
 {
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Microsoft.AspNetCore": "Warning",
+        "IdentityServer4": "Information"
+      }
+    }
+  },
   "ConnectionStrings": {
-    "DefaultConnection":
-      "Server=(localdb)\\mssqllocaldb;Database=TranslationPro;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TranslationPro;Trusted_Connection=True;MultipleActiveResultSets=true"
   },
   "AppSettings": {
     "Authority": "https://localhost:44319",

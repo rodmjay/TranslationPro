@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Stripe;
-using Stripe.Checkout;
-using TranslationPro.Base.Stripe.Entities;
 
 namespace TranslationPro.Base.Stripe.Projections
 {

@@ -6,7 +6,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Stripe;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Stripe.Entities;

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
 using TranslationPro.Base.Applications.Entities;
+using TranslationPro.Base.Applications.Services;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
@@ -16,10 +19,19 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 {
     internal class ApplicationLanguageService : BaseService<ApplicationLanguage>, IApplicationLanguageService
     {
+        private readonly ILogger<ApplicationLanguageService> _logger;
+
+        private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+        {
+            return $"[{nameof(ApplicationLanguageService)}.{callerName}] - {message}";
+        }
+
+
         private readonly IRepositoryAsync<Application> _applicationRepository;
         private readonly IRepositoryAsync<Translation> _translationRepository;
-        public ApplicationLanguageService(IServiceProvider serviceProvider) : base(serviceProvider)
+        public ApplicationLanguageService(IServiceProvider serviceProvider, ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
+            _logger = logger;
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
             _translationRepository = UnitOfWork.RepositoryAsync<Translation>();
         }
@@ -34,6 +46,8 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 
         public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input)
         {
+            _logger.LogInformation(GetLogMessage("Adding language: {0} to application: {1}"), input.Language, applicationId);
+
             var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
             var appLanguage = application.Languages.FirstOrDefault(x => x.LanguageId == input.Language);
@@ -70,6 +84,8 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 
         public async Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
         {
+            _logger.LogInformation(GetLogMessage("Removing language: {0} from application: {1}"), languageId, applicationId);
+
             var translations = await Translations
                 .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
                 .ToListAsync();

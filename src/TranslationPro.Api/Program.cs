@@ -25,11 +25,11 @@ public class Program
     {
         return Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration(HostBuilderExtensions.Configure)
+            .UseSerilog()
             .ConfigureWebHostDefaults(builder =>
             {
                 builder
                     .ConfigureLogging(HostBuilderExtensions.ConfigureLogging)
-                    .UseSerilog()
                     .UseStartup<Startup>();
             });
     }

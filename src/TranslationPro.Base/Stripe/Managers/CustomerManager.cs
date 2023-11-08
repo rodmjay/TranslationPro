@@ -5,10 +5,8 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 using TranslationPro.Base.Common.Data.Enums;
-using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Stripe.Entities;
 using TranslationPro.Base.Stripe.Extensions;
-using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Base.Stripe.Managers

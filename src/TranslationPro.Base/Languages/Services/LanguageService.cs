@@ -7,9 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using TranslationPro.Base.ApplicationUsers.Services;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Engines.Entities;
@@ -21,7 +23,11 @@ namespace TranslationPro.Base.Languages.Services;
 
 public class LanguageService : BaseService<Language>, ILanguageService
 {
-    private IRepositoryAsync<Engine> _engineRepository;
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+    {
+        return $"[{nameof(LanguageService)}.{callerName}] - {message}";
+    }
+    private readonly IRepositoryAsync<Engine> _engineRepository;
     
 
     public LanguageService(IServiceProvider serviceProvider) : base(serviceProvider)

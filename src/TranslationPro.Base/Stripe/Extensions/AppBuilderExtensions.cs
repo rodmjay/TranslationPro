@@ -2,7 +2,6 @@
 using Stripe;
 using Stripe.Checkout;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Stripe.Config;
 using TranslationPro.Base.Stripe.Factories;
 using TranslationPro.Base.Stripe.Managers;
 

@@ -7,14 +7,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Google.Cloud.Translation.V2;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
+using TranslationPro.Base.Permissions.Services;
 using TranslationPro.Base.Phrases;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
@@ -26,18 +29,25 @@ namespace TranslationPro.Base.Translations.Services;
 
 public class TranslationService : BaseService<Translation>, ITranslationService
 {
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+    {
+        return $"[{nameof(TranslationService)}.{callerName}] - {message}";
+    }
+
     private readonly IRepositoryAsync<Application> _applicationRepository;
     private readonly PhraseErrorDescriber _phraseErrors;
     private readonly TranslationClient _googleClient;
+    private readonly ILogger<TranslationService> _logger;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
     private readonly TranslationErrorDescriber _translationErrors;
 
     public TranslationService(IServiceProvider serviceProvider, TranslationErrorDescriber translationErrors,
-        PhraseErrorDescriber phraseErrors, TranslationClient googleClient) : base(serviceProvider)
+        PhraseErrorDescriber phraseErrors, TranslationClient googleClient, ILogger<TranslationService> logger) : base(serviceProvider)
     {
         _translationErrors = translationErrors;
         _phraseErrors = phraseErrors;
         _googleClient = googleClient;
+        _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
     }
@@ -52,6 +62,11 @@ public class TranslationService : BaseService<Translation>, ITranslationService
     
     public async Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
     {
+        _logger.LogInformation(GetLogMessage("Saving translation: {0} for phrase: {1} in application: {2}"), 
+            input.Text, 
+            phraseId, 
+            applicationId);
+
         var phrase = await Phrases.Where(x => x.Id == phraseId).FirstOrDefaultAsync();
 
         if (phrase == null)
@@ -109,6 +124,8 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
     public async Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId)
     {
+        _logger.LogInformation(GetLogMessage("Processing Translations for application: {0}"), applicationId);
+
         var results = new List<Result>();
 
         var pendingTranslations = await GetPendingTranslationsForApplicationAsync(applicationId);
@@ -128,6 +145,8 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
     public async Task<Result> ProcessTranslationsForApplicationLanguageAsync(Guid applicationId, string languageId)
     {
+        _logger.LogInformation(GetLogMessage("Processing Translations for application: {0} and language: {1}"), applicationId, languageId);
+        
         var missingTranslations = await GetPendingTranslationsForLanguageAsync(applicationId, languageId);
         var translations = await _googleClient.TranslateTextAsync(missingTranslations, languageId);
    
@@ -157,6 +176,8 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
     private async Task<Result> SaveTranslationResultsAsync(Guid applicationId, List<TranslationResult> input)
     {
+        _logger.LogInformation(GetLogMessage("Saving {0} translations to application: {1}"), input.Count, applicationId);
+
         var translations = await Translations
             .Where(x => x.ApplicationId == applicationId && x.TranslationDate == null && x.Text == null)
             .ToListAsync();
@@ -177,6 +198,9 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         }
 
         var records = Repository.Commit();
+
+        _logger.LogInformation(GetLogMessage("{0} translations saved to application: {1}"), records, applicationId);
+
         return Result.Success(records);
     }
 }

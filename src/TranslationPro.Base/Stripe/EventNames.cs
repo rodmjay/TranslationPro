@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TranslationPro.Base.Stripe
+﻿namespace TranslationPro.Base.Stripe
 {
     public static class EventNames
     {

@@ -4,7 +4,6 @@
 
 #endregion
 
-using Stripe;
 using TranslationPro.Base.Users.Interfaces;
 
 namespace TranslationPro.Base.Users.Models;

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 using Stripe;
-using Stripe.Infrastructure;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Stripe.Interfaces;
 

@@ -7,9 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Applications.Interfaces;
@@ -28,16 +30,24 @@ namespace TranslationPro.Base.Applications.Services;
 
 public class ApplicationService : BaseService<Application>, IApplicationService
 {
+    private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
+    {
+        return $"[{nameof(ApplicationService)}.{callerName}] - {message}";
+    }
+
+
     private readonly ApplicationErrorDescriber _errorDescriber;
+    private readonly ILogger<ApplicationService> _logger;
     private readonly IRepositoryAsync<Language> _languageRepository;
     private readonly IRepositoryAsync<ApplicationUser> _applicationUserRepository;
     private readonly IRepositoryAsync<Translation> _translationRepository;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
 
-    public ApplicationService(IServiceProvider serviceProvider, ApplicationErrorDescriber errorDescriber) : base(
+    public ApplicationService(IServiceProvider serviceProvider, ApplicationErrorDescriber errorDescriber, ILogger<ApplicationService> logger) : base(
         serviceProvider)
     {
         _errorDescriber = errorDescriber;
+        _logger = logger;
         _languageRepository = UnitOfWork.RepositoryAsync<Language>();
         _applicationUserRepository = UnitOfWork.RepositoryAsync<ApplicationUser>();
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
@@ -63,6 +73,8 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
     public async Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
     {
+        _logger.LogInformation(GetLogMessage("Creating Application: {0} For User: {1}"), input.Name, userId);
+
         var application = new Application
         {
             Name = input.Name,
@@ -93,7 +105,11 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
         var records = Repository.InsertOrUpdateGraph(application, true);
         if (records > 0)
+        {
+            _logger.LogInformation(GetLogMessage("Application Successfully Created: {0}"), input.Name);
+
             return Result.Success(application.Id);
+        }
 
         return Result.Failed(_errorDescriber.UnableToCreateApplication());
     }
@@ -105,6 +121,8 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
     public async Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationOptions input)
     {
+        _logger.LogInformation(GetLogMessage("Updating Application: {0}"), applicationId);
+
         var existing = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
         existing.Name = input.Name;
@@ -112,7 +130,10 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
         var records = Repository.InsertOrUpdateGraph(existing, true);
         if (records > 0)
+        {
+            _logger.LogInformation(GetLogMessage("Application Successfully Updated: {0}"), applicationId);
             return Result.Success(existing.Id);
+        }
 
         return Result.Failed(_errorDescriber.UnableToUpdateApplication(existing.Name));
     }

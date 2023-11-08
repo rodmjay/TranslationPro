@@ -35,6 +35,7 @@ public abstract class BaseService
 
 public abstract class BaseService<TEntity> : BaseService, IService<TEntity> where TEntity : class, IObjectState
 {
+
     protected BaseService(IServiceProvider serviceProvider) : base(serviceProvider)
     {
         Repository = UnitOfWork.RepositoryAsync<TEntity>();
