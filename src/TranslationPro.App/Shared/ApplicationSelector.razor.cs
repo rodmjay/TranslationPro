@@ -25,8 +25,6 @@ namespace TranslationPro.App.Shared
 
         public async Task LoadData()
         {
-            CurrentApplicationId = LocalStorage.GetItem<Guid?>("ApplicationId");
-
             Applications = await ApplicationsProxy.GetApplicationsAsync();
         }
 
@@ -43,7 +41,7 @@ namespace TranslationPro.App.Shared
 
         public void HandleApplicationChange(ChangeEventArgs e)
         {
-            NavigationManager.NavigateTo($"/redirect/{e.Value}");
+            NavigationManager.NavigateTo($"/applications/{e.Value}");
         }
     }
 }

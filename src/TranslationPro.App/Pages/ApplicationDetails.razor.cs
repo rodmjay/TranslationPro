@@ -9,13 +9,6 @@ namespace TranslationPro.App.Pages
     {
         public PhraseList PhraseList;
 
-        public async Task ReloadPhrases()
-        {
-            
-
-            await LoadData();
-        }
-
         protected override async Task LoadData()
         {
             await base.LoadData();
