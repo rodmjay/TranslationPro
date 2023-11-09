@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.Engines.Entities;
 
@@ -18,7 +19,7 @@ public class ApplicationEngine : BaseEntity<ApplicationEngine>
     public Guid ApplicationId { get; set; }
     public Application Application { get; set; }
 
-    public int EngineId { get; set; }
+    public TranslationEngine EngineId { get; set; }
     public Engine Engine { get; set; }
 
     public ICollection<Translation> Translations { get; set; }

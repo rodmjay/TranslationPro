@@ -13,6 +13,7 @@ using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Shared.Enums;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Translations.Entities;
@@ -28,7 +29,7 @@ public class Translation : BaseEntity<Translation>, ITranslation
     public string LanguageId { get; set; }
     public DateTime? TranslationDate { get; set; }
     public string Text { get; set; }
-    public int? EngineId { get; set; }
+    public TranslationEngine? EngineId { get; set; }
     public ApplicationEngine Engine { get; set; }
     public ApplicationLanguage ApplicationLanguage { get; set; }
 

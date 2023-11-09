@@ -7,11 +7,9 @@ namespace TranslationPro.Base.Engines.Entities
 {
     public class Engine : BaseEntity<Engine>
     {
-        public int Id { get; set; }
+        public TranslationEngine Id { get; set; }
         public string Name { get; set; }
         public bool Enabled { get; set; }
-
-        public TranslationEngine EngineId { get; set; }
 
         public ICollection<ApplicationEngine> Applications { get; set; }
         public ICollection<EngineLanguage> Languages { get; set; }

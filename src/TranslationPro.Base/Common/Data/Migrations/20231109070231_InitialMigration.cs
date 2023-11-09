@@ -200,6 +200,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Engine",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Enabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Engine", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityProviders",
                 columns: table => new
                 {
@@ -279,7 +292,16 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    AllowPromotionCodes = table.Column<bool>(type: "bit", nullable: false),
+                    BillingAddressCollection = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerCreation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Livemode = table.Column<bool>(type: "bit", nullable: false),
+                    PaymentMethodCollection = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubmitType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -823,6 +845,30 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ApplicationEngine",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EngineId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationEngine", x => new { x.ApplicationId, x.EngineId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationEngine_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationEngine_Engine_EngineId",
+                        column: x => x.EngineId,
+                        principalTable: "Engine",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityResourceClaim",
                 schema: "IdentityServer",
                 columns: table => new
@@ -885,6 +931,30 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ApplicationLanguage_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Language",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EngineLanguage",
+                columns: table => new
+                {
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EngineId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EngineLanguage", x => new { x.LanguageId, x.EngineId });
+                    table.ForeignKey(
+                        name: "FK_EngineLanguage_Engine_EngineId",
+                        column: x => x.EngineId,
+                        principalTable: "Engine",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EngineLanguage_Language_LanguageId",
                         column: x => x.LanguageId,
                         principalTable: "Language",
                         principalColumn: "Id",
@@ -1156,11 +1226,17 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     PhraseId = table.Column<int>(type: "int", nullable: false),
                     LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TranslationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EngineId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Translation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Translation_ApplicationEngine_ApplicationId_EngineId",
+                        columns: x => new { x.ApplicationId, x.EngineId },
+                        principalTable: "ApplicationEngine",
+                        principalColumns: new[] { "ApplicationId", "EngineId" });
                     table.ForeignKey(
                         name: "FK_Translation_ApplicationLanguage_ApplicationId_LanguageId",
                         columns: x => new { x.ApplicationId, x.LanguageId },
@@ -1183,6 +1259,47 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         principalTable: "Phrase",
                         principalColumns: new[] { "ApplicationId", "Id" },
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LineItem",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AmountDiscount = table.Column<long>(type: "bigint", nullable: false),
+                    AmountSubtotal = table.Column<long>(type: "bigint", nullable: false),
+                    AmountTax = table.Column<long>(type: "bigint", nullable: false),
+                    AmountTotal = table.Column<long>(type: "bigint", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<long>(type: "bigint", nullable: true),
+                    PriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PaymentLinkId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    StripePaymentLinkLineItemId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LineItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LineItem_LineItem_StripePaymentLinkLineItemId",
+                        column: x => x.StripePaymentLinkLineItemId,
+                        principalSchema: "Stripe",
+                        principalTable: "LineItem",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LineItem_PaymentLink_PaymentLinkId",
+                        column: x => x.PaymentLinkId,
+                        principalSchema: "Stripe",
+                        principalTable: "PaymentLink",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LineItem_Price_PriceId",
+                        column: x => x.PriceId,
+                        principalSchema: "Stripe",
+                        principalTable: "Price",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1255,7 +1372,15 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CanceledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndBehavior = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReleasedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ReleasedSubscription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1363,7 +1488,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     PriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    Quantity = table.Column<long>(type: "bigint", nullable: false)
+                    Quantity = table.Column<long>(type: "bigint", nullable: false),
+                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1570,7 +1696,20 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    PriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SubscriptionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SubscriptionItemId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Amount = table.Column<long>(type: "bigint", nullable: false),
+                    AmountExcludingTax = table.Column<long>(type: "bigint", nullable: true),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Discountable = table.Column<bool>(type: "bit", nullable: false),
+                    Proration = table.Column<bool>(type: "bit", nullable: false),
+                    Quantity = table.Column<long>(type: "bigint", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnitAmountExcludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1580,6 +1719,24 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         column: x => x.InvoiceId,
                         principalSchema: "Stripe",
                         principalTable: "Invoice",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_InvoiceLineItem_Price_PriceId",
+                        column: x => x.PriceId,
+                        principalSchema: "Stripe",
+                        principalTable: "Price",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_InvoiceLineItem_SubscriptionItem_SubscriptionItemId",
+                        column: x => x.SubscriptionItemId,
+                        principalSchema: "Stripe",
+                        principalTable: "SubscriptionItem",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_InvoiceLineItem_Subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalSchema: "Stripe",
+                        principalTable: "Subscription",
                         principalColumn: "Id");
                 });
 
@@ -1674,7 +1831,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer",
                 table: "ApiScope",
                 columns: new[] { "Id", "Created", "Description", "DisplayName", "Emphasize", "Enabled", "LastAccessed", "Name", "NonEditable", "Required", "ShowInDiscoveryDocument", "Updated" },
-                values: new object[] { 1, new DateTime(2023, 11, 5, 18, 44, 49, 5, DateTimeKind.Utc).AddTicks(5619), null, "My API", false, true, null, "api1", false, false, true, null });
+                values: new object[] { 1, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "My API", false, true, null, "api1", false, false, true, null });
 
             migrationBuilder.InsertData(
                 schema: "IdentityServer",
@@ -1685,8 +1842,18 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     { 1, 2592000, 400000, 0, false, false, false, true, null, true, true, 300, true, null, null, "", "postman", null, null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 532, DateTimeKind.Unspecified).AddTicks(8105), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, true, false, false, true, false, 1296000, false, null, null, null },
                     { 2, 2592000, 3600, 0, false, false, false, true, null, true, true, 300, true, null, null, "client_", "client", null, null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 642, DateTimeKind.Unspecified).AddTicks(7421), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, true, false, false, true, false, 1296000, false, null, null, null },
                     { 3, 2592000, 3600, 0, false, false, false, true, null, true, true, 300, true, null, null, "client_", "mvc", null, null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 645, DateTimeKind.Unspecified).AddTicks(5968), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, true, false, false, true, false, 1296000, false, null, null, null },
-                    { 4, 2592000, 3600, 0, false, false, false, true, null, true, false, 300, true, null, null, "client_", "js", "JavaScript Client", null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 653, DateTimeKind.Unspecified).AddTicks(7956), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, false, false, false, true, false, 1296000, false, null, null, null },
                     { 5, 2592000, 3600, 0, false, false, false, true, null, true, false, 300, true, null, null, "client_", "translationpro", "TranslationPro", null, null, null, new DateTime(2021, 9, 18, 13, 12, 13, 653, DateTimeKind.Unspecified).AddTicks(7956), new TimeSpan(0, 0, 5, 0, 0), 0, null, 300, true, true, true, null, 300, true, null, null, null, false, null, null, "oidc", 1, 1, false, false, false, true, false, 1296000, false, null, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Engine",
+                columns: new[] { "Id", "Enabled", "Name" },
+                values: new object[,]
+                {
+                    { 1, true, "Google Cloud Translate" },
+                    { 2, false, "Azure Translator by Microsoft" },
+                    { 3, false, "Amazon Translate" },
+                    { 4, false, "DeepL" }
                 });
 
             migrationBuilder.InsertData(
@@ -1704,32 +1871,137 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
+                    { "af", "Afrikaans" },
+                    { "am", "Amharic" },
                     { "ar", "Arabic" },
+                    { "as", "Assamese" },
+                    { "az", "Azerbaijani (Latin)" },
+                    { "ba", "Bashkir" },
+                    { "bg", "Bulgarian" },
+                    { "bho", "Bhojpuri" },
+                    { "bn", "Bangla" },
+                    { "bo", "Tibetan" },
+                    { "brx", "Bodo" },
+                    { "bs", "Bosnian (Latin)" },
+                    { "ca", "Catalan" },
                     { "cs", "Czech" },
+                    { "cy", "Welsh" },
                     { "da", "Danish" },
                     { "de", "German" },
+                    { "doi", "Dogri" },
+                    { "dsb", "Lower Sorbian" },
+                    { "dv", "Divehi" },
                     { "el", "Greek" },
                     { "en", "English" },
                     { "es", "Spanish" },
+                    { "es-MX", "Spanish (Mexico)" },
+                    { "et", "Estonian" },
+                    { "eu", "Basque" },
+                    { "fa", "Persian" },
                     { "fi", "Finnish" },
+                    { "fil", "Filipino" },
+                    { "fj", "Fijian" },
+                    { "fo", "Faroese" },
                     { "fr", "French" },
+                    { "fr-ca", "French (Canada)" },
+                    { "gl", "Galician" },
+                    { "gom", "Konkani" },
+                    { "gu", "Gujarati" },
+                    { "ha", "Hausa" },
                     { "hi", "Hindi" },
+                    { "hr", "Croatian" },
+                    { "hsb", "Upper Sorbian" },
+                    { "ht", "Haitian Creole" },
                     { "hu", "Hungarian" },
+                    { "hy", "Armenian" },
+                    { "id", "Indonesian" },
+                    { "ig", "Igbo" },
+                    { "ikt", "Inuinnaqtun" },
+                    { "ir", "Irish" },
+                    { "is", "Icelandic" },
                     { "it", "Italian" },
+                    { "itu-Latin", "Inuktitut (Latin)" },
+                    { "iu", "Inuktitut" },
                     { "iw", "Hebrew" },
                     { "ja", "Japanese" },
+                    { "ka", "Georgian" },
+                    { "kk", "Kazahk" },
+                    { "km", "Kymer" },
+                    { "kmr", "Kurdish (Northern)" },
+                    { "kn", "Kannada" },
                     { "ko", "Korean" },
+                    { "ks", "Kashmiri" },
+                    { "ku", "Kurdish (Central)" },
+                    { "ky", "Kyrgyz" },
+                    { "ln", "Lingala" },
+                    { "lo", "Lao" },
+                    { "lt", "Lithuanian" },
+                    { "lug", "Liganda" },
+                    { "lv", "Latvian" },
+                    { "mai", "Maithili" },
+                    { "mg", "Malagasy" },
+                    { "mi", "Maori" },
+                    { "mk", "Macedonian" },
+                    { "ml", "Malayalam" },
+                    { "mn-Cyrl", "Mongolian (Cyrillic)" },
+                    { "mn-Mong", "Mongilian (Traditional)" },
+                    { "mr", "Marathi" },
+                    { "ms", "Malay (Latin)" },
+                    { "mt", "Maltese" },
+                    { "mww", "Hmong Daw (Latin)" },
+                    { "my", "Myanmar" },
+                    { "mya", "Nyanja" },
+                    { "ne", "Nepali" },
                     { "nl", "Dutch" },
                     { "no", "Norwegian" },
+                    { "nso", "Sesotho sa Leboa" },
+                    { "or", "Odia" },
+                    { "otq", "Queretaro" },
+                    { "pa", "Punjabi" },
                     { "pl", "Polish" },
-                    { "pt", "Portugese" },
+                    { "prs", "Dari" },
+                    { "ps", "Pashto" },
+                    { "pt", "Portugese (Brazil)" },
+                    { "pt-pt", "Portugese (Portugal)" },
+                    { "ro", "Romanian" },
                     { "ru", "Russian" },
+                    { "run", "Rundi" },
+                    { "rw", "Kiyarwanda" },
+                    { "sd", "Sindhi" },
+                    { "si", "Sinhala" },
+                    { "sk", "Slovak" },
+                    { "sl", "Slovenian" },
+                    { "sm", "Samoan (Latin)" },
+                    { "so", "Somali (Arabic)" },
+                    { "sq", "Albanian" },
+                    { "sr-Cyrl", "Serbian (Cyrillic)" },
+                    { "sr-Latn", "Serbian (Latin)" },
+                    { "st", "Sesotho" },
                     { "sv", "Swedish" },
+                    { "sw", "Swahili (Latin)" },
+                    { "ta", "Tamil" },
+                    { "te", "Telugu" },
                     { "th", "Thai" },
+                    { "ti", "Tigrinya" },
+                    { "tk", "Tirkmen (Latin)" },
+                    { "tl", "Filipino (Tagalog)" },
+                    { "tlh-Latn", "Klingon" },
+                    { "tn", "Setswana" },
+                    { "to", "Tongan" },
                     { "tr", "Turkish" },
+                    { "tt", "Tatar (Latin)" },
+                    { "ty", "Tahitian" },
+                    { "ug", "Uyghur (Arabic)" },
+                    { "uk", "Ukranian" },
+                    { "ur", "Urdu" },
+                    { "uz", "Uzbek (Latin)" },
                     { "vi", "Vietnamese" },
+                    { "xh", "Zhosa" },
+                    { "yo", "Yoruba" },
+                    { "yua", "Yucatec Maya" },
                     { "zh-CN", "Chinese (Simplified)" },
-                    { "zh-TW", "Chinese (Traditional)" }
+                    { "zh-TW", "Chinese (Traditional)" },
+                    { "zu", "Zulu" }
                 });
 
             migrationBuilder.InsertData(
@@ -1752,8 +2024,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "Id", "ClientId", "Origin" },
                 values: new object[,]
                 {
-                    { 1, 4, "https://localhost:5003" },
-                    { 2, 5, "https://localhost:44330" }
+                    { 2, 5, "https://localhost:44330" },
+                    { 3, 5, "https://translationpro-app-test.azurewebsites.net" }
                 });
 
             migrationBuilder.InsertData(
@@ -1763,7 +2035,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "password" },
-                    { 2, 4, "authorization_code" },
                     { 3, 2, "client_credentials" },
                     { 4, 3, "authorization_code" },
                     { 5, 5, "authorization_code" }
@@ -1776,8 +2047,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 values: new object[,]
                 {
                     { 1, 3, "https://localhost:5002/signout-callback-oidc" },
-                    { 2, 4, "https://localhost:5003/index.html" },
-                    { 3, 5, "https://localhost:44330/index.html" }
+                    { 3, 5, "https://localhost:44330/authentication/logout-callback" },
+                    { 4, 5, "https://translationpro-app-test.azurewebsites.net/authentication/logout-callback" }
                 });
 
             migrationBuilder.InsertData(
@@ -1787,8 +2058,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 values: new object[,]
                 {
                     { 1, 3, "https://localhost:5002/signin-oidc" },
-                    { 2, 4, "https://localhost:5003/callback.html" },
-                    { 3, 5, "https://localhost:44330/authentication/login-callback" }
+                    { 3, 5, "https://localhost:44330/authentication/login-callback" },
+                    { 4, 5, "https://translationpro-app-test.azurewebsites.net/authentication/login-callback" }
                 });
 
             migrationBuilder.InsertData(
@@ -1803,9 +2074,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     { 4, 1, "api1" },
                     { 5, 1, "profile" },
                     { 6, 1, "openid" },
-                    { 7, 4, "openid" },
-                    { 8, 4, "profile" },
-                    { 9, 4, "api1" },
                     { 10, 3, "profile" },
                     { 11, 5, "api1" },
                     { 12, 5, "profile" },
@@ -1821,6 +2089,111 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     { 1, 1, new DateTime(2021, 9, 17, 13, 19, 6, 414, DateTimeKind.Unspecified).AddTicks(3771), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" },
                     { 2, 2, new DateTime(2021, 9, 17, 13, 19, 6, 564, DateTimeKind.Unspecified).AddTicks(8731), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" },
                     { 3, 3, new DateTime(2021, 9, 17, 13, 19, 6, 568, DateTimeKind.Unspecified).AddTicks(1345), null, null, "SharedSecret", "K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EngineLanguage",
+                columns: new[] { "EngineId", "LanguageId" },
+                values: new object[,]
+                {
+                    { 3, "af" },
+                    { 3, "am" },
+                    { 1, "ar" },
+                    { 3, "ar" },
+                    { 3, "az" },
+                    { 3, "bg" },
+                    { 3, "bn" },
+                    { 3, "bs" },
+                    { 3, "ca" },
+                    { 1, "cs" },
+                    { 3, "cs" },
+                    { 3, "cy" },
+                    { 1, "da" },
+                    { 3, "da" },
+                    { 1, "de" },
+                    { 3, "de" },
+                    { 1, "el" },
+                    { 3, "el" },
+                    { 1, "en" },
+                    { 3, "en" },
+                    { 1, "es" },
+                    { 3, "es" },
+                    { 3, "et" },
+                    { 3, "fa" },
+                    { 1, "fi" },
+                    { 3, "fi" },
+                    { 1, "fr" },
+                    { 3, "fr" },
+                    { 3, "fr-CA" },
+                    { 3, "gu" },
+                    { 3, "ha" },
+                    { 1, "hi" },
+                    { 3, "hi" },
+                    { 3, "hr" },
+                    { 3, "ht" },
+                    { 1, "hu" },
+                    { 3, "hu" },
+                    { 3, "hy" },
+                    { 3, "id" },
+                    { 3, "ir" },
+                    { 3, "is" },
+                    { 1, "it" },
+                    { 3, "it" },
+                    { 1, "iw" },
+                    { 3, "iw" },
+                    { 1, "ja" },
+                    { 3, "ja" },
+                    { 3, "ka" },
+                    { 3, "kk" },
+                    { 3, "kn" },
+                    { 1, "ko" },
+                    { 3, "ko" },
+                    { 3, "lt" },
+                    { 3, "lv" },
+                    { 3, "mk" },
+                    { 3, "ml" },
+                    { 3, "mn-Cyrl" },
+                    { 3, "mr" },
+                    { 3, "ms" },
+                    { 3, "mt" },
+                    { 1, "nl" },
+                    { 3, "nl" },
+                    { 1, "no" },
+                    { 3, "no" },
+                    { 3, "pa" },
+                    { 1, "pl" },
+                    { 3, "pl" },
+                    { 3, "ps" },
+                    { 1, "pt" },
+                    { 3, "pt" },
+                    { 3, "pt-PT" },
+                    { 3, "ro" },
+                    { 1, "ru" },
+                    { 3, "ru" },
+                    { 3, "si" },
+                    { 3, "sk" },
+                    { 3, "sl" },
+                    { 3, "so" },
+                    { 3, "sq" },
+                    { 1, "sv" },
+                    { 3, "sv" },
+                    { 3, "sw" },
+                    { 3, "ta" },
+                    { 3, "te" },
+                    { 1, "th" },
+                    { 3, "th" },
+                    { 3, "tl" },
+                    { 1, "tr" },
+                    { 3, "tr" },
+                    { 3, "uk" },
+                    { 3, "ur" },
+                    { 3, "uz" },
+                    { 1, "vi" },
+                    { 3, "vi" },
+                    { 1, "zh-CN" },
+                    { 3, "zh-CN" },
+                    { 1, "zh-TW" },
+                    { 3, "zh-TW" }
                 });
 
             migrationBuilder.InsertData(
@@ -1909,6 +2282,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 table: "ApiScopeProperty",
                 columns: new[] { "ScopeId", "Key" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationEngine_EngineId",
+                table: "ApplicationEngine",
+                column: "EngineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationLanguage_LanguageId",
@@ -2040,6 +2418,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "CouponId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EngineLanguage_EngineId",
+                table: "EngineLanguage",
+                column: "EngineId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_IdentityResource_Name",
                 schema: "IdentityServer",
                 table: "IdentityResource",
@@ -2099,6 +2482,24 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLineItem_PriceId",
+                schema: "Stripe",
+                table: "InvoiceLineItem",
+                column: "PriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLineItem_SubscriptionId",
+                schema: "Stripe",
+                table: "InvoiceLineItem",
+                column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLineItem_SubscriptionItemId",
+                schema: "Stripe",
+                table: "InvoiceLineItem",
+                column: "SubscriptionItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvoicePaymentIntent_InvoiceId",
                 schema: "Stripe",
                 table: "InvoicePaymentIntent",
@@ -2117,6 +2518,24 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer",
                 table: "Key",
                 column: "Use");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LineItem_PaymentLinkId",
+                schema: "Stripe",
+                table: "LineItem",
+                column: "PaymentLinkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LineItem_PriceId",
+                schema: "Stripe",
+                table: "LineItem",
+                column: "PriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LineItem_StripePaymentLinkLineItemId",
+                schema: "Stripe",
+                table: "LineItem",
+                column: "StripePaymentLinkLineItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaymentIntent_CustomerId",
@@ -2279,6 +2698,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Translation_ApplicationId_EngineId",
+                table: "Translation",
+                columns: new[] { "ApplicationId", "EngineId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Translation_ApplicationId_LanguageId",
                 table: "Translation",
                 columns: new[] { "ApplicationId", "LanguageId" });
@@ -2432,6 +2856,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
+                name: "EngineLanguage");
+
+            migrationBuilder.DropTable(
                 name: "IdentityProviders");
 
             migrationBuilder.DropTable(
@@ -2459,7 +2886,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "PaymentLink",
+                name: "LineItem",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2495,10 +2922,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "SetupIntent",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "SubscriptionItem",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2541,8 +2964,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
-                name: "Price",
+                name: "PaymentLink",
                 schema: "Stripe");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationEngine");
 
             migrationBuilder.DropTable(
                 name: "ApplicationLanguage");
@@ -2554,14 +2980,25 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "StripeProduct",
+                name: "SubscriptionItem",
                 schema: "Stripe");
+
+            migrationBuilder.DropTable(
+                name: "Engine");
 
             migrationBuilder.DropTable(
                 name: "Language");
 
             migrationBuilder.DropTable(
                 name: "Application");
+
+            migrationBuilder.DropTable(
+                name: "Price",
+                schema: "Stripe");
+
+            migrationBuilder.DropTable(
+                name: "StripeProduct",
+                schema: "Stripe");
 
             migrationBuilder.DropTable(
                 name: "User");

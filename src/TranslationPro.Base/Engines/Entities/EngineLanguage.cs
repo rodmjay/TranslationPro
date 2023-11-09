@@ -7,6 +7,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
+using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.Engines.Entities;
 
@@ -15,7 +16,7 @@ public class EngineLanguage : BaseEntity<EngineLanguage>
     public string LanguageId { get; set; }
     public Language Language { get; set; }
 
-    public int EngineId { get; set; }
+    public TranslationEngine EngineId { get; set; }
     public Engine Engine { get; set; }
 
     public override void Configure(EntityTypeBuilder<EngineLanguage> builder)

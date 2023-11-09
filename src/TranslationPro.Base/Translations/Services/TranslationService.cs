@@ -192,7 +192,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
             translation.Text = tran.TranslatedText;
             translation.TranslationDate = DateTime.UtcNow;
-            translation.EngineId = (int)TranslationEngine.Google;;
+            translation.EngineId = TranslationEngine.Google;;
             translation.ObjectState = ObjectState.Modified;
 
             Repository.InsertOrUpdateGraph(translation);

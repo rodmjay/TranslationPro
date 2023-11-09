@@ -742,12 +742,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         },
                         new
                         {
-                            Id = 2,
-                            ClientId = 4,
-                            GrantType = "authorization_code"
-                        },
-                        new
-                        {
                             Id = 3,
                             ClientId = 2,
                             GrantType = "client_credentials"
@@ -1601,16 +1595,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
             modelBuilder.Entity("TranslationPro.Base.Engines.Entities.Engine", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("EngineId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

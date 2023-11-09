@@ -12,8 +12,8 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20231109063120_AddedTranslationEngines13")]
-    partial class AddedTranslationEngines13
+    [Migration("20231109070231_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -742,12 +742,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             Id = 1,
                             ClientId = 1,
                             GrantType = "password"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClientId = 4,
-                            GrantType = "authorization_code"
                         },
                         new
                         {
@@ -1604,16 +1598,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
             modelBuilder.Entity("TranslationPro.Base.Engines.Entities.Engine", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("EngineId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
