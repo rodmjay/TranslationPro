@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TranslationPro.Base.ApplicationLanguages.Services;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.ApplicationUsers.Interfaces;
 using TranslationPro.Base.Common.Data.Enums;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
+using TranslationPro.App.Extensions;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -13,16 +14,14 @@ namespace TranslationPro.App.Shared
     {
         [Inject]
         public NavigationManager NavigationManager { get;set; }
+        
         [Inject]
-        public IIWLocalStorageService LocalStorage { get; set; }
+        private IApplicationsController ApplicationsProxy { get; set; }
 
-        [Inject]
-        public IApplicationsController ApplicationsProxy { get; set; }
-
-        public List<ApplicationOutput> Applications { get; set; }
+        private List<ApplicationOutput> Applications { get; set; }
 
         [CascadingParameter]
-        public RouteData RouteData { get; set; }
+        private RouteData RouteData { get; set; }
         
         private Guid? ApplicationId { get; set; }
 
@@ -31,19 +30,10 @@ namespace TranslationPro.App.Shared
             Applications = await ApplicationsProxy.GetApplicationsAsync();
         }
 
-        protected override async Task OnParametersSetAsync()
-        {
-            if (RouteData.RouteValues.ContainsKey("ApplicationId"))
-            {
-                ApplicationId = Guid.Parse(RouteData.RouteValues["ApplicationId"].ToString());
-            }
-
-            await LoadData();
-        }
-        
-
         protected override async Task OnInitializedAsync()
         {
+            ApplicationId = RouteData.GetApplicationId();
+
             await LoadData();
         }
 

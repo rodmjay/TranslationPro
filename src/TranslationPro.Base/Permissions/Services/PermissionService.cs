@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Languages.Services;
 using TranslationPro.Base.Permissions.Interfaces;
 using TranslationPro.Base.Users.Entities;
 

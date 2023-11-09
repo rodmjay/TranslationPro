@@ -1,8 +1,24 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace TranslationPro.App.Extensions
 {
+    public static class RouteDataExtensions
+    {
+        public static Guid GetApplicationId(this RouteData routeData)
+        {
+            var applicationId = Guid.Empty;
+
+            if (routeData.RouteValues.ContainsKey("ApplicationId"))
+            {
+                applicationId = Guid.Parse(routeData.RouteValues["ApplicationId"].ToString());
+            }
+
+            return applicationId;
+        }
+    }
+
     public static class NavigationManagerExtensions
     {
         public static bool TryGetQueryString<T>(this NavigationManager navManager, string key, out T value)
