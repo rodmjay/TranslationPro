@@ -32,6 +32,7 @@ public class Translation : BaseEntity<Translation>, ITranslation
     public TranslationEngine? EngineId { get; set; }
     public ApplicationEngine Engine { get; set; }
     public ApplicationLanguage ApplicationLanguage { get; set; }
+    public bool IsDeleted { get; set; }
 
     public override void Configure(EntityTypeBuilder<Translation> builder)
     {
@@ -53,5 +54,7 @@ public class Translation : BaseEntity<Translation>, ITranslation
             .WithMany(x => x.Translations)
             .HasForeignKey(x => new {x.ApplicationId, x.EngineId})
             .IsRequired(false);
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

@@ -5,6 +5,7 @@ using System;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
+using TranslationPro.App.Extensions;
 
 namespace TranslationPro.App.Shared
 {
@@ -20,15 +21,16 @@ namespace TranslationPro.App.Shared
         public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
         [Inject]
         public NavigationManager Navigation { get; set; }
-
-        [Inject]
-        public IIWLocalStorageService LocalStorage { get; set; }
+        
         public List<LanguageOutput> Languages { get; set; }
+
+        [CascadingParameter]
+        private RouteData RouteData { get; set; }
 
         [Parameter]
         public EventCallback LanguagesChanged { get; set; }
 
-        public Guid ApplicationId => LocalStorage.GetItem<Guid>("ApplicationId");
+        public Guid ApplicationId => RouteData.GetApplicationId();
 
         public ApplicationOutput Application { get; set; }
 

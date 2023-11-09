@@ -55,7 +55,8 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         _translationRepository = UnitOfWork.RepositoryAsync<Translation>();
     }
 
-    private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages);
+    private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages).Include(x=>x.Phrases)
+        .ThenInclude(x=>x.Translations);
 
     private IQueryable<Phrase> Phrases => _phraseRepository.Queryable().Include(x => x.Translations);
     private IQueryable<ApplicationUser> ApplicationUsers => _applicationUserRepository.Queryable().Include(x => x.Application);
@@ -149,17 +150,22 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
     public async Task<Result> DeleteApplicationAsync(Guid applicationId)
     {
-        var phrases = await Phrases.Where(x => x.ApplicationId == applicationId).ToListAsync();
-        foreach (var phrase in phrases)
-        {
-            await _phraseRepository.DeleteAsync(phrase);
-        }
-        var phrasesDeleted = _phraseRepository.Commit();
-
         var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
-        application.ObjectState = ObjectState.Deleted;
+        application.IsDeleted = true;
+        foreach (var phrase in application.Phrases)
+        {
+            phrase.IsDeleted = true;
+            phrase.ObjectState = ObjectState.Modified;
+            foreach (var translation in phrase.Translations)
+            {
+                translation.IsDeleted = true;
+                translation.ObjectState = ObjectState.Modified;
+            }
+        }
 
-        var records = Repository.Delete(application, true);
+        application.ObjectState = ObjectState.Modified;
+
+        var records = Repository.InsertOrUpdateGraph(application, true);
         return records > 0 ? Result.Success() : Result.Failed(_errorDescriber.UnableToDeleteApplication(application.Name));
         
     }

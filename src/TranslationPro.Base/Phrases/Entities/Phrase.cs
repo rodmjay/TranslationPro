@@ -28,6 +28,8 @@ public class Phrase : BaseEntity<Phrase>, IPhrase
     public int Id { get; set; }
     public string Text { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public override void Configure(EntityTypeBuilder<Phrase> builder)
     {
         builder.HasKey(t => new {t.ApplicationId, t.Id});
@@ -37,5 +39,7 @@ public class Phrase : BaseEntity<Phrase>, IPhrase
             .WithMany(x => x.Phrases)
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

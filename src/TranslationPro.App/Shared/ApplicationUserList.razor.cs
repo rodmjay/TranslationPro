@@ -5,6 +5,7 @@ using System;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 using System.Threading.Tasks;
+using TranslationPro.App.Extensions;
 
 namespace TranslationPro.App.Shared
 {
@@ -18,14 +19,16 @@ namespace TranslationPro.App.Shared
         [Inject]
         public NavigationManager Navigation { get; set; }
 
-        [Inject]
-        public IIWLocalStorageService LocalStorage { get; set; }
         public List<ApplicationUserDto> ApplicationUsers { get; set; }
 
         [Parameter]
         public EventCallback UsersChanged { get; set; }
 
-        public Guid ApplicationId => LocalStorage.GetItem<Guid>("ApplicationId");
+        [CascadingParameter]
+        private RouteData RouteData { get; set; }
+
+
+        public Guid ApplicationId => RouteData.GetApplicationId();
 
         public ApplicationOutput Application { get; set; }
 

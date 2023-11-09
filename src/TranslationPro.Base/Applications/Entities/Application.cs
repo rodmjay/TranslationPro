@@ -34,10 +34,13 @@ public class Application : BaseEntity<Application>, IApplication
    
     public Guid Id { get; set; }
     public string Name { get; set; }
+    public bool IsDeleted { get; set; }
     public ICollection<ApplicationUser> Users { get; set; }
 
     public override void Configure(EntityTypeBuilder<Application> builder)
     {
         builder.HasKey(x => x.Id);
+        
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }
