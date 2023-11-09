@@ -19,6 +19,7 @@ using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
+using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
@@ -86,6 +87,14 @@ public class ApplicationService : BaseService<Application>, IApplicationService
                     UserId = userId,
                     ObjectState = ObjectState.Added,
                     Role = ApplicationRole.Owner
+                }
+            },
+            Engines = new List<ApplicationEngine>()
+            {
+                new ApplicationEngine()
+                {
+                    EngineId = 1,
+                    ObjectState = ObjectState.Added
                 }
             }
         };

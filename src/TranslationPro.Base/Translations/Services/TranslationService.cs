@@ -22,6 +22,7 @@ using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Enums;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Services;
@@ -191,6 +192,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
             translation.Text = tran.TranslatedText;
             translation.TranslationDate = DateTime.UtcNow;
+            translation.EngineId = (int)TranslationEngine.Google;;
             translation.ObjectState = ObjectState.Modified;
 
             Repository.InsertOrUpdateGraph(translation);

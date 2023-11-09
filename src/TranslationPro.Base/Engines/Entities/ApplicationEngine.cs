@@ -15,7 +15,6 @@ namespace TranslationPro.Base.Engines.Entities;
 
 public class ApplicationEngine : BaseEntity<ApplicationEngine>
 {
-    public string Name { get; set; }
     public Guid ApplicationId { get; set; }
     public Application Application { get; set; }
 
