@@ -10,8 +10,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Shared.Interfaces;
 
-public interface ILanguagesController
+public interface IEnginesController
 {
-    Task<List<LanguageOutput>> GetLanguagesAsync();
-    Task<List<LanguagesWithEnginesOutput>> GetAllLanguagesAsync();
+    Task<List<EngineWithLanguagesOutput>> GetEnginesAsync();
 }

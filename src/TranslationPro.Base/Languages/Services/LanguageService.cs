@@ -33,7 +33,9 @@ public class LanguageService : BaseService<Language>, ILanguageService
     {
         _engineRepository = UnitOfWork.RepositoryAsync<Engine>();
     }
-    
+
+    private IQueryable<Language> Languages => Repository.Queryable().Include(x => x.Engines).ThenInclude(x=>x.Engine);
+
     private IQueryable<Engine> Engines =>
         _engineRepository.Queryable().Include(x => x.Languages).ThenInclude(x => x.Language);
 
@@ -44,5 +46,10 @@ public class LanguageService : BaseService<Language>, ILanguageService
             .ToListAsync();
 
         return langs;
+    }
+
+    public Task<List<T>> GetAllLanguagesAsync<T>() where T : LanguageOutput
+    {
+        return Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 }

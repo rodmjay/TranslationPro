@@ -32,4 +32,11 @@ public class LanguagesController : BaseController, ILanguagesController
     {
         return await _languageService.GetLanguagesAsync<LanguageOutput>().ConfigureAwait(false);
     }
+
+    [HttpGet("all")]
+    [AllowAnonymous]
+    public async Task<List<LanguagesWithEnginesOutput>> GetAllLanguagesAsync()
+    {
+        return await _languageService.GetAllLanguagesAsync<LanguagesWithEnginesOutput>().ConfigureAwait(false);
+    }
 }

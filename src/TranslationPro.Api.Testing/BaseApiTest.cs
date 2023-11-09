@@ -58,6 +58,13 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>,
         return response.Content.DeserializeObject<List<LanguageOutput>>();
     }
 
+    public async Task<List<LanguagesWithEnginesOutput>> GetAllLanguagesAsync()
+    {
+        var response = await ApiClient.GetAsync(LanguageUrl + "/all");
+
+        return response.Content.DeserializeObject<List<LanguagesWithEnginesOutput>>();
+    }
+
     #endregion
 
     #region Applications
