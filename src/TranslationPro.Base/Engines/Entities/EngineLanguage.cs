@@ -4,9 +4,12 @@
 
 #endregion
 
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Languages.Entities;
+using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.Engines.Entities;
@@ -18,6 +21,9 @@ public class EngineLanguage : BaseEntity<EngineLanguage>
 
     public TranslationEngine EngineId { get; set; }
     public Engine Engine { get; set; }
+
+    public ICollection<MachineTranslation> Translations { get; set; }
+    public ICollection<ApplicationEngineLanguage> Applications { get; set; }
 
     public override void Configure(EntityTypeBuilder<EngineLanguage> builder)
     {

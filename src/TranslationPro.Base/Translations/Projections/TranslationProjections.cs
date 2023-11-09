@@ -14,7 +14,7 @@ public class TranslationProjections : Profile
 {
     public TranslationProjections()
     {
-        CreateMap<Translation, TranslationOutput>()
+        CreateMap<ApplicationTranslation, TranslationOutput>()
             .ForMember(x => x.LanguageName, opt => opt.MapFrom(x => x.Language.Name));
     }
 }

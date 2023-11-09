@@ -21,16 +21,15 @@ public class Application : BaseEntity<Application>, IApplication
 {
     public Application()
     {
-        Languages = new List<ApplicationLanguage>();
-        Phrases = new List<Phrase>();
-        Translations = new List<Translation>();
+        Phrases = new List<ApplicationPhrase>();
+        Translations = new List<ApplicationTranslation>();
         Users = new List<ApplicationUser>();
     }
 
-    public ICollection<ApplicationLanguage> Languages { get; set; }
-    public ICollection<Translation> Translations { get; set; }
+    public ICollection<ApplicationEngineLanguage> EngineLanguages { get; set; }
+    public ICollection<ApplicationTranslation> Translations { get; set; }
     public ICollection<ApplicationEngine> Engines { get; set; }
-    public List<Phrase> Phrases { get; set; }
+    public List<ApplicationPhrase> Phrases { get; set; }
    
     public Guid Id { get; set; }
     public string Name { get; set; }

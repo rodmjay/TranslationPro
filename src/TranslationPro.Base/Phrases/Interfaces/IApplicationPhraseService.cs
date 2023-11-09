@@ -15,13 +15,13 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Phrases.Interfaces;
 
-public interface IPhraseService : IService<Phrase>
+public interface IApplicationPhraseService : IService<ApplicationPhrase>
 {
     Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery query, PhraseFilters filters)
         where T : PhraseOutput;
 
     Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseOutput;
-    Task<Result> BulkUploadPhrases(Guid applicationId, List<string> phrases);
+    //Task<Result> BulkUploadPhrases(Guid applicationId, List<string> phrases);
     Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input);
     Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input);
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);

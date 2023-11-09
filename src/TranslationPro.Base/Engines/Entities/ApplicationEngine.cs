@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Translations.Entities;
@@ -22,7 +23,9 @@ public class ApplicationEngine : BaseEntity<ApplicationEngine>
     public TranslationEngine EngineId { get; set; }
     public Engine Engine { get; set; }
 
-    public ICollection<Translation> Translations { get; set; }
+    public ICollection<ApplicationEngineLanguage> EnabledLanguages { get; set; }
+
+    public ICollection<ApplicationTranslation> MachineTranslations { get; set; }
 
     public override void Configure(EntityTypeBuilder<ApplicationEngine> builder)
     {

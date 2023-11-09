@@ -14,7 +14,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Interfaces;
 
-public interface ITranslationService : IService<Translation>
+public interface ITranslationService : IService<ApplicationTranslation>
 {
     Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input);
 

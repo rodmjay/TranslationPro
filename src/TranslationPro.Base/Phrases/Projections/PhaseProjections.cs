@@ -15,10 +15,10 @@ public class PhaseProjections : Profile
 {
     public PhaseProjections()
     {
-        CreateMap<Phrase, PhraseOutput>()
+        CreateMap<ApplicationPhrase, PhraseOutput>()
             .ForMember(x => x.TranslationCount,
-                opt => opt.MapFrom(x => x.Translations.Count))
+                opt => opt.MapFrom(x => x.MachineTranslations.Count))
             .ForMember(x => x.PendingTranslationCount,
-                opt => opt.MapFrom(x => x.Translations.Count(t => t.Text == null)));
+                opt => opt.MapFrom(x => x.MachineTranslations.Count(t => t.Text == null)));
     }
 }

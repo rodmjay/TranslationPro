@@ -18,12 +18,10 @@ public class Language : BaseEntity<Language>, ILanguage
 {
     public Language()
     {
-        Applications = new List<ApplicationLanguage>();
-        Translations = new List<Translation>();
+        Translations = new List<ApplicationTranslation>();
     }
-
-    public ICollection<ApplicationLanguage> Applications { get; set; }
-    public ICollection<Translation> Translations { get; set; }
+    public ICollection<ApplicationEngineLanguage> Applications { get; set; }
+    public ICollection<ApplicationTranslation> Translations { get; set; }
     public ICollection<EngineLanguage> Engines { get; set; }
     public string Name { get; set; }
     public string Id { get; set; }

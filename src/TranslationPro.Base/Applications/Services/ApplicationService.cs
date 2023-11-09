@@ -41,8 +41,9 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     private readonly ILogger<ApplicationService> _logger;
     private readonly IRepositoryAsync<Language> _languageRepository;
     private readonly IRepositoryAsync<ApplicationUser> _applicationUserRepository;
-    private readonly IRepositoryAsync<Translation> _translationRepository;
-    private readonly IRepositoryAsync<Phrase> _phraseRepository;
+    private readonly IRepositoryAsync<ApplicationTranslation> _translationRepository;
+    private readonly IRepositoryAsync<ApplicationPhrase> _phraseRepository;
+    private readonly IRepositoryAsync<Engine> _engineRepository;
 
     public ApplicationService(IServiceProvider serviceProvider, ApplicationErrorDescriber errorDescriber, ILogger<ApplicationService> logger) : base(
         serviceProvider)
@@ -51,17 +52,19 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         _logger = logger;
         _languageRepository = UnitOfWork.RepositoryAsync<Language>();
         _applicationUserRepository = UnitOfWork.RepositoryAsync<ApplicationUser>();
-        _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
-        _translationRepository = UnitOfWork.RepositoryAsync<Translation>();
+        _phraseRepository = UnitOfWork.RepositoryAsync<ApplicationPhrase>();
+        _translationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
+        _engineRepository = UnitOfWork.RepositoryAsync<Engine>();
     }
 
-    private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages).Include(x=>x.Phrases)
-        .ThenInclude(x=>x.Translations);
+    private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.EngineLanguages).Include(x=>x.Phrases)
+        .ThenInclude(x=>x.MachineTranslations);
 
-    private IQueryable<Phrase> Phrases => _phraseRepository.Queryable().Include(x => x.Translations);
+    private IQueryable<ApplicationPhrase> Phrases => _phraseRepository.Queryable().Include(x => x.MachineTranslations);
     private IQueryable<ApplicationUser> ApplicationUsers => _applicationUserRepository.Queryable().Include(x => x.Application);
     private IQueryable<Language> Languages => _languageRepository.Queryable();
 
+    private IQueryable<Engine> Engines => _engineRepository.Queryable().Include(x => x.Languages);
 
     public Task<T> GetApplication<T>(Guid applicationId) where T : ApplicationOutput
     {
@@ -77,6 +80,8 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     {
         _logger.LogInformation(GetLogMessage("Creating Application: {0} For User: {1}"), input.Name, userId);
 
+        var engines = await Engines.Where(x => input.EnginesWithLanguages.Keys.Contains(x.Id)).ToListAsync();
+
         var application = new Application
         {
             Name = input.Name,
@@ -89,28 +94,32 @@ public class ApplicationService : BaseService<Application>, IApplicationService
                     ObjectState = ObjectState.Added,
                     Role = ApplicationRole.Owner
                 }
-            },
-            Engines = new List<ApplicationEngine>()
-            {
-                new ApplicationEngine()
-                {
-                    EngineId = TranslationEngine.Google,
-                    ObjectState = ObjectState.Added
-                }
             }
         };
 
-        var languages = await Languages.Where(x => input.Languages.Contains(x.Id)).ToListAsync();
-
-        foreach (var lang in input.Languages)
+        foreach (var kvp in input.EnginesWithLanguages)
         {
-            var selectedLang = languages.FirstOrDefault(x => x.Id == lang);
-            if (selectedLang != null)
-                application.Languages.Add(new ApplicationLanguage
+            var engine = engines.First(x => x.Id == kvp.Key);
+
+            var applicationEngine = new ApplicationEngine()
+            {
+                EngineId = engine.Id,
+                ObjectState = ObjectState.Added,
+            };
+
+            foreach (var lang in kvp.Value)
+            {
+                if (engine.Languages.Any(x => x.LanguageId == lang))
                 {
-                    LanguageId = selectedLang.Id,
-                    ObjectState = ObjectState.Added
-                });
+                    applicationEngine.EnabledLanguages.Add(new ApplicationEngineLanguage()
+                    {
+                        EngineId = engine.Id,
+                        LanguageId = lang,
+                        ObjectState = ObjectState.Added
+                    });
+                }
+            }
+            application.Engines.Add(applicationEngine);
         }
 
         var records = Repository.InsertOrUpdateGraph(application, true);
@@ -156,7 +165,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         {
             phrase.IsDeleted = true;
             phrase.ObjectState = ObjectState.Modified;
-            foreach (var translation in phrase.Translations)
+            foreach (var translation in phrase.MachineTranslations)
             {
                 translation.IsDeleted = true;
                 translation.ObjectState = ObjectState.Modified;

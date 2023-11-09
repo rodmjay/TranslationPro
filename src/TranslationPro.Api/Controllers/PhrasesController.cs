@@ -22,13 +22,13 @@ namespace TranslationPro.Api.Controllers;
 [Route("v1.0/applications/{applicationId}/phrases")]
 public class PhrasesController : BaseController, IPhrasesController
 {
-    private readonly IPhraseService _phraseService;
+    private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly ITranslationService _transactionService;
 
-    public PhrasesController(IServiceProvider serviceProvider, IPhraseService phraseService,
+    public PhrasesController(IServiceProvider serviceProvider, IApplicationPhraseService applicationPhraseService,
         ITranslationService transactionService) : base(serviceProvider)
     {
-        _phraseService = phraseService;
+        _applicationPhraseService = applicationPhraseService;
         _transactionService = transactionService;
     }
 
@@ -36,25 +36,25 @@ public class PhrasesController : BaseController, IPhrasesController
     public async Task<PhraseOutput> GetPhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseService.GetPhraseAsync<PhraseOutput>(applicationId, phraseId);
+        return await _applicationPhraseService.GetPhraseAsync<PhraseOutput>(applicationId, phraseId);
     }
 
-    [HttpPost("bulk")]
-    public async Task<Result> BulkUploadAsync([FromRoute] Guid applicationId,
-        [FromBody] List<string> input)
-    {
-        await AssertUserHasAccessToApplication(applicationId);
-        var result = await _phraseService.BulkUploadPhrases(applicationId, input).ConfigureAwait(false);
-        await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
-        return result;
-    }
+    //[HttpPost("bulk")]
+    //public async Task<Result> BulkUploadAsync([FromRoute] Guid applicationId,
+    //    [FromBody] List<string> input)
+    //{
+    //    await AssertUserHasAccessToApplication(applicationId);
+    //    var result = await _applicationPhraseService.BulkUploadPhrases(applicationId, input).ConfigureAwait(false);
+    //    await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
+    //    return result;
+    //}
 
     [HttpPost]
     public async Task<Result> CreatePhraseAsync([FromRoute] Guid applicationId,
         [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var result = await _phraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
+        var result = await _applicationPhraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
         await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
@@ -65,7 +65,7 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var result = await _phraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
+        var result = await _applicationPhraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
         await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
@@ -77,7 +77,7 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseService.GetPhrasesForApplicationAsync<PhraseOutput>(applicationId, paging, filters)
+        return await _applicationPhraseService.GetPhrasesForApplicationAsync<PhraseOutput>(applicationId, paging, filters)
             .ConfigureAwait(false);
     }
 
@@ -87,13 +87,13 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromRoute] string language)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseService.GetApplicationPhraseList(applicationId, language).ConfigureAwait(false);
+        return await _applicationPhraseService.GetApplicationPhraseList(applicationId, language).ConfigureAwait(false);
     }
 
     [HttpDelete("{phraseId}")]
     public async Task<Result> DeletePhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseService.DeletePhraseAsync(applicationId, phraseId);
+        return await _applicationPhraseService.DeletePhraseAsync(applicationId, phraseId);
     }
 }

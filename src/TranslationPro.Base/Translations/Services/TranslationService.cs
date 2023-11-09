@@ -27,7 +27,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Services;
 
-public class TranslationService : BaseService<Translation>, ITranslationService
+public class TranslationService : BaseService<ApplicationTranslation>, ITranslationService
 {
     private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
     {
@@ -38,7 +38,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
     private readonly PhraseErrorDescriber _phraseErrors;
     private readonly TranslationClient _googleClient;
     private readonly ILogger<TranslationService> _logger;
-    private readonly IRepositoryAsync<Phrase> _phraseRepository;
+    private readonly IRepositoryAsync<ApplicationPhrase> _phraseRepository;
     private readonly TranslationErrorDescriber _translationErrors;
 
     public TranslationService(IServiceProvider serviceProvider, TranslationErrorDescriber translationErrors,
@@ -49,16 +49,16 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         _googleClient = googleClient;
         _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
-        _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
+        _phraseRepository = UnitOfWork.RepositoryAsync<ApplicationPhrase>();
     }
 
-    private IQueryable<Translation> Translations =>
-        Repository.Queryable().Include(x => x.Phrase).Include(x => x.Application);
+    private IQueryable<ApplicationTranslation> Translations =>
+        Repository.Queryable().Include(x => x.ApplicationPhrase).Include(x => x.Application);
 
-    private IQueryable<Phrase> Phrases =>
-        _phraseRepository.Queryable().Include(x => x.Application).ThenInclude(x=>x.Languages).Include(x => x.Translations);
+    private IQueryable<ApplicationPhrase> Phrases =>
+        _phraseRepository.Queryable().Include(x => x.Application).ThenInclude(x=>x.EngineLanguages).Include(x => x.MachineTranslations);
 
-    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
+    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.EngineLanguages);
     
     public async Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
     {
@@ -72,18 +72,18 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         if (phrase == null)
             return Result.Failed(_phraseErrors.PhraseDoesntExist(phraseId));
 
-        var translation = phrase.Translations.FirstOrDefault(x => x.LanguageId == input.LanguageId);
+        var translation = phrase.MachineTranslations.FirstOrDefault(x => x.LanguageId == input.LanguageId);
         if (translation == null)
         {
             var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-            var langExists = application.Languages.Any(x => x.LanguageId == input.LanguageId);
+            var langExists = application.EngineLanguages.Any(x => x.LanguageId == input.LanguageId);
 
             if (!langExists)
                 return Result.Failed(
                     _translationErrors.LanguageDoesntExistInApplication(input.LanguageId, phrase.Application.Name));
 
-            translation = new Translation
+            translation = new ApplicationTranslation
             {
                 ObjectState = ObjectState.Added
             };
@@ -161,7 +161,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
 
         var dictionary = translations.GroupBy(a => a.LanguageId)
             .ToDictionary(group => group.Key, group => group
-                .Select(translation => translation.Phrase.Text).ToList());
+                .Select(translation => translation.ApplicationPhrase.Phrase.Text).ToList());
 
         return dictionary;
     }
@@ -171,7 +171,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         var translations = await Translations
             .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId && x.TranslationDate == null && x.Text == null).ToListAsync();
 
-        return translations.Select(x => x.Phrase.Text).ToList();
+        return translations.Select(x => x.ApplicationPhrase.Phrase.Text).ToList();
     }
 
     private async Task<Result> SaveTranslationResultsAsync(Guid applicationId, List<TranslationResult> input)
@@ -186,7 +186,7 @@ public class TranslationService : BaseService<Translation>, ITranslationService
         {
             var translation =
                 translations
-                    .FirstOrDefault(x => x.Phrase.Text == tran.OriginalText && x.LanguageId == tran.TargetLanguage);
+                    .FirstOrDefault(x => x.ApplicationPhrase.Phrase.Text == tran.OriginalText && x.LanguageId == tran.TargetLanguage);
 
             if (translation == null) continue;
 

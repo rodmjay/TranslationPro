@@ -16,7 +16,7 @@ public static class AppBuilderExtensions
     public static AppBuilder AddPhraseDependencies(this AppBuilder builder)
     {
         builder.Services.TryAddTransient<PhraseErrorDescriber>();
-        builder.Services.TryAddScoped<IPhraseService, PhraseService>();
+        builder.Services.TryAddScoped<IApplicationPhraseService, ApplicationPhraseService>();
 
         return builder;
     }

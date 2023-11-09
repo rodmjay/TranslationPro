@@ -19,6 +19,6 @@ public class ApplicationOutput : IApplication
     public Guid Id { get; set; }
     public string Name { get; set; }
 
-    public List<ApplicationLanguageOutput> Languages { get; set; }
+    public List<ApplicationEngineLanguageOutput> Languages { get; set; }
     public List<ApplicationUserDto> Users { get; set; }
 }

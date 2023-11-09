@@ -18,27 +18,27 @@ using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Translations.Entities;
 
-public class Translation : BaseEntity<Translation>, ITranslation
+public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ITranslation
 {
     public Guid ApplicationId { get; set; }
     public Application Application { get; set; }
     public int PhraseId { get; set; }
-    public Phrase Phrase { get; set; }
+    public ApplicationPhrase ApplicationPhrase { get; set; }
     public Language Language { get; set; }
     public int Id { get; set; }
     public string LanguageId { get; set; }
     public DateTime? TranslationDate { get; set; }
     public string Text { get; set; }
-    public TranslationEngine? EngineId { get; set; }
+    public TranslationEngine EngineId { get; set; }
     public ApplicationEngine Engine { get; set; }
-    public ApplicationLanguage ApplicationLanguage { get; set; }
+    public ApplicationEngineLanguage ApplicationLanguage { get; set; }
     public bool IsDeleted { get; set; }
 
-    public override void Configure(EntityTypeBuilder<Translation> builder)
+    public override void Configure(EntityTypeBuilder<ApplicationTranslation> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.HasOne(x => x.Phrase)
-            .WithMany(x => x.Translations)
+        builder.HasOne(x => x.ApplicationPhrase)
+            .WithMany(x => x.MachineTranslations)
             .HasForeignKey(x => new {x.ApplicationId, x.PhraseId});
 
         builder.HasOne(x => x.Application)
@@ -48,10 +48,10 @@ public class Translation : BaseEntity<Translation>, ITranslation
 
         builder.HasOne(x => x.ApplicationLanguage)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => new {x.ApplicationId, x.LanguageId});
+            .HasForeignKey(x => new {x.ApplicationId, x.EngineId, x.LanguageId});
 
         builder.HasOne(x => x.Engine)
-            .WithMany(x => x.Translations)
+            .WithMany(x => x.MachineTranslations)
             .HasForeignKey(x => new {x.ApplicationId, x.EngineId})
             .IsRequired(false);
 

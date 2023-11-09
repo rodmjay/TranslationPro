@@ -15,7 +15,7 @@ public static class AppBuilderExtensions
 {
     public static AppBuilder AddApplicationLanguageDependencies(this AppBuilder builder)
     {
-        builder.Services.TryAddScoped<IApplicationLanguageService, ApplicationLanguageService>();
+        builder.Services.TryAddScoped<IApplicationEngineLanguageService, ApplicationEngineLanguageService>();
         return builder;
     }
 }

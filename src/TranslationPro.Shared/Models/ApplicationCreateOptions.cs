@@ -5,9 +5,12 @@
 #endregion
 
 
+using System.Collections.Generic;
+using TranslationPro.Shared.Enums;
+
 namespace TranslationPro.Shared.Models;
 
 public class ApplicationCreateOptions : ApplicationOptions
 {
-    public string[] Languages { get; set; }
+    public Dictionary<TranslationEngine, List<string>> EnginesWithLanguages { get; set; }
 }

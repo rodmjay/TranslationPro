@@ -18,8 +18,8 @@ public interface IPhrasesController
 
     Task<PhraseOutput> GetPhraseAsync(Guid applicationId, int phraseId);
 
-    Task<Result> BulkUploadAsync(Guid applicationId,
-         List<string> input);
+    //Task<Result> BulkUploadAsync(Guid applicationId,
+    //     List<string> input);
 
     Task<Result> CreatePhraseAsync(Guid applicationId,
         PhraseOptions input);
