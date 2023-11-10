@@ -4,7 +4,9 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Net;
+using TranslationPro.Shared.Enums;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Testing.TestCases;
@@ -24,6 +26,13 @@ public static class ApplicationTestCases
         new()
         {
             Name = "Test",
-            Languages = new[] {"en", "es"}
+            EnginesWithLanguages = new Dictionary<TranslationEngine, List<string>>()
+            {
+                {TranslationEngine.Google, new List<string>()
+                {
+                    "es",
+                    "en"
+                }}
+            }
         };
 }

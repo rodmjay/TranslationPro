@@ -1524,19 +1524,22 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("ServerSideSession", "IdentityServer");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", b =>
+            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationEngineLanguage", b =>
                 {
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("EngineId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LanguageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ApplicationId", "LanguageId");
+                    b.HasKey("ApplicationId", "EngineId", "LanguageId");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageId", "EngineId");
 
-                    b.ToTable("ApplicationLanguage");
+                    b.ToTable("ApplicationEngineLanguage");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.ApplicationUsers.Entities.ApplicationUser", b =>
@@ -3424,7 +3427,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.ApplicationPhrase", b =>
                 {
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
@@ -3435,10 +3438,28 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("PhraseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationId", "Id");
+
+                    b.HasIndex("PhraseId");
+
+                    b.ToTable("ApplicationPhrase");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ApplicationId", "Id");
+                    b.HasKey("Id");
 
                     b.ToTable("Phrase");
                 });
@@ -4531,7 +4552,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("SubscriptionSchedule", "Stripe");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Translation", b =>
+            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.ApplicationTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -4542,7 +4563,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("EngineId")
+                    b.Property<int>("EngineId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -4564,13 +4585,61 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("ApplicationId", "EngineId");
-
-                    b.HasIndex("ApplicationId", "LanguageId");
-
                     b.HasIndex("ApplicationId", "PhraseId");
 
-                    b.ToTable("Translation");
+                    b.HasIndex("ApplicationId", "EngineId", "LanguageId");
+
+                    b.ToTable("ApplicationTranslation");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.HumanTranslation", b =>
+                {
+                    b.Property<Guid>("ApplicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PhraseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ApplicationId", "PhraseId", "LanguageId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("HumanTranslation");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.MachineTranslation", b =>
+                {
+                    b.Property<int>("EngineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PhraseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TranslationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EngineId", "LanguageId", "PhraseId");
+
+                    b.HasIndex("PhraseId");
+
+                    b.HasIndex("LanguageId", "EngineId");
+
+                    b.ToTable("MachineTranslation");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.Role", b =>
@@ -4999,21 +5068,37 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("IdentityResource");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", b =>
+            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationEngineLanguage", b =>
                 {
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
-                        .WithMany("Languages")
+                        .WithMany("EngineLanguages")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
                         .WithMany("Applications")
                         .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Engines.Entities.ApplicationEngine", "ApplicationEngine")
+                        .WithMany("EnabledLanguages")
+                        .HasForeignKey("ApplicationId", "EngineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TranslationPro.Base.Engines.Entities.EngineLanguage", "EngineLanguage")
+                        .WithMany("Applications")
+                        .HasForeignKey("LanguageId", "EngineId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Application");
+
+                    b.Navigation("ApplicationEngine");
+
+                    b.Navigation("EngineLanguage");
 
                     b.Navigation("Language");
                 });
@@ -5075,7 +5160,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.ApplicationPhrase", b =>
                 {
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
                         .WithMany("Phrases")
@@ -5083,7 +5168,15 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TranslationPro.Base.Phrases.Entities.Phrase", "Phrase")
+                        .WithMany("Applications")
+                        .HasForeignKey("PhraseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Application");
+
+                    b.Navigation("Phrase");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCard", b =>
@@ -5528,7 +5621,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.Translation", b =>
+            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.ApplicationTranslation", b =>
                 {
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
                         .WithMany("Translations")
@@ -5541,22 +5634,76 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .HasForeignKey("LanguageId");
 
                     b.HasOne("TranslationPro.Base.Engines.Entities.ApplicationEngine", "Engine")
-                        .WithMany("Translations")
+                        .WithMany("MachineTranslations")
                         .HasForeignKey("ApplicationId", "EngineId");
 
-                    b.HasOne("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", "ApplicationLanguage")
-                        .WithMany("Translations")
-                        .HasForeignKey("ApplicationId", "LanguageId");
+                    b.HasOne("TranslationPro.Base.Phrases.Entities.ApplicationPhrase", "ApplicationPhrase")
+                        .WithMany("MachineTranslations")
+                        .HasForeignKey("ApplicationId", "PhraseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("TranslationPro.Base.Phrases.Entities.Phrase", "Phrase")
+                    b.HasOne("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationEngineLanguage", "ApplicationLanguage")
                         .WithMany("Translations")
+                        .HasForeignKey("ApplicationId", "EngineId", "LanguageId");
+
+                    b.Navigation("Application");
+
+                    b.Navigation("ApplicationLanguage");
+
+                    b.Navigation("ApplicationPhrase");
+
+                    b.Navigation("Engine");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.HumanTranslation", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
+                        .WithMany("HumanTranslations")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Phrases.Entities.ApplicationPhrase", "Phrase")
+                        .WithMany("HumanTranslations")
                         .HasForeignKey("ApplicationId", "PhraseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Application");
 
-                    b.Navigation("ApplicationLanguage");
+                    b.Navigation("Language");
+
+                    b.Navigation("Phrase");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Translations.Entities.MachineTranslation", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Engines.Entities.Engine", "Engine")
+                        .WithMany("MachineTranslations")
+                        .HasForeignKey("EngineId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Phrases.Entities.Phrase", "Phrase")
+                        .WithMany("Translations")
+                        .HasForeignKey("PhraseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Engines.Entities.EngineLanguage", "Language")
+                        .WithMany("MachineTranslations")
+                        .HasForeignKey("LanguageId", "EngineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Engine");
 
@@ -5674,16 +5821,18 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("UserClaims");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", b =>
+            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationEngineLanguage", b =>
                 {
                     b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Applications.Entities.Application", b =>
                 {
+                    b.Navigation("EngineLanguages");
+
                     b.Navigation("Engines");
 
-                    b.Navigation("Languages");
+                    b.Navigation("HumanTranslations");
 
                     b.Navigation("Phrases");
 
@@ -5694,7 +5843,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
             modelBuilder.Entity("TranslationPro.Base.Engines.Entities.ApplicationEngine", b =>
                 {
-                    b.Navigation("Translations");
+                    b.Navigation("EnabledLanguages");
+
+                    b.Navigation("MachineTranslations");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Engines.Entities.Engine", b =>
@@ -5702,6 +5853,15 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Languages");
+
+                    b.Navigation("MachineTranslations");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Engines.Entities.EngineLanguage", b =>
+                {
+                    b.Navigation("Applications");
+
+                    b.Navigation("MachineTranslations");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Languages.Entities.Language", b =>
@@ -5713,8 +5873,17 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Translations");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.ApplicationPhrase", b =>
+                {
+                    b.Navigation("HumanTranslations");
+
+                    b.Navigation("MachineTranslations");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("Translations");
                 });
 

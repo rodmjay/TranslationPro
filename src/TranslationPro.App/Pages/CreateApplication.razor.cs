@@ -19,6 +19,7 @@ namespace TranslationPro.App.Pages
 
         [Inject]
         public ILanguagesController LanguagesController { get; set; }
+
         public ApplicationCreateOptions Input { get; set; } = new ApplicationCreateOptions();
          
         public List<LanguageOutput> Languages { get; set; }
@@ -43,7 +44,7 @@ namespace TranslationPro.App.Pages
 
         private async Task HandleSubmit()
         {
-            Input.Languages = selection.ToArray();
+            // Input.Languages = selection.ToArray();
 
             var result = await ApplicationsController.CreateApplicationAsync(Input);
 

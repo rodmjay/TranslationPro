@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
@@ -38,18 +39,21 @@ public class ApplicationEngineLanguage : BaseEntity<ApplicationEngineLanguage>
 
         builder.HasOne(x => x.Application)
             .WithMany(x => x.EngineLanguages)
-            .HasForeignKey(x=>x.ApplicationId);
+            .HasForeignKey(x=>x.ApplicationId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.ApplicationEngine)
             .WithMany(x => x.EnabledLanguages)
-            .HasForeignKey(x => new{x.ApplicationId, x.EngineId});
+            .HasForeignKey(x => new {x.ApplicationId, x.EngineId});
 
         builder.HasOne(x => x.EngineLanguage)
             .WithMany(x => x.Applications)
-            .HasForeignKey(x => new{x.LanguageId, x.EngineId});
+            .HasForeignKey(x => new{x.LanguageId, x.EngineId})
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x=>x.Language)
             .WithMany(x=>x.Applications)
-            .HasForeignKey(x=>x.LanguageId);
+            .HasForeignKey(x=>x.LanguageId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

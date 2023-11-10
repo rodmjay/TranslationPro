@@ -22,7 +22,7 @@ public class EngineLanguage : BaseEntity<EngineLanguage>
     public TranslationEngine EngineId { get; set; }
     public Engine Engine { get; set; }
 
-    public ICollection<MachineTranslation> Translations { get; set; }
+    public ICollection<MachineTranslation> MachineTranslations { get; set; }
     public ICollection<ApplicationEngineLanguage> Applications { get; set; }
 
     public override void Configure(EntityTypeBuilder<EngineLanguage> builder)

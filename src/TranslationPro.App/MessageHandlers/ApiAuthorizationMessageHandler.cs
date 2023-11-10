@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace TranslationPro.App.MessageHandlers
 {
-    public class TranslationProApiAuthorizationMessageHandler : AuthorizationMessageHandler
+    public class ApiAuthorizationMessageHandler : AuthorizationMessageHandler
     {
-        public TranslationProApiAuthorizationMessageHandler(
+        public ApiAuthorizationMessageHandler(
             IAccessTokenProvider provider, NavigationManager navigation, IConfiguration config) 
             : base(provider, navigation)
         {

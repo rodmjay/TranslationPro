@@ -25,7 +25,7 @@ public class Program
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
         
         builder.Services
-            .AddTransient<TranslationProApiAuthorizationMessageHandler>();
+            .AddTransient<ApiAuthorizationMessageHandler>();
 
         builder.Services.AddOidcAuthentication(options =>
         {
@@ -38,26 +38,30 @@ public class Program
         
         builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
                 client => client.BaseAddress = url)
-            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<IApplicationLanguagesController, ApplicationLanguagesProxy>(
                 client => client.BaseAddress = url)
-            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<IApplicationUsersController, ApplicationUsersProxy>(
                 client => client.BaseAddress = url)
-            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ILanguagesController, LanguagesProxy>(
             client => client.BaseAddress = url);
 
         builder.Services.AddHttpClient<IPhrasesController, PhrasesProxy>(
                 client => client.BaseAddress = url)
-            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
         builder.Services.AddHttpClient<ITranslationsController, TranslationsProxy>(
                 client => client.BaseAddress = url)
-            .AddHttpMessageHandler<TranslationProApiAuthorizationMessageHandler>();
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+
+        builder.Services.AddHttpClient<IEnginesController, EnginesProxy>(
+                client => client.BaseAddress = url)
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
         builder.Services.AddIWProtectedBrowserStorageAsSingleton();
 

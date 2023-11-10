@@ -6,6 +6,7 @@
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Phrases.Entities;
@@ -35,11 +36,12 @@ public class MachineTranslation : BaseEntity<MachineTranslation>
             .HasForeignKey(x => x.PhraseId);
 
         builder.HasOne(x => x.Language)
-            .WithMany(x => x.Translations)
+            .WithMany(x => x.MachineTranslations)
             .HasForeignKey(x => new { x.LanguageId, x.EngineId });
 
         builder.HasOne(x => x.Engine)
-            .WithMany(x => x.Translations)
-            .HasForeignKey(x => x.EngineId);
+            .WithMany(x => x.MachineTranslations)
+            .HasForeignKey(x => x.EngineId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

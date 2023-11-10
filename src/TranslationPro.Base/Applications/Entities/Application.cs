@@ -29,12 +29,13 @@ public class Application : BaseEntity<Application>, IApplication
     public ICollection<ApplicationEngineLanguage> EngineLanguages { get; set; }
     public ICollection<ApplicationTranslation> Translations { get; set; }
     public ICollection<ApplicationEngine> Engines { get; set; }
-    public List<ApplicationPhrase> Phrases { get; set; }
+    public ICollection<ApplicationPhrase> Phrases { get; set; }
    
     public Guid Id { get; set; }
     public string Name { get; set; }
     public bool IsDeleted { get; set; }
     public ICollection<ApplicationUser> Users { get; set; }
+    public ICollection<HumanTranslation> HumanTranslations { get; set; }
 
     public override void Configure(EntityTypeBuilder<Application> builder)
     {
