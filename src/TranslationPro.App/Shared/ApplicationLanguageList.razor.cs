@@ -22,7 +22,7 @@ namespace TranslationPro.App.Shared
         [Inject]
         public NavigationManager Navigation { get; set; }
         
-        public List<LanguageOutput> Languages { get; set; }
+        public ICollection<LanguageOutput> Languages { get; set; }
 
         [CascadingParameter]
         private RouteData RouteData { get; set; }

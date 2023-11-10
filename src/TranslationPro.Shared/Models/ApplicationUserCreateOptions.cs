@@ -4,7 +4,7 @@ using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Shared.Models
 {
-    public class ApplicationUserDto
+    public class ApplicationUserOutput
     {
         public string Name { get; set; }
         public ApplicationRole Role { get; set; }

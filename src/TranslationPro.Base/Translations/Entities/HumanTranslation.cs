@@ -9,12 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 
 namespace TranslationPro.Base.Translations.Entities;
 
-public class HumanTranslation : BaseEntity<HumanTranslation>
+public class HumanTranslation : BaseEntity<HumanTranslation>, ISoftDelete
 {
     public Guid ApplicationId { get; set; }
     public Language Language { get; set; }
@@ -27,6 +28,8 @@ public class HumanTranslation : BaseEntity<HumanTranslation>
 
     public override void Configure(EntityTypeBuilder<HumanTranslation> builder)
     {
+        builder.ToTable(nameof(HumanTranslation), "TranslationPro");
+
         builder.HasKey(x => new { x.ApplicationId, x.PhraseId, x.LanguageId });
 
         builder.HasOne(x => x.Phrase)
@@ -38,5 +41,8 @@ public class HumanTranslation : BaseEntity<HumanTranslation>
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
+
+    public bool IsDeleted { get; set; }
 }

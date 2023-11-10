@@ -28,5 +28,5 @@ public class ValidationResultModel
 
     public string Message { get; }
 
-    public List<ValidationError> Errors { get; }
+    public ICollection<ValidationError> Errors { get; }
 }

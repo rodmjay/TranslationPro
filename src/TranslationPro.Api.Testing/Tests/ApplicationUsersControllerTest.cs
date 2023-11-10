@@ -11,10 +11,10 @@ using TranslationPro.Shared.Models;
 namespace TranslationPro.Api.Testing.Tests;
 
 [TestFixture]
-public class ApplicationUsersController : BaseApiTest
+public class ApplicationUsersControllerTest : BaseApiTest
 {
     [TestFixture]
-    public class TheInviteUserMethod : BaseApiTest
+    public class TheInviteUserMethod : ApplicationUsersControllerTest
     {
         [Test]
         public async Task CanInviteUser()
@@ -26,7 +26,7 @@ public class ApplicationUsersController : BaseApiTest
                 Email = "test@test.com"
             };
 
-            var result = await InviteUserAsync(ApplicationId, invitation);
+            var result = await ApplicationUsersProxy.InviteUserAsync(ApplicationId, invitation);
 
             Assert.IsTrue(result.Succeeded);
         }

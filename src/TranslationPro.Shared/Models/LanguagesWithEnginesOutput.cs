@@ -4,5 +4,5 @@ namespace TranslationPro.Shared.Models;
 
 public class LanguagesWithEnginesOutput : LanguageOutput
 {
-    public List<EngineOutput> Engines { get; set; }
+    public ICollection<EngineOutput> Engines { get; set; }
 }

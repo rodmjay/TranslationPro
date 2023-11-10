@@ -19,7 +19,7 @@ namespace TranslationPro.App.Shared
         [Inject]
         public NavigationManager Navigation { get; set; }
 
-        public List<ApplicationUserDto> ApplicationUsers { get; set; }
+        public ICollection<ApplicationUserOutput> ApplicationUsers { get; set; }
 
         [Parameter]
         public EventCallback UsersChanged { get; set; }

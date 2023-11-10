@@ -840,30 +840,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationEngine",
-                columns: table => new
-                {
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EngineId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationEngine", x => new { x.ApplicationId, x.EngineId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationEngine_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalTable: "Application",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationEngine_Engine_EngineId",
-                        column: x => x.EngineId,
-                        principalTable: "Engine",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "IdentityResourceClaim",
                 schema: "IdentityServer",
                 columns: table => new
@@ -904,6 +880,31 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         column: x => x.IdentityResourceId,
                         principalSchema: "IdentityServer",
                         principalTable: "IdentityResource",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationLanguage",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationLanguage", x => new { x.ApplicationId, x.LanguageId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationLanguage_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationLanguage_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Language",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1214,40 +1215,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationEngineLanguage",
-                columns: table => new
-                {
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EngineId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationEngineLanguage", x => new { x.ApplicationId, x.EngineId, x.LanguageId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationEngineLanguage_ApplicationEngine_ApplicationId_EngineId",
-                        columns: x => new { x.ApplicationId, x.EngineId },
-                        principalTable: "ApplicationEngine",
-                        principalColumns: new[] { "ApplicationId", "EngineId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationEngineLanguage_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalTable: "Application",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ApplicationEngineLanguage_EngineLanguage_LanguageId_EngineId",
-                        columns: x => new { x.LanguageId, x.EngineId },
-                        principalTable: "EngineLanguage",
-                        principalColumns: new[] { "LanguageId", "EngineId" });
-                    table.ForeignKey(
-                        name: "FK_ApplicationEngineLanguage_Language_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Language",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MachineTranslation",
                 columns: table => new
                 {
@@ -1277,6 +1244,49 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         principalTable: "Phrase",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationTranslation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhraseId = table.Column<int>(type: "int", nullable: false),
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TranslationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EngineId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationLanguageApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ApplicationLanguageLanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationTranslation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApplicationTranslation_ApplicationLanguage_ApplicationLanguageApplicationId_ApplicationLanguageLanguageId",
+                        columns: x => new { x.ApplicationLanguageApplicationId, x.ApplicationLanguageLanguageId },
+                        principalTable: "ApplicationLanguage",
+                        principalColumns: new[] { "ApplicationId", "LanguageId" });
+                    table.ForeignKey(
+                        name: "FK_ApplicationTranslation_ApplicationPhrase_ApplicationId_PhraseId",
+                        columns: x => new { x.ApplicationId, x.PhraseId },
+                        principalTable: "ApplicationPhrase",
+                        principalColumns: new[] { "ApplicationId", "Id" },
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationTranslation_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ApplicationTranslation_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Language",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1440,52 +1450,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         column: x => x.CustomerId,
                         principalSchema: "Stripe",
                         principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationTranslation",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhraseId = table.Column<int>(type: "int", nullable: false),
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    TranslationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EngineId = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationTranslation", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ApplicationTranslation_ApplicationEngineLanguage_ApplicationId_EngineId_LanguageId",
-                        columns: x => new { x.ApplicationId, x.EngineId, x.LanguageId },
-                        principalTable: "ApplicationEngineLanguage",
-                        principalColumns: new[] { "ApplicationId", "EngineId", "LanguageId" });
-                    table.ForeignKey(
-                        name: "FK_ApplicationTranslation_ApplicationEngine_ApplicationId_EngineId",
-                        columns: x => new { x.ApplicationId, x.EngineId },
-                        principalTable: "ApplicationEngine",
-                        principalColumns: new[] { "ApplicationId", "EngineId" });
-                    table.ForeignKey(
-                        name: "FK_ApplicationTranslation_ApplicationPhrase_ApplicationId_PhraseId",
-                        columns: x => new { x.ApplicationId, x.PhraseId },
-                        principalTable: "ApplicationPhrase",
-                        principalColumns: new[] { "ApplicationId", "Id" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationTranslation_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalTable: "Application",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ApplicationTranslation_Language_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Language",
                         principalColumn: "Id");
                 });
 
@@ -2502,14 +2466,9 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationEngine_EngineId",
-                table: "ApplicationEngine",
-                column: "EngineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationEngineLanguage_LanguageId_EngineId",
-                table: "ApplicationEngineLanguage",
-                columns: new[] { "LanguageId", "EngineId" });
+                name: "IX_ApplicationLanguage_LanguageId",
+                table: "ApplicationLanguage",
+                column: "LanguageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationPhrase_PhraseId",
@@ -2517,14 +2476,14 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "PhraseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationTranslation_ApplicationId_EngineId_LanguageId",
-                table: "ApplicationTranslation",
-                columns: new[] { "ApplicationId", "EngineId", "LanguageId" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ApplicationTranslation_ApplicationId_PhraseId",
                 table: "ApplicationTranslation",
                 columns: new[] { "ApplicationId", "PhraseId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationTranslation_ApplicationLanguageApplicationId_ApplicationLanguageLanguageId",
+                table: "ApplicationTranslation",
+                columns: new[] { "ApplicationLanguageApplicationId", "ApplicationLanguageLanguageId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationTranslation_LanguageId",
@@ -3184,7 +3143,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "ApplicationEngineLanguage");
+                name: "ApplicationLanguage");
 
             migrationBuilder.DropTable(
                 name: "Client",
@@ -3210,13 +3169,13 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
+                name: "EngineLanguage");
+
+            migrationBuilder.DropTable(
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "ApplicationEngine");
-
-            migrationBuilder.DropTable(
-                name: "EngineLanguage");
+                name: "Application");
 
             migrationBuilder.DropTable(
                 name: "Phrase");
@@ -3224,9 +3183,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
             migrationBuilder.DropTable(
                 name: "SubscriptionItem",
                 schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Application");
 
             migrationBuilder.DropTable(
                 name: "Engine");

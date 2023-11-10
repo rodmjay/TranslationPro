@@ -6,29 +6,29 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Engines.Entities;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Applications.Entities;
 
-public class Application : BaseEntity<Application>, IApplication
+public class Application : BaseEntity<Application>, IApplication, ISoftDelete
 {
     public Application()
     {
         Phrases = new List<ApplicationPhrase>();
-        Translations = new List<ApplicationTranslation>();
         Users = new List<ApplicationUser>();
+        Languages = new List<ApplicationLanguage>();
     }
 
-    public ICollection<ApplicationEngineLanguage> EngineLanguages { get; set; }
+    public ICollection<ApplicationLanguage> Languages { get; set; }
     public ICollection<ApplicationTranslation> Translations { get; set; }
-    public ICollection<ApplicationEngine> Engines { get; set; }
     public ICollection<ApplicationPhrase> Phrases { get; set; }
    
     public Guid Id { get; set; }
@@ -39,6 +39,8 @@ public class Application : BaseEntity<Application>, IApplication
 
     public override void Configure(EntityTypeBuilder<Application> builder)
     {
+        builder.ToTable(nameof(Application), "TranslationPro");
+
         builder.HasKey(x => x.Id);
         
         builder.HasQueryFilter(x => !x.IsDeleted);

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +18,7 @@ namespace TranslationPro.Base.Engines.Services
         }
 
         private IQueryable<Engine> Engines =>
-            Repository.Queryable().Include(x => x.Languages).ThenInclude(x => x.Language);
+            Repository.Queryable();
 
         public Task<List<T>> GetEngines<T>() where T : EngineOutput
         {

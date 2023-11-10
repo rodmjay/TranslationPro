@@ -28,7 +28,7 @@ namespace TranslationPro.Base.Stripe.Entities
         
         public bool? Deleted { get; set; }
         
-        public List<StripeProductFeature> Features { get; set; }
+        public ICollection<StripeProductFeature> Features { get; set; }
         
         public string StatementDescriptor { get; set; }
         

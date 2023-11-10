@@ -22,8 +22,8 @@ namespace TranslationPro.App.Pages
 
         public ApplicationCreateOptions Input { get; set; } = new ApplicationCreateOptions();
          
-        public List<LanguageOutput> Languages { get; set; }
-        private List<string> selection = new();
+        public ICollection<LanguageOutput> Languages { get; set; }
+        private ICollection<string> selection = new();
         protected override async Task OnInitializedAsync()
         {
             Languages = await LanguagesController.GetLanguagesAsync();

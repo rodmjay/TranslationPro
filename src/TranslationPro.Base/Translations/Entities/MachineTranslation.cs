@@ -8,13 +8,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.Translations.Entities;
 
-public class MachineTranslation : BaseEntity<MachineTranslation>
+public class MachineTranslation : BaseEntity<MachineTranslation>, ISoftDelete
 {
     public TranslationEngine EngineId { get; set; }
     public Engine Engine { get; set; }
@@ -29,6 +30,8 @@ public class MachineTranslation : BaseEntity<MachineTranslation>
 
     public override void Configure(EntityTypeBuilder<MachineTranslation> builder)
     {
+        builder.ToTable(nameof(MachineTranslation), "TranslationPro");
+
         builder.HasKey(x => new { x.EngineId, x.LanguageId, x.PhraseId });
 
         builder.HasOne(x => x.Phrase)
@@ -43,5 +46,9 @@ public class MachineTranslation : BaseEntity<MachineTranslation>
             .WithMany(x => x.MachineTranslations)
             .HasForeignKey(x => x.EngineId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
+
+    public bool IsDeleted { get; set; }
 }

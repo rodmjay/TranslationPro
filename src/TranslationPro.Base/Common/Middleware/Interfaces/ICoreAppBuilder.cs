@@ -17,5 +17,5 @@ public interface ICoreAppBuilder
     AppSettings AppSettings { get; }
     IConfiguration Configuration { get; }
     string ConnectionString { get; set; }
-    List<string> AssembliesToMap { get; set; }
+    ICollection<string> AssembliesToMap { get; set; }
 }

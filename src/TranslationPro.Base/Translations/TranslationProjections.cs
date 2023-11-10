@@ -8,7 +8,7 @@ using AutoMapper;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Translations.Projections;
+namespace TranslationPro.Base.Translations;
 
 public class TranslationProjections : Profile
 {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231110055530_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1524,24 +1527,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.ToTable("ServerSideSession", "IdentityServer");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", b =>
-                {
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ApplicationId", "LanguageId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("ApplicationLanguage", "TranslationPro");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.ApplicationUsers.Entities.ApplicationUser", b =>
                 {
                     b.Property<Guid>("ApplicationId")
@@ -1556,9 +1541,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<DateTime?>("InvitationReceivedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -1566,7 +1548,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUser", "TranslationPro");
+                    b.ToTable("ApplicationUser");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Applications.Entities.Application", b =>
@@ -1583,7 +1565,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Application", "TranslationPro");
+                    b.ToTable("Application");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Engines.Entities.Engine", b =>
@@ -1599,7 +1581,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Engine", "TranslationPro");
+                    b.ToTable("Engine");
 
                     b.HasData(
                         new
@@ -1640,7 +1622,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("EngineId");
 
-                    b.ToTable("EngineLanguage", "TranslationPro");
+                    b.ToTable("EngineLanguage");
 
                     b.HasData(
                         new
@@ -2740,6 +2722,24 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Languages.Entities.ApplicationLanguage", b =>
+                {
+                    b.Property<Guid>("ApplicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LanguageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ApplicationId", "LanguageId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("ApplicationLanguage");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Languages.Entities.Language", b =>
                 {
                     b.Property<string>("Id")
@@ -2750,7 +2750,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Language", "TranslationPro");
+                    b.ToTable("Language");
 
                     b.HasData(
                         new
@@ -3433,7 +3433,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("PhraseId");
 
-                    b.ToTable("ApplicationPhrase", "TranslationPro");
+                    b.ToTable("ApplicationPhrase");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Phrases.Entities.Phrase", b =>
@@ -3444,15 +3444,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Phrase", "TranslationPro");
+                    b.ToTable("Phrase");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCard", b =>
@@ -4586,7 +4583,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("ApplicationLanguageApplicationId", "ApplicationLanguageLanguageId");
 
-                    b.ToTable("ApplicationTranslation", "TranslationPro");
+                    b.ToTable("ApplicationTranslation");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Translations.Entities.HumanTranslation", b =>
@@ -4603,9 +4600,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -4613,7 +4607,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("HumanTranslation", "TranslationPro");
+                    b.ToTable("HumanTranslation");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Translations.Entities.MachineTranslation", b =>
@@ -4627,9 +4621,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<int>("PhraseId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -4642,7 +4633,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("LanguageId", "EngineId");
 
-                    b.ToTable("MachineTranslation", "TranslationPro");
+                    b.ToTable("MachineTranslation");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.Role", b =>
@@ -5071,25 +5062,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("IdentityResource");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", b =>
-                {
-                    b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
-                        .WithMany("Languages")
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
-                        .WithMany("Applications")
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Application");
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.ApplicationUsers.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
@@ -5124,6 +5096,25 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Engine");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Languages.Entities.ApplicationLanguage", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Applications.Entities.Application", "Application")
+                        .WithMany("Languages")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Languages.Entities.Language", "Language")
+                        .WithMany("Applications")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Application");
 
                     b.Navigation("Language");
                 });
@@ -5607,7 +5598,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TranslationPro.Base.ApplicationLanguages.Entities.ApplicationLanguage", "ApplicationLanguage")
+                    b.HasOne("TranslationPro.Base.Languages.Entities.ApplicationLanguage", "ApplicationLanguage")
                         .WithMany()
                         .HasForeignKey("ApplicationLanguageApplicationId", "ApplicationLanguageLanguageId");
 

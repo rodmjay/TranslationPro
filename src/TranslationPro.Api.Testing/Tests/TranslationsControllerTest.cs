@@ -14,7 +14,7 @@ namespace TranslationPro.Api.Testing.Tests;
 public class TranslationsControllerTest : BaseApiTest
 {
     [TestFixture]
-    public class TheSaveTranslationMethod : BaseApiTest
+    public class TheSaveTranslationMethod : TranslationsControllerTest
     {
         [Test]
         public async Task CanSaveTranslation()
@@ -23,7 +23,7 @@ public class TranslationsControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await CreatePhraseAsync(ApplicationId, input);
+            var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
             var input2 = new TranslationOptions()
             {
@@ -31,7 +31,7 @@ public class TranslationsControllerTest : BaseApiTest
                 Text = "hola mae"
             };
 
-            var updateResult = await SaveTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), input2);
+            var updateResult = await TranslationsProxy.SaveTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), input2);
 
             Assert.IsTrue(updateResult.Succeeded);
         }

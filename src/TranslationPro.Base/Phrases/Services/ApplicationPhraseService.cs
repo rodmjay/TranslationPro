@@ -17,11 +17,9 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Phrases.Interfaces;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
@@ -36,7 +34,6 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     }
 
     private readonly IRepositoryAsync<Application> _applicationRepository;
-    private readonly IRepositoryAsync<ApplicationEngine> _applicationEngineRepository;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
@@ -47,21 +44,20 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
-        _applicationEngineRepository = UnitOfWork.RepositoryAsync<ApplicationEngine>();
     }
 
     private IQueryable<Application> Applications => _applicationRepository.Queryable()
-        .Include(x => x.EngineLanguages);
+        .Include(x => x.Phrases);
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
+        .Include(x => x.Application)
         .Include(x => x.Phrase)
-        .Include(x => x.MachineTranslations);
+        .Include(x => x.MachineTranslations)
+        .Include(x => x.HumanTranslations);
 
     private IQueryable<Phrase> Phrases => _phraseRepository.Queryable()
         .Include(x => x.Translations);
-
-    private IQueryable<ApplicationEngine> Engines => _applicationEngineRepository.Queryable()
-        .Include(x=>x.Engine).ThenInclude(x=>x.Languages);
+    
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
         PhraseFilters filters) where T : PhraseOutput
@@ -130,8 +126,6 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
         if (applicationPhrase == null)
         {
-            var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
-
             // does phrase exist in system?
             var phrase = await Phrases.Where(x => x.Text == input.Text).FirstOrDefaultAsync();
             if (phrase == null)
@@ -141,12 +135,20 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
                     Text = input.Text,
                     ObjectState = ObjectState.Added
                 };
-
-                var phraseRecords = _phraseRepository.InsertOrUpdateGraph(phrase, true);
-                if (phraseRecords > 0)
+                try
                 {
-                    _logger.LogInformation(GetLogMessage("New phrase created: {0}"), input.Text);
+                    var phraseRecords = _phraseRepository.Insert(phrase, true);
+                    if (phraseRecords > 0)
+                    {
+                        _logger.LogInformation(GetLogMessage("New phrase created: {0}"), input.Text);
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+               
             }
 
             // create application phrase
@@ -160,18 +162,6 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
                 ObjectState = ObjectState.Added
             };
 
-            // add empty translation for each language and engine
-            foreach (var lang in application.EngineLanguages)
-            {
-                applicationPhrase.MachineTranslations.Add(new ApplicationTranslation()
-                {
-                    ApplicationId = applicationId,
-                    EngineId = lang.EngineId,
-                    ObjectState = ObjectState.Added,
-                    LanguageId = lang.LanguageId
-                });
-            }
-
             var records = Repository.InsertOrUpdateGraph(applicationPhrase, true);
             if (records > 0)
                 return Result.Success(phrase.Id);
@@ -180,7 +170,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         {
             return Result.Success(applicationPhrase.Id);
         }
-        
+
         return Result.Failed(_errorDescriber.UnableToCreatePhrase());
     }
 
@@ -228,7 +218,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             return Result.Failed(_errorDescriber.PhraseDoesntExist(phraseId));
 
         phrase.IsDeleted = true;
-        phrase.ObjectState= ObjectState.Modified;
+        phrase.ObjectState = ObjectState.Modified;
 
         var records = Repository.InsertOrUpdateGraph(phrase, true);
 

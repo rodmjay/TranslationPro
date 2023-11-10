@@ -52,4 +52,9 @@ public class LanguageService : BaseService<Language>, ILanguageService
     {
         return Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
+
+    public Task<T> GetLanguageAsync<T>(string languageId) where T : LanguageOutput
+    {
+        return Languages.Where(x=>x.Id == languageId).ProjectTo<T>(ProjectionMapping).FirstOrDefaultAsync();
+    }
 }

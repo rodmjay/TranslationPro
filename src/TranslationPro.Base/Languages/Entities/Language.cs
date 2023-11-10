@@ -5,6 +5,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Common.Data.Bases;
@@ -20,14 +21,17 @@ public class Language : BaseEntity<Language>, ILanguage
     {
         Translations = new List<ApplicationTranslation>();
     }
-    public ICollection<ApplicationEngineLanguage> Applications { get; set; }
+
     public ICollection<ApplicationTranslation> Translations { get; set; }
     public ICollection<EngineLanguage> Engines { get; set; }
+    public ICollection<ApplicationLanguage> Applications { get; set; }
     public string Name { get; set; }
     public string Id { get; set; }
 
     public override void Configure(EntityTypeBuilder<Language> builder)
     {
+        builder.ToTable(nameof(Language), "TranslationPro");
+
         builder.HasKey(x => x.Id);
 
         builder.HasMany(x => x.Translations)

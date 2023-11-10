@@ -10,11 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 
 namespace TranslationPro.Base.Phrases.Entities;
 
-public class ApplicationPhrase : BaseEntity<ApplicationPhrase>
+public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete
 {
     public ApplicationPhrase()
     {
@@ -34,6 +35,8 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>
 
     public override void Configure(EntityTypeBuilder<ApplicationPhrase> builder)
     {
+        builder.ToTable(nameof(ApplicationPhrase), "TranslationPro");
+
         builder.HasKey(t => new {t.ApplicationId, t.Id});
 
 

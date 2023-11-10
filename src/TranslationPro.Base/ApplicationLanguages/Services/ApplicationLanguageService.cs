@@ -16,32 +16,32 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.ApplicationLanguages.Services
 {
-    internal class ApplicationEngineLanguageService : BaseService<ApplicationEngineLanguage>, IApplicationEngineLanguageService
+    internal class ApplicationLanguageService : BaseService<ApplicationLanguage>, IApplicationEngineLanguageService
     {
-        private readonly ILogger<ApplicationEngineLanguageService> _logger;
+        private readonly ILogger<ApplicationLanguageService> _logger;
 
         private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
         {
-            return $"[{nameof(ApplicationEngineLanguageService)}.{callerName}] - {message}";
+            return $"[{nameof(ApplicationLanguageService)}.{callerName}] - {message}";
         }
 
 
         private readonly IRepositoryAsync<Application> _applicationRepository;
         private readonly IRepositoryAsync<ApplicationTranslation> _translationRepository;
-        public ApplicationEngineLanguageService(IServiceProvider serviceProvider, ILogger<ApplicationEngineLanguageService> logger) : base(serviceProvider)
+        public ApplicationLanguageService(IServiceProvider serviceProvider, ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
             _logger = logger;
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
             _translationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
         }
 
-        private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.EngineLanguages)
+        private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
             .Include(x => x.Phrases).Include(x => x.Translations);
 
         private IQueryable<ApplicationTranslation> Translations => _translationRepository.Queryable();
 
-        private IQueryable<ApplicationEngineLanguage> ApplicationLanguages =>
-            Repository.Queryable().Include(x => x.Translations);
+        private IQueryable<ApplicationLanguage> ApplicationLanguages =>
+            Repository.Queryable().Include(x => x.Language).Include(x=>x.Application);
 
         public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input)
         {
@@ -49,12 +49,12 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 
             var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-            var appLanguage = application.EngineLanguages.FirstOrDefault(x => x.LanguageId == input.Language);
+            var appLanguage = application.Languages.FirstOrDefault(x => x.LanguageId == input.Language);
             if (appLanguage != null)
                 return Result.Success();
 
             // assuming the app language doesn't exist, create new one
-            appLanguage = new ApplicationEngineLanguage()
+            appLanguage = new ApplicationLanguage()
             {
                 ApplicationId = applicationId,
                 LanguageId = input.Language,

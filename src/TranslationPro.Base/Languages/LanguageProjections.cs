@@ -9,7 +9,7 @@ using AutoMapper;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Languages.Projections;
+namespace TranslationPro.Base.Languages;
 
 public class LanguageProjections : Profile
 {
@@ -18,7 +18,7 @@ public class LanguageProjections : Profile
         CreateMap<Language, LanguageOutput>().IncludeAllDerived();
 
         CreateMap<Language, LanguagesWithEnginesOutput>()
-            .ForMember(x=>x.Engines, opt=>opt.MapFrom(x=>x.Engines.Select(a=>a.Engine)))
+            .ForMember(x => x.Engines, opt => opt.MapFrom(x => x.Engines.Select(a => a.Engine)))
             .IncludeAllDerived();
     }
 }

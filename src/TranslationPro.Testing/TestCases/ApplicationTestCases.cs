@@ -17,22 +17,32 @@ public static class ApplicationTestCases
     {
         new object[]
         {
-            CreateApplication,
-            HttpStatusCode.OK
+            CreateApplication
         }
     };
+
+    public static object[] UpdateModels => new object[]
+    {
+        new object[]
+        {
+            UpdateApplication
+        }
+    };
+
+    public static ApplicationOptions UpdateApplication =>
+        new()
+        {
+            Name = "Updated"
+        };
 
     public static ApplicationCreateOptions CreateApplication =>
         new()
         {
             Name = "Test",
-            EnginesWithLanguages = new Dictionary<TranslationEngine, List<string>>()
+            Languages = new List<string>()
             {
-                {TranslationEngine.Google, new List<string>()
-                {
-                    "es",
-                    "en"
-                }}
+                "en",
+                "es"
             }
         };
 }

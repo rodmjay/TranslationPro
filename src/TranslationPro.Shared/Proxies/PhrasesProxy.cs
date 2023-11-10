@@ -18,11 +18,6 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoGet<PhraseOutput>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
-    public Task<Result> BulkUploadAsync(Guid applicationId, List<string> input)
-    {
-        return DoPost<List<string>, Result>($"{ApplicationUrl}/{applicationId}/phrases/bulk", input);
-    }
-
     public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
         return DoPost<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);

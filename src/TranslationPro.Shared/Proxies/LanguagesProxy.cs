@@ -25,6 +25,13 @@ public class LanguagesProxy : BaseProxy, ILanguagesController
         return response.Content.DeserializeObject<List<LanguagesWithEnginesOutput>>();
     }
 
+    public async Task<LanguagesWithEnginesOutput> GetLanguageAsync(string languageId)
+    {
+        var response = await HttpClient.GetAsync($"{LanguageUrl}/{languageId}");
+
+        return response.Content.DeserializeObject<LanguagesWithEnginesOutput>();
+    }
+
 
     public LanguagesProxy(HttpClient httpClient) : base(httpClient)
     {

@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace TranslationPro.Base.Permissions.Interfaces;
+namespace TranslationPro.Base.Permissions;
 
 public interface IPermissionService
 {

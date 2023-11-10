@@ -5,14 +5,16 @@
 #endregion
 
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Phrases.Entities;
 
-public class Phrase : BaseEntity<Phrase>, IPhrase
+public class Phrase : BaseEntity<Phrase>, IPhrase, ISoftDelete
 {
     public int Id { get; set; }
 
@@ -23,7 +25,12 @@ public class Phrase : BaseEntity<Phrase>, IPhrase
 
     public override void Configure(EntityTypeBuilder<Phrase> builder)
     {
+        builder.ToTable(nameof(Phrase), "TranslationPro");
+
         builder.HasKey(x => x.Id);
 
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
+
+    public bool IsDeleted { get; set; }
 }

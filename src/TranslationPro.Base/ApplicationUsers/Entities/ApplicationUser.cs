@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.ApplicationUsers.Entities
 {
-    public class ApplicationUser : BaseEntity<ApplicationUser>
+    public class ApplicationUser : BaseEntity<ApplicationUser>, ISoftDelete
     {
         public int UserId { get; set; }
         public Guid ApplicationId { get; set; }
@@ -21,6 +22,8 @@ namespace TranslationPro.Base.ApplicationUsers.Entities
 
         public override void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
+            builder.ToTable(nameof(ApplicationUser), "TranslationPro");
+
             builder.HasKey(x => new {x.ApplicationId, x.UserId});
             builder.HasOne(x => x.User)
                 .WithMany(x => x.Applications)
@@ -31,6 +34,10 @@ namespace TranslationPro.Base.ApplicationUsers.Entities
                 .WithMany(x => x.Users)
                 .HasForeignKey(x => x.ApplicationId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
         }
+
+        public bool IsDeleted { get; set; }
     }
 }

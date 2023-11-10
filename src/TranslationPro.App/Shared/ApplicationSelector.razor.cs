@@ -18,7 +18,7 @@ namespace TranslationPro.App.Shared
         [Inject]
         private IApplicationsController ApplicationsProxy { get; set; }
 
-        private List<ApplicationOutput> Applications { get; set; }
+        private ICollection<ApplicationOutput> Applications { get; set; }
 
         [CascadingParameter]
         private RouteData RouteData { get; set; }

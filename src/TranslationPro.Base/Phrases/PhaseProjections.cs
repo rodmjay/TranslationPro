@@ -9,7 +9,7 @@ using AutoMapper;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Phrases.Projections;
+namespace TranslationPro.Base.Phrases;
 
 public class PhaseProjections : Profile
 {

@@ -56,9 +56,9 @@ public class TranslationService : BaseService<ApplicationTranslation>, ITranslat
         Repository.Queryable().Include(x => x.ApplicationPhrase).Include(x => x.Application);
 
     private IQueryable<ApplicationPhrase> Phrases =>
-        _phraseRepository.Queryable().Include(x => x.Application).ThenInclude(x=>x.EngineLanguages).Include(x => x.MachineTranslations);
+        _phraseRepository.Queryable();
 
-    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.EngineLanguages);
+    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
     
     public async Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
     {
@@ -77,7 +77,7 @@ public class TranslationService : BaseService<ApplicationTranslation>, ITranslat
         {
             var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-            var langExists = application.EngineLanguages.Any(x => x.LanguageId == input.LanguageId);
+            var langExists = application.Languages.Any(x => x.LanguageId == input.LanguageId);
 
             if (!langExists)
                 return Result.Failed(
@@ -174,7 +174,7 @@ public class TranslationService : BaseService<ApplicationTranslation>, ITranslat
         return translations.Select(x => x.ApplicationPhrase.Phrase.Text).ToList();
     }
 
-    private async Task<Result> SaveTranslationResultsAsync(Guid applicationId, List<TranslationResult> input)
+    private async Task<Result> SaveTranslationResultsAsync(Guid applicationId, ICollection<TranslationResult> input)
     {
         _logger.LogInformation(GetLogMessage("Saving {0} translations to application: {1}"), input.Count, applicationId);
 

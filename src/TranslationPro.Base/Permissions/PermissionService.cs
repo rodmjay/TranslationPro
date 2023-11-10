@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Permissions.Interfaces;
 using TranslationPro.Base.Users.Entities;
 
-namespace TranslationPro.Base.Permissions.Services;
+namespace TranslationPro.Base.Permissions;
 
 public class PermissionService : BaseService, IPermissionService
 {

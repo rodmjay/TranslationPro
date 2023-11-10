@@ -5,7 +5,6 @@
 #endregion
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Shared.Models;
@@ -20,9 +19,9 @@ public class ApplicationsControllerTest : BaseApiTest
     public class TheCreateApplicationAsyncMethod : ApplicationsControllerTest
     {
         [TestCaseSource(typeof(ApplicationTestCases), nameof(ApplicationTestCases.CreateModels))]
-        public async Task RunTestCases(ApplicationCreateOptions input, HttpStatusCode code)
+        public async Task RunTestCases(ApplicationCreateOptions input)
         {
-            var response = await CreateApplicationAsync(input);
+            var response = await ApplicationsProxy.CreateApplicationAsync(input);
 
             Assert.IsTrue(response.Succeeded);
         }
@@ -34,25 +33,23 @@ public class ApplicationsControllerTest : BaseApiTest
         [Test]
         public async Task CanDeleteApplication()
         {
-            var applications = await GetApplicationsAsync();
+            var applications = await ApplicationsProxy.GetApplicationsAsync();
 
             Assert.AreEqual(1, applications.Count);
 
-            var createPhraseResult = await CreatePhraseAsync(ApplicationId, new PhraseOptions()
+            var createPhraseResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, new PhraseOptions()
             {
                 Text = "hello world"
             });
 
-            var application = await GetApplicationAsync(ApplicationId);
+            var application = await ApplicationsProxy.GetApplicationAsync(ApplicationId);
 
             Assert.AreEqual(1, application.PhraseCount);
 
-            var deleteResult = await DeleteApplicationAsync(Guid.Parse(ApplicationResult.Id.ToString()));
+            var deleteResult = await ApplicationsProxy.DeleteApplicationAsync(Guid.Parse(ApplicationResult.Id.ToString()));
             Assert.IsTrue(deleteResult.Succeeded);
-
-           
-
-            applications = await GetApplicationsAsync();
+            
+            applications = await ApplicationsProxy.GetApplicationsAsync();
             
             Assert.AreEqual(0, applications.Count);
         }
@@ -61,22 +58,18 @@ public class ApplicationsControllerTest : BaseApiTest
     [TestFixture]
     public class TheUpdateApplicationAsyncMethod : ApplicationsControllerTest
     {
-        [Test]
-        public async Task CanUpdateApplication()
+        [TestCaseSource(typeof(ApplicationTestCases), nameof(ApplicationTestCases.UpdateModels))]
+        public async Task CanUpdateApplication(ApplicationOptions input)
         {
-            var input = new ApplicationOptions
-            {
-                Name = "Updated"
-            };
             var result = await CreateDefaultApplication();
-            var updateResult = await UpdateApplicationAsync(Guid.Parse(result.Id.ToString()), input);
+            var updateResult = await ApplicationsProxy.UpdateApplicationAsync(Guid.Parse(result.Id.ToString()), input);
             Assert.IsTrue(updateResult.Succeeded);
 
-            var application = await GetApplicationAsync(Guid.Parse(updateResult.Id.ToString()));
+            var application = await ApplicationsProxy.GetApplicationAsync(Guid.Parse(updateResult.Id.ToString()));
 
             Assert.IsNotNull(application);
 
-            Assert.AreEqual("Updated", application.Name);
+            Assert.AreEqual(input.Name, application.Name);
         }
     }
 
@@ -86,7 +79,7 @@ public class ApplicationsControllerTest : BaseApiTest
         [Test]
         public async Task CanGetApplications()
         {
-            var result = await GetApplicationsAsync();
+            var result = await ApplicationsProxy.GetApplicationsAsync();
 
             Assert.IsNotNull(result);
 
@@ -101,7 +94,7 @@ public class ApplicationsControllerTest : BaseApiTest
         public async Task CanGetApplication()
         {
             var id = Guid.Parse(ApplicationResult.Id.ToString());
-            var result = await GetApplicationAsync(id);
+            var result = await ApplicationsProxy.GetApplicationAsync(id);
 
             Assert.IsNotNull(result);
 

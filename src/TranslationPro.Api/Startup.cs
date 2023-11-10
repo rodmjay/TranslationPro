@@ -23,7 +23,7 @@ using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Engines.Extensions;
 using TranslationPro.Base.Languages.Extensions;
-using TranslationPro.Base.Permissions.Extensions;
+using TranslationPro.Base.Permissions;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Stripe.Extensions;
 using TranslationPro.Base.Translations.Extensions;

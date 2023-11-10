@@ -41,7 +41,6 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     private readonly ILogger<ApplicationService> _logger;
     private readonly IRepositoryAsync<Language> _languageRepository;
     private readonly IRepositoryAsync<ApplicationUser> _applicationUserRepository;
-    private readonly IRepositoryAsync<ApplicationTranslation> _translationRepository;
     private readonly IRepositoryAsync<ApplicationPhrase> _phraseRepository;
     private readonly IRepositoryAsync<Engine> _engineRepository;
 
@@ -53,12 +52,14 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         _languageRepository = UnitOfWork.RepositoryAsync<Language>();
         _applicationUserRepository = UnitOfWork.RepositoryAsync<ApplicationUser>();
         _phraseRepository = UnitOfWork.RepositoryAsync<ApplicationPhrase>();
-        _translationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
         _engineRepository = UnitOfWork.RepositoryAsync<Engine>();
     }
 
-    private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.EngineLanguages).Include(x=>x.Phrases)
-        .ThenInclude(x=>x.MachineTranslations);
+    private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages)
+        .Include(x => x.Phrases)
+        .ThenInclude(x => x.MachineTranslations)
+        .Include(x => x.Phrases)
+        .ThenInclude(x => x.HumanTranslations);
 
     private IQueryable<ApplicationPhrase> Phrases => _phraseRepository.Queryable().Include(x => x.MachineTranslations);
     private IQueryable<ApplicationUser> ApplicationUsers => _applicationUserRepository.Queryable().Include(x => x.Application);
@@ -76,12 +77,10 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         return Applications.ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
 
-    public async Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
+    public Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Application: {0} For User: {1}"), input.Name, userId);
-
-        var engines = await Engines.Where(x => input.EnginesWithLanguages.Keys.Contains(x.Id)).ToListAsync();
-
+        
         var application = new Application
         {
             Name = input.Name,
@@ -94,43 +93,23 @@ public class ApplicationService : BaseService<Application>, IApplicationService
                     ObjectState = ObjectState.Added,
                     Role = ApplicationRole.Owner
                 }
-            }
-        };
-
-        foreach (var kvp in input.EnginesWithLanguages)
-        {
-            var engine = engines.First(x => x.Id == kvp.Key);
-
-            var applicationEngine = new ApplicationEngine()
+            },
+            Languages = input.Languages.Select(language => new ApplicationLanguage()
             {
-                EngineId = engine.Id,
+                LanguageId = language,
                 ObjectState = ObjectState.Added,
-            };
-
-            foreach (var lang in kvp.Value)
-            {
-                if (engine.Languages.Any(x => x.LanguageId == lang))
-                {
-                    applicationEngine.EnabledLanguages.Add(new ApplicationEngineLanguage()
-                    {
-                        EngineId = engine.Id,
-                        LanguageId = lang,
-                        ObjectState = ObjectState.Added
-                    });
-                }
-            }
-            application.Engines.Add(applicationEngine);
-        }
-
+            }).ToList()
+        };
+        
         var records = Repository.InsertOrUpdateGraph(application, true);
         if (records > 0)
         {
             _logger.LogInformation(GetLogMessage("Application Successfully Created: {0}"), input.Name);
 
-            return Result.Success(application.Id);
+            return Task.FromResult(Result.Success(application.Id));
         }
 
-        return Result.Failed(_errorDescriber.UnableToCreateApplication());
+        return Task.FromResult(Result.Failed(_errorDescriber.UnableToCreateApplication()));
     }
 
     public Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationOutput
@@ -176,6 +155,6 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
         var records = Repository.InsertOrUpdateGraph(application, true);
         return records > 0 ? Result.Success() : Result.Failed(_errorDescriber.UnableToDeleteApplication(application.Name));
-        
+
     }
 }

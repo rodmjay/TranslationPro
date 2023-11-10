@@ -18,12 +18,12 @@ public interface IRepositoryAsync<TEntity> : IRepository<TEntity> where TEntity 
     Task<long> TotalCountAsync();
 
     Task<TEntity> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, bool>> filter,
-        List<Expression<Func<TEntity, object>>> includes = null);
+        ICollection<Expression<Func<TEntity, object>>> includes = null);
 
     Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter);
 
     Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter,
-        List<Expression<Func<TEntity, object>>> includes);
+        ICollection<Expression<Func<TEntity, object>>> includes);
 
     Task<TEntity> FindAsync(params object[] keyValues);
     Task<TEntity> FindAsync(CancellationToken cancellationToken, params object[] keyValues);

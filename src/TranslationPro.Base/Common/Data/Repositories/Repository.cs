@@ -260,7 +260,7 @@ public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : cla
     }
 
     public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter,
-        List<Expression<Func<TEntity, object>>> includes)
+        ICollection<Expression<Func<TEntity, object>>> includes)
     {
         var query = _dbSet.Where(filter);
         foreach (var includeProperty in includes) query = query.Include(includeProperty);
@@ -268,7 +268,7 @@ public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : cla
     }
 
     public async Task<TEntity> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, bool>> filter,
-        List<Expression<Func<TEntity, object>>> includes)
+        ICollection<Expression<Func<TEntity, object>>> includes)
     {
         var query = _dbSet.Where(filter);
         foreach (var includeProperty in includes) query = query.Include(includeProperty);

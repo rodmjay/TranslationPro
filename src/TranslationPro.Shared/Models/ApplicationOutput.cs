@@ -12,13 +12,13 @@ namespace TranslationPro.Shared.Models;
 
 public class ApplicationOutput : IApplication
 {
-    public List<string> SupportedLanguages { get; set; }
+    public ICollection<string> SupportedLanguages { get; set; }
     public int PhraseCount { get; set; }
     public int TranslationCount { get; set; }
     public int PendingTranslationCount { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
 
-    public List<ApplicationEngineLanguageOutput> Languages { get; set; }
-    public List<ApplicationUserDto> Users { get; set; }
+    public ICollection<LanguageOutput> Languages { get; set; }
+    public ICollection<ApplicationUserOutput> Users { get; set; }
 }

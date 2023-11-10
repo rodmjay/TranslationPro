@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231110060152_AddedSchemas")]
+    partial class AddedSchemas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1555,9 +1558,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.Property<DateTime?>("InvitationReceivedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -3444,9 +3444,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -4603,9 +4600,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -4626,9 +4620,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.Property<int>("PhraseId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");

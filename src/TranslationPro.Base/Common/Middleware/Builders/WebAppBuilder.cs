@@ -29,7 +29,7 @@ public class WebAppBuilder
     }
 
     public IWebHostEnvironment Environment { get; }
-    public List<string> AssembliesToMap { get; set; }
+    public ICollection<string> AssembliesToMap { get; set; }
     public IServiceCollection Services { get; }
     public IConfiguration Configuration { get; }
     public string ConnectionString { get; set; }
