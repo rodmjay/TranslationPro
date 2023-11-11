@@ -13,12 +13,13 @@ using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Stripe.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Applications.Entities;
 
-public class Application : BaseEntity<Application>, IApplication, ISoftDelete
+public class Application : BaseEntity<Application>, IApplication, ISoftDelete, ICreated
 {
     public Application()
     {
@@ -28,7 +29,6 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete
     }
 
     public ICollection<ApplicationLanguage> Languages { get; set; }
-    public ICollection<ApplicationTranslation> Translations { get; set; }
     public ICollection<ApplicationPhrase> Phrases { get; set; }
    
     public Guid Id { get; set; }
@@ -45,4 +45,6 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete
         
         builder.HasQueryFilter(x => !x.IsDeleted);
     }
+
+    public DateTimeOffset Created { get; set; }
 }

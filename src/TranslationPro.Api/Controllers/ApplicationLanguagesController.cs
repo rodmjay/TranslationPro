@@ -20,14 +20,14 @@ namespace TranslationPro.Api.Controllers;
 public class ApplicationLanguagesController : BaseController, IApplicationLanguagesController
 {
     private readonly IApplicationEngineLanguageService _applicationEngineLanguageService;
-    private readonly ITranslationService _translationService;
+    private readonly IMachineTranslationService _machineTranslationService;
 
     public ApplicationLanguagesController(IServiceProvider serviceProvider,
-        IApplicationEngineLanguageService applicationEngineLanguageService, ITranslationService translationService) : base(
+        IApplicationEngineLanguageService applicationEngineLanguageService, IMachineTranslationService machineTranslationService) : base(
         serviceProvider)
     {
         _applicationEngineLanguageService = applicationEngineLanguageService;
-        _translationService = translationService;
+        _machineTranslationService = machineTranslationService;
     }
 
     [HttpPost]
@@ -37,7 +37,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
         await AssertUserHasAccessToApplication(applicationId);
 
         var result = await _applicationEngineLanguageService.AddLanguageToApplication(applicationId, input);
-        await _translationService.ProcessTranslationsForApplicationLanguageAsync(applicationId, input.Language);
+        await _machineTranslationService.ProcessTranslationsForApplicationLanguageAsync(applicationId, input.Language);
         return result;
     }
 

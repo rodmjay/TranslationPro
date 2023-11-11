@@ -17,9 +17,12 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Services.Bases;
+using TranslationPro.Base.Engines.Entities;
+using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Phrases.Interfaces;
+using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
@@ -35,29 +38,41 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     private readonly IRepositoryAsync<Application> _applicationRepository;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
+    private readonly IPhraseService _phraseService;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
+    private readonly IRepositoryAsync<Engine> _engineRepository;
+    private readonly IRepositoryAsync<Language> _languageRepository;
 
-    public ApplicationPhraseService(IServiceProvider serviceProvider, PhraseErrorDescriber errorDescriber, ILogger<ApplicationPhraseService> logger) : base(serviceProvider)
+    public ApplicationPhraseService(
+        IPhraseService phraseService,
+        IServiceProvider serviceProvider, 
+        PhraseErrorDescriber errorDescriber, 
+        ILogger<ApplicationPhraseService> logger) : base(serviceProvider)
     {
+        _phraseService = phraseService;
         _errorDescriber = errorDescriber;
         _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
+        _engineRepository = UnitOfWork.RepositoryAsync<Engine>();
+        _languageRepository = UnitOfWork.RepositoryAsync<Language>();
     }
-
-    private IQueryable<Application> Applications => _applicationRepository.Queryable()
-        .Include(x => x.Phrases);
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
         .Include(x => x.Application)
         .Include(x => x.Phrase)
-        .Include(x => x.MachineTranslations)
         .Include(x => x.HumanTranslations);
 
     private IQueryable<Phrase> Phrases => _phraseRepository.Queryable()
-        .Include(x => x.Translations);
-    
+        .Include(x => x.MachineTranslations);
+
+    private IQueryable<Language> Languages => _languageRepository.Queryable().Include(x => x.Engines);
+
+    private IQueryable<Engine> Engines => _engineRepository.Queryable().Include(x => x.Languages);
+
+    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x=>x.Languages)
+        .ThenInclude(x=>x.Language).ThenInclude(x=>x.Engines).ThenInclude(x=>x.Engine);
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
         PhraseFilters filters) where T : PhraseOutput
@@ -67,15 +82,18 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseOutput
     {
-        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId).ProjectTo<T>(ProjectionMapping).FirstAsync();
+        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
+            .ProjectTo<T>(ProjectionMapping).FirstAsync();
     }
 
     public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
     {
-        var phrases = await ApplicationPhrases.Include(x => x.MachineTranslations.Where(t => t.LanguageId == language))
-            .Where(x => x.ApplicationId == applicationId).ToListAsync();
+        var phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
+            .Select(x => x.Phrase).SelectMany(x => x.MachineTranslations)
+            .Where(x => x.LanguageId == language)
+            .ToDictionaryAsync(x => x.PhraseId, x => x.Text);
 
-        return phrases.SelectMany(x => x.MachineTranslations).ToDictionary(x => x.PhraseId, x => x.Text);
+        return phrases;
     }
 
     //public async Task<Result> BulkUploadPhrases(Guid applicationId, List<string> inputs)
@@ -117,54 +135,36 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     //}
 
 
-    public async Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
+    public async Task<Result> CreateApplicationPhrase(Guid applicationId, PhraseOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Phrase: {0}"), input.Text);
+
+        var application = await Applications.Where(x=>x.Id == applicationId).FirstAsync();;
 
         var applicationPhrase = await ApplicationPhrases
             .Where(x => x.ApplicationId == applicationId && x.Phrase.Text == input.Text).FirstOrDefaultAsync();
 
         if (applicationPhrase == null)
         {
-            // does phrase exist in system?
-            var phrase = await Phrases.Where(x => x.Text == input.Text).FirstOrDefaultAsync();
-            if (phrase == null)
+            var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new CreatePhraseOptions()
             {
-                phrase = new Phrase()
-                {
-                    Text = input.Text,
-                    ObjectState = ObjectState.Added
-                };
-                try
-                {
-                    var phraseRecords = _phraseRepository.Insert(phrase, true);
-                    if (phraseRecords > 0)
-                    {
-                        _logger.LogInformation(GetLogMessage("New phrase created: {0}"), input.Text);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-               
-            }
-
-            // create application phrase
+                Text = input.Text,
+                Languages = application.Languages.Select(x => x.LanguageId).ToList()
+            });
+            
             var applicationPhraseId = await GetNextPhraseIdAsync(applicationId);
 
             applicationPhrase = new ApplicationPhrase
             {
                 Id = applicationPhraseId,
-                PhraseId = phrase.Id,
+                PhraseId = int.Parse(phraseResult.Id.ToString()),
                 ApplicationId = applicationId,
                 ObjectState = ObjectState.Added
             };
 
             var records = Repository.InsertOrUpdateGraph(applicationPhrase, true);
             if (records > 0)
-                return Result.Success(phrase.Id);
+                return Result.Success(applicationPhrase.Id);
         }
         else
         {
@@ -174,38 +174,37 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         return Result.Failed(_errorDescriber.UnableToCreatePhrase());
     }
 
-    public async Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)
+    public async Task<Result> UpdatePhraseAsync(Guid applicationId, PhraseUpdateOptions input)
     {
-        throw new NotImplementedException();
-        //_logger.LogInformation(GetLogMessage("Updating phrase: {0} in application: {1}"), phraseId, applicationId);
+        _logger.LogInformation(GetLogMessage("Updating Phrase: {0}"), input.Text);
 
-        //var existing = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
-        //    .FirstOrDefaultAsync();
+        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync(); ;
 
-        //// error if phrase doesn't exist
-        //if (existing == null)
-        //    return Result.Failed(_errorDescriber.PhraseDoesntExist(phraseId));
+        var applicationPhrase = await ApplicationPhrases
+            .Where(x => x.ApplicationId == applicationId && x.Id == input.PhraseId).FirstOrDefaultAsync();
 
-        //// skip if the text is the same
-        //if (existing.Text == input.Text)
-        //    return Result.Success(phraseId);
+        if (applicationPhrase == null)
+        {
+            return Result.Failed();
+        }
 
-        //existing.Text = input.Text;
-        //existing.ObjectState = ObjectState.Modified;
+        if (applicationPhrase.Phrase.Text == input.Text)
+        {
+            return Result.Success();
+        }
 
-        //// re-translate if the text is different
-        //foreach (var translation in existing.Translations)
-        //{
-        //    translation.Text = null;
-        //    translation.TranslationDate = null;
-        //    translation.ObjectState = ObjectState.Modified;
-        //}
+        var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new CreatePhraseOptions()
+        {
+            Text = input.Text,
+            Languages = application.Languages.Select(x => x.LanguageId).ToList()
+        });
 
-        //var records = Repository.InsertOrUpdateGraph(existing, true);
-        //if (records > 0)
-        //    return Result.Success(phraseId);
+        applicationPhrase.PhraseId = int.Parse(phraseResult.Id.ToString());
 
-        //return Result.Failed(_errorDescriber.UnableToUpdatePhrase(phraseId));
+        var records = Repository.Update(applicationPhrase, true);
+        if(records > 0)
+            return Result.Success(applicationPhrase.Id);
+        return Result.Failed();
     }
 
     public async Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)

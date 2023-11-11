@@ -22,12 +22,12 @@ namespace TranslationPro.App.Pages
 
         public ApplicationCreateOptions Input { get; set; } = new ApplicationCreateOptions();
          
-        public ICollection<LanguageOutput> Languages { get; set; }
-        private ICollection<string> selection = new();
+        private List<LanguageOutput> Languages { get; set; }
+
+        private List<string> selection = new();
         protected override async Task OnInitializedAsync()
         {
             Languages = await LanguagesController.GetLanguagesAsync();
-
         }
 
 

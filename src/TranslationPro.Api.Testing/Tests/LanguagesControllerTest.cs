@@ -6,15 +6,25 @@
 
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TranslationPro.Shared.Interfaces;
-using TranslationPro.Shared.Proxies;
+using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;
 
 [TestFixture]
 public class LanguagesControllerTest : BaseApiTest
 {
-    protected ILanguagesController LanguageProxy => new LanguagesProxy(ApiClient);
+    
+    [TestFixture]
+    public class TheGetLanguageMethod : LanguagesControllerTest
+    {
+        [TestCaseSource(typeof(LanguageTestCases), nameof(LanguageTestCases.LanguagesWithEngineCount))]
+        public async Task CanGetLanguage(string languageId, int engineCount)
+        {
+            var language = await LanguageProxy.GetLanguageAsync(languageId);
+
+            Assert.AreEqual(engineCount, language.Engines.Count);
+        }
+    }
 
     [TestFixture]
     public class TheGetLanguagesMethod : LanguagesControllerTest

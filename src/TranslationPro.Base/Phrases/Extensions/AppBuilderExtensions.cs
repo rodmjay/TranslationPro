@@ -17,6 +17,7 @@ public static class AppBuilderExtensions
     {
         builder.Services.TryAddTransient<PhraseErrorDescriber>();
         builder.Services.TryAddScoped<IApplicationPhraseService, ApplicationPhraseService>();
+        builder.Services.TryAddScoped<IPhraseService, PhraseService>();
 
         return builder;
     }

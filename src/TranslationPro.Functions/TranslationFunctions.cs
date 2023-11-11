@@ -16,12 +16,12 @@ namespace TranslationPro.Functions;
 public class TranslationFunctions
 {
     private readonly IApplicationService _applicationService;
-    private readonly ITranslationService _translationService;
+    private readonly IMachineTranslationService _machineTranslationService;
 
-    public TranslationFunctions(IApplicationService applicationService, ITranslationService translationService)
+    public TranslationFunctions(IApplicationService applicationService, IMachineTranslationService machineTranslationService)
     {
         _applicationService = applicationService;
-        _translationService = translationService;
+        _machineTranslationService = machineTranslationService;
     }
 
     //[FunctionName("ProcessTranslationsAutomatically")]

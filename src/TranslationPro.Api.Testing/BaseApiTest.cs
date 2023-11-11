@@ -51,6 +51,7 @@ public abstract class BaseApiTest : IntegrationTest<BaseApiTest, Startup>
     protected IApplicationUsersController ApplicationUsersProxy => new ApplicationUsersProxy(ApiClient);
     protected ITranslationsController TranslationsProxy => new TranslationsProxy(ApiClient);
     protected IEnginesController EnginesProxy => new EnginesProxy(ApiClient);
+    protected ILanguagesController LanguageProxy => new LanguagesProxy(ApiClient);
 
 
 }

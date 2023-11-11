@@ -11,23 +11,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
+using TranslationPro.Base.Stripe.Interfaces;
 using TranslationPro.Base.Translations.Entities;
 
 namespace TranslationPro.Base.Phrases.Entities;
 
-public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete
+public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICreated
 {
-    public ApplicationPhrase()
-    {
-        MachineTranslations = new List<ApplicationTranslation>();
-    }
-
     public Guid ApplicationId { get; set; }
     public Application Application { get; set; }
-    public ICollection<ApplicationTranslation> MachineTranslations { get; set; }
     public ICollection<HumanTranslation> HumanTranslations { get; set; }
     public int Id { get; set; }
-   
     public int PhraseId { get; set; }
     public Phrase Phrase { get; set; }
 
@@ -51,4 +45,6 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }
+
+    public DateTimeOffset Created { get; set; }
 }

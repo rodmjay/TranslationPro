@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
+using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Common.Data.Repositories;
 
@@ -284,6 +285,11 @@ public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : cla
 
     private void _Insert(TEntity entity)
     {
+        if (entity is ICreated timestamp)
+        {
+            timestamp.Created = DateTimeOffset.UtcNow;
+        }
+
         entity.ObjectState = ObjectState.Added;
         _dbSet.Add(entity);
         _context.SyncObjectState(entity);
@@ -362,8 +368,15 @@ public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : cla
 
         var objectState = entity as IObjectState;
 
-        if (objectState != null && objectState.ObjectState == ObjectState.Added)
+        if (objectState is {ObjectState: ObjectState.Added})
+        {
+            if (entity is ICreated timestamp)
+            {
+                timestamp.Created = DateTimeOffset.UtcNow;
+            }
+
             _context.SyncObjectState((IObjectState) entity);
+        }
 
         // Set tracking state for child collections
         foreach (var prop in entity.GetType().GetProperties())

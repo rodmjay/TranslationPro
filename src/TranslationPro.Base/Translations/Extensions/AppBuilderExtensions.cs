@@ -20,7 +20,7 @@ public static class AppBuilderExtensions
     public static AppBuilder AddTranslationDependencies(this AppBuilder builder)
     {
         builder.Services.TryAddTransient<TranslationErrorDescriber>();
-        builder.Services.TryAddScoped<ITranslationService, TranslationService>();
+        builder.Services.TryAddScoped<IMachineTranslationService, MachineTranslationService>();
 
         builder.Services.TryAddSingleton(x =>
         {

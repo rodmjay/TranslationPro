@@ -25,20 +25,21 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
             return $"[{nameof(ApplicationLanguageService)}.{callerName}] - {message}";
         }
 
-
         private readonly IRepositoryAsync<Application> _applicationRepository;
-        private readonly IRepositoryAsync<ApplicationTranslation> _translationRepository;
         public ApplicationLanguageService(IServiceProvider serviceProvider, ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
             _logger = logger;
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
-            _translationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
         }
 
-        private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
-            .Include(x => x.Phrases).Include(x => x.Translations);
-
-        private IQueryable<ApplicationTranslation> Translations => _translationRepository.Queryable();
+        private IQueryable<Application> Applications => _applicationRepository.Queryable()
+            .Include(x => x.Languages)
+            .Include(x => x.Phrases)
+            .Include(x => x.HumanTranslations)
+            .Include(x=>x.Phrases)
+            .ThenInclude(x => x.Phrase)
+            .ThenInclude(x=>x.MachineTranslations)
+        ;
 
         private IQueryable<ApplicationLanguage> ApplicationLanguages =>
             Repository.Queryable().Include(x => x.Language).Include(x=>x.Application);
@@ -52,28 +53,14 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
             var appLanguage = application.Languages.FirstOrDefault(x => x.LanguageId == input.Language);
             if (appLanguage != null)
                 return Result.Success();
-
-            // assuming the app language doesn't exist, create new one
+            
             appLanguage = new ApplicationLanguage()
             {
                 ApplicationId = applicationId,
                 LanguageId = input.Language,
                 ObjectState = ObjectState.Added
             };
-
-            foreach (var phrase in application.Phrases)
-            {
-                // create a new translation record for each phrase
-                phrase.MachineTranslations.Add(new ApplicationTranslation()
-                {
-                    LanguageId = input.Language,
-                    ApplicationId = applicationId,
-                    Text = null,
-                    TranslationDate = null,
-                    ObjectState = ObjectState.Added
-                });
-            }
-
+            
             var records = Repository.InsertOrUpdateGraph(appLanguage, true);
             if (records > 0)
                 return Result.Success();
@@ -83,31 +70,7 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 
         public async Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
         {
-            _logger.LogInformation(GetLogMessage("Removing language: {0} from application: {1}"), languageId, applicationId);
-
-            var translations = await Translations
-                .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
-                .ToListAsync();
-
-            foreach (var translation in translations)
-            {
-                _translationRepository.Delete(translation, false);
-            }
-
-            var count = _translationRepository.Commit();
-
-            var applicationLanguage = await ApplicationLanguages
-                .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
-                .FirstAsync();
-
-            applicationLanguage.ObjectState = ObjectState.Deleted;
-            
-
-            var records = Repository.InsertOrUpdateGraph(applicationLanguage, true);
-            if(records > 0)
-                return Result.Success();
-
-            return Result.Failed();
+            throw new NotImplementedException();
         }
     }
 }

@@ -18,12 +18,12 @@ namespace TranslationPro.Api.Controllers;
 [Route("v1.0/applications/{applicationId}/phrases/{phraseId}/translations")]
 public class TranslationsController : BaseController, ITranslationsController
 {
-    private readonly ITranslationService _translationService;
+    private readonly IMachineTranslationService _machineTranslationService;
 
-    public TranslationsController(IServiceProvider serviceProvider, ITranslationService translationService) : base(
+    public TranslationsController(IServiceProvider serviceProvider, IMachineTranslationService machineTranslationService) : base(
         serviceProvider)
     {
-        _translationService = translationService;
+        _machineTranslationService = machineTranslationService;
     }
 
     [HttpPost]
@@ -31,6 +31,6 @@ public class TranslationsController : BaseController, ITranslationsController
         [FromBody] TranslationOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _translationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);
+        return await _machineTranslationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);
     }
 }

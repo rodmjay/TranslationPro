@@ -10,9 +10,9 @@
     </ol>
 </nav>
 
-@if (Translation != null)
+@if (MachineTranslation != null)
 {
-    <h3>Edit Translation: @Translation.Text (@Translation.LanguageName)</h3>
+    <h3>Edit Translation: @MachineTranslation.Text (@MachineTranslation.LanguageName)</h3>
 
     <EditForm Model="Input" OnSubmit="HandleSubmit">
         <DataAnnotationsValidator />

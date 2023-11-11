@@ -14,7 +14,7 @@ namespace TranslationPro.App.Pages
         [Parameter]
         public string LanguageId { get; set; }
 
-        public TranslationOutput Translation { get; set; }
+        public MachineTranslationOutput MachineTranslation { get; set; }
 
         public TranslationOptions Input { get; set; } = new();
 
@@ -25,9 +25,9 @@ namespace TranslationPro.App.Pages
         {
             await base.LoadData();
 
-            Translation = Phrase.Translations.FirstOrDefault(x => x.LanguageId == LanguageId);
+            MachineTranslation = Phrase.MachineTranslations.FirstOrDefault(x => x.LanguageId == LanguageId);
 
-            if (Translation != null) Input.Text = Translation.Text;
+            if (MachineTranslation != null) Input.Text = MachineTranslation.Text;
             Input.LanguageId = LanguageId;
         }
 

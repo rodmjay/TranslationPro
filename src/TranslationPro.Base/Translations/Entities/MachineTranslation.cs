@@ -35,7 +35,7 @@ public class MachineTranslation : BaseEntity<MachineTranslation>, ISoftDelete
         builder.HasKey(x => new { x.EngineId, x.LanguageId, x.PhraseId });
 
         builder.HasOne(x => x.Phrase)
-            .WithMany(x => x.Translations)
+            .WithMany(x => x.MachineTranslations)
             .HasForeignKey(x => x.PhraseId);
 
         builder.HasOne(x => x.Language)

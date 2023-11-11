@@ -10,11 +10,11 @@ using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Shared.Models;
 
-public class TranslationOutput : ITranslation
+public class MachineTranslationOutput : ITranslation
 {
     public string LanguageName { get; set; }
-    public int Id { get; set; }
     public string Text { get; set; }
+    public string Engine { get; set; }
 
     [JsonProperty("language")] public string LanguageId { get; set; }
 

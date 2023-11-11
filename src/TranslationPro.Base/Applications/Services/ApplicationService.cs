@@ -57,11 +57,14 @@ public class ApplicationService : BaseService<Application>, IApplicationService
 
     private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages)
         .Include(x => x.Phrases)
-        .ThenInclude(x => x.MachineTranslations)
+        .ThenInclude(x => x.Phrase)
+        .ThenInclude(x=>x.MachineTranslations)
         .Include(x => x.Phrases)
         .ThenInclude(x => x.HumanTranslations);
 
-    private IQueryable<ApplicationPhrase> Phrases => _phraseRepository.Queryable().Include(x => x.MachineTranslations);
+    private IQueryable<ApplicationPhrase> Phrases => _phraseRepository.Queryable().Include(x => x.Phrase)
+        .ThenInclude(x=>x.MachineTranslations);
+
     private IQueryable<ApplicationUser> ApplicationUsers => _applicationUserRepository.Queryable().Include(x => x.Application);
     private IQueryable<Language> Languages => _languageRepository.Queryable();
 
@@ -144,7 +147,8 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         {
             phrase.IsDeleted = true;
             phrase.ObjectState = ObjectState.Modified;
-            foreach (var translation in phrase.MachineTranslations)
+
+            foreach (var translation in phrase.HumanTranslations)
             {
                 translation.IsDeleted = true;
                 translation.ObjectState = ObjectState.Modified;

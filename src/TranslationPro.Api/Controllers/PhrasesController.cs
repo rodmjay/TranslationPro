@@ -23,10 +23,10 @@ namespace TranslationPro.Api.Controllers;
 public class PhrasesController : BaseController, IPhrasesController
 {
     private readonly IApplicationPhraseService _applicationPhraseService;
-    private readonly ITranslationService _transactionService;
+    private readonly IMachineTranslationService _transactionService;
 
     public PhrasesController(IServiceProvider serviceProvider, IApplicationPhraseService applicationPhraseService,
-        ITranslationService transactionService) : base(serviceProvider)
+        IMachineTranslationService transactionService) : base(serviceProvider)
     {
         _applicationPhraseService = applicationPhraseService;
         _transactionService = transactionService;
@@ -54,8 +54,10 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var result = await _applicationPhraseService.CreatePhraseAsync(applicationId, input).ConfigureAwait(false);
-        await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
+        var result = await _applicationPhraseService.CreateApplicationPhrase(applicationId, input).ConfigureAwait(false);
+        
+        
+        //await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
     }
@@ -65,8 +67,12 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var result = await _applicationPhraseService.UpdatePhraseAsync(applicationId, phraseId, input).ConfigureAwait(false);
-        await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
+        var result = await _applicationPhraseService.UpdatePhraseAsync(applicationId, new PhraseUpdateOptions()
+        {
+            PhraseId = phraseId,
+            Text = input.Text
+        }).ConfigureAwait(false);
+        //await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
 
         return result;
     }

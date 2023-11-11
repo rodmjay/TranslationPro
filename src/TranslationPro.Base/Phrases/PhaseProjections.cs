@@ -4,6 +4,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using AutoMapper;
 using TranslationPro.Base.Phrases.Entities;
@@ -15,10 +16,14 @@ public class PhaseProjections : Profile
 {
     public PhaseProjections()
     {
-        CreateMap<ApplicationPhrase, PhraseOutput>()
-            .ForMember(x => x.TranslationCount,
-                opt => opt.MapFrom(x => x.MachineTranslations.Count))
-            .ForMember(x => x.PendingTranslationCount,
-                opt => opt.MapFrom(x => x.MachineTranslations.Count(t => t.Text == null)));
+
+
+        CreateMap<ApplicationPhrase, PhraseOutput>().IncludeAllDerived();
+
+        CreateMap<ApplicationPhrase, PhraseWithTranslation>()
+            .ForMember(x => x.MachineTranslations, opt => opt
+                .MapFrom(x => x.Phrase.MachineTranslations.Where(mt => mt.Text != null)))
+            .ForMember(x => x.HumanTranslations, opt => opt
+                .MapFrom(x => x.HumanTranslations.Where(ht=>ht.Text != null)));
     }
 }

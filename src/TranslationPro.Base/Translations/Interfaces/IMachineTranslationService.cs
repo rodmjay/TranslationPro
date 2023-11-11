@@ -14,14 +14,10 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Translations.Interfaces;
 
-public interface ITranslationService : IService<ApplicationTranslation>
+public interface IMachineTranslationService : IService<MachineTranslation>
 {
     Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input);
-
-    Task<Result> DeleteTranslation(Guid applicationId, int phraseId, string languageId);
-
-    Task<List<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId)
-        where T : TranslationOutput;
+    
     
     Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId);
 

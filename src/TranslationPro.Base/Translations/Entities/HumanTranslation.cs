@@ -12,10 +12,11 @@ using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Translations.Entities;
 
-public class HumanTranslation : BaseEntity<HumanTranslation>, ISoftDelete
+public class HumanTranslation : BaseEntity<HumanTranslation>, ISoftDelete, ICreated
 {
     public Guid ApplicationId { get; set; }
     public Language Language { get; set; }
@@ -24,7 +25,7 @@ public class HumanTranslation : BaseEntity<HumanTranslation>, ISoftDelete
     public ApplicationPhrase Phrase { get; set; }
     public int PhraseId { get; set; }
     public string Text { get; set; }
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
 
     public override void Configure(EntityTypeBuilder<HumanTranslation> builder)
     {
