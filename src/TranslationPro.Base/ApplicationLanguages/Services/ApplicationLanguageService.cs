@@ -26,16 +26,15 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
         }
 
         private readonly IRepositoryAsync<Application> _applicationRepository;
-        private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
         public ApplicationLanguageService(IServiceProvider serviceProvider, ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
             _logger = logger;
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
-            _applicationTranslationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
         }
 
         private IQueryable<Application> Applications => _applicationRepository.Queryable()
             .Include(x => x.Languages)
+            .ThenInclude(x=>x.Translations)
             .IgnoreQueryFilters();
 
         private IQueryable<ApplicationLanguage> ApplicationLanguages =>
@@ -43,9 +42,6 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
                 .Include(x => x.Translations)
                 .Include(x => x.Language)
                 .Include(x => x.Application);
-
-        private IQueryable<ApplicationTranslation> ApplicationTranslations => _applicationTranslationRepository.Queryable()
-            .IgnoreQueryFilters();
 
         public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input)
         {
@@ -66,23 +62,15 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
                 {
                     appLanguage.IsDeleted = false;
                     appLanguage.ObjectState = ObjectState.Modified;
-
-                    var translations = await ApplicationTranslations
-                        .Where(x => x.ApplicationId == applicationId && x.LanguageId == input.Language)
-                        .ToListAsync();
-
-                    foreach (var translation in translations)
+                    
+                    foreach (var translation in appLanguage.Translations)
                     {
                         translation.IsDeleted = false;
                         translation.ObjectState = ObjectState.Modified;
-
-                        _applicationTranslationRepository.Update(translation);
                     }
-
-                    var translationRecords = _applicationTranslationRepository.Commit();
-
-                    var records = Repository.Update(appLanguage, true);
-                    if (records + translationRecords > 0)
+                    
+                    var records = Repository.InsertOrUpdateGraph(appLanguage, true);
+                    if (records > 0)
                         return Result.Success();
 
                     return Result.Failed();
@@ -110,7 +98,10 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
         {
             var applicationLanguage = await ApplicationLanguages
                 .Where(x => x.ApplicationId == applicationId && x.LanguageId == languageId)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+
+            if(applicationLanguage == null)
+                return Result.Success();
 
             foreach (var translation in applicationLanguage.Translations)
             {
