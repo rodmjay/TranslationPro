@@ -9,9 +9,9 @@ namespace TranslationPro.Shared.Proxies;
 
 public class ApplicationLanguagesProxy : BaseProxy, IApplicationLanguagesController
 {
-    public Task<Result> AddLanguageToApplicationAsync(Guid applicationId, ApplicationLanguageInput input)
+    public Task<Result> AddLanguageToApplicationAsync(Guid applicationId, ApplicationLanguageOptions options)
     {
-        return DoPost<ApplicationLanguageInput, Result>($"{ApplicationUrl}/{applicationId}/languages", input);
+        return DoPost<ApplicationLanguageOptions, Result>($"{ApplicationUrl}/{applicationId}/languages", options);
     }
 
     public Task<Result> RemoveLanguageFromApplicationAsync(Guid applicationId, string languageId)

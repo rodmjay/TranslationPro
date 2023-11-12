@@ -49,7 +49,7 @@ namespace TranslationPro.App.Shared
         private async Task HandleEnableClick(string langage)
         {
             var result = await ApplicationLanguagesController.AddLanguageToApplicationAsync(ApplicationId,
-                new ApplicationLanguageInput()
+                new ApplicationLanguageOptions()
                 {
                     Language = langage
                 });

@@ -10,7 +10,7 @@ using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Phrases.Entities;
+using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
@@ -18,6 +18,7 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 {
     internal class ApplicationLanguageService : BaseService<ApplicationLanguage>, IApplicationEngineLanguageService
     {
+        private readonly IPhraseService _phraseService;
         private readonly ILogger<ApplicationLanguageService> _logger;
 
         private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
@@ -26,8 +27,11 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
         }
 
         private readonly IRepositoryAsync<Application> _applicationRepository;
-        public ApplicationLanguageService(IServiceProvider serviceProvider, ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
+        public ApplicationLanguageService(IServiceProvider serviceProvider, 
+            IPhraseService phraseService,
+            ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
+            _phraseService = phraseService;
             _logger = logger;
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         }
@@ -42,14 +46,14 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
                 .Include(x => x.Translations)
                 .Include(x => x.Language)
                 .Include(x => x.Application);
-
-        public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input)
+        
+        public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)
         {
-            _logger.LogInformation(GetLogMessage("Adding language: {0} to application: {1}"), input.Language, applicationId);
+            _logger.LogInformation(GetLogMessage("Adding language: {0} to application: {1}"), options.Language, applicationId);
 
             var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-            var appLanguage = application.Languages.FirstOrDefault(x => x.LanguageId == input.Language);
+            var appLanguage = application.Languages.FirstOrDefault(x => x.LanguageId == options.Language);
 
             if (appLanguage != null)
             {
@@ -68,7 +72,9 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
                         translation.IsDeleted = false;
                         translation.ObjectState = ObjectState.Modified;
                     }
-                    
+
+                    await _phraseService.EnsurePhrasesWithLanguage(applicationId, options.Language);
+
                     var records = Repository.InsertOrUpdateGraph(appLanguage, true);
                     if (records > 0)
                         return Result.Success();
@@ -81,11 +87,13 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
                 appLanguage = new ApplicationLanguage()
                 {
                     ApplicationId = applicationId,
-                    LanguageId = input.Language,
+                    LanguageId = options.Language,
                     ObjectState = ObjectState.Added
                 };
 
-                var records = Repository.Update(appLanguage, true);
+                await _phraseService.EnsurePhrasesWithLanguage(applicationId, options.Language);
+
+                var records = Repository.InsertOrUpdateGraph(appLanguage, true);
                 if (records > 0)
                     return Result.Success();
 

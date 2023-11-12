@@ -7,7 +7,7 @@
 
 namespace TranslationPro.Shared.Models;
 
-public class ApplicationLanguageInput
+public class ApplicationLanguageOptions
 {
     public string Language { get; set; }
 }

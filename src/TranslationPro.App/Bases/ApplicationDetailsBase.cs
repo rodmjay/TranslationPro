@@ -16,8 +16,8 @@ namespace TranslationPro.App.Bases
         public IApplicationsController ApplicationService { get; set; }
 
         protected ApplicationOutput Application;
-        
-        protected override async Task OnParametersSetAsync()
+
+        protected override async Task OnInitializedAsync()
         {
             await LoadData();
         }

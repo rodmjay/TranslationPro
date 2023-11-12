@@ -7,7 +7,7 @@ namespace TranslationPro.Base.ApplicationLanguages.Interfaces
 {
     public interface IApplicationEngineLanguageService
     {
-        Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageInput input);
+        Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options);
         Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId);
     }
 }

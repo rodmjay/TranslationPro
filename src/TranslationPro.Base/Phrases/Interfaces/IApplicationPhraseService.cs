@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.ObjectModelRemoting;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Shared.Common;

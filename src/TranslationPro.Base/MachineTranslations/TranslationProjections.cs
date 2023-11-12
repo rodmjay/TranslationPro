@@ -6,7 +6,6 @@
 
 using AutoMapper;
 using TranslationPro.Base.MachineTranslations.Entities;
-using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.MachineTranslations;

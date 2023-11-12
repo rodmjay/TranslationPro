@@ -1,7 +1,7 @@
 ﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}"
 @inherits PhraseDetailsBase
 @layout ApplicationLayout
-@if (ApplicationPhrase == null)
+@if (Application == null)
 {
     <p>Loading Phrase...</p>
 }
@@ -9,36 +9,49 @@ else
 {
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
-            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{
+                                                           $"/applications"
+                                                       }">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{
+                                                           $"/applications/{ApplicationId}"
+                                                       }">@Application.Name</NavLink></li>
             <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Text</li>
         </ol>
     </nav>
-    <h3>@ApplicationPhrase.Id: @ApplicationPhrase.Text</h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Language</th>
-            <th>Text</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-           @*  @foreach (var translation in Phrase.Translations)
+
+    @if (ApplicationPhrase != null)
+    {
+        
+        <h3>@ApplicationPhrase.Id: @ApplicationPhrase.Text</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Language</th>
+                <th>Text</th>
+                <td>Machine Translations</td>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var translation in ApplicationPhrase.Translations)
             {
                 <tr>
                     <th>@translation.LanguageName</th>
                     <td>@translation.Text</td>
+                    <td>@ApplicationPhrase.MachineTranslationCount[translation.LanguageId]</td>
                     <td class="btn-group">
-                        <NavLink href="@{$"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{translation.LanguageId}"}"
-                           class="btn btn-outline-primary">
+                        <NavLink href="@{
+                                           $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{translation.LanguageId}"
+                                       }"
+                                 class="btn btn-outline-primary">
                             Edit
                         </NavLink>
                     </td>
                 </tr>
-            } *@
-        </tbody>
-    </table>
+            }
+            </tbody>
+        </table>
+    }
 }
 
 @code {

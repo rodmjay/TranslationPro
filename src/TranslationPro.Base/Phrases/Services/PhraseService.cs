@@ -15,6 +15,7 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.MachineTranslations.Entities;
+using TranslationPro.Base.MachineTranslations.Extensions;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Phrases.Interfaces;
 using TranslationPro.Shared.Common;
@@ -31,15 +32,61 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
     private readonly ILogger<PhraseService> _logger;
     private readonly IRepositoryAsync<Language> _languageRepository;
+    private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhraseRepository;
+    private readonly IRepositoryAsync<EngineLanguage> _engineLanguageRepository;
 
     public PhraseService(IServiceProvider serviceProvider, ILogger<PhraseService> logger) : base(serviceProvider)
     {
         _logger = logger;
         _languageRepository = UnitOfWork.RepositoryAsync<Language>();
+        _applicationPhraseRepository = UnitOfWork.RepositoryAsync<ApplicationPhrase>();
+        _engineLanguageRepository = UnitOfWork.RepositoryAsync<EngineLanguage>();
     }
 
-    private IQueryable<Phrase> Phrases => Repository.Queryable().Include(x => x.MachineTranslations);
+    private IQueryable<Phrase> Phrases => Repository.Queryable()
+        .Include(x => x.Applications)
+        .Include(x => x.MachineTranslations);
+
+    private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
+        .Include(x => x.Phrase)
+        .ThenInclude(x => x.MachineTranslations);
+
+    private IQueryable<EngineLanguage> EngineLanguages => _engineLanguageRepository.Queryable().Include(x => x.Engine);
+
     private IQueryable<Language> Languages => _languageRepository.Queryable().Include(x => x.Engines);
+
+    public async Task<Result> EnsurePhrasesWithLanguage(Guid applicationId, string languageId)
+    {
+        var applicationPhrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
+            .Select(x => x.Phrase).ToListAsync();
+
+        var engines = await EngineLanguages.Where(x => x.LanguageId == languageId).Select(x => x.Engine)
+            .Where(x => x.Enabled).ToListAsync();
+
+        foreach (var phrase in applicationPhrases)
+        {
+            var hasLanguage = phrase.MachineTranslations.HasLanguage(languageId);
+            phrase.ObjectState = ObjectState.Modified;
+            if (!hasLanguage)
+            {
+                foreach (var engine in engines)
+                {
+                    phrase.MachineTranslations.Add(new MachineTranslation()
+                    {
+                        EngineId = engine.Id,
+                        LanguageId = languageId,
+                        ObjectState = ObjectState.Added
+                    });
+                }
+
+                Repository.InsertOrUpdateGraph(phrase);
+            }
+        }
+
+        var records = Repository.Commit();
+
+        return Result.Success();
+    }
 
     public async Task<Result> EnsurePhraseWithLanguages(CreatePhraseOptions input)
     {

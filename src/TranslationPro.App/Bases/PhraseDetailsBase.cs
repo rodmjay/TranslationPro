@@ -5,14 +5,23 @@
 #endregion
 
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Bases;
 
-public class PhraseDetailsBase : ApplicationDetailsBase
+public class PhraseDetailsBase : ComponentBase
 {
+    [Parameter]
+    public Guid ApplicationId { get; set; }
+
+    [CascadingParameter]
+    public IApplicationsController ApplicationService { get; set; }
+
+    protected ApplicationOutput Application;
+
     [Inject]
     public IPhrasesController PhrasesController { get; set; }
 
@@ -26,11 +35,9 @@ public class PhraseDetailsBase : ApplicationDetailsBase
         await LoadData();
     }
 
-    protected override async Task LoadData()
+    protected virtual async Task LoadData()
     {
-        await base.LoadData();
+        Application = await ApplicationService.GetApplicationAsync(ApplicationId);
         ApplicationPhrase = await PhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
-
-
     }
 }

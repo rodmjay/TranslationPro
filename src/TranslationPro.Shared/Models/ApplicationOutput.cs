@@ -17,12 +17,6 @@ public class ApplicationOutput : IApplication
     public ICollection<string> SupportedLanguages { get; set; }
     public int PhraseCount { get; set; }
 
-    public int PendingTranslationCount
-    {
-        get;
-        set;
-    }
-
     public int TranslationCount
     {
         get;

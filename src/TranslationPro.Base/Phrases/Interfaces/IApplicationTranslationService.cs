@@ -9,4 +9,6 @@ namespace TranslationPro.Base.Phrases.Interfaces;
 public interface IApplicationTranslationService : IService<ApplicationTranslation>
 {
     Task<Result> CopyTranslationFromPhraseList(Guid applicationId, int phraseId);
+
+    Task<Result> CopyTranslationsFromLanguage(Guid applicationId, string languageId);
 }

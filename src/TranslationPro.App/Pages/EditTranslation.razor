@@ -2,18 +2,77 @@
 @inherits PhraseDetailsBase
 @layout ApplicationLayout
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
-        <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
-        <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Text</li>
-    </ol>
-</nav>
-
-@if (MachineTranslation != null)
+@if (Application != null && ApplicationPhrase != null)
 {
-    <h3>Edit Translation: @MachineTranslation.Text (@MachineTranslation.LanguageId)</h3>
 
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><NavLink href="@{
+                $"/applications"
+}">Applications</NavLink></li>
+            <li class="breadcrumb-item"><NavLink href="@{
+                                                           $"/applications/{ApplicationId}"
+                                                       }">@Application.Name</NavLink></li>
+            
+            <li class="breadcrumb-item"><NavLink href="@{
+                                                           $"/applications/{ApplicationId}/phrases/{PhraseId}"
+                                                       }">@ApplicationPhrase.Text</NavLink>
+            </li>
+
+            <li class="breadcrumb-item active" aria-current="page">Manage Translation: @ApplicationTranslation.LanguageName</li>
+        </ol>
+    </nav>
+}
+
+
+@if (ApplicationTranslation != null)
+{
+    <div class="row mb-5"> 
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">English</h5>
+                    <p class="card-text">@ApplicationPhrase.Text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@ApplicationTranslation.LanguageName</h5>
+                    <p class="card-text">
+                        @ApplicationTranslation.Text
+                    </p>
+                       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+
+            <thead>
+            <tr>
+                <th>Text</th>
+                <th>Engine</th>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var translation in ApplicationPhrase.MachineTranslations[LanguageId])
+            {
+                <tr>
+                    <td>@translation.Text</td>
+                    <td>@translation.Engine</td>
+                    <td></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+
+@* 
     <EditForm Model="Input" OnSubmit="HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -23,12 +82,9 @@
             <label for="name" class="form-label">Name</label>
             <InputText id="name" class="form-control" @bind-Value="Input.Text"></InputText>
         </div>
-    
+
 
         <button type="submit" class="btn btn-primary">Save</button>
 
-    </EditForm>
-}
-@code {
-
-}
+    </EditForm>*@
+} 

@@ -4,7 +4,6 @@
 
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using TranslationPro.Base.Phrases.Entities;
@@ -32,6 +31,7 @@ public class PhraseProjections : Profile
 
 
         CreateMap<ApplicationTranslation, ApplicationTranslationOutput>()
+            .ForMember(x=>x.LanguageName, opt=>opt.MapFrom(x=>x.ApplicationLanguage.Language.Name))
             .IncludeAllDerived();
     }
 }

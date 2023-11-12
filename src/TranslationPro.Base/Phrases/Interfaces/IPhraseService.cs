@@ -4,6 +4,7 @@
 
 #endregion
 
+using System;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
@@ -15,4 +16,5 @@ namespace TranslationPro.Base.Phrases.Interfaces;
 public interface IPhraseService : IService<Phrase>
 {
     Task<Result> EnsurePhraseWithLanguages(CreatePhraseOptions options);
+    Task<Result> EnsurePhrasesWithLanguage(Guid applicationId, string languageId);
 }

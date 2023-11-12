@@ -80,4 +80,17 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
         return Result.Failed();
 
     }
+
+    public async Task<Result> CopyTranslationsFromLanguage(Guid applicationId, string languageId)
+    {
+        var applicationPhrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
+            .ToListAsync();
+
+        foreach (var phrase in applicationPhrases)
+        {
+            await CopyTranslationFromPhraseList(applicationId, phrase.Id);
+        }
+
+        return Result.Success();
+    }
 }

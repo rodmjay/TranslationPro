@@ -11,26 +11,22 @@ namespace TranslationPro.App.Pages
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public string LanguageId { get; set; }
-
-        public MachineTranslationOutput MachineTranslation { get; set; }
-
+        
         public TranslationOptions Input { get; set; } = new();
 
         [Inject]
         public ITranslationsController TranslationController { get; set; }
 
+        private ApplicationTranslationOutput ApplicationTranslation { get; set; }
+
         protected override async Task LoadData()
         {
             await base.LoadData();
-
-            //MachineTranslation = Phrase.T.FirstOrDefault(x => x.LanguageId == LanguageId);
-
-            //if (MachineTranslation != null) Input.Text = MachineTranslation.Text;
-            //Input.LanguageId = LanguageId;
+            ApplicationTranslation = ApplicationPhrase.Translations.FirstOrDefault(x => x.LanguageId == LanguageId);
         }
-
 
         private async Task HandleSubmit()
         {
