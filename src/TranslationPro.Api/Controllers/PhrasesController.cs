@@ -33,10 +33,11 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet("{phraseId:int}")]
-    public async Task<PhraseOutput> GetPhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
+    public async Task<PhraseWithTranslationOutput> GetPhraseAsync([FromRoute] Guid applicationId,
+        [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _applicationPhraseService.GetPhraseAsync<PhraseOutput>(applicationId, phraseId);
+        return await _applicationPhraseService.GetPhraseAsync<PhraseWithTranslationOutput>(applicationId, phraseId);
     }
 
     //[HttpPost("bulk")]
@@ -57,7 +58,7 @@ public class PhrasesController : BaseController, IPhrasesController
         var result = await _applicationPhraseService.CreateApplicationPhrase(applicationId, input).ConfigureAwait(false);
         
         
-        //await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
+        await _transactionService.ProcessTranslationsAsync(applicationId);
 
         return result;
     }
@@ -78,12 +79,12 @@ public class PhrasesController : BaseController, IPhrasesController
     }
 
     [HttpGet]
-    public async Task<PagedList<PhraseOutput>> GetPhrasesAsync([FromRoute] Guid applicationId,
+    public async Task<PagedList<PhraseWithTranslationOutput>> GetPhrasesAsync([FromRoute] Guid applicationId,
         [FromQuery] PagingQuery paging,
         [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _applicationPhraseService.GetPhrasesForApplicationAsync<PhraseOutput>(applicationId, paging, filters)
+        return await _applicationPhraseService.GetPhrasesForApplicationAsync<PhraseWithTranslationOutput>(applicationId, paging, filters)
             .ConfigureAwait(false);
     }
 

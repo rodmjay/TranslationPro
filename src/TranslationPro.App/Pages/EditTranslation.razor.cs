@@ -25,10 +25,10 @@ namespace TranslationPro.App.Pages
         {
             await base.LoadData();
 
-            MachineTranslation = Phrase.MachineTranslations.FirstOrDefault(x => x.LanguageId == LanguageId);
+            //MachineTranslation = Phrase.T.FirstOrDefault(x => x.LanguageId == LanguageId);
 
-            if (MachineTranslation != null) Input.Text = MachineTranslation.Text;
-            Input.LanguageId = LanguageId;
+            //if (MachineTranslation != null) Input.Text = MachineTranslation.Text;
+            //Input.LanguageId = LanguageId;
         }
 
 

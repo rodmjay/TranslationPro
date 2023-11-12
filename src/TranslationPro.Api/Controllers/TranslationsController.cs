@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
+using TranslationPro.Base.Phrases.Services;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
@@ -19,11 +20,15 @@ namespace TranslationPro.Api.Controllers;
 public class TranslationsController : BaseController, ITranslationsController
 {
     private readonly IMachineTranslationService _machineTranslationService;
+    private readonly MicrosoftTranslationService _microsoftTranslator;
 
-    public TranslationsController(IServiceProvider serviceProvider, IMachineTranslationService machineTranslationService) : base(
+    public TranslationsController(IServiceProvider serviceProvider, 
+        IMachineTranslationService machineTranslationService, 
+        MicrosoftTranslationService microsoftTranslator) : base(
         serviceProvider)
     {
         _machineTranslationService = machineTranslationService;
+        _microsoftTranslator = microsoftTranslator;
     }
 
     [HttpPost]
@@ -31,6 +36,7 @@ public class TranslationsController : BaseController, ITranslationsController
         [FromBody] TranslationOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _machineTranslationService.SaveTranslation(applicationId, phraseId, input).ConfigureAwait(false);
+        return await _machineTranslationService.SaveTranslationAsync(applicationId, phraseId, input).ConfigureAwait(false);
     }
+
 }

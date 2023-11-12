@@ -13,9 +13,9 @@ namespace TranslationPro.Shared.Proxies;
 public class PhrasesProxy : BaseProxy, IPhrasesController
 {
 
-    public Task<PhraseOutput> GetPhraseAsync(Guid applicationId, int phraseId)
+    public Task<PhraseWithTranslationOutput> GetPhraseAsync(Guid applicationId, int phraseId)
     {
-        return DoGet<PhraseOutput>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
+        return DoGet<PhraseWithTranslationOutput>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
     public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
@@ -28,10 +28,10 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
-    public Task<PagedList<PhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
+    public Task<PagedList<PhraseWithTranslationOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
     {
         var querystring = UrlHelper.CombineObjectsToUrl(paging, filters);
-        return DoGet<PagedList<PhraseOutput>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
+        return DoGet<PagedList<PhraseWithTranslationOutput>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
     }
 
     public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId, string language)

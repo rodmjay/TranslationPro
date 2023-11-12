@@ -18,14 +18,13 @@ else
     <table class="table table-striped">
         <thead>
         <tr>
-                <th>Language</th>
+            <th>Language</th>
             <th>Text</th>
             <th></th>
-
         </tr>
         </thead>
         <tbody>
-            @foreach (var translation in Phrase.MachineTranslations)
+           @*  @foreach (var translation in Phrase.Translations)
             {
                 <tr>
                     <th>@translation.LanguageName</th>
@@ -37,7 +36,7 @@ else
                         </NavLink>
                     </td>
                 </tr>
-            }
+            } *@
         </tbody>
     </table>
 }

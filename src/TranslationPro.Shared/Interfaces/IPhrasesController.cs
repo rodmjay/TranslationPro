@@ -16,7 +16,7 @@ namespace TranslationPro.Shared.Interfaces;
 public interface IPhrasesController
 {
 
-    Task<PhraseOutput> GetPhraseAsync(Guid applicationId, int phraseId);
+    Task<PhraseWithTranslationOutput> GetPhraseAsync(Guid applicationId, int phraseId);
 
     //Task<Result> BulkUploadAsync(Guid applicationId,
     //     List<string> input);
@@ -27,7 +27,7 @@ public interface IPhrasesController
     Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId,
         PhraseOptions input);
 
-    Task<PagedList<PhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
+    Task<PagedList<PhraseWithTranslationOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
          PhraseFilters filters);
 
     Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId,

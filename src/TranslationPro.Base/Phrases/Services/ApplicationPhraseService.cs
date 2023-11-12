@@ -37,42 +37,30 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     }
 
     private readonly IRepositoryAsync<Application> _applicationRepository;
-    private readonly IRepositoryAsync<Phrase> _phraseRepository;
     private readonly IPhraseService _phraseService;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
-    private readonly IRepositoryAsync<Engine> _engineRepository;
-    private readonly IRepositoryAsync<Language> _languageRepository;
 
     public ApplicationPhraseService(
         IPhraseService phraseService,
-        IServiceProvider serviceProvider, 
-        PhraseErrorDescriber errorDescriber, 
+        IServiceProvider serviceProvider,
+        PhraseErrorDescriber errorDescriber,
         ILogger<ApplicationPhraseService> logger) : base(serviceProvider)
     {
         _phraseService = phraseService;
         _errorDescriber = errorDescriber;
         _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
-        _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
-        _engineRepository = UnitOfWork.RepositoryAsync<Engine>();
-        _languageRepository = UnitOfWork.RepositoryAsync<Language>();
     }
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
         .Include(x => x.Application)
         .Include(x => x.Phrase)
+        .ThenInclude(x => x.MachineTranslations)
         .Include(x => x.HumanTranslations);
 
-    private IQueryable<Phrase> Phrases => _phraseRepository.Queryable()
-        .Include(x => x.MachineTranslations);
-
-    private IQueryable<Language> Languages => _languageRepository.Queryable().Include(x => x.Engines);
-
-    private IQueryable<Engine> Engines => _engineRepository.Queryable().Include(x => x.Languages);
-
-    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x=>x.Languages)
-        .ThenInclude(x=>x.Language).ThenInclude(x=>x.Engines).ThenInclude(x=>x.Engine);
+    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
+        .ThenInclude(x => x.Language).ThenInclude(x => x.Engines).ThenInclude(x => x.Engine);
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
         PhraseFilters filters) where T : PhraseOutput
@@ -139,7 +127,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     {
         _logger.LogInformation(GetLogMessage("Creating Phrase: {0}"), input.Text);
 
-        var application = await Applications.Where(x=>x.Id == applicationId).FirstAsync();;
+        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync(); ;
 
         var applicationPhrase = await ApplicationPhrases
             .Where(x => x.ApplicationId == applicationId && x.Phrase.Text == input.Text).FirstOrDefaultAsync();
@@ -151,7 +139,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
                 Text = input.Text,
                 Languages = application.Languages.Select(x => x.LanguageId).ToList()
             });
-            
+
             var applicationPhraseId = await GetNextPhraseIdAsync(applicationId);
 
             applicationPhrase = new ApplicationPhrase
@@ -192,6 +180,17 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         {
             return Result.Success();
         }
+        else
+        {
+            if (applicationPhrase.HumanTranslations.Any())
+            {
+                foreach (var translation in applicationPhrase.HumanTranslations)
+                {
+                    translation.IsDeleted = true;
+                    translation.ObjectState = ObjectState.Deleted;
+                }
+            }
+        }
 
         var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new CreatePhraseOptions()
         {
@@ -202,7 +201,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         applicationPhrase.PhraseId = int.Parse(phraseResult.Id.ToString());
 
         var records = Repository.Update(applicationPhrase, true);
-        if(records > 0)
+        if (records > 0)
             return Result.Success(applicationPhrase.Id);
         return Result.Failed();
     }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
+using TranslationPro.Base.Phrases.Services;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Services;
 
@@ -22,18 +23,6 @@ public static class AppBuilderExtensions
         builder.Services.TryAddTransient<TranslationErrorDescriber>();
         builder.Services.TryAddScoped<IMachineTranslationService, MachineTranslationService>();
 
-        builder.Services.TryAddSingleton(x =>
-        {
-            string googleTranslateApiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
-            if (string.IsNullOrEmpty(googleTranslateApiKey))
-            {
-                googleTranslateApiKey = x.GetRequiredService<IConfiguration>()["TranslationProGoogleApi"];
-            }
-
-            var apiKey = googleTranslateApiKey;
-            var client = TranslationClient.CreateFromApiKey(apiKey);
-            return client;
-        });
 
         return builder;
     }

@@ -79,6 +79,8 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
                 _logger.LogInformation(GetLogMessage("New phrase created: {0}"), input.Text);
                 return Result.Success(phrase.Id);
             }
+
+            return Result.Failed();
         }
         else
         {
@@ -110,7 +112,11 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
 
             if (requiresLanguageAdjustment)
             {
-                Repository.Update(phrase, true);
+                var records = Repository.Update(phrase, true);
+                if (records > 0)
+                {
+                    return Result.Success(phrase.Id);
+                }
             }
             else
             {

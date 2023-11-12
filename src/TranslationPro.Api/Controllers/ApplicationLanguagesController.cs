@@ -37,7 +37,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
         await AssertUserHasAccessToApplication(applicationId);
 
         var result = await _applicationEngineLanguageService.AddLanguageToApplication(applicationId, input);
-        await _machineTranslationService.ProcessTranslationsForApplicationLanguageAsync(applicationId, input.Language);
+        await _machineTranslationService.ProcessTranslationsAsync(applicationId);
         return result;
     }
 

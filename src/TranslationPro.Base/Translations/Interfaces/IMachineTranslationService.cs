@@ -16,10 +16,8 @@ namespace TranslationPro.Base.Translations.Interfaces;
 
 public interface IMachineTranslationService : IService<MachineTranslation>
 {
-    Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input);
+    Task<Result> SaveTranslationAsync(Guid applicationId, int phraseId, TranslationOptions input);
     
     
-    Task<List<Result>> ProcessTranslationsForApplicationAsync(Guid applicationId);
-
-    Task<Result> ProcessTranslationsForApplicationLanguageAsync(Guid applicationId, string languageId);
+    Task<List<Result>> ProcessTranslationsAsync(Guid applicationId);
 }

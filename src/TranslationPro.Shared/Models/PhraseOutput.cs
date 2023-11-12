@@ -4,35 +4,9 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Shared.Models;
-
-public class PhraseWithTranslation : PhraseOutput
-{
-    private Dictionary<string, string> _dictionary = new Dictionary<string, string>();
-    public PhraseWithTranslation()
-    {
-
-    }
-
-    public List<HumanTranslationOutput> HumanTranslations { get; set; }
-    public List<MachineTranslationOutput> MachineTranslations { get; set; }
-
-    public Dictionary<string, string> Translations
-    {
-        get
-        {
-            _dictionary = MachineTranslations.GroupBy(x => x.LanguageId)
-                .ToDictionary(x => x.Key, x => x.First().Text);
-
-            return _dictionary;
-        }
-    }
-
-}
 
 public class PhraseOutput : IPhrase
 {
