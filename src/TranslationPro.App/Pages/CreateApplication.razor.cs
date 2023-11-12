@@ -14,7 +14,7 @@ namespace TranslationPro.App.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        [Inject]
+        [CascadingParameter]
         public IApplicationsController ApplicationsController { get; set; }
 
         [Inject]

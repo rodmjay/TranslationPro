@@ -20,10 +20,8 @@ public class ApplicationProjections : Profile
                 opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId).Distinct()))
             .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count))
             .ForMember(x => x.Users, opt => opt.MapFrom(x => x.Users))
-            .ForMember(x => x.Languages, opt => opt.MapFrom(x => x.Languages.Select(al => al.Language)));
-        //.ForMember(x => x.TranslationCount,
-        //    opt => opt.MapFrom(x => x.Phrases.Select(x=>x.Phrase).SelectMany(a => a.MachineTranslations).Count()))
-        //.ForMember(x => x.PendingTranslationCount,
-        //    opt => opt.MapFrom(x => x.Phrases.SelectMany(a => a.MachineTranslations).Count(b => b.Text == null)));
+            .ForMember(x => x.Languages, opt => opt.MapFrom(x => x.Languages.Select(al => al.Language)))
+            .ForMember(x => x.TranslationCount,
+                opt => opt.MapFrom(x => x.Phrases.SelectMany(a => a.Translations).Count()));
     }
 }

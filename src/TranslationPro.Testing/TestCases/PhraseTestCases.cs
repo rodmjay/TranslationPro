@@ -9,17 +9,6 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Testing.TestCases;
 
-public static class LanguageTestCases
-{
-    public static object[] LanguagesWithEngineCount = {
-        new object[]
-            {
-                "es",
-                3
-            }
-    };
-}
-
 public static class PhraseTestCases
 {
     public static object[] PhrasesWithTranslations => new object[]

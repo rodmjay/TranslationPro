@@ -17,7 +17,6 @@ namespace TranslationPro.Base.Applications.Interfaces;
 public interface IApplicationService : IService<Application>
 {
     Task<T> GetApplication<T>(Guid applicationId) where T : ApplicationOutput;
-    Task<List<T>> GetApplicationsAsync<T>();
     Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input);
     Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationOutput;
     Task<Result> UpdateApplicationAsync(Guid applicationId, ApplicationOptions input);

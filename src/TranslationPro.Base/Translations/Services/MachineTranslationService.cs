@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Google.Cloud.Translation.V2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Applications.Entities;
@@ -39,7 +38,6 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
     private readonly ILogger<MachineTranslationService> _logger;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
     private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhraseRepository;
-    private readonly IRepositoryAsync<HumanTranslation> _humanTranslationRepository;
     private readonly TranslationErrorDescriber _translationErrors;
     private readonly MicrosoftTranslationService _microsoftService;
     private readonly GoogleTranslationService _googleService;
@@ -58,7 +56,6 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
         _applicationPhraseRepository = UnitOfWork.RepositoryAsync<ApplicationPhrase>();
-        _humanTranslationRepository = UnitOfWork.RepositoryAsync<HumanTranslation>();
     }
     
     private IQueryable<Phrase> Phrases =>
@@ -68,53 +65,49 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
         .Include(x => x.Phrase)
-        .ThenInclude(x => x.MachineTranslations)
-        .Include(x => x.HumanTranslations);
+        .ThenInclude(x => x.MachineTranslations);
 
     public async Task<Result> SaveTranslationAsync(Guid applicationId, int phraseId, TranslationOptions input)
     {
-        _logger.LogInformation(GetLogMessage("Saving translation: {0} for phrase: {1} in application: {2}"),
-            input.Text,
-            phraseId,
-            applicationId);
+        throw new NotImplementedException();
+        //_logger.LogInformation(GetLogMessage("Saving translation: {0} for phrase: {1} in application: {2}"),
+        //    input.Text,
+        //    phraseId,
+        //    applicationId);
 
-        var phrase = await ApplicationPhrases.Where(x => x.Id == phraseId && x.ApplicationId == applicationId)
-            .FirstOrDefaultAsync();
+        //var phrase = await ApplicationPhrases.Where(x => x.Id == phraseId && x.ApplicationId == applicationId)
+        //    .FirstOrDefaultAsync();
 
-        if (phrase == null)
-            return Result.Failed(_phraseErrors.PhraseDoesntExist(phraseId));
+        //if (phrase == null)
+        //    return Result.Failed(_phraseErrors.PhraseDoesntExist(phraseId));
 
-        var translation = phrase.HumanTranslations.FirstOrDefault(x => x.LanguageId == input.LanguageId);
-        if (translation == null)
-        {
-            var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
+        //var translation = phrase.HumanTranslations.FirstOrDefault(x => x.LanguageId == input.LanguageId);
+        //if (translation == null)
+        //{
+        //    var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-            var langExists = application.Languages.Any(x => x.LanguageId == input.LanguageId);
+        //    var langExists = application.Languages.Any(x => x.LanguageId == input.LanguageId);
 
-            if (!langExists)
-                return Result.Failed(
-                    _translationErrors.LanguageDoesntExistInApplication(input.LanguageId, phrase.Application.Name));
+        //    if (!langExists)
+        //        return Result.Failed(
+        //            _translationErrors.LanguageDoesntExistInApplication(input.LanguageId, phrase.Application.Name));
 
-            translation = new HumanTranslation()
-            {
-                ObjectState = ObjectState.Added
-            };
-        }
-        else
-        {
-            translation.ObjectState = ObjectState.Modified;
-        }
+        //}
+        //else
+        //{
+        //    translation.ObjectState = ObjectState.Modified;
+        //}
 
-        translation.LanguageId = input.LanguageId;
-        translation.PhraseId = phraseId;
-        translation.ApplicationId = applicationId;
-        translation.Text = input.Text;
+        //translation.LanguageId = input.LanguageId;
+        //translation.PhraseId = phraseId;
+        //translation.ApplicationId = applicationId;
+        //translation.Text = input.Text;
 
-        var records = _humanTranslationRepository.InsertOrUpdateGraph(translation, true);
-        if (records > 0)
-            return Result.Success();
+        //var records = _humanTranslationRepository.InsertOrUpdateGraph(translation, true);
+        //if (records > 0)
+        //    return Result.Success();
 
-        return Result.Failed(_translationErrors.UnableToUpdateTranslation(input.Text));
+        //return Result.Failed(_translationErrors.UnableToUpdateTranslation(input.Text));
     }
 
     private async Task SaveTranslationsAsync(Dictionary<string, List<GenericTranslationResult>> input, TranslationEngine engine)

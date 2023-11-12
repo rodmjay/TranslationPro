@@ -1,7 +1,7 @@
 ﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}"
 @inherits PhraseDetailsBase
 @layout ApplicationLayout
-@if (Phrase == null)
+@if (ApplicationPhrase == null)
 {
     <p>Loading Phrase...</p>
 }
@@ -11,10 +11,10 @@ else
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
             <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
-            <li class="breadcrumb-item active" aria-current="page">@Phrase.Text</li>
+            <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Text</li>
         </ol>
     </nav>
-    <h3>@Phrase.Id: @Phrase.Text</h3>
+    <h3>@ApplicationPhrase.Id: @ApplicationPhrase.Text</h3>
     <table class="table table-striped">
         <thead>
         <tr>

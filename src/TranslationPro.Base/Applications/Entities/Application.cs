@@ -35,7 +35,6 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete, I
     public string Name { get; set; }
     public bool IsDeleted { get; set; }
     public ICollection<ApplicationUser> Users { get; set; }
-    public ICollection<HumanTranslation> HumanTranslations { get; set; }
 
     public override void Configure(EntityTypeBuilder<Application> builder)
     {

@@ -5,6 +5,7 @@
 #endregion
 
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Extensions;
 
@@ -47,7 +48,7 @@ public abstract class BaseProxy
         var result = response.Content.DeserializeObject<TOutput>();
         return result;
     }
-
+    
     protected async Task<TOutput> DoDelete<TOutput>(string url)
     {
         var response = await HttpClient.DeleteAsync(url);

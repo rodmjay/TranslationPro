@@ -6,9 +6,8 @@
 
 namespace TranslationPro.Shared.Models;
 
-public class HumanTranslationOutput
+public class ApplicationTranslationOutput
 {
-    public string LanguageName { get; set; }
-    public string LanguageId { get; set; }
     public string Text { get; set; }
+    public string LanguageId { get; set; }
 }

@@ -34,7 +34,7 @@ public class LanguagesControllerTest : BaseApiTest
         {
             var languages = await LanguageProxy.GetLanguagesAsync();
 
-            Assert.AreEqual(26, languages.Count);
+            Assert.AreEqual(123, languages.Count);
         }
     }
 

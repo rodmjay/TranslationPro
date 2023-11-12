@@ -4,7 +4,9 @@
 
 #endregion
 
+using System.Collections.Generic;
 using AutoMapper;
+using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Models;
 
@@ -14,10 +16,10 @@ public class TranslationProjections : Profile
 {
     public TranslationProjections()
     {
-        CreateMap<HumanTranslation, HumanTranslationOutput>()
-            .ForMember(x => x.LanguageName, opt => opt.MapFrom(x => x.Language.Name));
-
         CreateMap<MachineTranslation, MachineTranslationOutput>()
-            .ForMember(x => x.LanguageName, opt => opt.MapFrom(x => x.Language.Language.Name));
+            .ForMember(x => x.Engine, opt => opt.MapFrom(x => x.Engine.Name));
+
+        CreateMap<ApplicationTranslation, ApplicationTranslationOutput>()
+            .IncludeAllDerived();
     }
 }

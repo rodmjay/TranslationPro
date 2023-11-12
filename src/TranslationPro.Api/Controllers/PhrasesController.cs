@@ -24,20 +24,22 @@ public class PhrasesController : BaseController, IPhrasesController
 {
     private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly IMachineTranslationService _transactionService;
+    private readonly IApplicationTranslationService _applicationTranslationService;
 
     public PhrasesController(IServiceProvider serviceProvider, IApplicationPhraseService applicationPhraseService,
-        IMachineTranslationService transactionService) : base(serviceProvider)
+        IMachineTranslationService transactionService, IApplicationTranslationService applicationTranslationService) : base(serviceProvider)
     {
         _applicationPhraseService = applicationPhraseService;
         _transactionService = transactionService;
+        _applicationTranslationService = applicationTranslationService;
     }
 
     [HttpGet("{phraseId:int}")]
-    public async Task<PhraseWithTranslationOutput> GetPhraseAsync([FromRoute] Guid applicationId,
+    public async Task<ApplicationPhraseDetails> GetPhraseAsync([FromRoute] Guid applicationId,
         [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _applicationPhraseService.GetPhraseAsync<PhraseWithTranslationOutput>(applicationId, phraseId);
+        return await _applicationPhraseService.GetPhraseAsync<ApplicationPhraseDetails>(applicationId, phraseId);
     }
 
     //[HttpPost("bulk")]
@@ -56,35 +58,21 @@ public class PhrasesController : BaseController, IPhrasesController
     {
         await AssertUserHasAccessToApplication(applicationId);
         var result = await _applicationPhraseService.CreateApplicationPhrase(applicationId, input).ConfigureAwait(false);
-        
-        
         await _transactionService.ProcessTranslationsAsync(applicationId);
-
+        await _applicationTranslationService.CopyTranslationFromPhraseList(applicationId,
+            int.Parse(result.Id.ToString()));
+        
         return result;
     }
-
-    [HttpPut("{phraseId}")]
-    public async Task<Result> UpdatePhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId,
-        [FromBody] PhraseOptions input)
-    {
-        await AssertUserHasAccessToApplication(applicationId);
-        var result = await _applicationPhraseService.UpdatePhraseAsync(applicationId, new PhraseUpdateOptions()
-        {
-            PhraseId = phraseId,
-            Text = input.Text
-        }).ConfigureAwait(false);
-        //await _transactionService.ProcessTranslationsForApplicationAsync(applicationId);
-
-        return result;
-    }
+    
 
     [HttpGet]
-    public async Task<PagedList<PhraseWithTranslationOutput>> GetPhrasesAsync([FromRoute] Guid applicationId,
+    public async Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync([FromRoute] Guid applicationId,
         [FromQuery] PagingQuery paging,
         [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _applicationPhraseService.GetPhrasesForApplicationAsync<PhraseWithTranslationOutput>(applicationId, paging, filters)
+        return await _applicationPhraseService.GetPhrasesForApplicationAsync<ApplicationPhraseOutput>(applicationId, paging, filters)
             .ConfigureAwait(false);
     }
 
@@ -102,5 +90,13 @@ public class PhrasesController : BaseController, IPhrasesController
     {
         await AssertUserHasAccessToApplication(applicationId);
         return await _applicationPhraseService.DeletePhraseAsync(applicationId, phraseId);
+    }
+
+    [HttpPut("{phraseId}")]
+    public async Task<Result> ReplaceTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId,
+        [FromBody] TranslationReplacementOptions options)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+        return await _applicationPhraseService.ReplaceTranslation(applicationId, phraseId, options);
     }
 }

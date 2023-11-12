@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Engines.Extensions;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Shared.Enums;
 

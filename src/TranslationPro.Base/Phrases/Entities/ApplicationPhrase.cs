@@ -18,9 +18,13 @@ namespace TranslationPro.Base.Phrases.Entities;
 
 public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICreated
 {
+    public ApplicationPhrase()
+    {
+        Translations = new List<ApplicationTranslation>();
+    }
     public Guid ApplicationId { get; set; }
     public Application Application { get; set; }
-    public ICollection<HumanTranslation> HumanTranslations { get; set; }
+    public ICollection<ApplicationTranslation> Translations { get; set; }
     public int Id { get; set; }
     public int PhraseId { get; set; }
     public Phrase Phrase { get; set; }

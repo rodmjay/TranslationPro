@@ -7,7 +7,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Phrases.Services;
-using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Base.Translations.Interfaces;
 

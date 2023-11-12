@@ -17,12 +17,9 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Engines.Entities;
-using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Phrases.Interfaces;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
@@ -37,6 +34,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     }
 
     private readonly IRepositoryAsync<Application> _applicationRepository;
+    private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
     private readonly IPhraseService _phraseService;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
@@ -51,24 +49,28 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         _errorDescriber = errorDescriber;
         _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
+        _applicationTranslationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
     }
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
+        .Include(x=>x.Translations)
         .Include(x => x.Application)
         .Include(x => x.Phrase)
-        .ThenInclude(x => x.MachineTranslations)
-        .Include(x => x.HumanTranslations);
+        .ThenInclude(x => x.MachineTranslations);
+
+    private IQueryable<ApplicationTranslation> ApplicationTranslations => _applicationTranslationRepository.Queryable()
+        .Include(x=>x.ApplicationPhrase);
 
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
         .ThenInclude(x => x.Language).ThenInclude(x => x.Engines).ThenInclude(x => x.Engine);
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
-        PhraseFilters filters) where T : PhraseOutput
+        PhraseFilters filters) where T : ApplicationPhraseOutput
     {
         return this.PaginateAsync<ApplicationPhrase, T>(x => x.ApplicationId == applicationId, filters.GetExpression(), paging);
     }
 
-    public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : PhraseOutput
+    public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : ApplicationPhraseOutput
     {
         return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
             .ProjectTo<T>(ProjectionMapping).FirstAsync();
@@ -76,12 +78,28 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
     {
-        var phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
-            .Select(x => x.Phrase).SelectMany(x => x.MachineTranslations)
-            .Where(x => x.LanguageId == language)
-            .ToDictionaryAsync(x => x.PhraseId, x => x.Text);
+        var phraseIds = await ApplicationTranslations.Where(at=>at.LanguageId == language).GroupBy(x => x.PhraseId)
+            .ToDictionaryAsync(g => g.Key, g => g.Select(x => x.Text).First());
 
-        return phrases;
+        return phraseIds;
+    }
+
+    public async Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions input)
+    {
+        var phrase = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
+            .FirstAsync();
+
+        var translation = phrase.Translations.First(x => x.LanguageId == input.LanguageId);
+
+        translation.Text = input.Text;
+        translation.ObjectState = ObjectState.Modified;
+
+        var records = Repository.Update(phrase, true);
+        if (records > 0)
+        {
+            return Result.Success(phraseId);
+        }
+        return Result.Failed();
     }
 
     //public async Task<Result> BulkUploadPhrases(Guid applicationId, List<string> inputs)
@@ -161,50 +179,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
         return Result.Failed(_errorDescriber.UnableToCreatePhrase());
     }
-
-    public async Task<Result> UpdatePhraseAsync(Guid applicationId, PhraseUpdateOptions input)
-    {
-        _logger.LogInformation(GetLogMessage("Updating Phrase: {0}"), input.Text);
-
-        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync(); ;
-
-        var applicationPhrase = await ApplicationPhrases
-            .Where(x => x.ApplicationId == applicationId && x.Id == input.PhraseId).FirstOrDefaultAsync();
-
-        if (applicationPhrase == null)
-        {
-            return Result.Failed();
-        }
-
-        if (applicationPhrase.Phrase.Text == input.Text)
-        {
-            return Result.Success();
-        }
-        else
-        {
-            if (applicationPhrase.HumanTranslations.Any())
-            {
-                foreach (var translation in applicationPhrase.HumanTranslations)
-                {
-                    translation.IsDeleted = true;
-                    translation.ObjectState = ObjectState.Deleted;
-                }
-            }
-        }
-
-        var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new CreatePhraseOptions()
-        {
-            Text = input.Text,
-            Languages = application.Languages.Select(x => x.LanguageId).ToList()
-        });
-
-        applicationPhrase.PhraseId = int.Parse(phraseResult.Id.ToString());
-
-        var records = Repository.Update(applicationPhrase, true);
-        if (records > 0)
-            return Result.Success(applicationPhrase.Id);
-        return Result.Failed();
-    }
+    
 
     public async Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)
     {

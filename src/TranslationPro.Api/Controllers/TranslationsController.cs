@@ -20,15 +20,12 @@ namespace TranslationPro.Api.Controllers;
 public class TranslationsController : BaseController, ITranslationsController
 {
     private readonly IMachineTranslationService _machineTranslationService;
-    private readonly MicrosoftTranslationService _microsoftTranslator;
 
     public TranslationsController(IServiceProvider serviceProvider, 
-        IMachineTranslationService machineTranslationService, 
-        MicrosoftTranslationService microsoftTranslator) : base(
+        IMachineTranslationService machineTranslationService) : base(
         serviceProvider)
     {
         _machineTranslationService = machineTranslationService;
-        _microsoftTranslator = microsoftTranslator;
     }
 
     [HttpPost]

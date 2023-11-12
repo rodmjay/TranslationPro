@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using TranslationPro.Base.Engines.Entities;
 
 namespace TranslationPro.Base.Engines.Extensions

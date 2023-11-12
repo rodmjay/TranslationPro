@@ -13,9 +13,9 @@ namespace TranslationPro.Shared.Proxies;
 public class PhrasesProxy : BaseProxy, IPhrasesController
 {
 
-    public Task<PhraseWithTranslationOutput> GetPhraseAsync(Guid applicationId, int phraseId)
+    public Task<ApplicationPhraseDetails> GetPhraseAsync(Guid applicationId, int phraseId)
     {
-        return DoGet<PhraseWithTranslationOutput>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
+        return DoGet<ApplicationPhraseDetails>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
     public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
@@ -28,10 +28,10 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
-    public Task<PagedList<PhraseWithTranslationOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
+    public Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)
     {
         var querystring = UrlHelper.CombineObjectsToUrl(paging, filters);
-        return DoGet<PagedList<PhraseWithTranslationOutput>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
+        return DoGet<PagedList<ApplicationPhraseOutput>>($"{ApplicationUrl}/{applicationId}/phrases?{querystring}");
     }
 
     public Task<Dictionary<int, string>> GetPhrasesForApplicationAndLanguageAsync(Guid applicationId, string language)
@@ -44,6 +44,12 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
     {
         return DoDelete<Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
+
+    public Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions options)
+    {
+        return DoPut<TranslationReplacementOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", options);
+    }
+
     public PhrasesProxy(HttpClient httpClient) : base(httpClient)
     {
     }

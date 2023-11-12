@@ -6,13 +6,13 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
         <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
-        <li class="breadcrumb-item active" aria-current="page">@Phrase.Text</li>
+        <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Text</li>
     </ol>
 </nav>
 
 @if (MachineTranslation != null)
 {
-    <h3>Edit Translation: @MachineTranslation.Text (@MachineTranslation.LanguageName)</h3>
+    <h3>Edit Translation: @MachineTranslation.Text (@MachineTranslation.LanguageId)</h3>
 
     <EditForm Model="Input" OnSubmit="HandleSubmit">
         <DataAnnotationsValidator />

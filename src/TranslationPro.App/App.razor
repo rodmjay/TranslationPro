@@ -1,11 +1,17 @@
 ﻿
 <CascadingAuthenticationState>
-    
+
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <CascadingValue Value="@routeData">
-                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-                <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+
+                <CascadingValue Value="@ApplicationProxy">
+
+                    <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+
+                </CascadingValue>
+
             </CascadingValue>
         </Found>
         <NotFound>

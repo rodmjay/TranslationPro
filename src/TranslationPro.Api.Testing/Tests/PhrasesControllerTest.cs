@@ -32,23 +32,23 @@ public class PhrasesControllerTest : BaseApiTest
 
             var phrase = await PhrasesProxy.GetPhraseAsync(ApplicationId, int.Parse(result.Id.ToString()));
 
-            //foreach (var kvp in translations)
-            //{
-            //    var foundTranslation = phrase.Translations.FirstOrDefault(x => x.LanguageId == kvp.Key);
-            //    Assert.IsNotNull(foundTranslation);
-
-            //    Assert.AreEqual(kvp.Value, foundTranslation.Text);
-            //}
-
             Assert.IsNotNull(phrase);
+
+            foreach (var (language, translation) in translations)
+            {
+                var foundTranslation = phrase.Translations.FirstOrDefault(x => x.LanguageId == language);
+                Assert.IsNotNull(foundTranslation);
+                Assert.AreEqual(translation, foundTranslation.Text);
+            }
+
         }
     }
 
     [TestFixture]
-    public class TheUpdatePhraseMethod : PhrasesControllerTest
+    public class TheReplaceTranslationMethod : PhrasesControllerTest
     {
         [Test]
-        public async Task CanUpdatePhrase()
+        public async Task CanReplaceTranslation()
         {
             var input = new PhraseOptions()
             {
@@ -58,7 +58,13 @@ public class PhrasesControllerTest : BaseApiTest
 
             input.Text = "goodbye";
 
-            var updateResult = await PhrasesProxy.UpdatePhraseAsync(ApplicationId, int.Parse(createResult.Id.ToString()), input);
+            var replacementInput = new TranslationReplacementOptions()
+            {
+                LanguageId = "es",
+                Text = "hola mae"
+            };
+
+            var updateResult = await PhrasesProxy.ReplaceTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), replacementInput);
 
             Assert.IsTrue(updateResult.Succeeded);
         }

@@ -1,17 +1,10 @@
-﻿#region Header Info
-
-// Copyright 2023 Rod Johnson.  All rights reserved
-
-#endregion
-
-using TranslationPro.Shared.Interfaces;
+﻿using System.Collections.Generic;
 
 namespace TranslationPro.Shared.Models;
 
-public class PhraseOutput : IPhrase
+public class PhraseOutput
 {
-    public int TranslationCount { get; set; }
-    public int PendingTranslationCount { get; set; }
     public int Id { get; set; }
     public string Text { get; set; }
+    public List<MachineTranslationOutput> MachineTranslations { get; set; }
 }

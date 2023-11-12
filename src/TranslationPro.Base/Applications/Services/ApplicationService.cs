@@ -22,7 +22,6 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Languages.Entities;
 using TranslationPro.Base.Phrases.Entities;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
 using TranslationPro.Shared.Models;
@@ -56,11 +55,11 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     }
 
     private IQueryable<Application> Applications => Repository.Queryable().Include(x => x.Languages)
+        .ThenInclude(x=>x.Translations)
         .Include(x => x.Phrases)
         .ThenInclude(x => x.Phrase)
-        .ThenInclude(x=>x.MachineTranslations)
-        .Include(x => x.Phrases)
-        .ThenInclude(x => x.HumanTranslations);
+        .ThenInclude(x => x.MachineTranslations)
+        .Include(x => x.Phrases);
 
     private IQueryable<ApplicationPhrase> Phrases => _phraseRepository.Queryable().Include(x => x.Phrase)
         .ThenInclude(x=>x.MachineTranslations);
@@ -74,12 +73,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     {
         return Applications.Where(x => x.Id == applicationId).ProjectTo<T>(ProjectionMapping).FirstOrDefaultAsync();
     }
-
-    public Task<List<T>> GetApplicationsAsync<T>()
-    {
-        return Applications.ProjectTo<T>(ProjectionMapping).ToListAsync();
-    }
-
+    
     public Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Application: {0} For User: {1}"), input.Name, userId);
@@ -148,7 +142,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
             phrase.IsDeleted = true;
             phrase.ObjectState = ObjectState.Modified;
 
-            foreach (var translation in phrase.HumanTranslations)
+            foreach (var translation in phrase.Translations)
             {
                 translation.IsDeleted = true;
                 translation.ObjectState = ObjectState.Modified;

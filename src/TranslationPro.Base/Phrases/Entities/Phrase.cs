@@ -35,6 +35,7 @@ public class Phrase : BaseEntity<Phrase>, IPhrase, ISoftDelete, ICreated
         builder.ToTable(nameof(Phrase), "TranslationPro");
 
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).UseIdentityColumn(1);
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

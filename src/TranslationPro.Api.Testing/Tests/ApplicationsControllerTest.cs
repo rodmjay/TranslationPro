@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Shared.Models;
+using TranslationPro.Testing.Helpers;
 using TranslationPro.Testing.TestCases;
 
 namespace TranslationPro.Api.Testing.Tests;
@@ -24,6 +25,30 @@ public class ApplicationsControllerTest : BaseApiTest
             var response = await ApplicationsProxy.CreateApplicationAsync(input);
 
             Assert.IsTrue(response.Succeeded);
+        }
+
+        [TestCaseSource(typeof(LanguageTestCases), nameof(LanguageTestCases.Languages))]
+        public async Task CanCreateApplicationWithLanguage(string language)
+        {
+
+            var randomCompanyName = RandomValueHelper.GenerateRandomCompanyName();
+
+            var input = new ApplicationCreateOptions()
+            {
+                Name = randomCompanyName,
+                Languages = new[] { language }
+            };
+
+            var response = await ApplicationsProxy.CreateApplicationAsync(input);
+            Assert.IsTrue(response.Succeeded);
+
+            var application = await ApplicationsProxy.GetApplicationAsync(Guid.Parse(response.Id.ToString()));
+
+            Assert.IsNotNull(application);
+
+            Assert.AreEqual(randomCompanyName, application.Name);
+
+            Assert.IsTrue(application.SupportedLanguages.Contains(language));
         }
     }
 
@@ -48,9 +73,9 @@ public class ApplicationsControllerTest : BaseApiTest
 
             var deleteResult = await ApplicationsProxy.DeleteApplicationAsync(Guid.Parse(ApplicationResult.Id.ToString()));
             Assert.IsTrue(deleteResult.Succeeded);
-            
+
             applications = await ApplicationsProxy.GetApplicationsAsync();
-            
+
             Assert.AreEqual(0, applications.Count);
         }
     }

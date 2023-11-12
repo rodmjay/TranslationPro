@@ -4,13 +4,8 @@
 
 #endregion
 
-using System;
-using Google.Cloud.Translation.V2;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Phrases.Services;
 using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Base.Translations.Services;
 

@@ -19,7 +19,7 @@ public class PhraseDetailsBase : ApplicationDetailsBase
     [Parameter]
     public int PhraseId { get; set; }
 
-    public PhraseWithTranslationOutput Phrase { get; set; }
+    public ApplicationPhraseDetails ApplicationPhrase { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -29,7 +29,7 @@ public class PhraseDetailsBase : ApplicationDetailsBase
     protected override async Task LoadData()
     {
         await base.LoadData();
-        Phrase = await PhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
+        ApplicationPhrase = await PhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
 
 
     }

@@ -16,7 +16,7 @@ namespace TranslationPro.App.Shared
         [Inject]
         public IPhrasesController PhrasesController { get; set; }
 
-        public PagedList<PhraseWithTranslationOutput> Phrases { get; set; }
+        public PagedList<ApplicationPhraseOutput> Phrases { get; set; }
 
         [Inject]
         public NavigationManager NavManager { get; set; }

@@ -12,19 +12,14 @@ namespace TranslationPro.App.Bases
         [Parameter]
         public Guid ApplicationId { get; set; }
 
-        [Inject]
+        [CascadingParameter]
         public IApplicationsController ApplicationService { get; set; }
 
         protected ApplicationOutput Application;
-
-        protected override async Task OnInitializedAsync()
-        {
-            await LoadData();
-        }
-
+        
         protected override async Task OnParametersSetAsync()
         {
-            await OnInitializedAsync();
+            await LoadData();
         }
 
         protected virtual async Task LoadData()
