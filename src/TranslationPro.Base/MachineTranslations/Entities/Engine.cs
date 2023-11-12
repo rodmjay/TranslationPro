@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Enums;
 
-namespace TranslationPro.Base.Engines.Entities
+namespace TranslationPro.Base.MachineTranslations.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class Engine : BaseEntity<Engine>, IEngine
     {
         public TranslationEngine Id { get; set; }

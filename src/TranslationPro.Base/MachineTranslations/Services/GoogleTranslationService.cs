@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Google.Cloud.Translation.V2;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Engines.Entities;
-using TranslationPro.Base.Engines.Extensions;
-using TranslationPro.Base.Translations.Interfaces;
+using TranslationPro.Base.MachineTranslations.Entities;
+using TranslationPro.Base.MachineTranslations.Extensions;
+using TranslationPro.Base.MachineTranslations.Interfaces;
 using TranslationPro.Shared.Enums;
 
-namespace TranslationPro.Base.Phrases.Services
+namespace TranslationPro.Base.MachineTranslations.Services
 {
     public class GoogleTranslationService : BaseService<Engine>, ITranslationProcessor
     {

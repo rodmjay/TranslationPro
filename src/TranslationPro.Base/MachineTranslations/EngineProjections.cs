@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using AutoMapper;
-using TranslationPro.Base.Engines.Entities;
+using TranslationPro.Base.MachineTranslations.Entities;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Engines
+namespace TranslationPro.Base.MachineTranslations
 {
     public class EngineProjections : Profile
     {

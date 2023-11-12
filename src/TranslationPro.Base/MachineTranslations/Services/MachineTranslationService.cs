@@ -15,16 +15,15 @@ using TranslationPro.Base.Applications.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
+using TranslationPro.Base.MachineTranslations.Entities;
+using TranslationPro.Base.MachineTranslations.Interfaces;
 using TranslationPro.Base.Phrases;
 using TranslationPro.Base.Phrases.Entities;
-using TranslationPro.Base.Phrases.Services;
-using TranslationPro.Base.Translations.Entities;
-using TranslationPro.Base.Translations.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Translations.Services;
+namespace TranslationPro.Base.MachineTranslations.Services;
 
 public class MachineTranslationService : BaseService<MachineTranslation>, IMachineTranslationService
 {

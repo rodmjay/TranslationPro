@@ -4,13 +4,12 @@
 
 #endregion
 
-using System.Collections.Generic;
 using AutoMapper;
+using TranslationPro.Base.MachineTranslations.Entities;
 using TranslationPro.Base.Phrases.Entities;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Translations;
+namespace TranslationPro.Base.MachineTranslations;
 
 public class TranslationProjections : Profile
 {
@@ -19,7 +18,5 @@ public class TranslationProjections : Profile
         CreateMap<MachineTranslation, MachineTranslationOutput>()
             .ForMember(x => x.Engine, opt => opt.MapFrom(x => x.Engine.Name));
 
-        CreateMap<ApplicationTranslation, ApplicationTranslationOutput>()
-            .IncludeAllDerived();
     }
 }

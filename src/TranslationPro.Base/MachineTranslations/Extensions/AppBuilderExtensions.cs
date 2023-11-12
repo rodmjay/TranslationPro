@@ -10,16 +10,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Engines.Interfaces;
-using TranslationPro.Base.Engines.Services;
-using TranslationPro.Base.Phrases.Services;
+using TranslationPro.Base.MachineTranslations.Interfaces;
+using TranslationPro.Base.MachineTranslations.Services;
 
-namespace TranslationPro.Base.Engines.Extensions;
+namespace TranslationPro.Base.MachineTranslations.Extensions;
 
 public static class AppBuilderExtensions
 {
-    public static AppBuilder AddEngineDependencies(this AppBuilder builder)
+    public static AppBuilder AddMachineTranslationDependencies(this AppBuilder builder)
     {
+        builder.Services.TryAddTransient<TranslationErrorDescriber>();
+        builder.Services.TryAddScoped<IMachineTranslationService, MachineTranslationService>();
+
         builder.Services.TryAddScoped<IEngineService, EngineService>();
 
         builder.Services.TryAddSingleton(x =>
@@ -37,6 +39,7 @@ public static class AppBuilderExtensions
 
         builder.Services.AddScoped<MicrosoftTranslationService>();
         builder.Services.AddScoped<GoogleTranslationService>();
+        return builder;
         return builder;
     }
 }

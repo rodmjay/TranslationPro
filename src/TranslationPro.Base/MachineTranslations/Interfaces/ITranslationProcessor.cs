@@ -6,9 +6,9 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TranslationPro.Base.Phrases.Services;
+using TranslationPro.Base.MachineTranslations.Services;
 
-namespace TranslationPro.Base.Translations.Interfaces;
+namespace TranslationPro.Base.MachineTranslations.Interfaces;
 
 public interface ITranslationProcessor
 {

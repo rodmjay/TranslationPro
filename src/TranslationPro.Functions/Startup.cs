@@ -12,10 +12,10 @@ using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Languages.Extensions;
+using TranslationPro.Base.MachineTranslations.Extensions;
 using TranslationPro.Base.Permissions;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Stripe.Extensions;
-using TranslationPro.Base.Translations.Extensions;
 
 namespace TranslationPro.Functions;
 
@@ -44,7 +44,7 @@ public class Startup : FunctionsStartup
             .AddLanguageDependencies()
             .AddApplicationDependencies()
             .AddPhraseDependencies()
-            .AddTranslationDependencies()
+            .AddMachineTranslationDependencies()
             .AddStripeDependencies();
     }
 }

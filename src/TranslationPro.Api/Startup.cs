@@ -21,12 +21,11 @@ using TranslationPro.Base.ApplicationUsers.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
-using TranslationPro.Base.Engines.Extensions;
 using TranslationPro.Base.Languages.Extensions;
+using TranslationPro.Base.MachineTranslations.Extensions;
 using TranslationPro.Base.Permissions;
 using TranslationPro.Base.Phrases.Extensions;
 using TranslationPro.Base.Stripe.Extensions;
-using TranslationPro.Base.Translations.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
 namespace TranslationPro.Api;
@@ -59,8 +58,7 @@ public class Startup
             .AddApplicationLanguageDependencies()
             .AddApplicationUserDependencies()
             .AddPhraseDependencies()
-            .AddTranslationDependencies()
-            .AddEngineDependencies()
+            .AddMachineTranslationDependencies()
             .AddStripeDependencies();
 
         services.AddCors(options =>

@@ -6,16 +6,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
+using TranslationPro.Base.MachineTranslations.Entities;
 using TranslationPro.Base.Stripe.Interfaces;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Phrases.Entities;
 
+[ExcludeFromCodeCoverage]
 public class Phrase : BaseEntity<Phrase>, IPhrase, ISoftDelete, ICreated
 {
     public Phrase()

@@ -6,7 +6,7 @@
 
 using TranslationPro.Shared.Common;
 
-namespace TranslationPro.Base.Translations;
+namespace TranslationPro.Base.MachineTranslations;
 
 public class TranslationErrorDescriber
 {

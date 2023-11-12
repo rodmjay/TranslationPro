@@ -61,6 +61,7 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
                 {
                     return Result.Success();
                 }
+
                 if (appLanguage.IsDeleted)
                 {
                     appLanguage.IsDeleted = false;
@@ -80,8 +81,8 @@ namespace TranslationPro.Base.ApplicationLanguages.Services
 
                     var translationRecords = _applicationTranslationRepository.Commit();
 
-                    var records = Repository.InsertOrUpdateGraph(appLanguage, true);
-                    if (records > 0)
+                    var records = Repository.Update(appLanguage, true);
+                    if (records + translationRecords > 0)
                         return Result.Success();
 
                     return Result.Failed();

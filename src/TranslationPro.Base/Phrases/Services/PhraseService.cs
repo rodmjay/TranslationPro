@@ -14,9 +14,9 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Languages.Entities;
+using TranslationPro.Base.MachineTranslations.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Phrases.Interfaces;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 

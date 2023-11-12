@@ -5,15 +5,17 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Engines.Entities;
+using TranslationPro.Base.MachineTranslations.Entities;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Languages.Entities;
 
+[ExcludeFromCodeCoverage]
 public class Language : BaseEntity<Language>, ILanguage
 {
     public ICollection<EngineLanguage> Engines { get; set; }

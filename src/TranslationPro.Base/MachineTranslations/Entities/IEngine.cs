@@ -6,7 +6,7 @@
 
 using TranslationPro.Shared.Enums;
 
-namespace TranslationPro.Base.Engines.Entities;
+namespace TranslationPro.Base.MachineTranslations.Entities;
 
 public interface IEngine
 {

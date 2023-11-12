@@ -8,11 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Services.Interfaces;
-using TranslationPro.Base.Translations.Entities;
+using TranslationPro.Base.MachineTranslations.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Translations.Interfaces;
+namespace TranslationPro.Base.MachineTranslations.Interfaces;
 
 public interface IMachineTranslationService : IService<MachineTranslation>
 {

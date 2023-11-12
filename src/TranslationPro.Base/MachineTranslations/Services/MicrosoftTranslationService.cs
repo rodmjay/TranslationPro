@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Engines.Entities;
-using TranslationPro.Base.Engines.Extensions;
-using TranslationPro.Base.Translations.Interfaces;
+using TranslationPro.Base.MachineTranslations.Entities;
+using TranslationPro.Base.MachineTranslations.Extensions;
+using TranslationPro.Base.MachineTranslations.Interfaces;
 using TranslationPro.Shared.Enums;
 
-namespace TranslationPro.Base.Phrases.Services;
+namespace TranslationPro.Base.MachineTranslations.Services;
 
 public class GenericTranslationResult
 {
@@ -48,7 +48,7 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
         var retVal = new Dictionary<string, List<GenericTranslationResult>>();
 
         var engine = await Engines.Where(x => x.Id == TranslationEngine.Azure).FirstAsync();
-        
+
         foreach (var kvp in dictionary)
         {
             var languageTarget = kvp.Key;
@@ -56,7 +56,7 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
             if (engine.HasLanguageEnabled(languageTarget))
             {
                 string route = $"/translate?api-version=3.0&from=en&to={languageTarget}";
-                
+
                 object[] body = kvp.Value.Select(x => new { Text = x }).ToArray();
 
                 var requestBody = JsonConvert.SerializeObject(body);
@@ -111,7 +111,7 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
                 }
             }
 
-         
+
         }
         return retVal;
     }

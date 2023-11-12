@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Stripe.Managers;
-using TranslationPro.Base.Users.Interfaces;
-using TranslationPro.Base.Users.Managers;
-using TranslationPro.Base.Users.Models;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Stripe;
 

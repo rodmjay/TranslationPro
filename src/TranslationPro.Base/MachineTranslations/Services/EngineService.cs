@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Engines.Entities;
-using TranslationPro.Base.Engines.Interfaces;
+using TranslationPro.Base.MachineTranslations.Entities;
+using TranslationPro.Base.MachineTranslations.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Engines.Services
+namespace TranslationPro.Base.MachineTranslations.Services
 {
     public class EngineService : BaseService<Engine>, IEngineService
     {

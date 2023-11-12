@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
@@ -14,11 +15,10 @@ using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Base.Stripe.Interfaces;
-using TranslationPro.Base.Translations.Entities;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Applications.Entities;
-
+[ExcludeFromCodeCoverage]
 public class Application : BaseEntity<Application>, IApplication, ISoftDelete, ICreated
 {
     public Application()

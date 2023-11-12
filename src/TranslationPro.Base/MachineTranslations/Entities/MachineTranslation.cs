@@ -4,16 +4,15 @@
 
 #endregion
 
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Engines.Entities;
 using TranslationPro.Base.Phrases.Entities;
 using TranslationPro.Shared.Enums;
 
-namespace TranslationPro.Base.Translations.Entities;
+namespace TranslationPro.Base.MachineTranslations.Entities;
 
 public class MachineTranslation : BaseEntity<MachineTranslation>, ISoftDelete
 {

@@ -5,6 +5,7 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.ApplicationLanguages.Entities;
@@ -14,6 +15,7 @@ using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Phrases.Entities;
 
+[ExcludeFromCodeCoverage]
 public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftDelete, ICreated
 {
     public Guid ApplicationId { get; set; }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.ApplicationLanguages.Interfaces;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Translations.Interfaces;
+using TranslationPro.Base.MachineTranslations.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;

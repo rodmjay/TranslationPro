@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -78,7 +79,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
     {
-        var phraseIds = await ApplicationTranslations.Where(at=>at.LanguageId == language).GroupBy(x => x.PhraseId)
+        var phraseIds = await ApplicationTranslations.Where(at=>at.LanguageId == language && !at.IsDeleted).GroupBy(x => x.PhraseId)
             .ToDictionaryAsync(g => g.Key, g => g.Select(x => x.Text).First());
 
         return phraseIds;
