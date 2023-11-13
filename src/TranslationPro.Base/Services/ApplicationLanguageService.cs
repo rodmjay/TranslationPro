@@ -16,7 +16,6 @@ namespace TranslationPro.Base.Services
 {
     internal class ApplicationLanguageService : BaseService<ApplicationLanguage>, IApplicationLanguageService
     {
-        private readonly IPhraseService _phraseService;
         private readonly ILogger<ApplicationLanguageService> _logger;
 
         private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
@@ -26,10 +25,8 @@ namespace TranslationPro.Base.Services
 
         private readonly IRepositoryAsync<Application> _applicationRepository;
         public ApplicationLanguageService(IServiceProvider serviceProvider,
-            IPhraseService phraseService,
             ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
-            _phraseService = phraseService;
             _logger = logger;
             _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         }
@@ -55,24 +52,13 @@ namespace TranslationPro.Base.Services
 
             if (appLanguage != null)
             {
-                if (appLanguage.IsDeleted == false)
-                    return Result.Success();
-
-                // un-delete if it already existed
-                if (appLanguage.IsDeleted)
+                switch (appLanguage.IsDeleted)
                 {
-                    appLanguage.UnDelete();
-
-                    await _phraseService.EnsurePhrasesWithLanguage(applicationId, options.Language);
-
-                    var records = Repository.InsertOrUpdateGraph(appLanguage, true);
-                    if (records > 0)
-                    {
-                        _logger.LogInformation(GetLogMessage("Added language: {0} to application: {1}"), options.Language, applicationId);
+                    case false:
                         return Result.Success();
-                    }
-
-                    return Result.Failed();
+                    case true:
+                        appLanguage.UnDelete();
+                        break;
                 }
             }
             else
@@ -83,14 +69,11 @@ namespace TranslationPro.Base.Services
                     LanguageId = options.Language,
                     ObjectState = ObjectState.Added
                 };
-
-                await _phraseService.EnsurePhrasesWithLanguage(applicationId, options.Language);
-
-                var records = Repository.InsertOrUpdateGraph(appLanguage, true);
-                if (records > 0)
-                    return Result.Success();
-
             }
+
+            var records = Repository.InsertOrUpdateGraph(appLanguage, true);
+            if (records > 0)
+                return Result.Success();
 
             return Result.Failed();
         }

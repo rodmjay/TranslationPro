@@ -34,17 +34,14 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     private readonly IRepositoryAsync<Application> _applicationRepository;
     private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
-    private readonly IPhraseService _phraseService;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
 
     public ApplicationPhraseService(
-        IPhraseService phraseService,
         IServiceProvider serviceProvider,
         PhraseErrorDescriber errorDescriber,
         ILogger<ApplicationPhraseService> logger) : base(serviceProvider)
     {
-        _phraseService = phraseService;
         _errorDescriber = errorDescriber;
         _logger = logger;
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
@@ -59,10 +56,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     private IQueryable<ApplicationTranslation> ApplicationTranslations => _applicationTranslationRepository.Queryable()
         .Include(x => x.ApplicationPhrase);
-
-    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages)
-        .ThenInclude(x => x.Language).ThenInclude(x => x.Engines).ThenInclude(x => x.Engine);
-
+    
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
         PhraseFilters filters) where T : ApplicationPhraseOutput
     {
@@ -83,69 +77,26 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         return phraseIds;
     }
 
+    public Task<int[]> GetPhraseIdsForApplication(Guid applicationId)
+    {
+        return ApplicationPhrases.Select(x => x.PhraseId).ToArrayAsync();
+    }
 
-    //public async Task<Result> BulkUploadPhrases(Guid applicationId, List<string> inputs)
-    //{
-    //    var phrases = Phrases.Where(x => x.ApplicationId == applicationId).ToList();
-
-    //    foreach (var input in inputs)
-    //    {
-    //        var existing = phrases
-    //            .FirstOrDefault(x => x.ApplicationId == applicationId && x.Text == input);
-
-    //        if (existing != null) continue;
-
-    //        var phraseId = await GetNextPhraseIdAsync(applicationId);
-
-    //        var phrase = new ApplicationPhrase
-    //        {
-    //            Id = phraseId,
-    //            Text = input,
-    //            ApplicationId = applicationId,
-    //            ObjectState = ObjectState.Added
-    //        };
-
-    //        var application = await Applications.Where(x => x.Id == applicationId).FirstOrDefaultAsync();
-
-    //        foreach (var lang in application.Languages)
-    //            phrase.Translations.Add(new ApplicationTranslation
-    //            {
-    //                LanguageId = lang.LanguageId,
-    //                ApplicationId = applicationId,
-    //                PhraseId = phraseId,
-    //                ObjectState = ObjectState.Added
-    //            });
-    //    }
-
-    //    var records = Repository.Commit();
-
-    //    return Result.Success(records);
-    //}
-
-
-    public async Task<Result> CreateApplicationPhrase(Guid applicationId, PhraseOptions input)
+    public async Task<Result> CreateApplicationPhrase(Guid applicationId, int phraseId, PhraseOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Phrase: {0}"), input.Text);
-
-        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync(); ;
-
+        
         var applicationPhrase = await ApplicationPhrases
-            .Where(x => x.ApplicationId == applicationId && x.Phrase.Text == input.Text).FirstOrDefaultAsync();
+            .Where(x => x.ApplicationId == applicationId && x.Phrase.Id == phraseId).FirstOrDefaultAsync();
 
         if (applicationPhrase == null)
         {
-            var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new PhraseCreateOptions()
-            {
-                Text = input.Text,
-                Languages = application.Languages.Select(x => x.LanguageId).ToList()
-            });
-
             var applicationPhraseId = await GetNextPhraseIdAsync(applicationId);
 
             applicationPhrase = new ApplicationPhrase
             {
                 Id = applicationPhraseId,
-                PhraseId = int.Parse(phraseResult.Id.ToString()),
+                PhraseId = phraseId,
                 ApplicationId = applicationId,
                 ObjectState = ObjectState.Added
             };

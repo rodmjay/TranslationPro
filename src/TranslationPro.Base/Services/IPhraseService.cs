@@ -10,11 +10,12 @@ using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 
 public interface IPhraseService : IService<Phrase>
 {
     Task<Result> EnsurePhraseWithLanguages(PhraseCreateOptions options);
-    Task<Result> EnsurePhrasesWithLanguage(Guid applicationId, string languageId);
+    Task<int> EnsurePhrasesWithLanguage(Guid applicationId, string languageId, int[] phraseIds);
 }

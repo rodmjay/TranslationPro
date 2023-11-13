@@ -39,11 +39,11 @@ public class LanguageService : BaseService<Language>, ILanguageService
 
     public async Task<List<T>> GetLanguagesAsync<T>() where T : LanguageOutput
     {
-        var langs = await Engines.Where(x => x.Enabled).SelectMany(x => x.Languages).Select(x => x.Language).Distinct()
+        var languages = await Engines.Where(x => x.Enabled).SelectMany(x => x.Languages).Select(x => x.Language).Distinct()
             .ProjectTo<T>(ProjectionMapping)
             .ToListAsync();
 
-        return langs;
+        return languages;
     }
 
     public Task<List<T>> GetAllLanguagesAsync<T>() where T : LanguageOutput

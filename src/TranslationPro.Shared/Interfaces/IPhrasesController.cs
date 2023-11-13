@@ -22,7 +22,7 @@ public interface IPhrasesController
     //Task<Result> BulkUploadAsync(Guid applicationId,
     //     List<string> input);
 
-    Task<CreatePhraseResult> CreatePhraseAsync(Guid applicationId,
+    Task<ApplicationPhraseCreateResult> CreatePhraseAsync(Guid applicationId,
         PhraseOptions input);
     
     Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,

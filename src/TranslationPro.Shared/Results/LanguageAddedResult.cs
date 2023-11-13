@@ -15,4 +15,5 @@ public class LanguageAddedResult
     public IEnumerable<Error> Errors { get; set; }
     public int TranslationsCreated { get; set; }
     public int TranslationsCopied { get; set; }
+    public int PhrasesCreated { get; set; }
 }

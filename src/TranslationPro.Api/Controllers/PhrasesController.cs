@@ -41,7 +41,7 @@ public class PhrasesController : BaseController, IPhrasesController
     
 
     [HttpPost]
-    public async Task<CreatePhraseResult> CreatePhraseAsync([FromRoute] Guid applicationId,
+    public async Task<ApplicationPhraseCreateResult> CreatePhraseAsync([FromRoute] Guid applicationId,
         [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);

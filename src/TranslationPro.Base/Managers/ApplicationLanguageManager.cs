@@ -18,21 +18,31 @@ public class ApplicationLanguageManager
 
 
     private readonly IApplicationLanguageService _applicationLanguageService;
+    private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly IApplicationTranslationService _applicationTranslationService;
+    private readonly IPhraseService _phraseService;
     private readonly IMachineTranslationService _machineTranslationService;
 
     public ApplicationLanguageManager(
         IApplicationLanguageService applicationLanguageService,
+        IApplicationPhraseService applicationPhraseService,
         IApplicationTranslationService applicationTranslationService,
+        IPhraseService phraseService,
         IMachineTranslationService machineTranslationService)
     {
         _applicationLanguageService = applicationLanguageService;
+        _applicationPhraseService = applicationPhraseService;
         _applicationTranslationService = applicationTranslationService;
+        _phraseService = phraseService;
         _machineTranslationService = machineTranslationService;
     }
     public async Task<LanguageAddedResult> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)
     {
-        var retVal = new LanguageAddedResult();
+        var phraseIds = await _applicationPhraseService.GetPhraseIdsForApplication(applicationId);
+        var retVal = new LanguageAddedResult
+        {
+            PhrasesCreated = await _phraseService.EnsurePhrasesWithLanguage(applicationId, options.Language, phraseIds)
+        };
 
         var result = await _applicationLanguageService.AddLanguageToApplication(applicationId, options);
         if (result.Succeeded)

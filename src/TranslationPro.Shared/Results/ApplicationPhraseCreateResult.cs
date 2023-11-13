@@ -7,7 +7,7 @@ using TranslationPro.Shared.Common;
 
 namespace TranslationPro.Shared.Results
 {
-    public class CreatePhraseResult
+    public class ApplicationPhraseCreateResult
     {
 
         public bool Succeeded { get; set; }
