@@ -5,8 +5,7 @@
 #endregion
 
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using TranslationPro.Base.Applications.Interfaces;
-using TranslationPro.Base.MachineTranslations.Interfaces;
+using TranslationPro.Base.Interfaces;
 using TranslationPro.Functions;
 
 [assembly: FunctionsStartup(typeof(Startup))]

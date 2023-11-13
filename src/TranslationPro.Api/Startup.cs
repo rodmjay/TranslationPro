@@ -15,16 +15,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TranslationPro.Base.ApplicationLanguages.Extensions;
-using TranslationPro.Base.Applications.Extensions;
-using TranslationPro.Base.ApplicationUsers.Extensions;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
-using TranslationPro.Base.Languages.Extensions;
-using TranslationPro.Base.MachineTranslations.Extensions;
-using TranslationPro.Base.Permissions;
-using TranslationPro.Base.Phrases.Extensions;
+using TranslationPro.Base.Extensions;
 using TranslationPro.Base.Stripe.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
@@ -52,20 +46,9 @@ public class Startup
             .AddAutomapperProfilesFromAssemblies()
             .AddCaching()
             .AddUserDependencies()
-            .AddPermissionExtensions()
-            .AddLanguageDependencies()
-            .AddApplicationDependencies()
-            .AddApplicationLanguageDependencies()
-            .AddApplicationUserDependencies()
-            .AddPhraseDependencies()
-            .AddMachineTranslationDependencies()
+            .AddTranslationProDependencies()
             .AddStripeDependencies();
-
-        services.AddCors(options =>
-        {
-            options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-        });
-
+        
 
         var webAppBuilder = builder.ConfigureWebApp(Environment);
 

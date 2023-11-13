@@ -13,11 +13,12 @@ namespace TranslationPro.Api.Testing.Tests;
 [TestFixture]
 public class TranslationsControllerTest : BaseApiTest
 {
+
     [TestFixture]
-    public class TheSaveTranslationMethod : TranslationsControllerTest
+    public class TheReplaceTranslationMethod : PhrasesControllerTest
     {
         [Test]
-        public async Task CanSaveTranslation()
+        public async Task CanReplaceTranslation()
         {
             var input = new PhraseOptions()
             {
@@ -25,13 +26,15 @@ public class TranslationsControllerTest : BaseApiTest
             };
             var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            var input2 = new TranslationOptions()
+            input.Text = "goodbye";
+
+            var replacementInput = new TranslationReplacementOptions()
             {
                 LanguageId = "es",
                 Text = "hola mae"
             };
 
-            var updateResult = await TranslationsProxy.SaveTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), input2);
+            var updateResult = await TranslationsProxy.ReplaceTranslation(ApplicationId, createResult.PhraseId.Value, replacementInput);
 
             Assert.IsTrue(updateResult.Succeeded);
         }

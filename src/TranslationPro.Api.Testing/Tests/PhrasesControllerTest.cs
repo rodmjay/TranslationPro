@@ -30,7 +30,7 @@ public class PhrasesControllerTest : BaseApiTest
 
             Assert.IsTrue(result.Succeeded);
 
-            var phrase = await PhrasesProxy.GetPhraseAsync(ApplicationId, int.Parse(result.Id.ToString()));
+            var phrase = await PhrasesProxy.GetPhraseAsync(ApplicationId, result.PhraseId.Value);
 
             Assert.IsNotNull(phrase);
 
@@ -44,31 +44,6 @@ public class PhrasesControllerTest : BaseApiTest
         }
     }
 
-    [TestFixture]
-    public class TheReplaceTranslationMethod : PhrasesControllerTest
-    {
-        [Test]
-        public async Task CanReplaceTranslation()
-        {
-            var input = new PhraseOptions()
-            {
-                Text = "hello"
-            };
-            var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
-
-            input.Text = "goodbye";
-
-            var replacementInput = new TranslationReplacementOptions()
-            {
-                LanguageId = "es",
-                Text = "hola mae"
-            };
-
-            var updateResult = await PhrasesProxy.ReplaceTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), replacementInput);
-
-            Assert.IsTrue(updateResult.Succeeded);
-        }
-    }
 
     [TestFixture]
     public class TheGetPhrasesMethod : PhrasesControllerTest
@@ -119,7 +94,7 @@ public class PhrasesControllerTest : BaseApiTest
             };
             var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            var deleteResult = await PhrasesProxy.DeletePhraseAsync(ApplicationId, int.Parse(createResult.Id.ToString()));
+            var deleteResult = await PhrasesProxy.DeletePhraseAsync(ApplicationId, createResult.PhraseId.Value);
 
             Assert.IsTrue(deleteResult.Succeeded);
         }

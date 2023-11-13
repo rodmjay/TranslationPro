@@ -7,6 +7,7 @@ using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Helpers;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Proxies;
 
@@ -18,9 +19,9 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoGet<ApplicationPhraseDetails>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
-    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
+    public Task<CreatePhraseResult> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
-        return DoPost<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
+        return DoPost<PhraseOptions, CreatePhraseResult>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
     public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)
@@ -45,10 +46,6 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
         return DoDelete<Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
-    public Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions options)
-    {
-        return DoPut<TranslationReplacementOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", options);
-    }
 
     public PhrasesProxy(HttpClient httpClient) : base(httpClient)
     {

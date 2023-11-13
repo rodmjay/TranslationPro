@@ -22,7 +22,7 @@ namespace TranslationPro.App.Pages
 
             if (result.Succeeded)
             {
-                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result.Id}");
+                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result.PhraseId}");
             }
         }
     }

@@ -11,9 +11,9 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TranslationPro.Base.ApplicationUsers.Entities;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
+using TranslationPro.Base.Entities;
 using TranslationPro.Base.Users.Interfaces;
 
 namespace TranslationPro.Base.Users.Entities;

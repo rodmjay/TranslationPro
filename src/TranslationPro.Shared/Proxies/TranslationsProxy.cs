@@ -18,4 +18,9 @@ public class TranslationsProxy : BaseProxy, ITranslationsController
     public TranslationsProxy(HttpClient httpClient) : base(httpClient)
     {
     }
+
+    public Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions options)
+    {
+        return DoPut<TranslationReplacementOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}/translations", options);
+    }
 }

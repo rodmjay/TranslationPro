@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Interfaces;
 
@@ -21,7 +22,7 @@ public interface IPhrasesController
     //Task<Result> BulkUploadAsync(Guid applicationId,
     //     List<string> input);
 
-    Task<Result> CreatePhraseAsync(Guid applicationId,
+    Task<CreatePhraseResult> CreatePhraseAsync(Guid applicationId,
         PhraseOptions input);
     
     Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
@@ -32,6 +33,4 @@ public interface IPhrasesController
 
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
 
-    Task<Result> ReplaceTranslation( Guid applicationId,  int phraseId,
-         TranslationReplacementOptions options);
 }

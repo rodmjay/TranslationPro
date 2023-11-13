@@ -7,12 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Applications\Models\**" />
-	  <EmbeddedResource Remove="Applications\Models\**" />
-	  <None Remove="Applications\Models\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Remove="Seeding\csv\apiScopes.csv" />
 		<None Remove="Seeding\csv\clientCorsOrigins.csv" />
 		<None Remove="Seeding\csv\clientGrantTypes.csv" />
