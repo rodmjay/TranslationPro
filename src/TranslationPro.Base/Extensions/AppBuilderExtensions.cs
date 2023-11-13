@@ -47,7 +47,7 @@ public static class AppBuilderExtensions
 
         builder.Services.TryAddSingleton(x =>
         {
-            string googleTranslateApiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
+            var googleTranslateApiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
             if (string.IsNullOrEmpty(googleTranslateApiKey))
             {
                 googleTranslateApiKey = x.GetRequiredService<IConfiguration>()["TranslationProGoogleApi"];

@@ -55,7 +55,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         var engines = await EngineLanguages.Where(x => x.LanguageId == languageId).Select(x => x.Engine)
             .Where(x => x.Enabled).ToListAsync();
 
-        bool requiresUpdate = false;
+        var requiresUpdate = false;
 
         foreach (var phrase in phrases)
         {
@@ -131,7 +131,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         {
             var phraseLanguages = phrase.MachineTranslations.Select(x => x.LanguageId).Distinct().ToList();
 
-            bool requiresLanguageAdjustment = false;
+            var requiresLanguageAdjustment = false;
 
             foreach (var lang in input.Languages)
             {

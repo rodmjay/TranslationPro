@@ -11,14 +11,10 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
 using TranslationPro.Shared.Enums;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 
-public class GenericTranslationResult
-{
-    public string Text { get; set; }
-    public string To { get; set; }
-}
 public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProcessor
 {
     private readonly IConfiguration _configuration;
@@ -33,7 +29,7 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
 
     private string GetKey()
     {
-        string microsoftTranslateApiKey = Environment.GetEnvironmentVariable("TranslationProMicrosoftApi");
+        var microsoftTranslateApiKey = Environment.GetEnvironmentVariable("TranslationProMicrosoftApi");
         if (string.IsNullOrEmpty(microsoftTranslateApiKey))
         {
             microsoftTranslateApiKey = _configuration["TranslationProMicrosoftApi"];
@@ -54,7 +50,7 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
 
             if (engine.HasLanguageEnabled(languageTarget))
             {
-                string route = $"/translate?api-version=3.0&from=en&to={languageTarget}";
+                var route = $"/translate?api-version=3.0&from=en&to={languageTarget}";
 
                 object[] body = kvp.Value.Select(x => new { Text = x }).ToArray();
 
@@ -70,16 +66,13 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
                         request.Headers.Add("Ocp-Apim-Subscription-Region", location);
                         request.Headers.Add("Ocp-Apim-Subscription-Key", GetKey());
 
-                        HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+                        var response = await client.SendAsync(request).ConfigureAwait(false);
 
-                        string result = await response.Content.ReadAsStringAsync();
+                        var result = await response.Content.ReadAsStringAsync();
 
                         if (response.IsSuccessStatusCode)
                         {
-                            Console.WriteLine(result);
-                            //JObject obj = JObject.Parse(result);
-
-                            List<Dictionary<string, List<GenericTranslationResult>>> deserializedResult = JsonConvert.DeserializeObject<List<Dictionary<string, List<GenericTranslationResult>>>>(result);
+                            var deserializedResult = JsonConvert.DeserializeObject<List<Dictionary<string, List<GenericTranslationResult>>>>(result);
 
                             if (deserializedResult != null)
                             {
@@ -99,9 +92,6 @@ public class MicrosoftTranslationService : BaseService<Engine>, ITranslationProc
                                         }
 
                                         retVal[originalPhrase].Add(translatedPhrase);
-
-                                        Console.WriteLine(
-                                            $"{originalPhrase} translates to: {translatedPhrase.Text} in {kvp.Key}");
                                     }
                                 }
                             }
