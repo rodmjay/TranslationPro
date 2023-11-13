@@ -10,9 +10,9 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Mappers;
 
-public class TranslationProjections : Profile
+public class MachineTranslationMapper : Profile
 {
-    public TranslationProjections()
+    public MachineTranslationMapper()
     {
         CreateMap<MachineTranslation, MachineTranslationOutput>()
             .ForMember(x => x.Engine, opt => opt.MapFrom(x => x.Engine.Name));

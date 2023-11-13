@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Interfaces;
+using TranslationPro.Base.Managers;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -18,17 +18,17 @@ namespace TranslationPro.Api.Controllers;
 
 public class EnginesController : BaseController, IEnginesController
 {
-    private readonly IEngineService _engineService;
+    private readonly EngineManager _engineManager;
 
-    public EnginesController(IServiceProvider serviceProvider, IEngineService engineService) : base(serviceProvider)
+    public EnginesController(IServiceProvider serviceProvider, EngineManager engineManager) : base(serviceProvider)
     {
-        _engineService = engineService;
+        _engineManager = engineManager;
     }
     
     [HttpGet]
     [AllowAnonymous]
     public async Task<List<EngineWithLanguagesOutput>> GetEnginesAsync()
     {
-        return await _engineService.GetEngines<EngineWithLanguagesOutput>();
+        return await _engineManager.GetEngines<EngineWithLanguagesOutput>();
     }
 }

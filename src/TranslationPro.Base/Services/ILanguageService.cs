@@ -10,7 +10,7 @@ using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Interfaces;
+namespace TranslationPro.Base.Services;
 
 public interface ILanguageService : IService<Language>
 {

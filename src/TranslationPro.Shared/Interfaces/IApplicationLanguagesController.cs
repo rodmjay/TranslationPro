@@ -8,12 +8,13 @@ using System;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Interfaces;
 
 public interface IApplicationLanguagesController
 {
-    Task<Result> AddLanguageToApplicationAsync(Guid applicationId,
+    Task<LanguageAddedResult> AddLanguageToApplicationAsync(Guid applicationId,
         ApplicationLanguageOptions options);
 
     Task<Result> RemoveLanguageFromApplicationAsync(Guid applicationId,

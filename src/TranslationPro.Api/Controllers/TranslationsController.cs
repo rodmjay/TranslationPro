@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Interfaces;
+using TranslationPro.Base.Managers;
 using TranslationPro.Base.Services;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
@@ -19,16 +19,13 @@ namespace TranslationPro.Api.Controllers;
 [Route("v1.0/applications/{applicationId}/phrases/{phraseId}/translations")]
 public class TranslationsController : BaseController, ITranslationsController
 {
-    private readonly IApplicationTranslationService _applicationTranslationService;
-    private readonly IMachineTranslationService _machineTranslationService;
+    private readonly ApplicationTranslationManager _applicationTranslationManager;
 
     public TranslationsController(IServiceProvider serviceProvider, 
-        IApplicationTranslationService applicationTranslationService,
-        IMachineTranslationService machineTranslationService) : base(
+        ApplicationTranslationManager applicationTranslationManager) : base(
         serviceProvider)
     {
-        _applicationTranslationService = applicationTranslationService;
-        _machineTranslationService = machineTranslationService;
+        _applicationTranslationManager = applicationTranslationManager;
     }
 
 
@@ -37,6 +34,6 @@ public class TranslationsController : BaseController, ITranslationsController
         [FromBody] TranslationReplacementOptions options)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _applicationTranslationService.ReplaceTranslation(applicationId, phraseId, options);
+        return await _applicationTranslationManager.ReplaceTranslation(applicationId, phraseId, options);
     }
 }

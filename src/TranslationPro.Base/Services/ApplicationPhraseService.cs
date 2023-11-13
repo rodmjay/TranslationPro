@@ -19,7 +19,6 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Errors;
 using TranslationPro.Base.Extensions;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
@@ -135,7 +134,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
         if (applicationPhrase == null)
         {
-            var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new CreatePhraseOptions()
+            var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new PhraseCreateOptions()
             {
                 Text = input.Text,
                 Languages = application.Languages.Select(x => x.LanguageId).ToList()

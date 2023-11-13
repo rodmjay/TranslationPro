@@ -11,9 +11,9 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Mappers;
 
-public class ApplicationProjections : Profile
+public class ApplicationMapper : Profile
 {
-    public ApplicationProjections()
+    public ApplicationMapper()
     {
         CreateMap<Application, ApplicationOutput>()
             .ForMember(x => x.SupportedLanguages,

@@ -30,8 +30,5 @@ public class PhraseProjections : Profile
             .ForMember(x=>x.Translations, opt=>opt.MapFrom(x=>x.Translations));
 
 
-        CreateMap<ApplicationTranslation, ApplicationTranslationOutput>()
-            .ForMember(x=>x.LanguageName, opt=>opt.MapFrom(x=>x.ApplicationLanguage.Language.Name))
-            .IncludeAllDerived();
     }
 }

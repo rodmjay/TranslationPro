@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Interfaces
+namespace TranslationPro.Base.Services
 {
     public interface IApplicationLanguageService
     {

@@ -4,9 +4,9 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Mappers
 {
-    public class ApplicationUserProjections : Profile
+    public class ApplicationUserMapper : Profile
     {
-        public ApplicationUserProjections()
+        public ApplicationUserMapper()
         {
             CreateMap<ApplicationUser, ApplicationUserOutput>()
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.User.FullName));

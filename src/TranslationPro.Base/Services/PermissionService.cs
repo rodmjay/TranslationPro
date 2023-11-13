@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Base.Users.Entities;
 
 namespace TranslationPro.Base.Services;

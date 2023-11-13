@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace TranslationPro.Shared.Models;
 
-public class CreatePhraseOptions : PhraseOptions
+public class PhraseCreateOptions : PhraseOptions
 {
     public List<string> Languages { get; set; }
 }

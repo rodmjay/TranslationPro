@@ -10,40 +10,38 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Interfaces;
+using TranslationPro.Base.Managers;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Controllers;
 
+[AllowAnonymous]
 public class LanguagesController : BaseController, ILanguagesController
 {
-    private readonly ILanguageService _languageService;
+    private readonly LanguageManager _languageManager;
 
-    public LanguagesController(IServiceProvider serviceProvider, ILanguageService languageService) : base(
+    public LanguagesController(IServiceProvider serviceProvider, LanguageManager languageManager) : base(
         serviceProvider)
     {
-        _languageService = languageService;
+        _languageManager = languageManager;
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<List<LanguageOutput>> GetLanguagesAsync()
     {
-        return await _languageService.GetLanguagesAsync<LanguageOutput>().ConfigureAwait(false);
+        return await _languageManager.GetLanguagesAsync<LanguageOutput>().ConfigureAwait(false);
     }
 
     [HttpGet("all")]
-    [AllowAnonymous]
     public async Task<List<LanguagesWithEnginesOutput>> GetAllLanguagesAsync()
     {
-        return await _languageService.GetAllLanguagesAsync<LanguagesWithEnginesOutput>().ConfigureAwait(false);
+        return await _languageManager.GetAllLanguagesAsync<LanguagesWithEnginesOutput>().ConfigureAwait(false);
     }
 
     [HttpGet("details")]
-    [AllowAnonymous]
     public Task<LanguagesWithEnginesOutput> GetLanguageAsync([FromQuery]string languageId)
     {
-        return _languageService.GetLanguageAsync<LanguagesWithEnginesOutput>(languageId);
+        return _languageManager.GetLanguageAsync<LanguagesWithEnginesOutput>(languageId);
     }
 }

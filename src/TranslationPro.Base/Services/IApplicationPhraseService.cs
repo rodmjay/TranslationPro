@@ -13,7 +13,7 @@ using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Interfaces;
+namespace TranslationPro.Base.Services;
 
 public interface IApplicationPhraseService : IService<ApplicationPhrase>
 {

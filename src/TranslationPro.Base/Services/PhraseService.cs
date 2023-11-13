@@ -15,7 +15,6 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
@@ -97,7 +96,7 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         return Result.Success();
     }
 
-    public async Task<Result> EnsurePhraseWithLanguages(CreatePhraseOptions input)
+    public async Task<Result> EnsurePhraseWithLanguages(PhraseCreateOptions input)
     {
         var phrase = await Phrases.Where(x => x.Text == input.Text).FirstOrDefaultAsync();
 

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Base.Managers;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;

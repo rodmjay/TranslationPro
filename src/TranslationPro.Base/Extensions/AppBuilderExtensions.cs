@@ -7,7 +7,6 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TranslationPro.Base.Common.Middleware.Builders;
 using TranslationPro.Base.Services;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Base.Errors;
 using Google.Cloud.Translation.V2;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +39,9 @@ public static class AppBuilderExtensions
 
         builder.Services.TryAddScoped<ApplicationManager>();
         builder.Services.TryAddScoped<LanguageManager>();
-        builder.Services.TryAddScoped<ApplicationUserManager>();
+        builder.Services.TryAddScoped<ApplicationUsersManager>();
+        builder.Services.TryAddScoped<ApplicationLanguageManager>();
+        builder.Services.TryAddScoped<ApplicationTranslationManager>();
         builder.Services.TryAddScoped<PhraseManager>();
         builder.Services.TryAddScoped<EngineManager>();
 

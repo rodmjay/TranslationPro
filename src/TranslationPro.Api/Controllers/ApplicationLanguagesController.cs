@@ -8,41 +8,34 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
-using TranslationPro.Base.Interfaces;
+using TranslationPro.Base.Managers;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/languages")]
 public class ApplicationLanguagesController : BaseController, IApplicationLanguagesController
 {
-    private readonly IApplicationLanguageService _applicationLanguageService;
-    private readonly IApplicationTranslationService _applicationTranslationService;
-    private readonly IMachineTranslationService _machineTranslationService;
+    private readonly ApplicationLanguageManager _applicationLanguageManager;
 
     public ApplicationLanguagesController(IServiceProvider serviceProvider,
-        IApplicationLanguageService applicationLanguageService,
-        IApplicationTranslationService applicationTranslationService,
-        IPhraseService phraseService,
-        IMachineTranslationService machineTranslationService) : base(
+        ApplicationLanguageManager applicationLanguageManager) : base(
         serviceProvider)
     {
-        _applicationLanguageService = applicationLanguageService;
-        _applicationTranslationService = applicationTranslationService;
-        _machineTranslationService = machineTranslationService;
+        _applicationLanguageManager = applicationLanguageManager;
     }
 
     [HttpPost]
-    public async Task<Result> AddLanguageToApplicationAsync([FromRoute] Guid applicationId,
+    public async Task<LanguageAddedResult> AddLanguageToApplicationAsync([FromRoute] Guid applicationId,
         [FromBody] ApplicationLanguageOptions options)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _applicationLanguageService.AddLanguageToApplication(applicationId, options);
-        await _machineTranslationService.ProcessTranslationsAsync(applicationId);
-        await _applicationTranslationService.CopyTranslationsFromLanguage(applicationId,options.Language);
+        var result = await _applicationLanguageManager.AddLanguageToApplication(applicationId, options);
+        
         return result;
     }
 
@@ -51,7 +44,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
         [FromRoute] string languageId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        var result = await _applicationLanguageService.RemoveLanguageFromApplication(applicationId, languageId);
+        var result = await _applicationLanguageManager.RemoveLanguageFromApplication(applicationId, languageId);
 
         return result;
     }

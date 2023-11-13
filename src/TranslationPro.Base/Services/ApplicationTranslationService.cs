@@ -7,7 +7,6 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
@@ -74,17 +73,19 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
         return retVal;
     }
 
-    public async Task<Result> CopyTranslationsFromLanguage(Guid applicationId, string languageId)
+    public async Task<int> CopyTranslationsFromLanguage(Guid applicationId, string languageId)
     {
+        var retVal = 0;
+
         var applicationPhrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
             .ToListAsync();
 
         foreach (var phrase in applicationPhrases)
         {
-            await CopyTranslationFromPhraseList(applicationId, phrase.Id);
+            retVal += await CopyTranslationFromPhraseList(applicationId, phrase.Id);
         }
 
-        return Result.Success();
+        return retVal;
     }
 
 

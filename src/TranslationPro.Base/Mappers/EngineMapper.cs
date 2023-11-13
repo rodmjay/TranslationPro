@@ -5,9 +5,9 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Mappers
 {
-    public class EngineProjections : Profile
+    public class EngineMapper : Profile
     {
-        public EngineProjections()
+        public EngineMapper()
         {
             CreateMap<Engine, EngineOutput>()
                 .IncludeAllDerived();

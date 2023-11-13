@@ -5,13 +5,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Common;
 
-namespace TranslationPro.Base.Interfaces;
+namespace TranslationPro.Base.Services;
 
 public interface IMachineTranslationService : IService<MachineTranslation>
 {

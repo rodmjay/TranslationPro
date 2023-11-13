@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SendGrid.Helpers.Errors.Model;
 using TranslationPro.Base.Common.Settings;
-using TranslationPro.Base.Interfaces;
+using TranslationPro.Base.Services;
 using TranslationPro.Base.Users.Interfaces;
 
 namespace TranslationPro.Base.Common.Middleware.Bases;

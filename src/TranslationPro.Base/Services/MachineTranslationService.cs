@@ -16,7 +16,6 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Errors;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
 

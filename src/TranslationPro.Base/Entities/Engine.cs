@@ -3,13 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Base.Interfaces;
 using TranslationPro.Shared.Enums;
 
 namespace TranslationPro.Base.Entities
 {
     [ExcludeFromCodeCoverage]
-    public class Engine : BaseEntity<Engine>, IEngine
+    public class Engine : BaseEntity<Engine>
     {
         public TranslationEngine Id { get; set; }
         public string Name { get; set; }

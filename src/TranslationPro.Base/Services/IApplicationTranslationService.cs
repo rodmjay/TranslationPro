@@ -5,13 +5,13 @@ using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Base.Interfaces;
+namespace TranslationPro.Base.Services;
 
 public interface IApplicationTranslationService : IService<ApplicationTranslation>
 {
     Task<int> CopyTranslationFromPhraseList(Guid applicationId, int phraseId);
 
-    Task<Result> CopyTranslationsFromLanguage(Guid applicationId, string languageId);
+    Task<int> CopyTranslationsFromLanguage(Guid applicationId, string languageId);
     Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions input);
 
 }
