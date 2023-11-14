@@ -19,4 +19,7 @@ public interface IApplicationLanguagesController
 
     Task<Result> RemoveLanguageFromApplicationAsync(Guid applicationId,
         string languageId);
+
+    Task<PagedList<ApplicationTranslationOutputWithOriginalPhrase>> GetTranslationsForLanguage(Guid applicationId, string languageId,
+        PagingQuery query);
 }

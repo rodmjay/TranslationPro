@@ -21,6 +21,13 @@ public class ApplicationLanguagesProxy : BaseProxy, IApplicationLanguagesControl
         return DoDelete<Result>($"{ApplicationUrl}/{applicationId}/languages/{languageId}");
     }
 
+    public Task<PagedList<ApplicationTranslationOutputWithOriginalPhrase>> GetTranslationsForLanguage(Guid applicationId,
+        string languageId, PagingQuery query)
+    {
+        return DoGet<PagedList<ApplicationTranslationOutputWithOriginalPhrase>>(
+            $"{ApplicationUrl}/{applicationId}/languages/{languageId}");
+    }
+
     public ApplicationLanguagesProxy(HttpClient httpClient) : base(httpClient)
     {
     }

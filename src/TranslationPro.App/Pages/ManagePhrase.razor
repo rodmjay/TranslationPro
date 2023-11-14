@@ -15,7 +15,7 @@ else
             <li class="breadcrumb-item"><NavLink href="@{
                                                            $"/applications/{ApplicationId}"
                                                        }">@Application.Name</NavLink></li>
-            <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Text</li>
+            <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Id</li>
         </ol>
     </nav>
 
@@ -36,7 +36,13 @@ else
             @foreach (var translation in ApplicationPhrase.Translations)
             {
                 <tr>
-                    <th>@translation.LanguageName</th>
+                    <th>
+                        <NavLink href="@{$"/applications/{ApplicationId}/languages/{@translation.LanguageId}"}">
+                            
+                            @translation.LanguageName
+                        </NavLink>
+                        
+                    </th>
                     <td>@translation.Text</td>
                     <td>@ApplicationPhrase.MachineTranslationCount[translation.LanguageId]</td>
                     <td class="btn-group">

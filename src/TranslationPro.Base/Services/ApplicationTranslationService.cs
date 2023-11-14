@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
+using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
@@ -23,11 +25,21 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
     }
 
+    private IQueryable<ApplicationTranslation> ApplicationTranslations => Repository.Queryable()
+        .Include(x => x.ApplicationPhrase).Include(x => x.ApplicationLanguage).ThenInclude(x => x.Language);
+
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
         .Include(x => x.Translations)
         .Include(x => x.Phrase).ThenInclude(x => x.MachineTranslations);
+
+    public Task<PagedList<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId, PagingQuery paging) where T : ApplicationTranslationOutput
+    {
+        return this.PaginateAsync<ApplicationTranslation, T>(
+            x => x.ApplicationId == applicationId && x.LanguageId == languageId, paging);
+
+    }
 
     public async Task<int> CopyTranslationFromPhraseList(Guid applicationId, int phraseId)
     {

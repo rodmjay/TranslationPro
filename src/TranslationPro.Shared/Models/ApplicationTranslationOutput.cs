@@ -12,3 +12,8 @@ public class ApplicationTranslationOutput
     public string LanguageId { get; set; }
     public string LanguageName { get; set; }
 }
+
+public class ApplicationTranslationOutputWithOriginalPhrase : ApplicationTranslationOutput
+{
+    public string Phrase { get; set; }
+}

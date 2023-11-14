@@ -48,4 +48,16 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
 
         return result;
     }
+
+    [HttpGet("{languageId}")]
+    public async Task<PagedList<ApplicationTranslationOutputWithOriginalPhrase>> GetTranslationsForLanguage(
+        [FromRoute] Guid applicationId, 
+        [FromRoute] string languageId, 
+        [FromQuery] PagingQuery query)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        return await _applicationLanguageManager.GetTranslationsForApplicationForLanguage<ApplicationTranslationOutputWithOriginalPhrase>(
+            applicationId, languageId, query);
+    }
 }

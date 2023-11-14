@@ -6,6 +6,7 @@
 
 using System;
 using System.Threading.Tasks;
+using TranslationPro.Base.Entities;
 using TranslationPro.Base.Services;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
@@ -61,5 +62,12 @@ public class ApplicationLanguageManager
     public Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
     {
         return _applicationLanguageService.RemoveLanguageFromApplication(applicationId, languageId);
+    }
+
+    public Task<PagedList<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId,
+        PagingQuery paging) where T : ApplicationTranslationOutput
+    {
+        return _applicationTranslationService.GetTranslationsForApplicationForLanguage<T>(applicationId, languageId,
+            paging);
     }
 }

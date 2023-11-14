@@ -18,14 +18,14 @@
             </li>
             <li class="breadcrumb-item">
                 <NavLink href="@{
-                                                           $"/applications/{ApplicationId}"
-                                                       }">@Application.Name</NavLink>
+                $"/applications/{ApplicationId}"
+}">@Application.Name</NavLink>
             </li>
 
             <li class="breadcrumb-item">
                 <NavLink href="@{
-                                                           $"/applications/{ApplicationId}/phrases/{PhraseId}"
-                                                       }">@ApplicationPhrase.Text</NavLink>
+                $"/applications/{ApplicationId}/phrases/{PhraseId}"
+}">@ApplicationPhrase.Id</NavLink>
             </li>
 
             <li class="breadcrumb-item active" aria-current="page">Manage Translation: @ApplicationTranslation.LanguageName</li>
@@ -34,7 +34,7 @@
 }
 
 
-@if (ApplicationTranslation != null)
+@if (ApplicationTranslation != null && ApplicationPhrase != null)
 {
     <div class="row mb-5">
         <div class="col-6">
@@ -52,7 +52,6 @@
                     <p class="card-text">
                         @ApplicationTranslation.Text
                     </p>
-
                 </div>
             </div>
         </div>

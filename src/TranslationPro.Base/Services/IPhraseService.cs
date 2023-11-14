@@ -18,4 +18,5 @@ public interface IPhraseService : IService<Phrase>
 {
     Task<Result> EnsurePhraseWithLanguages(PhraseCreateOptions options);
     Task<int> EnsurePhrasesWithLanguage(Guid applicationId, string languageId, int[] phraseIds);
+    
 }

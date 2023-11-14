@@ -1,0 +1,54 @@
+﻿@page "/applications/{ApplicationId:guid}/languages/{LanguageId}"
+@inherits ApplicationDetailsBase
+
+<h3>Manage Language (@LanguageId)</h3>
+
+@if (Translations == null)
+{
+    <p>Loading Translations...</p>
+}
+else
+{
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <NavLink href="@{
+                                                           $"/applications"
+                                                       }">Applications</NavLink>
+            </li>
+            <li class="breadcrumb-item">
+                <NavLink href="@{
+                                                           $"/applications/{ApplicationId}"
+                                                       }">@Application.Name</NavLink>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Language: @LanguageId</li>
+        </ol>
+    </nav>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Original </th>
+            <th>Translated</th>
+        </tr>
+        
+        </thead>
+        
+        <tbody>
+        
+        @foreach (var translation in Translations.Items)
+        {
+            <tr>
+                    <td>@translation.Phrase</td>
+                    <td>@translation.Text</td>
+            </tr>
+        }
+
+        </tbody>
+
+    </table>
+}
+
+@code {
+
+}
