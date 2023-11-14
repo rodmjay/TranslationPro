@@ -76,6 +76,7 @@ public class PhraseManager
             var result = await _applicationPhraseService.CreateApplicationPhrase(applicationId, phraseId, input).ConfigureAwait(false);
             if (result.Succeeded)
             {
+
                 retVal.Succeeded = true;
                 retVal.PhraseId = int.Parse(result.Id.ToString());
                 retVal.TranslationsCreated = await _machineTranslationService.ProcessTranslationsAsync(applicationId);

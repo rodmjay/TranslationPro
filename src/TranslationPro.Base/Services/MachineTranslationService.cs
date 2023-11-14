@@ -32,6 +32,7 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
     private readonly PhraseErrorDescriber _phraseErrors;
     private readonly ILogger<MachineTranslationService> _logger;
     private readonly IRepositoryAsync<Phrase> _phraseRepository;
+    private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhraseRepository;
     private readonly TranslationErrorDescriber _translationErrors;
     private readonly MicrosoftTranslationService _microsoftService;
     private readonly GoogleTranslationService _googleService;
@@ -46,12 +47,17 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
         _microsoftService = microsoftService;
         _googleService = googleService;
         _phraseErrors = phraseErrors;
+        _applicationPhraseRepository = UnitOfWork.RepositoryAsync<ApplicationPhrase>();
         _logger = logger;
         _phraseRepository = UnitOfWork.RepositoryAsync<Phrase>();
     }
-
+    
     private IQueryable<Phrase> Phrases =>
         _phraseRepository.Queryable();
+
+    private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
+        .Include(x => x.Phrase)
+        .ThenInclude(x => x.MachineTranslations);
 
     private async Task<int> SaveTranslationsAsync(Dictionary<string, List<GenericTranslationResult>> input, TranslationEngine engine)
     {
@@ -128,15 +134,16 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
         return retVal;
     }
 
-    private async Task<Dictionary<string, List<string>>> GetPendingTranslationsAsync(Guid applicationId, TranslationEngine engine)
+    private async Task<Dictionary<string, List<string>>> GetPendingTranslationsAsync(
+        Guid applicationId, TranslationEngine engine)
     {
-        var machineTranslations = await Repository.Queryable()
+        var mt = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
+            .Select(x => x.Phrase).SelectMany(x=>x.MachineTranslations)
             .Where(x => x.Text == null && x.TranslationDate == null && x.EngineId == engine)
-            .Include(x => x.Phrase)
-            .ThenInclude(x => x.Applications.Where(a => a.ApplicationId == applicationId))
+            .Include(x=>x.Phrase)
             .ToListAsync();
 
-        var dictionary = machineTranslations.GroupBy(x => x.LanguageId)
+        var dictionary = mt.GroupBy(x => x.LanguageId)
             .ToDictionary(x => x.Key, x => x.Select(a => a.Phrase.Text).ToList());
 
         return dictionary;
