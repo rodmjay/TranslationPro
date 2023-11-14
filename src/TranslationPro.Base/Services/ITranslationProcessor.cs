@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 

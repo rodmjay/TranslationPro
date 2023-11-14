@@ -34,6 +34,8 @@ namespace TranslationPro.App.Shared
 
         public ApplicationOutput Application { get; set; }
 
+        private bool Disabled { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             await LoadData();
@@ -42,18 +44,22 @@ namespace TranslationPro.App.Shared
         public async Task LoadData()
         {
             this.Application = null;
-            Languages = await LanguagesController.GetLanguagesAsync();
-            Application = await ApplicationsController.GetApplicationAsync(ApplicationId);
+            this.Disabled = true;
+            Languages = await LanguagesController.GetLanguagesAsync().ConfigureAwait(true);
+            Application = await ApplicationsController.GetApplicationAsync(ApplicationId).ConfigureAwait(true);
+
+            this.Disabled = false;
         }
 
         private async Task HandleEnableClick(string langage)
         {
+            this.Disabled = true;
             var result = await ApplicationLanguagesController.AddLanguageToApplicationAsync(ApplicationId,
                 new ApplicationLanguageOptions()
                 {
                     Language = langage
                 });
-
+            
             await OnInitializedAsync();
             await LanguagesChanged.InvokeAsync();
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 

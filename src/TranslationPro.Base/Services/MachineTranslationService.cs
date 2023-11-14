@@ -18,6 +18,7 @@ using TranslationPro.Base.Entities;
 using TranslationPro.Base.Errors;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
+using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 
