@@ -58,7 +58,8 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
 
         foreach (var language in application.EnabledLanguages())
         {
-            var machineTranslation = applicationPhrase.Phrase.MachineTranslations.FirstOrDefault(x => x.LanguageId == language);
+            var machineTranslation = applicationPhrase.Phrase.MachineTranslations
+                .OrderByDescending(x => x.Weight).FirstOrDefault(x => x.LanguageId == language);
 
             if (machineTranslation != null)
             {
@@ -81,7 +82,7 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
         {
             retVal = _applicationPhraseRepository.Update(applicationPhrase, true);
         }
-        
+
         return retVal;
     }
 

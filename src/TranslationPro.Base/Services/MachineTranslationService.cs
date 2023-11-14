@@ -101,7 +101,7 @@ public class MachineTranslationService : BaseService<MachineTranslation>, IMachi
             phrase.ObjectState = ObjectState.Modified;
 
             oldTranslation.Weight -= 1;
-            oldTranslation.ObjectState = newTranslation.ObjectState;
+            oldTranslation.ObjectState = ObjectState.Modified;
 
             newTranslation.Weight += 1;
             newTranslation.ObjectState = ObjectState.Modified;
