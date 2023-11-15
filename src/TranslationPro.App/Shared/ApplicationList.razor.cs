@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -17,9 +16,7 @@ public partial class ApplicationList
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-
-    [Inject]
-    public IIWLocalStorageService LocalStorage { get; set; }
+    
     public IEnumerable<ApplicationOutput> Apps { get; set; }
 
     [Inject]

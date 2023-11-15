@@ -17,7 +17,6 @@ using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
-using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using TranslationPro.App.Extensions;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;

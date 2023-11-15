@@ -10,7 +10,6 @@ using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
-using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Base.Services;
 

@@ -1,0 +1,16 @@
+﻿
+<div class="card">
+
+    <div class="card-body">
+        <h5 class="card-title text-center">@Title</h5>
+
+        @Body
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment Body { get; set; }
+}

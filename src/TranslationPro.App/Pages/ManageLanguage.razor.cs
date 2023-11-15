@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using TranslationPro.App.Bases;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
-using TranslationPro.Shared.Proxies;
 
 namespace TranslationPro.App.Pages
 {
@@ -19,15 +19,27 @@ namespace TranslationPro.App.Pages
 
         public PagedList<ApplicationTranslationOutputWithOriginalPhrase> Translations { get; set; }
 
-
-        protected override async Task OnParametersSetAsync()
+        private readonly PagingQuery _paging = new();
+        protected override async Task OnInitializedAsync()
         {
-            await base.OnParametersSetAsync();
+            await LoadData();
+        }
 
+        protected override async Task LoadData()
+        {
+            await base.LoadData();
             Translations =
                 await ApplicationLanguagesProxy.GetTranslationsForLanguage(ApplicationId, LanguageId,
-                    new PagingQuery());
+                    _paging);
+
+            StateHasChanged();
         }
-        
+
+        private async Task Callback(int page)
+        {
+            _paging.Page = page;
+            await LoadData();
+        }
+
     }
 }

@@ -38,51 +38,43 @@
 {
     <div class="row mb-5">
         <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">English</h5>
+            <Card Title="English">
+                <Body>
                     <p class="card-text">@ApplicationPhrase.Text</p>
-                </div>
-            </div>
+                </Body>
+            </Card>
         </div>
         <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@ApplicationTranslation.LanguageName</h5>
-                    <p class="card-text">
-                        @ApplicationTranslation.Text
-                    </p>
-                </div>
-            </div>
+
+            <Card Title="@ApplicationTranslation.LanguageName">
+                <Body>
+                <p class="card-text">
+                    @ApplicationTranslation.Text
+                </p>
+                </Body>
+            </Card>
+            
         </div>
     </div>
     <div class="row">
-        <table class="table table-striped">
 
-            <thead>
-                <tr>
-                    <th>Text</th>
-                    <th>Engine</th>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var translation in ApplicationPhrase.MachineTranslations[LanguageId])
-                {
-                    <tr>
-                        <td>@translation.Text</td>
-                        <td>@translation.Engine</td>
-                        <td class="btn-group-sm">
-                            <button @onclick="()=>Callback(translation.Text)"
-                                    class="btn btn-outline-primary">
-                                Use This Translation
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
+        <CommonTable Items="ApplicationPhrase.MachineTranslations[LanguageId]">
+            <Header>
+            <th>Text</th>
+            <th>Engine</th>
+            <td></td>
+            </Header>
+            <Body>
+            <td>@context.Text</td>
+            <td>@context.Engine</td>
+            <td class="btn-group-sm">
+                <button @onclick="() => Callback(context.Text)"
+                        class="btn btn-outline-primary">
+                    Use This Translation
+                </button>
+            </td>
+            </Body>
+        </CommonTable>
     </div>
 
     @*

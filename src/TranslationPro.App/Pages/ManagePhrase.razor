@@ -22,41 +22,45 @@ else
     @if (ApplicationPhrase != null)
     {
         
-        <h3>@ApplicationPhrase.Id: @ApplicationPhrase.Text</h3>
-        <table class="table table-striped">
-            <thead>
-            <tr>
+        <h3>@ApplicationPhrase.Text</h3>
+
+
+        <CommonTable Items="ApplicationPhrase.Translations">
+            <Header>
                 <th>Language</th>
                 <th>Text</th>
                 <td>Machine Translations</td>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var translation in ApplicationPhrase.Translations)
-            {
-                <tr>
-                    <th>
-                        <NavLink href="@{$"/applications/{ApplicationId}/languages/{@translation.LanguageId}"}">
-                            
-                            @translation.LanguageName
-                        </NavLink>
+               
+            </Header>
+            <Body>
+            <th>
+                <NavLink href="@{$"/applications/{ApplicationId}/languages/{@context.LanguageId}"}">
+
+                        @context.LanguageName
+                </NavLink>
                         
-                    </th>
-                    <td>@translation.Text</td>
-                    <td>@ApplicationPhrase.MachineTranslationCount[translation.LanguageId]</td>
-                    <td class="btn-group">
-                        <NavLink href="@{
-                                           $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{translation.LanguageId}"
-                                       }"
-                                 class="btn btn-outline-primary">
-                            Edit
-                        </NavLink>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+            </th>
+            <td>
+                <NavLink href="@{
+                                   $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
+                               }">
+                    @context.Text
+                </NavLink>
+               
+            </td>
+            <td>
+
+                <NavLink href="@{
+                                   $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
+                               }">
+                    @ApplicationPhrase.MachineTranslationCount[context.LanguageId]
+                </NavLink>
+                
+            </td>
+          
+            </Body>
+        </CommonTable>
+        
     }
 }
 

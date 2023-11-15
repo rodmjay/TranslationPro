@@ -6,7 +6,6 @@
 
 using System;
 using System.Threading.Tasks;
-using TranslationPro.Base.Entities;
 using TranslationPro.Base.Services;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;

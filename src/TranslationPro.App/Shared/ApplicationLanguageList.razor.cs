@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
-using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using TranslationPro.App.Extensions;
 
 namespace TranslationPro.App.Shared

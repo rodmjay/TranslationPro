@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
