@@ -9,7 +9,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Shared
 {
-    public partial class ApplicationSelector
+    public partial class ApplicationSelector : ComponentBase
     {
         [Inject]
         public NavigationManager NavigationManager { get;set; }

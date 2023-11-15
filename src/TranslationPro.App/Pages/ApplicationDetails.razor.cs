@@ -18,7 +18,7 @@ namespace TranslationPro.App.Pages
         public PagedList<ApplicationPhraseOutput> Phrases { get; set; }
 
 
-        private PagingQuery _paging = new();
+        private readonly PagingQuery _paging = new();
 
         protected override async Task LoadData()
         {

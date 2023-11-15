@@ -39,41 +39,42 @@
     <div class="row mb-5">
         <div class="col-6">
             <Card Title="English">
-                <Body>
-                    <p class="card-text">@ApplicationPhrase.Text</p>
-                </Body>
+                <p class="card-text">@ApplicationPhrase.Text</p>
             </Card>
         </div>
         <div class="col-6">
 
             <Card Title="@ApplicationTranslation.LanguageName">
-                <Body>
                 <p class="card-text">
                     @ApplicationTranslation.Text
                 </p>
-                </Body>
             </Card>
-            
         </div>
     </div>
     <div class="row">
 
         <CommonTable Items="ApplicationPhrase.MachineTranslations[LanguageId]">
-            <Header>
-            <th>Text</th>
-            <th>Engine</th>
-            <td></td>
-            </Header>
-            <Body>
-            <td>@context.Text</td>
-            <td>@context.Engine</td>
-            <td class="btn-group-sm">
-                <button @onclick="() => Callback(context.Text)"
-                        class="btn btn-outline-primary">
-                    Use This Translation
-                </button>
-            </td>
-            </Body>
+            <HeaderTemplate>
+                <th>Text</th>
+                <th>Engine</th>
+                <td></td>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <td>@context.Text</td>
+                <td>@context.Engine</td>
+                <td>
+                    
+                    @if (@context.Text != @ApplicationTranslation.Text)
+                    {
+                        
+                        <button @onclick="() => Callback(context.Text)"
+                                class="btn btn-outline-primary">
+                            Use This Translation
+                        </button>
+                    }
+
+                </td>
+            </ItemTemplate>
         </CommonTable>
     </div>
 

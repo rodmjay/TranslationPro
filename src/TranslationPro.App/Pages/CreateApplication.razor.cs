@@ -1,50 +1,50 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using TranslationPro.App.Bases;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Pages
 {
-    
-    public partial class CreateApplication
+    public partial class CreateApplication : AuthenticatedBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-
-        [CascadingParameter]
-        public IApplicationsController ApplicationsController { get; set; }
-
         [Inject]
         public ILanguagesController LanguagesController { get; set; }
 
-        public ApplicationCreateOptions Input { get; set; } = new ApplicationCreateOptions();
+        public ApplicationCreateOptions Input { get; set; } = new();
          
         private List<LanguageOutput> Languages { get; set; }
 
-        private List<string> selection = new();
-        protected override async Task OnInitializedAsync()
+        private readonly List<string> selection = new();
+
+        protected override async Task LoadData()
         {
+            await base.LoadData();
+
             Languages = await LanguagesController.GetLanguagesAsync();
+
+            NavigationItems.Add(new NavigationItem()
+            {
+                Title = "Create Application"
+            });
         }
 
-
-        private async void OnChangeSelection(ChangeEventArgs e)
+        private void OnChangeSelection(ChangeEventArgs e)
         {
             selection.Clear();
-            var items = (e.Value as string[]);
-            if (items != null)
-                foreach (var item in items)
-                {
-                    selection.Add(item);
-                }
+            if (e.Value is not string[] items) return;
+            foreach (var item in items)
+            {
+                selection.Add(item);
+            }
         }
 
         private async Task HandleSubmit()
         {
             Input.Languages = selection.ToArray();
 
-            var result = await ApplicationsController.CreateApplicationAsync(Input);
+            var result = await ApplicationService.CreateApplicationAsync(Input);
 
             if (result.Succeeded)
             {

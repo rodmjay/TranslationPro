@@ -1,15 +1,8 @@
 ﻿@page "/applications/create"
 @layout ApplicationLayout
-@code {
-   
-}
+@inherits AuthenticatedBase
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
-        <li class="breadcrumb-item active" aria-current="page">Create Application</li>
-    </ol>
-</nav>
+<Breadcrumb NavigationItems="NavigationItems"/>
 
 <EditForm Model="Input" OnSubmit="HandleSubmit">
     <DataAnnotationsValidator />

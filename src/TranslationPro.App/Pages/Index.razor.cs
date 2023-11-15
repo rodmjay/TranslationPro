@@ -6,7 +6,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Pages
 {
-    public partial class Index
+    public partial class Index : ComponentBase
     {
         [Inject]
         public ILanguagesController LanguagesController { get; set; }

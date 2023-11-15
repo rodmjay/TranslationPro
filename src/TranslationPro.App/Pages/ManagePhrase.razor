@@ -7,60 +7,60 @@
 }
 else
 {
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><NavLink href="@{
-                                                           $"/applications"
-                                                       }">Applications</NavLink></li>
-            <li class="breadcrumb-item"><NavLink href="@{
-                                                           $"/applications/{ApplicationId}"
-                                                       }">@Application.Name</NavLink></li>
-            <li class="breadcrumb-item active" aria-current="page">@ApplicationPhrase.Id</li>
-        </ol>
-    </nav>
+
 
     @if (ApplicationPhrase != null)
     {
         
-        <h3>@ApplicationPhrase.Text</h3>
+        <Breadcrumb NavigationItems="NavigationItems"></Breadcrumb>
 
+
+
+        <Card Title="English">
+            
+            <h3>@ApplicationPhrase.Text</h3>
+
+        </Card>
+        <br/>
 
         <CommonTable Items="ApplicationPhrase.Translations">
-            <Header>
+            <HeaderTemplate>
                 <th>Language</th>
                 <th>Text</th>
                 <td>Machine Translations</td>
-               
-            </Header>
-            <Body>
-            <th>
-                <NavLink href="@{$"/applications/{ApplicationId}/languages/{@context.LanguageId}"}">
+
+            </HeaderTemplate>
+            <ItemTemplate>
+                <th>
+                    <NavLink href="@{
+                $"/applications/{ApplicationId}/languages/{@context.LanguageId}"
+}">
 
                         @context.LanguageName
-                </NavLink>
-                        
-            </th>
-            <td>
-                <NavLink href="@{
-                                   $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
-                               }">
-                    @context.Text
-                </NavLink>
-               
-            </td>
-            <td>
+                    </NavLink>
 
-                <NavLink href="@{
+                </th>
+                <td>
+                    <NavLink href="@{
                                    $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
                                }">
-                    @ApplicationPhrase.MachineTranslationCount[context.LanguageId]
-                </NavLink>
-                
-            </td>
-          
-            </Body>
+                        @context.Text
+                    </NavLink>
+
+                </td>
+                <td>
+
+                    <NavLink href="@{
+                                   $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
+                               }">
+                        @ApplicationPhrase.MachineTranslationCount[context.LanguageId]
+                    </NavLink>
+
+                </td>
+
+            </ItemTemplate>
         </CommonTable>
-        
+
     }
 }
 

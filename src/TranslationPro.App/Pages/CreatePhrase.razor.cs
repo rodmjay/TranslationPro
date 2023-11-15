@@ -8,13 +8,21 @@ namespace TranslationPro.App.Pages
 {
     public partial class CreatePhrase : ApplicationDetailsBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-
+        
         public PhraseOptions Input { get; set; } = new PhraseOptions();
 
         [Inject]
         public IPhrasesController PhraseProxy { get; set; }
+
+        protected override async Task LoadData()
+        {
+            await base.LoadData();
+            NavigationItems.Add(new NavigationItem()
+            {
+                Title = "Create Phrase",
+                Url = $"/applications/{ApplicationId}/phrases/create"
+            });
+        }
 
         private async Task HandleSubmit()
         {

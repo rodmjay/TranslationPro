@@ -18,12 +18,12 @@
 </ul>
 
 <CommonTable Items="PagedList.Items">
-    <Header>
-        @Header
-    </Header>
-    <Body>
-        @Body(context)
-    </Body>
+    <HeaderTemplate>
+        @HeaderTemplate
+    </HeaderTemplate>
+    <ItemTemplate>
+        @ItemTemplate(context)
+    </ItemTemplate>
 </CommonTable>
 
 @code {
@@ -35,10 +35,10 @@
     public PagedList<TItem> PagedList { get; set; }
 
     [Parameter]
-    public RenderFragment Header { get; set; }
+    public RenderFragment HeaderTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment<TItem> Body { get; set; }
+    public RenderFragment<TItem> ItemTemplate { get; set; }
 
     public void ChangePage(int page)
     {

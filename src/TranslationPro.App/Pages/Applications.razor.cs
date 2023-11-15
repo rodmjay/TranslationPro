@@ -3,24 +3,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
+using TranslationPro.App.Bases;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Pages
 {
-    public partial class Applications
+    public partial class Applications : AuthenticatedBase
     {
-        [CascadingParameter]
-        Task<AuthenticationState> authenticationStateTask { get; set; }
-
         public IEnumerable<ApplicationOutput> Apps { get; set; }
 
-        [Inject]
-        public IApplicationsController ApplicationService { get; set; }
-
-        protected override async Task OnInitializedAsync()
+        protected override async Task LoadData()
         {
-            Apps = (await ApplicationService!.GetApplicationsAsync()).ToList();
+            await base.LoadData();
+            Apps = await ApplicationService.GetApplicationsAsync();
         }
     }
 }

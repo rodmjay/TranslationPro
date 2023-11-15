@@ -1,5 +1,5 @@
 ﻿@page "/applications/{ApplicationId:guid}/users"
-@inherits ApplicationDetailsBase
+@inherits ApplicationUsersBase
 @layout ApplicationLayout
 
 @if (Application == null)
@@ -8,43 +8,33 @@
 }
 else
 {
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><NavLink href="@{$"/applications"}">Applications</NavLink></li>
-            <li class="breadcrumb-item"><NavLink href="@{$"/applications/{ApplicationId}"}">@Application.Name</NavLink></li>
-            <li class="breadcrumb-item active" aria-current="page">Users</li>
-        </ol>
-    </nav>
+    <Breadcrumb NavigationItems="NavigationItems"></Breadcrumb>
+
     <p>
         <NavLink class="btn btn-primary" href="@{$"/applications/{ApplicationId}/users/invite"}">Invite User</NavLink>
     </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var user in Application.Users)
-        {
-            <tr>
-                    <td>@user.Name</td>
-                <td>@user.Status</td>
-                    <td class="btn-group-sm">
-                        <a href="#"
-                           class="btn btn-outline-primary">
-                            Edit
-                        </a>
-                        <button class="btn btn-outline-danger">
-                            Delete
-                        </button>
-                    </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+
+    <CommonTable Items="Application.Users">
+        <HeaderTemplate>
+            <th>Name</th>
+            <th>Status</th>
+            <th></th>
+        </HeaderTemplate>
+        <ItemTemplate>
+            <td>@context.Name</td>
+            <td>@context.Status</td>
+            <td class="btn-group-sm">
+                <a href="#"
+                   class="btn btn-outline-primary">
+                    Edit
+                </a>
+                <button class="btn btn-outline-danger">
+                    Delete
+                </button>
+            </td>
+        </ItemTemplate>
+    </CommonTable>
+    
 }
 
 @code {

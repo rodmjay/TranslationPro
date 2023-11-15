@@ -9,7 +9,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Shared;
 
-public partial class ApplicationList
+public partial class ApplicationList : ComponentBase
 {
     [CascadingParameter]
     Task<AuthenticationState> authenticationStateTask { get; set; }

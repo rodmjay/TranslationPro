@@ -8,19 +8,20 @@ namespace TranslationPro.App.Pages
 {
     public partial class InviteUser : ApplicationDetailsBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-
-        public ApplicationUserCreateOptions Input { get; set; } = new ApplicationUserCreateOptions();
+        public ApplicationUserCreateOptions Input { get; set; } = new();
 
         [Inject]
         public IApplicationUsersController ApplicationsUsersController { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task LoadData()
         {
-            await base.OnInitializedAsync();
-        }
+            await  base.LoadData();
 
+            NavigationItems.Add(new NavigationItem()
+            {
+                Title = "Invite User"
+            });
+        }
 
         private async Task HandleSubmit()
         {

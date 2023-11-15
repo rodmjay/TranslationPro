@@ -6,21 +6,15 @@
 
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Bases;
 
-public class PhraseDetailsBase : ComponentBase
+public class PhraseDetailsBase : ApplicationDetailsBase
 {
-    [Parameter]
-    public Guid ApplicationId { get; set; }
-
-    [CascadingParameter]
-    public IApplicationsController ApplicationService { get; set; }
-
-    protected ApplicationOutput Application;
 
     [Inject]
     public IPhrasesController PhrasesController { get; set; }
@@ -28,16 +22,17 @@ public class PhraseDetailsBase : ComponentBase
     [Parameter]
     public int PhraseId { get; set; }
 
-    public ApplicationPhraseDetails ApplicationPhrase { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected ApplicationPhraseDetails ApplicationPhrase { get; set; }
+    
+    protected override async Task LoadData()
     {
-        await LoadData();
-    }
-
-    protected virtual async Task LoadData()
-    {
-        Application = await ApplicationService.GetApplicationAsync(ApplicationId);
+        await base.LoadData();
         ApplicationPhrase = await PhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
+
+        this.NavigationItems.Add(new NavigationItem()
+        {
+            Title = ApplicationPhrase.Id.ToString(),
+            Url = $"/applications/{Application.Id}/phrases/{ApplicationPhrase.Id}"
+        });
     }
 }

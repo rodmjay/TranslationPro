@@ -8,7 +8,7 @@ using TranslationPro.App.Extensions;
 
 namespace TranslationPro.App.Shared
 {
-    public partial class ApplicationLanguageList
+    public partial class ApplicationLanguageList : ComponentBase
     {
         [Inject]
         public IApplicationsController ApplicationsController { get; set; }

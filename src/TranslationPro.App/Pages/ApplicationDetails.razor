@@ -8,14 +8,7 @@
 }
 else
 {
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><NavLink href="@{
-                $"/applications"
-}">Applications</NavLink></li>
-            <li class="breadcrumb-item active" aria-current="page">@Application.Name</li>
-        </ol>
-    </nav>
+    <Breadcrumb NavigationItems="NavigationItems"></Breadcrumb>
 
 
     <p>
@@ -26,31 +19,23 @@ else
     </p>
     <div class="row">
         <div class="col-sm-3 mb-5">
-            <Card Title="Phrases">
-                <Body>
-                    <h1 class="display-6 text-center">@Application.PhraseCount</h1>
-                </Body>
+            <Card Title="Phrases" TitleCssClass="text-center">
+                <h1 class="display-6 text-center">@Application.PhraseCount</h1>
             </Card>
         </div>
         <div class="col-sm-3 mb-5">
-            <Card Title="Languages">
-                <Body>
-                    <h1 class="display-6 text-center">@Application.Languages.Count</h1>
-                </Body>
+            <Card Title="Languages" TitleCssClass="text-center">
+                <h1 class="display-6 text-center">@Application.Languages.Count</h1>
             </Card>
         </div>
         <div class="col-sm-3 mb-5">
-            <Card Title="Users">
-                <Body>
-                    <h1 class="display-6 text-center">@Application.Users.Count</h1>
-                </Body>
+            <Card Title="Users" TitleCssClass="text-center">
+                <h1 class="display-6 text-center">@Application.Users.Count</h1>
             </Card>
         </div>
         <div class="col-sm-3 mb-5">
-            <Card Title="Translations">
-                <Body>
-                    <h1 class="display-6 text-center">@Application.TranslationCount</h1>
-                </Body>
+            <Card Title="Translations" TitleCssClass="text-center">
+                <h1 class="display-6 text-center">@Application.TranslationCount</h1>
             </Card>
 
         </div>
@@ -67,21 +52,23 @@ else
                 <h3>Phrases (@Phrases.TotalItems)</h3>
 
                 <PagingTable PagedList="Phrases" PageChanged="HandlePageNavigation">
-                    <Header>
-                    <th>Id</th>
-                    <th>Phrase</th>
-                    <th>Translations</th>
-                    </Header>
-                    <Body>
-                    <td>@context.Id</td>
-                    <td>
-                        <NavLink href="@{$"/applications/{ApplicationId}/phrases/{@context.Id}"}">
-                            @context.Text
-                        </NavLink>
-                    </td>
-                    <td>@context.TranslationCount</td>
-                   
-                    </Body>
+                    <HeaderTemplate>
+                        <th>Id</th>
+                        <th>Phrase</th>
+                        <th>Translations</th>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <td>@context.Id</td>
+                        <td>
+                            <NavLink href="@{
+                        $"/applications/{ApplicationId}/phrases/{@context.Id}"
+}">
+                                @context.Text
+                            </NavLink>
+                        </td>
+                        <td>@context.TranslationCount</td>
+
+                    </ItemTemplate>
                 </PagingTable>
             }
 
@@ -112,15 +99,14 @@ else
                         <div class="accordion-body">
 
                             <CommonTable Items="Application.Users">
-                                <Header>
-                                <th>Name</th>
-                                <th>Status</th>
-                                </Header>
-                                <Body>
-                                <td>@context.Name</td>
-                                <td>@context.Status</td>
-
-                                </Body>
+                                <HeaderTemplate>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <td>@context.Name</td>
+                                    <td>@context.Status</td>
+                                </ItemTemplate>
                             </CommonTable>
 
                         </div>
