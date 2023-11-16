@@ -39,6 +39,7 @@ public static class IdentityBuilderExtensions
                 options.EmitStaticAudienceClaim = true;
 
                 options.UserInteraction.LoginUrl = "/Account/Login";
+
             })
             .AddConfigurationStore<ApplicationContext>(options =>
             {

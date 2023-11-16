@@ -18,7 +18,7 @@ public class IdentityController : BaseController
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public IActionResult GetIdentity()
     {
         return new JsonResult(from c in User.Claims select new {c.Type, c.Value});
     }

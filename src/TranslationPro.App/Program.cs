@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TranslationPro.App.Extensions;
+using TranslationPro.App.Services;
 using TranslationPro.Shared.Policies;
 
 namespace TranslationPro.App;
@@ -24,6 +25,7 @@ public class Program
             builder.Configuration.Bind("OidcConfiguration", options.ProviderOptions);
             builder.Configuration.Bind("UserOptions", options.UserOptions);
             builder.Configuration.Bind("AuthenticationPaths", options.AuthenticationPaths);
+
         });
 
         builder.Services.AddAuthorizationCore(authorizationOptions =>
@@ -32,6 +34,9 @@ public class Program
                 Policies.CanAccessApis,
                 Policies.CanAccessApi());
         });
+
+        builder.Services.AddSingleton<SessionStorageInterop>();
+        builder.Services.AddScoped<TokenExpirationService>();
 
         await builder.Build().RunAsync();
     }

@@ -31,15 +31,4 @@ public static class AppBuilderExtensions
 
         return builder;
     }
-
-    public static WebAppBuilder AddSession(this WebAppBuilder builder)
-    {
-        builder.Services.AddSession(options =>
-        {
-            //options.IdleTimeout = TimeSpan.FromSeconds(1000);
-            options.Cookie.HttpOnly = true;
-            options.Cookie.IsEssential = true;
-        });
-        return builder;
-    }
 }

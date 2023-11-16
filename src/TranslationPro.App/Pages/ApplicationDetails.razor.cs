@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 using TranslationPro.App.Bases;
-using TranslationPro.App.Shared;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Interfaces;

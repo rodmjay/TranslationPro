@@ -5,8 +5,6 @@
 #endregion
 
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
