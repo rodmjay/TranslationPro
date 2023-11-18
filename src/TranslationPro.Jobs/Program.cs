@@ -1,37 +1,76 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Azure;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Middleware.Extensions;
+using TranslationPro.Base.Extensions;
+using TranslationPro.Base.Stripe.Extensions;
 
-namespace TranslationPro.Jobs;
 
-public class Program
-{
-    public static void Main(string[] args)
+var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureAppConfiguration(configure =>
     {
-        CreateHostBuilder(args).Build().Run();
-    }
+        var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var assembly = typeof(HostBuilderExtensions).Assembly;
 
-    public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-        .ConfigureFunctionsWorkerDefaults()
-        .ConfigureAppConfiguration(x =>
-        {
-            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        configure.AddEmbeddedJsonFile(assembly, "sharedSettings.json")
+                        .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
+                        .AddJsonFile("appsettings.json", true).AddJsonFile($"appsettings.{environmentName}.json", true)
+                        .AddEnvironmentVariables()
+                        .Build();
+    })
+    .ConfigureServices((context,services) =>
+    {
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.ConfigureFunctionsApplicationInsights();
+        services.ConfigureApp(context.Configuration)
+            .AddDatabase<ApplicationContext>()
+            .AddAutomapperProfilesFromAssemblies()
+            .AddCaching()
+            .AddTranslationProDependencies()
+            .AddStripeDependencies();
+    })
+    .Build();
 
-            var assembly = typeof(HostBuilderExtensions).Assembly;
+host.Run();
 
-            x.AddEmbeddedJsonFile(assembly, "sharedSettings.json")
-                .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile($"appsettings.{environmentName}.json", true)
-                .AddEnvironmentVariables()
-                .Build();
-        })
-        .ConfigureFunctionsWorkerDefaults()
-        .ConfigureWebHostDefaults(x =>
-        { 
-            x.UseStartup<Startup>();
-        });
-}
+
+//public class Program
+//{
+//    public static void Main(string[] args)
+//    {
+//        CreateHostBuilder(args).Build().Run();
+//    }
+
+//    public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
+//        .ConfigureFunctionsWorkerDefaults()
+//        //.ConfigureAppConfiguration(builder =>
+//        //{
+//        //    var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+//        //    var assembly = typeof(HostBuilderExtensions).Assembly;
+
+//        //    builder.AddEmbeddedJsonFile(assembly, "sharedSettings.json")
+//        //        .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
+//        //        .AddJsonFile("appsettings.json", true).AddJsonFile($"appsettings.{environmentName}.json", true)
+//        //        .AddEnvironmentVariables()
+//        //        .Build();
+//        //})
+//        .ConfigureServices((context, services) =>
+//        {
+//            services.AddApplicationInsightsTelemetryWorkerService();
+//            services.ConfigureFunctionsApplicationInsights();
+
+//            //services.ConfigureApp(context.Configuration)
+//            //    .AddDatabase<ApplicationContext>()
+//            //    .AddAutomapperProfilesFromAssemblies()
+//            //    .AddCaching()
+//            //    .AddTranslationProDependencies()
+//            //    .AddStripeDependencies();
+//        })
+//        .ConfigureFunctionsWorkerDefaults();
+//}

@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
-using TranslationPro.Shared.Common;
-
-namespace TranslationPro.Jobs
+﻿namespace TranslationPro.Jobs
 {
     public class StripeFunctions
     {
