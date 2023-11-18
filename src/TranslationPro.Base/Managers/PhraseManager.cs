@@ -15,6 +15,13 @@ using System.Linq;
 
 namespace TranslationPro.Base.Managers;
 
+
+
+public interface IJobProcessor
+{
+
+}
+
 public class PhraseManager
 {
     private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)

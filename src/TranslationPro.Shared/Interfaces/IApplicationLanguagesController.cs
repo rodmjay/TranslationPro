@@ -14,8 +14,7 @@ namespace TranslationPro.Shared.Interfaces;
 
 public interface IApplicationLanguagesController
 {
-    Task<LanguageAddedResult> AddLanguageToApplicationAsync(Guid applicationId,
-        ApplicationLanguageOptions options);
+    Task<Result> AddLanguageToApplicationAsync(Guid applicationId, ApplicationLanguageOptions options);
 
     Task<Result> RemoveLanguageFromApplicationAsync(Guid applicationId,
         string languageId);

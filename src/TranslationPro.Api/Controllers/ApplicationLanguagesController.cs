@@ -29,7 +29,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
     }
 
     [HttpPost]
-    public async Task<LanguageAddedResult> AddLanguageToApplicationAsync([FromRoute] Guid applicationId,
+    public async Task<Result> AddLanguageToApplicationAsync([FromRoute] Guid applicationId,
         [FromBody] ApplicationLanguageOptions options)
     {
         await AssertUserHasAccessToApplication(applicationId);

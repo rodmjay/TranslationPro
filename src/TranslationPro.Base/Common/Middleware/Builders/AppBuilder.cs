@@ -22,7 +22,9 @@ public class AppBuilder
         Configuration = configuration;
         AppSettings = settings;
         AssembliesToMap = new List<string>();
+        AzureServiceBusConnectionString = configuration.GetConnectionString("AzureServiceBusConnection");
     }
+    public string AzureServiceBusConnectionString { get; set; }
 
     public List<string> AssembliesToMap { get; set; }
     public IServiceCollection Services { get; }

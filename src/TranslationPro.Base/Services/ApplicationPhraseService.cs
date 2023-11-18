@@ -79,7 +79,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     public Task<int[]> GetPhraseIdsForApplication(Guid applicationId)
     {
-        return ApplicationPhrases.Select(x => x.PhraseId).ToArrayAsync();
+        return ApplicationPhrases.Where(x=>x.ApplicationId == applicationId).Select(x => x.PhraseId).Distinct().ToArrayAsync();
     }
 
     public async Task<Result> CreateApplicationPhrase(Guid applicationId, int phraseId, PhraseOptions input)

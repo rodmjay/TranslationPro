@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231117013514_JobsAdded")]
+    partial class JobsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1138,7 +1141,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityProviders", (string)null);
+                    b.ToTable("IdentityProviders");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResource", b =>
@@ -4690,7 +4693,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role", (string)null);
+                    b.ToTable("Role");
 
                     b.HasData(
                         new
@@ -4730,7 +4733,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaim", (string)null);
+                    b.ToTable("RoleClaim");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.User", b =>
@@ -4797,7 +4800,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
 
                     b.HasData(
                         new
@@ -4842,7 +4845,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaim", (string)null);
+                    b.ToTable("UserClaim");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.UserLogin", b =>
@@ -4861,7 +4864,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("UserId", "ProviderKey", "LoginProvider");
 
-                    b.ToTable("UserLogin", (string)null);
+                    b.ToTable("UserLogin");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.UserRole", b =>
@@ -4876,7 +4879,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole", (string)null);
+                    b.ToTable("UserRole");
 
                     b.HasData(
                         new
@@ -4907,7 +4910,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserToken", (string)null);
+                    b.ToTable("UserToken");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceClaim", b =>
@@ -5287,7 +5290,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .WithMany("Charges")
                         .HasForeignKey("InvoiceId");
 
-                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeCharge.Outcome#TranslationPro.Base.Stripe.Entities.StripeChargeOutcome", "Outcome", b1 =>
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeChargeOutcome", "Outcome", b1 =>
                         {
                             b1.Property<string>("StripeChargeId")
                                 .HasColumnType("nvarchar(450)");
@@ -5352,7 +5355,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeCustomer.Address#TranslationPro.Base.Stripe.Entities.StripeAddress", "Address", b1 =>
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeAddress", "Address", b1 =>
                         {
                             b1.Property<string>("StripeCustomerId")
                                 .HasColumnType("nvarchar(450)");
@@ -5411,7 +5414,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .WithMany("Invoices")
                         .HasForeignKey("SubscriptionId");
 
-                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeInvoice.CustomerAddress#TranslationPro.Base.Stripe.Entities.StripeAddress", "CustomerAddress", b1 =>
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeAddress", "CustomerAddress", b1 =>
                         {
                             b1.Property<string>("StripeInvoiceId")
                                 .HasColumnType("nvarchar(450)");
@@ -5588,7 +5591,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .WithMany("Prices")
                         .HasForeignKey("ProductId");
 
-                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripePrice.Recurring#TranslationPro.Base.Stripe.Entities.StripePriceRecurring", "Recurring", b1 =>
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripePriceRecurring", "Recurring", b1 =>
                         {
                             b1.Property<string>("StripePriceId")
                                 .HasColumnType("nvarchar(450)");

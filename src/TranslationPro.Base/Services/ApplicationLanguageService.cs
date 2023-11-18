@@ -10,6 +10,7 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Services
@@ -45,6 +46,7 @@ namespace TranslationPro.Base.Services
         public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)
         {
             _logger.LogInformation(GetLogMessage("Adding language: {0} to application: {1}"), options.Language, applicationId);
+
 
             var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 

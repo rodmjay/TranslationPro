@@ -6,6 +6,7 @@
 
 using System;
 using System.Threading.Tasks;
+using TranslationPro.Base.Messaging;
 using TranslationPro.Base.Services;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
@@ -15,47 +16,48 @@ namespace TranslationPro.Base.Managers;
 
 public class ApplicationLanguageManager
 {
-
-
     private readonly IApplicationLanguageService _applicationLanguageService;
     private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly IApplicationTranslationService _applicationTranslationService;
-    private readonly IPhraseService _phraseService;
-    private readonly IMachineTranslationService _machineTranslationService;
+    private readonly JobSender _jobSender;
+    private readonly IJobService _jobService;
 
     public ApplicationLanguageManager(
         IApplicationLanguageService applicationLanguageService,
         IApplicationPhraseService applicationPhraseService,
         IApplicationTranslationService applicationTranslationService,
-        IPhraseService phraseService,
-        IMachineTranslationService machineTranslationService)
+        JobSender jobSender,
+        IJobService jobService)
     {
         _applicationLanguageService = applicationLanguageService;
         _applicationPhraseService = applicationPhraseService;
         _applicationTranslationService = applicationTranslationService;
-        _phraseService = phraseService;
-        _machineTranslationService = machineTranslationService;
+        _jobSender = jobSender;
+        _jobService = jobService;
     }
-    public async Task<LanguageAddedResult> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)
+    public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)
     {
-        var phraseIds = await _applicationPhraseService.GetPhraseIdsForApplication(applicationId);
-        var retVal = new LanguageAddedResult
-        {
-            PhrasesCreated = await _phraseService.EnsurePhrasesWithLanguage(applicationId, options.Language, phraseIds)
-        };
 
-        var result = await _applicationLanguageService.AddLanguageToApplication(applicationId, options);
-        if (result.Succeeded)
+        var addLanguageToApplicationResult = await _applicationLanguageService.AddLanguageToApplication(applicationId, options);
+
+        if (addLanguageToApplicationResult.Succeeded)
         {
-            retVal.Succeeded = true;
-            retVal.TranslationsCreated = await _machineTranslationService.ProcessTranslationsAsync(applicationId);
-            retVal.TranslationsCopied = await _applicationTranslationService.CopyTranslationsFromLanguage(applicationId, options.Language);
+            var createJob = new JobCreateOptions
+            {
+                Languages = new[] { options.Language },
+                Phrases = await _applicationPhraseService.GetPhraseIdsForApplication(applicationId)
+            };
+
+            var createJobResult = await _jobService.CreateJob(applicationId, createJob);
+
+            
+            await _jobSender.SendJobMessage(applicationId, int.Parse(createJobResult.Id.ToString()));
+
+            return createJobResult;
+
         }
-        else
-        {
-            retVal.Errors = result.Errors;
-        }
-        return retVal;
+
+        return addLanguageToApplicationResult;
     }
 
     public Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)

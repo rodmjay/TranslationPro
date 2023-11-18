@@ -18,6 +18,7 @@ public class Language : BaseEntity<Language>, ILanguage
 {
     public ICollection<EngineLanguage> Engines { get; set; }
     public ICollection<ApplicationLanguage> Applications { get; set; }
+    public ICollection<JobLanguage> Jobs { get; set; }
     public string Name { get; set; }
     public string Id { get; set; }
 

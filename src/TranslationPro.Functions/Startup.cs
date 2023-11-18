@@ -17,27 +17,29 @@ namespace TranslationPro.Functions;
 
 public class Startup : FunctionsStartup
 {
-    public override void Configure(IFunctionsHostBuilder builder)
+    public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
     {
         var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+        FunctionsHostBuilderContext context = builder.GetContext();
         var assembly = typeof(HostBuilderExtensions).Assembly;
 
-        var config = new ConfigurationBuilder();
-
-        config
+        var settings = builder.ConfigurationBuilder
             .AddEmbeddedJsonFile(assembly, "sharedSettings.json")
             .AddEmbeddedJsonFile(assembly, $"sharedSettings.{environmentName}.json", true)
             .AddJsonFile("appsettings.json", true)
-            .AddJsonFile($"appsettings.{environmentName}.json", true);
+            .AddJsonFile($"appsettings.{environmentName}.json", true)
+            .AddEnvironmentVariables()
+            .Build();
 
-        config
-            .AddEnvironmentVariables();
+    }
 
-        var appBuilder = builder.Services.ConfigureApp(config.Build())
-            .AddDatabase<ApplicationContext>()
-            .AddAutomapperProfilesFromAssemblies()
-            .AddTranslationProDependencies()
-            .AddTranslationProDependencies()
-            .AddStripeDependencies();
+    public override void Configure(IFunctionsHostBuilder builder)
+    {
+        //var appBuilder = builder.Services.ConfigureApp(builder.GetContext())
+        //    .AddDatabase<ApplicationContext>()
+        //    .AddAutomapperProfilesFromAssemblies()
+        //    .AddTranslationProDependencies()
+        //    .AddStripeDependencies();
     }
 }

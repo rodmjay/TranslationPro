@@ -9,6 +9,7 @@
     }
   },
   "ConnectionStrings": {
+    "AzureServiceBusConnection": "Endpoint=sb://translationpro-sb-development.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3GhrUxam4h9jI1m5iB0GNjodAhIQPTb3G+ASbChBP28=",
     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TranslationPro;Trusted_Connection=True;MultipleActiveResultSets=true"
   },
   "AppSettings": {

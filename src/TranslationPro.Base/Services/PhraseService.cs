@@ -85,6 +85,47 @@ public class PhraseService : BaseService<Phrase>, IPhraseService
         return retVal;
     }
 
+    public async Task<int> EnsurePhraseWithLanguages(int phraseId, string[] inputLanguages)
+    {
+        var retVal = 0;
+
+        var phrase = await Phrases.Where(x => x.Id == phraseId).FirstAsync();
+        var languages = await Languages.Where(x => inputLanguages.Contains(x.Id)).ToListAsync();
+
+        var phraseLanguages = phrase.MachineTranslations.Select(x => x.LanguageId).Distinct().ToList();
+
+        var requiresLanguageAdjustment = false;
+
+        foreach (var lang in inputLanguages)
+        {
+            if (!phraseLanguages.Contains(lang))
+            {
+                requiresLanguageAdjustment = true;
+
+                var language = languages.First(x => x.Id == lang);
+
+                var engines = language.Engines.Select(x => x.Engine).Where(x => x.Enabled).ToList();
+
+                foreach (var engine in engines)
+                {
+                    phrase.MachineTranslations.Add(new MachineTranslation()
+                    {
+                        EngineId = engine.Id,
+                        LanguageId = lang,
+                        ObjectState = ObjectState.Added
+                    });
+                }
+            }
+        }
+
+        if (requiresLanguageAdjustment)
+        {
+            retVal = Repository.Update(phrase, true);
+        }
+       
+        return retVal;
+    }
+
     public async Task<Result> EnsurePhraseWithLanguages(PhraseCreateOptions input)
     {
         var phrase = await Phrases.Where(x => x.Text == input.Text).FirstOrDefaultAsync();

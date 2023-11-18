@@ -30,6 +30,7 @@ public class Phrase : BaseEntity<Phrase>, IPhrase, ISoftDelete, ICreated
 
     public ICollection<ApplicationPhrase> Applications { get; set; }
     public ICollection<MachineTranslation> MachineTranslations { get; set; }
+    public ICollection<JobPhrase> Jobs { get; set; }
 
     public override void Configure(EntityTypeBuilder<Phrase> builder)
     {

@@ -46,6 +46,7 @@ public class Startup
             .AddAutomapperProfilesFromAssemblies()
             .AddCaching()
             .AddUserDependencies()
+            .AddTranslationProUserDependencies()
             .AddTranslationProDependencies()
             .AddStripeDependencies();
         
