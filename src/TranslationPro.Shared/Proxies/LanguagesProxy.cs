@@ -18,20 +18,12 @@ public class LanguagesProxy : BaseProxy, ILanguagesController
         return response.Content.DeserializeObject<List<LanguageOutput>>();
     }
 
-    public async Task<List<LanguagesWithEnginesOutput>> GetAllLanguagesAsync()
+    public async Task<List<LanguageOutput>> GetAllLanguagesAsync()
     {
         var response = await HttpClient.GetAsync($"{LanguageUrl}/all");
 
-        return response.Content.DeserializeObject<List<LanguagesWithEnginesOutput>>();
+        return response.Content.DeserializeObject<List<LanguageOutput>>();
     }
-
-    public async Task<LanguagesWithEnginesOutput> GetLanguageAsync(string languageId)
-    {
-        var response = await HttpClient.GetAsync($"{LanguageUrl}/details?languageId={languageId}");
-
-        return response.Content.DeserializeObject<LanguagesWithEnginesOutput>();
-    }
-
 
     public LanguagesProxy(HttpClient httpClient) : base(httpClient)
     {

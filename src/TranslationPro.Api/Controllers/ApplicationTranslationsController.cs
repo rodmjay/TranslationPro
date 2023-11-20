@@ -17,17 +17,16 @@ using TranslationPro.Shared.Models;
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/phrases/{phraseId}/translations")]
-public class TranslationsController : BaseController, ITranslationsController
+public class ApplicationTranslationsController : BaseController, IApplicationTranslationsController
 {
     private readonly ApplicationTranslationManager _applicationTranslationManager;
 
-    public TranslationsController(IServiceProvider serviceProvider, 
+    public ApplicationTranslationsController(IServiceProvider serviceProvider, 
         ApplicationTranslationManager applicationTranslationManager) : base(
         serviceProvider)
     {
         _applicationTranslationManager = applicationTranslationManager;
     }
-
 
     [HttpPut()]
     public async Task<Result> ReplaceTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId,

@@ -100,13 +100,7 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
         builder.ConfigureResourcesContext(configurationOptions);
         builder.ConfigurePersistedGrantContext(operationalStoreOptions);
     }
-
-    private void SeedEngines(ModelBuilder builder)
-    {
-        builder.Entity<Engine>().Seed("engines.csv");
-        builder.Entity<EngineLanguage>().Seed("engineLanguages.csv");
-    }
-
+    
     private void SeedIdentityServer(ModelBuilder builder)
     {
         builder.Entity<Client>()
@@ -138,7 +132,6 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
         builder.Entity<UserRole>().Seed("userRoles.csv");
     }
 
-
     private void SeedLanguages(ModelBuilder builder)
     {
         builder.Entity<Language>().Seed("languages.csv");
@@ -152,6 +145,5 @@ public class ApplicationContext : BaseContext<ApplicationContext>, IConfiguratio
         SeedIdentityServer(builder);
         SeedLanguages(builder);
         SeedUsersAndRoles(builder);
-        SeedEngines(builder);
     }
 }

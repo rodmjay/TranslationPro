@@ -10,7 +10,6 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Extensions;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Services
@@ -40,7 +39,6 @@ namespace TranslationPro.Base.Services
         private IQueryable<ApplicationLanguage> ApplicationLanguages =>
             Repository.Queryable()
                 .Include(x => x.Translations)
-                .Include(x => x.Language)
                 .Include(x => x.Application);
 
         public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)

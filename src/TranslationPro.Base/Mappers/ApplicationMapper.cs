@@ -16,11 +16,9 @@ public class ApplicationMapper : Profile
     public ApplicationMapper()
     {
         CreateMap<Application, ApplicationOutput>()
-            .ForMember(x => x.SupportedLanguages,
-                opt => opt.MapFrom(x => x.Languages.Select(l => l.LanguageId).Distinct()))
             .ForMember(x => x.PhraseCount, opt => opt.MapFrom(x => x.Phrases.Count))
             .ForMember(x => x.Users, opt => opt.MapFrom(x => x.Users))
-            .ForMember(x => x.Languages, opt => opt.MapFrom(x => x.Languages.Select(al => al.Language)))
+            .ForMember(x => x.Languages, opt => opt.MapFrom(x => x.Languages.Select(al=>al.Language)))
             .ForMember(x => x.TranslationCount,
                 opt => opt.MapFrom(x => x.Phrases.SelectMany(a => a.Translations).Count()));
     }

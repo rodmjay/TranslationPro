@@ -1,26 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Shared.Proxies;
-
-public class TranslationsProxy : BaseProxy, ITranslationsController
+namespace TranslationPro.Shared.Proxies
 {
-    public Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
+    public class TranslationsProxy : BaseProxy
     {
-        return DoPut<TranslationOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        public TranslationsProxy(HttpClient httpClient) : base(httpClient)
+        {
 
-    }
+        }
 
-    public TranslationsProxy(HttpClient httpClient) : base(httpClient)
-    {
-    }
-
-    public Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions options)
-    {
-        return DoPut<TranslationReplacementOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}/translations", options);
+        public Task<List<PhraseOutput>> Translate(PhraseBulkCreateOptions options)
+        {
+            return DoPost<PhraseBulkCreateOptions, List<PhraseOutput>>("/v1.0/translate", options);
+        }
     }
 }

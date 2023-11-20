@@ -13,13 +13,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using TranslationPro.Base.Managers;
-using Azure.Messaging.ServiceBus;
-using TranslationPro.Base.Messaging;
+using TranslationPro.Shared.Proxies;
+using System.Security.Policy;
 
 namespace TranslationPro.Base.Extensions;
 
 public static class AppBuilderExtensions
 {
+
+
     public static AppBuilder AddTranslationProUserDependencies(this AppBuilder builder)
     {
         builder.Services.TryAddScoped<IApplicationUserService, ApplicationUserService>();
@@ -27,35 +29,29 @@ public static class AppBuilderExtensions
 
         return builder;
     }
-
-    public static IServiceCollection AddTranslationProServices(this IServiceCollection services)
+    
+    public static AppBuilder AddTranslationProDependencies(this AppBuilder builder)
     {
-        services.TryAddTransient<PhraseErrorDescriber>();
-        services.TryAddTransient<TranslationErrorDescriber>();
-        services.TryAddTransient<ApplicationErrorDescriber>();
-        services.TryAddTransient<ApplicationUserErrorDescriber>();
+        builder.Services.AddHttpClient<TranslationsProxy>(
+                client => client.BaseAddress = new Uri(builder.AppSettings.TranslationsUrl));
 
-        services.TryAddScoped<IApplicationService, ApplicationService>();
-        services.TryAddScoped<IApplicationPhraseService, ApplicationPhraseService>();
-        services.TryAddScoped<IApplicationTranslationService, ApplicationTranslationService>();
-        services.TryAddScoped<IApplicationLanguageService, ApplicationLanguageService>();
+        builder.Services.TryAddTransient<PhraseErrorDescriber>();
+        builder.Services.TryAddTransient<TranslationErrorDescriber>();
+        builder.Services.TryAddTransient<ApplicationErrorDescriber>();
+        builder.Services.TryAddTransient<ApplicationUserErrorDescriber>();
 
-        services.TryAddScoped<IPhraseService, PhraseService>();
-        services.TryAddScoped<IPermissionService, PermissionService>();
-        services.TryAddScoped<IMachineTranslationService, MachineTranslationService>();
-        services.TryAddScoped<IEngineService, EngineService>();
-        services.TryAddScoped<ILanguageService, LanguageService>();
-        services.TryAddScoped<IJobService, JobService>();
+        builder.Services.TryAddScoped<IApplicationService, ApplicationService>();
+        builder.Services.TryAddScoped<IApplicationPhraseService, ApplicationPhraseService>();
+        builder.Services.TryAddScoped<IApplicationTranslationService, ApplicationTranslationService>();
+        builder.Services.TryAddScoped<IApplicationLanguageService, ApplicationLanguageService>();
+        builder.Services.TryAddScoped<IPermissionService, PermissionService>();
 
-        services.TryAddScoped<ApplicationManager>();
-        services.TryAddScoped<LanguageManager>();
-        services.TryAddScoped<ApplicationLanguageManager>();
-        services.TryAddScoped<ApplicationTranslationManager>();
-        services.TryAddScoped<PhraseManager>();
-        services.TryAddScoped<EngineManager>();
-        services.TryAddScoped<JobManager>();
+        builder.Services.TryAddScoped<ApplicationManager>();
+        builder.Services.TryAddScoped<ApplicationLanguageManager>();
+        builder.Services.TryAddScoped<ApplicationTranslationManager>();
+        builder.Services.TryAddScoped<ApplicationPhraseManager>();
 
-        services.TryAddSingleton(x =>
+        builder.Services.TryAddSingleton(x =>
         {
             var googleTranslateApiKey = Environment.GetEnvironmentVariable("TranslationProGoogleApi");
             if (string.IsNullOrEmpty(googleTranslateApiKey))
@@ -67,22 +63,7 @@ public static class AppBuilderExtensions
             var client = TranslationClient.CreateFromApiKey(apiKey);
             return client;
         });
-
-        services.TryAddScoped<MicrosoftTranslationService>();
-        services.TryAddScoped<GoogleTranslationService>();
-
-        services.TryAddSingleton(x =>
-        {
-            var configuration = x.GetRequiredService<IConfiguration>();
-            return new ServiceBusClient(configuration.GetConnectionString("AzureServiceBusConnection"));
-        });
-        services.TryAddSingleton<JobSender>();
-        return services;
-    }
-
-    public static AppBuilder AddTranslationProDependencies(this AppBuilder builder)
-    {
-        builder.Services.AddTranslationProServices();
+        
         return builder;
     }
 }

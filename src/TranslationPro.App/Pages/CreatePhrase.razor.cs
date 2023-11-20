@@ -12,7 +12,7 @@ namespace TranslationPro.App.Pages
         public PhraseOptions Input { get; set; } = new PhraseOptions();
 
         [Inject]
-        public IPhrasesController PhraseProxy { get; set; }
+        public IApplicationPhrasesController ApplicationPhraseProxy { get; set; }
 
         protected override async Task LoadData()
         {
@@ -26,7 +26,7 @@ namespace TranslationPro.App.Pages
 
         private async Task HandleSubmit()
         {
-            var result = await PhraseProxy.CreatePhraseAsync(ApplicationId, Input);
+            var result = await ApplicationPhraseProxy.CreatePhraseAsync(ApplicationId, Input);
 
             if (result.Succeeded)
             {

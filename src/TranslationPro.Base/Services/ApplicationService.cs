@@ -42,9 +42,7 @@ public class ApplicationService : BaseService<Application>, IApplicationService
     private IQueryable<Application> Applications => Repository.Queryable()
         .Include(x => x.Languages)
         .ThenInclude(x => x.Translations)
-        .Include(x => x.Phrases)
-        .ThenInclude(x => x.Phrase)
-        .ThenInclude(x => x.MachineTranslations);
+        .Include(x => x.Phrases);
 
     public Task<T> GetApplication<T>(Guid applicationId) where T : ApplicationOutput
     {

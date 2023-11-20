@@ -15,18 +15,6 @@ public class LanguagesControllerTest : BaseApiTest
 {
     
     [TestFixture]
-    public class TheGetLanguageMethod : LanguagesControllerTest
-    {
-        [TestCaseSource(typeof(LanguageTestCases), nameof(LanguageTestCases.LanguagesWithEngineCount))]
-        public async Task CanGetLanguage(string languageId, int engineCount)
-        {
-            var language = await LanguageProxy.GetLanguageAsync(languageId);
-
-            Assert.AreEqual(engineCount, language.Engines.Count);
-        }
-    }
-
-    [TestFixture]
     public class TheGetLanguagesMethod : LanguagesControllerTest
     {
         [Test]

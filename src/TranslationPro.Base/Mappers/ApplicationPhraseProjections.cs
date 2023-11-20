@@ -11,18 +11,14 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Mappers;
 
-public class PhraseProjections : Profile
+public class ApplicationPhraseProjections : Profile
 {
-    public PhraseProjections()
+    public ApplicationPhraseProjections()
     {
-        CreateMap<Phrase, PhraseOutput>()
-            .ForMember(x=>x.MachineTranslations, opt=>opt.MapFrom(x=>x.MachineTranslations))
-            .IncludeAllDerived();
-
         CreateMap<ApplicationPhrase, ApplicationPhraseOutput>()
-            .ForMember(x => x.Text, opt => opt.MapFrom(x => x.Phrase.Text))
+            .ForMember(x => x.Text, opt => opt.MapFrom(x => x.Text))
             .ForMember(x => x.TranslationCount, opt => opt.MapFrom(x => x.Translations.Count))
-            .ForMember(x => x.PendingTranslationCount, opt => opt.MapFrom(x => x.Phrase.MachineTranslations
+            .ForMember(x => x.PendingTranslationCount, opt => opt.MapFrom(x => x.Translations
                 .Where(b => b.Text == null).Select(a => a.LanguageId).Distinct().Count()))
             .IncludeAllDerived();
 

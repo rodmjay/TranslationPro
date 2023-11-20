@@ -26,10 +26,9 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICr
     public Application Application { get; set; }
     public ICollection<ApplicationTranslation> Translations { get; set; }
     public int Id { get; set; }
-    public int PhraseId { get; set; }
-    public Phrase Phrase { get; set; }
 
     public bool IsDeleted { get; set; }
+    public string Text { get; set; }
 
     public override void Configure(EntityTypeBuilder<ApplicationPhrase> builder)
     {
@@ -42,10 +41,6 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICr
             .WithMany(x => x.Phrases)
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(x => x.Phrase)
-            .WithMany(x => x.Applications)
-            .HasForeignKey(x => x.PhraseId);
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

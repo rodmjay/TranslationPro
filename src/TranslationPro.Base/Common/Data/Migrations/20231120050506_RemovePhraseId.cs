@@ -5,27 +5,27 @@
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class WeightsAddedToMachineTranslations : Migration
+    public partial class RemovePhraseId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Weight",
+            migrationBuilder.DropColumn(
+                name: "PhraseId",
                 schema: "TranslationPro",
-                table: "MachineTranslation",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+                table: "ApplicationPhrase");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Weight",
+            migrationBuilder.AddColumn<int>(
+                name: "PhraseId",
                 schema: "TranslationPro",
-                table: "MachineTranslation");
+                table: "ApplicationPhrase",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
     }
 }

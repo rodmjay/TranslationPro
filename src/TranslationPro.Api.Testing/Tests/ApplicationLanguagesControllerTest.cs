@@ -46,7 +46,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
                 Text = "house"
             };
 
-            var createPhrase = await PhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
+            var createPhrase = await ApplicationPhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
             Assert.IsTrue(createPhrase.Succeeded);
 
             var getApplication =
@@ -82,7 +82,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
             {
                 Text = "street"
             };
-            createPhrase = await PhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
+            createPhrase = await ApplicationPhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
             Assert.IsTrue(createPhrase.Succeeded);
 
             getApplication = await ApplicationsProxy.GetApplicationAsync(applicationId);
@@ -90,7 +90,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
             Assert.AreEqual(2, getApplication.PhraseCount);
             Assert.AreEqual(4, getApplication.TranslationCount);
 
-            var getPhrases = await PhrasesProxy.GetPhraseAsync(applicationId, createPhrase.PhraseId.Value);
+            var getPhrases = await ApplicationPhrasesProxy.GetPhraseAsync(applicationId, createPhrase.PhraseId.Value);
 
             foreach (var phrase in getPhrases.Translations)
             {

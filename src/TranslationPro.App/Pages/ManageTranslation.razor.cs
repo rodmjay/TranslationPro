@@ -18,7 +18,7 @@ namespace TranslationPro.App.Pages
         public TranslationOptions Input { get; set; } = new();
 
         [Inject]
-        public ITranslationsController TranslationController { get; set; }
+        public IApplicationTranslationsController ApplicationTranslationController { get; set; }
 
         private ApplicationTranslationOutput ApplicationTranslation { get; set; }
 
@@ -31,7 +31,7 @@ namespace TranslationPro.App.Pages
 
         private async Task Callback(string text)
         {
-            var result = await TranslationController.ReplaceTranslation(ApplicationId, PhraseId,
+            var result = await ApplicationTranslationController.ReplaceTranslation(ApplicationId, PhraseId,
                 new TranslationReplacementOptions()
                 {
                     Text = text,

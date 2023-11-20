@@ -15,8 +15,8 @@
   "AppSettings": {
     "Authority": "https://localhost:44319",
     "ApiUrl": "https://localhost:19977",
-    "JsClientUrl": "https://localhost:5003",
     "AppUrl": "https://localhost:44330",
+    "TranslationsUrl": "https://localhost:44318",
     "ASPNETCORE_ENVIRONMENT": "Development",
     "Database": {
       "Timeout": 30,

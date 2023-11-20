@@ -12,7 +12,7 @@ namespace TranslationPro.App.Pages
     {
 
         [Inject]
-        public IPhrasesController PhrasesController { get; set; }
+        public IApplicationPhrasesController ApplicationPhrasesController { get; set; }
 
         public PagedList<ApplicationPhraseOutput> Phrases { get; set; }
 
@@ -23,7 +23,7 @@ namespace TranslationPro.App.Pages
         {
             await base.LoadData();
 
-            Phrases = await PhrasesController.GetPhrasesAsync(ApplicationId, _paging, new PhraseFilters());
+            Phrases = await ApplicationPhrasesController.GetPhrasesAsync(ApplicationId, _paging, new PhraseFilters());
 
             StateHasChanged();
         }

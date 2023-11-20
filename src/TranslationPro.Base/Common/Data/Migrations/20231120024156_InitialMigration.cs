@@ -206,20 +206,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Engine",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Enabled = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Engine", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "IdentityProviders",
                 columns: table => new
                 {
@@ -349,22 +335,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phrase",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phrase", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -603,6 +573,30 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         column: x => x.ScopeId,
                         principalSchema: "IdentityServer",
                         principalTable: "ApiScope",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationPhrase",
+                schema: "TranslationPro",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    PhraseId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationPhrase", x => new { x.ApplicationId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_ApplicationPhrase_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalSchema: "TranslationPro",
+                        principalTable: "Application",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -923,63 +917,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EngineLanguage",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EngineId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EngineLanguage", x => new { x.LanguageId, x.EngineId });
-                    table.ForeignKey(
-                        name: "FK_EngineLanguage_Engine_EngineId",
-                        column: x => x.EngineId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Engine",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EngineLanguage_Language_LanguageId",
-                        column: x => x.LanguageId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Language",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationPhrase",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    PhraseId = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationPhrase", x => new { x.ApplicationId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_ApplicationPhrase_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Application",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationPhrase_Phrase_PhraseId",
-                        column: x => x.PhraseId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Phrase",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RoleClaim",
                 columns: table => new
                 {
@@ -1238,43 +1175,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MachineTranslation",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    EngineId = table.Column<int>(type: "int", nullable: false),
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PhraseId = table.Column<int>(type: "int", nullable: false),
-                    TranslationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MachineTranslation", x => new { x.EngineId, x.LanguageId, x.PhraseId });
-                    table.ForeignKey(
-                        name: "FK_MachineTranslation_EngineLanguage_LanguageId_EngineId",
-                        columns: x => new { x.LanguageId, x.EngineId },
-                        principalSchema: "TranslationPro",
-                        principalTable: "EngineLanguage",
-                        principalColumns: new[] { "LanguageId", "EngineId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MachineTranslation_Engine_EngineId",
-                        column: x => x.EngineId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Engine",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_MachineTranslation_Phrase_PhraseId",
-                        column: x => x.PhraseId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Phrase",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ApplicationTranslation",
                 schema: "TranslationPro",
                 columns: table => new
@@ -1289,6 +1189,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationTranslation", x => new { x.ApplicationId, x.PhraseId, x.LanguageId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationTranslation_ApplicationLanguage_ApplicationId_LanguageId",
+                        columns: x => new { x.ApplicationId, x.LanguageId },
+                        principalSchema: "TranslationPro",
+                        principalTable: "ApplicationLanguage",
+                        principalColumns: new[] { "ApplicationId", "LanguageId" });
                     table.ForeignKey(
                         name: "FK_ApplicationTranslation_ApplicationPhrase_ApplicationId_PhraseId",
                         columns: x => new { x.ApplicationId, x.PhraseId },
@@ -1883,18 +1789,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                schema: "TranslationPro",
-                table: "Engine",
-                columns: new[] { "Id", "Enabled", "Name" },
-                values: new object[,]
-                {
-                    { 1, true, "Google Cloud Translate" },
-                    { 2, true, "Azure Translator by Microsoft" },
-                    { 3, false, "Amazon Translate" },
-                    { 4, false, "DeepL" }
-                });
-
-            migrationBuilder.InsertData(
                 schema: "IdentityServer",
                 table: "IdentityResource",
                 columns: new[] { "Id", "Created", "Description", "DisplayName", "Emphasize", "Enabled", "Name", "NonEditable", "Required", "ShowInDiscoveryDocument", "Updated" },
@@ -2132,233 +2026,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                schema: "TranslationPro",
-                table: "EngineLanguage",
-                columns: new[] { "EngineId", "LanguageId" },
-                values: new object[,]
-                {
-                    { 2, "af" },
-                    { 3, "af" },
-                    { 2, "am" },
-                    { 3, "am" },
-                    { 1, "ar" },
-                    { 2, "ar" },
-                    { 3, "ar" },
-                    { 2, "as" },
-                    { 2, "az" },
-                    { 3, "az" },
-                    { 2, "ba" },
-                    { 2, "bg" },
-                    { 3, "bg" },
-                    { 2, "bho" },
-                    { 2, "bn" },
-                    { 3, "bn" },
-                    { 2, "bo" },
-                    { 2, "brx" },
-                    { 2, "bs" },
-                    { 3, "bs" },
-                    { 2, "ca" },
-                    { 3, "ca" },
-                    { 1, "cs" },
-                    { 2, "cs" },
-                    { 3, "cs" },
-                    { 2, "cy" },
-                    { 3, "cy" },
-                    { 1, "da" },
-                    { 2, "da" },
-                    { 3, "da" },
-                    { 1, "de" },
-                    { 2, "de" },
-                    { 3, "de" },
-                    { 2, "doi" },
-                    { 2, "dsb" },
-                    { 2, "dv" },
-                    { 1, "el" },
-                    { 2, "el" },
-                    { 3, "el" },
-                    { 1, "en" },
-                    { 2, "en" },
-                    { 3, "en" },
-                    { 1, "es" },
-                    { 2, "es" },
-                    { 3, "es" },
-                    { 2, "et" },
-                    { 3, "et" },
-                    { 2, "eu" },
-                    { 2, "fa" },
-                    { 3, "fa" },
-                    { 1, "fi" },
-                    { 2, "fi" },
-                    { 3, "fi" },
-                    { 2, "fil" },
-                    { 2, "fj" },
-                    { 2, "fo" },
-                    { 1, "fr" },
-                    { 2, "fr" },
-                    { 3, "fr" },
-                    { 2, "fr-ca" },
-                    { 3, "fr-CA" },
-                    { 2, "gl" },
-                    { 2, "gom" },
-                    { 2, "gu" },
-                    { 3, "gu" },
-                    { 2, "ha" },
-                    { 3, "ha" },
-                    { 1, "hi" },
-                    { 2, "hi" },
-                    { 3, "hi" },
-                    { 2, "hr" },
-                    { 3, "hr" },
-                    { 2, "hsb" },
-                    { 2, "ht" },
-                    { 3, "ht" },
-                    { 1, "hu" },
-                    { 2, "hu" },
-                    { 3, "hu" },
-                    { 2, "hy" },
-                    { 3, "hy" },
-                    { 2, "id" },
-                    { 3, "id" },
-                    { 2, "ig" },
-                    { 2, "ikt" },
-                    { 2, "ir" },
-                    { 3, "ir" },
-                    { 2, "is" },
-                    { 3, "is" },
-                    { 1, "it" },
-                    { 2, "it" },
-                    { 3, "it" },
-                    { 2, "iu" },
-                    { 1, "iw" },
-                    { 2, "iw" },
-                    { 3, "iw" },
-                    { 1, "ja" },
-                    { 2, "ja" },
-                    { 3, "ja" },
-                    { 2, "ka" },
-                    { 3, "ka" },
-                    { 2, "kk" },
-                    { 3, "kk" },
-                    { 2, "km" },
-                    { 2, "kmr" },
-                    { 2, "kn" },
-                    { 3, "kn" },
-                    { 1, "ko" },
-                    { 2, "ko" },
-                    { 3, "ko" },
-                    { 2, "ks" },
-                    { 2, "ku" },
-                    { 2, "ky" },
-                    { 2, "ln" },
-                    { 2, "lo" },
-                    { 2, "lt" },
-                    { 3, "lt" },
-                    { 2, "lug" },
-                    { 2, "lv" },
-                    { 3, "lv" },
-                    { 2, "mai" },
-                    { 2, "mg" },
-                    { 2, "mi" },
-                    { 2, "mk" },
-                    { 3, "mk" },
-                    { 2, "ml" },
-                    { 3, "ml" },
-                    { 3, "mn-Cyrl" },
-                    { 2, "mr" },
-                    { 3, "mr" },
-                    { 2, "ms" },
-                    { 3, "ms" },
-                    { 2, "mt" },
-                    { 3, "mt" },
-                    { 2, "mww" },
-                    { 2, "my" },
-                    { 2, "ne" },
-                    { 1, "nl" },
-                    { 2, "nl" },
-                    { 3, "nl" },
-                    { 1, "no" },
-                    { 2, "no" },
-                    { 3, "no" },
-                    { 2, "nso" },
-                    { 2, "nya" },
-                    { 2, "or" },
-                    { 2, "otq" },
-                    { 2, "pa" },
-                    { 3, "pa" },
-                    { 1, "pl" },
-                    { 2, "pl" },
-                    { 3, "pl" },
-                    { 2, "prs" },
-                    { 2, "ps" },
-                    { 3, "ps" },
-                    { 1, "pt" },
-                    { 2, "pt" },
-                    { 3, "pt" },
-                    { 2, "pt-pt" },
-                    { 3, "pt-PT" },
-                    { 2, "ro" },
-                    { 3, "ro" },
-                    { 1, "ru" },
-                    { 2, "ru" },
-                    { 3, "ru" },
-                    { 2, "run" },
-                    { 2, "rw" },
-                    { 2, "sd" },
-                    { 2, "si" },
-                    { 3, "si" },
-                    { 2, "sk" },
-                    { 3, "sk" },
-                    { 2, "sl" },
-                    { 3, "sl" },
-                    { 2, "sm" },
-                    { 2, "sn" },
-                    { 2, "so" },
-                    { 3, "so" },
-                    { 2, "sq" },
-                    { 3, "sq" },
-                    { 2, "st" },
-                    { 1, "sv" },
-                    { 2, "sv" },
-                    { 3, "sv" },
-                    { 2, "sw" },
-                    { 3, "sw" },
-                    { 2, "ta" },
-                    { 3, "ta" },
-                    { 2, "te" },
-                    { 3, "te" },
-                    { 1, "th" },
-                    { 2, "th" },
-                    { 3, "th" },
-                    { 2, "ti" },
-                    { 2, "tk" },
-                    { 3, "tl" },
-                    { 2, "tn" },
-                    { 2, "to" },
-                    { 1, "tr" },
-                    { 2, "tr" },
-                    { 3, "tr" },
-                    { 2, "tt" },
-                    { 2, "ty" },
-                    { 2, "ug" },
-                    { 2, "uk" },
-                    { 3, "uk" },
-                    { 2, "ur" },
-                    { 3, "ur" },
-                    { 2, "uz" },
-                    { 3, "uz" },
-                    { 1, "vi" },
-                    { 2, "vi" },
-                    { 3, "vi" },
-                    { 2, "yo" },
-                    { 2, "yua" },
-                    { 1, "zh-CN" },
-                    { 3, "zh-CN" },
-                    { 1, "zh-TW" },
-                    { 3, "zh-TW" },
-                    { 2, "zu" }
-                });
-
-            migrationBuilder.InsertData(
                 schema: "IdentityServer",
                 table: "IdentityResourceClaim",
                 columns: new[] { "Id", "IdentityResourceId", "Type" },
@@ -2452,10 +2119,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationPhrase_PhraseId",
+                name: "IX_ApplicationTranslation_ApplicationId_LanguageId",
                 schema: "TranslationPro",
-                table: "ApplicationPhrase",
-                column: "PhraseId");
+                table: "ApplicationTranslation",
+                columns: new[] { "ApplicationId", "LanguageId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUser_UserId",
@@ -2583,12 +2250,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "CouponId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EngineLanguage_EngineId",
-                schema: "TranslationPro",
-                table: "EngineLanguage",
-                column: "EngineId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_IdentityResource_Name",
                 schema: "IdentityServer",
                 table: "IdentityResource",
@@ -2702,18 +2363,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe",
                 table: "LineItem",
                 column: "StripePaymentLinkLineItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MachineTranslation_LanguageId_EngineId",
-                schema: "TranslationPro",
-                table: "MachineTranslation",
-                columns: new[] { "LanguageId", "EngineId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MachineTranslation_PhraseId",
-                schema: "TranslationPro",
-                table: "MachineTranslation",
-                column: "PhraseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaymentIntent_CustomerId",
@@ -2963,10 +2612,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "ApplicationLanguage",
-                schema: "TranslationPro");
-
-            migrationBuilder.DropTable(
                 name: "ApplicationTranslation",
                 schema: "TranslationPro");
 
@@ -3054,10 +2699,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
-                name: "MachineTranslation",
-                schema: "TranslationPro");
-
-            migrationBuilder.DropTable(
                 name: "Payout",
                 schema: "Stripe");
 
@@ -3113,6 +2754,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
+                name: "ApplicationLanguage",
+                schema: "TranslationPro");
+
+            migrationBuilder.DropTable(
                 name: "ApplicationPhrase",
                 schema: "TranslationPro");
 
@@ -3137,31 +2782,19 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
-                name: "EngineLanguage",
-                schema: "TranslationPro");
+                name: "Role");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Language",
+                schema: "TranslationPro");
 
             migrationBuilder.DropTable(
                 name: "Application",
                 schema: "TranslationPro");
 
             migrationBuilder.DropTable(
-                name: "Phrase",
-                schema: "TranslationPro");
-
-            migrationBuilder.DropTable(
                 name: "SubscriptionItem",
                 schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Engine",
-                schema: "TranslationPro");
-
-            migrationBuilder.DropTable(
-                name: "Language",
-                schema: "TranslationPro");
 
             migrationBuilder.DropTable(
                 name: "Price",

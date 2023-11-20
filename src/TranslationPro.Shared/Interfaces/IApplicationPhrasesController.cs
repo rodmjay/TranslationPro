@@ -14,7 +14,7 @@ using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Interfaces;
 
-public interface IPhrasesController
+public interface IApplicationPhrasesController
 {
 
     Task<ApplicationPhraseDetails> GetPhraseAsync(Guid applicationId, int phraseId);
@@ -22,8 +22,7 @@ public interface IPhrasesController
     //Task<Result> BulkUploadAsync(Guid applicationId,
     //     List<string> input);
 
-    Task<ApplicationPhraseCreateResult> CreatePhraseAsync(Guid applicationId,
-        PhraseOptions input);
+    Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input);
     
     Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
          PhraseFilters filters);

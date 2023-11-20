@@ -11,7 +11,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Shared.Interfaces;
 
-public interface ITranslationsController
+public interface IApplicationTranslationsController
 {
 
     Task<Result> ReplaceTranslation(Guid applicationId, int phraseId,

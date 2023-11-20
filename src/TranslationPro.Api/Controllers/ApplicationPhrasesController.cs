@@ -20,15 +20,15 @@ using TranslationPro.Shared.Results;
 namespace TranslationPro.Api.Controllers;
 
 [Route("v1.0/applications/{applicationId}/phrases")]
-public class PhrasesController : BaseController, IPhrasesController
+public class ApplicationPhrasesController : BaseController, IApplicationPhrasesController
 {
    
-    private readonly PhraseManager _phraseManager;
+    private readonly ApplicationPhraseManager _applicationPhraseManager;
 
-    public PhrasesController(IServiceProvider serviceProvider, 
-        PhraseManager phraseManager) : base(serviceProvider)
+    public ApplicationPhrasesController(IServiceProvider serviceProvider, 
+        ApplicationPhraseManager applicationPhraseManager) : base(serviceProvider)
     {
-        _phraseManager = phraseManager;
+        _applicationPhraseManager = applicationPhraseManager;
     }
 
     [HttpGet("{phraseId:int}")]
@@ -36,17 +36,17 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseManager.GetPhraseAsync<ApplicationPhraseDetails>(applicationId, phraseId);
+        return await _applicationPhraseManager.GetPhraseAsync<ApplicationPhraseDetails>(applicationId, phraseId);
     }
     
 
     [HttpPost]
-    public async Task<ApplicationPhraseCreateResult> CreatePhraseAsync([FromRoute] Guid applicationId,
+    public async Task<Result> CreatePhraseAsync([FromRoute] Guid applicationId,
         [FromBody] PhraseOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _phraseManager.CreatePhrase(applicationId, input);
+        var result = await _applicationPhraseManager.CreatePhrase(applicationId, input);
         
         return result;
     }
@@ -58,7 +58,7 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromQuery] PhraseFilters filters)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseManager.GetPhrasesForApplicationAsync<ApplicationPhraseOutput>(applicationId, paging, filters)
+        return await _applicationPhraseManager.GetPhrasesForApplicationAsync<ApplicationPhraseOutput>(applicationId, paging, filters)
             .ConfigureAwait(false);
     }
 
@@ -68,14 +68,14 @@ public class PhrasesController : BaseController, IPhrasesController
         [FromRoute] string language)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseManager.GetApplicationPhraseList(applicationId, language).ConfigureAwait(false);
+        return await _applicationPhraseManager.GetApplicationPhraseList(applicationId, language).ConfigureAwait(false);
     }
 
     [HttpDelete("{phraseId}")]
     public async Task<Result> DeletePhraseAsync([FromRoute] Guid applicationId, [FromRoute] int phraseId)
     {
         await AssertUserHasAccessToApplication(applicationId);
-        return await _phraseManager.DeletePhraseAsync(applicationId, phraseId);
+        return await _applicationPhraseManager.DeletePhraseAsync(applicationId, phraseId);
     }
 
 }

@@ -26,11 +26,11 @@ public class PhrasesControllerTest : BaseApiTest
         public async Task CanCreatePhraseWithTranslations(PhraseOptions input, Dictionary<string, string> translations)
         {
 
-            var result = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
+            var result = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
             Assert.IsTrue(result.Succeeded);
 
-            var phrase = await PhrasesProxy.GetPhraseAsync(ApplicationId, result.PhraseId.Value);
+            var phrase = await ApplicationPhrasesProxy.GetPhraseAsync(ApplicationId, result.PhraseId.Value);
 
             Assert.IsNotNull(phrase);
 
@@ -55,9 +55,9 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
+            var createResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            var phrases = await PhrasesProxy.GetPhrasesAsync(ApplicationId, new PagingQuery(), new PhraseFilters());
+            var phrases = await ApplicationPhrasesProxy.GetPhrasesAsync(ApplicationId, new PagingQuery(), new PhraseFilters());
 
             Assert.AreEqual(1, phrases.Items.Count);
 
@@ -74,9 +74,9 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
+            var createResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            var phrases = await PhrasesProxy.GetPhrasesForApplicationAndLanguageAsync(ApplicationId, "en");
+            var phrases = await ApplicationPhrasesProxy.GetPhrasesForApplicationAndLanguageAsync(ApplicationId, "en");
 
             Assert.AreEqual(1, phrases.Count);
         }
@@ -92,9 +92,9 @@ public class PhrasesControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
+            var createResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            var deleteResult = await PhrasesProxy.DeletePhraseAsync(ApplicationId, createResult.PhraseId.Value);
+            var deleteResult = await ApplicationPhrasesProxy.DeletePhraseAsync(ApplicationId, createResult.PhraseId.Value);
 
             Assert.IsTrue(deleteResult.Succeeded);
         }

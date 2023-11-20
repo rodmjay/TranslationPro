@@ -9,18 +9,16 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
-using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Entities;
 
 [ExcludeFromCodeCoverage]
-public class Language : BaseEntity<Language>, ILanguage
+public class Language : BaseEntity<Language>
 {
-    public ICollection<EngineLanguage> Engines { get; set; }
-    public ICollection<ApplicationLanguage> Applications { get; set; }
-    public ICollection<JobLanguage> Jobs { get; set; }
     public string Name { get; set; }
     public string Id { get; set; }
+
+    public ICollection<ApplicationLanguage> Applications { get; set; }
 
     public override void Configure(EntityTypeBuilder<Language> builder)
     {

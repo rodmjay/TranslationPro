@@ -50,9 +50,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
         .Include(x => x.Translations)
-        .Include(x => x.Application)
-        .Include(x => x.Phrase)
-        .ThenInclude(x => x.MachineTranslations);
+        .Include(x => x.Application);
 
     private IQueryable<ApplicationTranslation> ApplicationTranslations => _applicationTranslationRepository.Queryable()
         .Include(x => x.ApplicationPhrase);
@@ -76,18 +74,14 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
         return phraseIds;
     }
+    
 
-    public Task<int[]> GetPhraseIdsForApplication(Guid applicationId)
-    {
-        return ApplicationPhrases.Where(x=>x.ApplicationId == applicationId).Select(x => x.PhraseId).Distinct().ToArrayAsync();
-    }
-
-    public async Task<Result> CreateApplicationPhrase(Guid applicationId, int phraseId, PhraseOptions input)
+    public async Task<ApplicationPhrase> CreateApplicationPhrase(Guid applicationId, PhraseOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Phrase: {0}"), input.Text);
-        
+
         var applicationPhrase = await ApplicationPhrases
-            .Where(x => x.ApplicationId == applicationId && x.Phrase.Id == phraseId).FirstOrDefaultAsync();
+            .Where(x => x.ApplicationId == applicationId && x.Text == input.Text).FirstOrDefaultAsync();
 
         if (applicationPhrase == null)
         {
@@ -96,21 +90,24 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             applicationPhrase = new ApplicationPhrase
             {
                 Id = applicationPhraseId,
-                PhraseId = phraseId,
+                Text = input.Text,
                 ApplicationId = applicationId,
                 ObjectState = ObjectState.Added
             };
 
             var records = Repository.InsertOrUpdateGraph(applicationPhrase, true);
-            if (records > 0)
-                return Result.Success(applicationPhrase.Id);
-        }
-        else
-        {
-            return Result.Success(applicationPhrase.Id);
         }
 
-        return Result.Failed(_errorDescriber.UnableToCreatePhrase());
+        return applicationPhrase;
+
+    }
+
+    public Task<Result> SaveApplicationPhrase(ApplicationPhrase phrase)
+    {
+        var records = Repository.InsertOrUpdateGraph(phrase, true);
+        if (records > 0)
+            return Task.FromResult(Result.Success(phrase.Id));
+        return Task.FromResult(Result.Failed());
     }
 
 

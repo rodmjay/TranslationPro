@@ -35,8 +35,7 @@ public class ApplicationLanguage : BaseEntity<ApplicationLanguage>, ISoftDelete
             .HasForeignKey(x => x.ApplicationId);
 
         builder.HasOne(x => x.Language)
-            .WithMany(x => x.Applications)
-            .HasForeignKey(x => x.LanguageId);
+            .WithMany(x => x.Applications).HasForeignKey(x => x.LanguageId);
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

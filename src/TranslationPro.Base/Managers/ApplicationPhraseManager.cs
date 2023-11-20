@@ -12,46 +12,39 @@ using TranslationPro.Base.Entities;
 using TranslationPro.Base.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using TranslationPro.Base.Common.Data.Enums;
+using TranslationPro.Shared.Proxies;
 
 namespace TranslationPro.Base.Managers;
 
 
-
-public interface IJobProcessor
-{
-
-}
-
-public class PhraseManager
+public class ApplicationPhraseManager
 {
     private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
     {
-        return $"[{nameof(PhraseManager)}.{callerName}] - {message}";
+        return $"[{nameof(ApplicationPhraseManager)}.{callerName}] - {message}";
     }
 
     private readonly IPermissionService _permissionService;
+    private readonly TranslationsProxy _translationProxy;
     private readonly IApplicationTranslationService _applicationTranslationService;
     private readonly IApplicationPhraseService _applicationPhraseService;
-    private readonly IPhraseService _phraseService;
-    private readonly IMachineTranslationService _machineTranslationService;
-    private readonly ILogger<PhraseManager> _logger;
+    private readonly ILogger<ApplicationPhraseManager> _logger;
     private readonly IRepositoryAsync<Application> _applicationRepository;
 
-    public PhraseManager(
+    public ApplicationPhraseManager(
         IUnitOfWorkAsync unitOfWork,
         IPermissionService permissionService,
+        TranslationsProxy translationProxy,
         IApplicationTranslationService applicationTranslationService,
-        IApplicationPhraseService applicationPhraseService, 
-        IPhraseService phraseService,
-        IMachineTranslationService machineTranslationService,
-        ILogger<PhraseManager> logger)
+        IApplicationPhraseService applicationPhraseService,
+        ILogger<ApplicationPhraseManager> logger)
     {
         _applicationRepository = unitOfWork.RepositoryAsync<Application>();
         _permissionService = permissionService;
+        _translationProxy = translationProxy;
         _applicationTranslationService = applicationTranslationService;
         _applicationPhraseService = applicationPhraseService;
-        _phraseService = phraseService;
-        _machineTranslationService = machineTranslationService;
         _logger = logger;
     }
 
@@ -62,46 +55,51 @@ public class PhraseManager
         return _applicationPhraseService.GetPhraseAsync<T>(applicationId, phraseId);
     }
 
-    public async Task<ApplicationPhraseCreateResult> CreatePhrase(Guid applicationId, PhraseOptions input)
+    public async Task<Result> CreatePhrase(Guid applicationId, PhraseOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Phrase: {0} for application: {1}"), input.Text, applicationId);
 
         var retVal = new ApplicationPhraseCreateResult();
 
-        var application = await Applications.Where(x=>x.Id == applicationId).FirstAsync();
+        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-        var phraseResult = await _phraseService.EnsurePhraseWithLanguages(new PhraseCreateOptions()
+        var languages = application.Languages.Select(x=>x.LanguageId).ToArray();
+        
+        var applicationPhrase = await _applicationPhraseService.CreateApplicationPhrase(applicationId, input);
+
+        var result = await _translationProxy.Translate(new PhraseBulkCreateOptions()
         {
-            Text = input.Text,
-            Languages = application.Languages.Select(x => x.LanguageId).ToList()
+            LanguageIds = languages,
+            Texts = new[] { input.Text }
         });
-
-        if (phraseResult.Succeeded)
+        
+        foreach (var phrase in result)
         {
-            var phraseId = int.Parse(phraseResult.Id.ToString());
-
-            var result = await _applicationPhraseService.CreateApplicationPhrase(applicationId, phraseId, input).ConfigureAwait(false);
-            if (result.Succeeded)
+            if (phrase.Text == applicationPhrase.Text)
             {
+                // todo: use weights to get the right translation
+                var translations = phrase.MachineTranslations.GroupBy(x => x.LanguageId)
+                    .ToDictionary(x => x.Key, x => x.Select(t=>t.Text).First());
 
-                retVal.Succeeded = true;
-                retVal.PhraseId = int.Parse(result.Id.ToString());
-                retVal.TranslationsCreated = await _machineTranslationService.ProcessTranslationsAsync(applicationId);
-                retVal.TranslationsCopied = await _applicationTranslationService
-                    .CopyTranslationFromPhraseList(applicationId, retVal.PhraseId.Value);
-            }
-            else
-            {
-                retVal.Errors = result.Errors;
+                foreach (var (language, firstTranslation) in translations)
+                {
+                    applicationPhrase.Translations.Add(new ApplicationTranslation()
+                    {
+                        LanguageId = language,
+                        Text = firstTranslation,
+                        ObjectState = ObjectState.Added
+                    });
+                    applicationPhrase.ObjectState = ObjectState.Modified;
+                }
             }
         }
-        else
+
+        if (applicationPhrase.ObjectState == ObjectState.Modified)
         {
-            retVal.Errors = phraseResult.Errors;
+            await _applicationPhraseService.SaveApplicationPhrase(applicationPhrase);
         }
 
-
-        return retVal;
+        return Result.Success(applicationPhrase.Id);
     }
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery query,

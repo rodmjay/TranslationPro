@@ -24,7 +24,7 @@ public class TranslationsControllerTest : BaseApiTest
             {
                 Text = "hello"
             };
-            var createResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, input);
+            var createResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
             input.Text = "goodbye";
 
@@ -34,7 +34,7 @@ public class TranslationsControllerTest : BaseApiTest
                 Text = "hola mae"
             };
 
-            var updateResult = await TranslationsProxy.ReplaceTranslation(ApplicationId, createResult.PhraseId.Value, replacementInput);
+            var updateResult = await ApplicationTranslationsProxy.ReplaceTranslation(ApplicationId, createResult.PhraseId.Value, replacementInput);
 
             Assert.IsTrue(updateResult.Succeeded);
         }

@@ -34,17 +34,14 @@ namespace TranslationPro.App.Extensions
             builder.Services.AddHttpClient<ILanguagesController, LanguagesProxy>(
                 client => client.BaseAddress = url);
 
-            builder.Services.AddHttpClient<IPhrasesController, PhrasesProxy>(
+            builder.Services.AddHttpClient<IApplicationPhrasesController, ApplicationPhrasesProxy>(
                     client => client.BaseAddress = url)
                 .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
-            builder.Services.AddHttpClient<ITranslationsController, TranslationsProxy>(
+            builder.Services.AddHttpClient<IApplicationTranslationsController, ApplicationTranslationsProxy>(
                     client => client.BaseAddress = url)
                 .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
-
-            builder.Services.AddHttpClient<IEnginesController, EnginesProxy>(
-                    client => client.BaseAddress = url)
-                .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+            
 
             return builder;
         }

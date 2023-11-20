@@ -19,7 +19,6 @@ namespace TranslationPro.Base.Managers;
 public class ApplicationTranslationManager
 {
     private readonly IApplicationPhraseService _applicationPhraseService;
-    private readonly IMachineTranslationService _machineTranslationService;
     private readonly IApplicationTranslationService _applicationTranslationService;
     private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhraseRepository;
     private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
@@ -27,11 +26,9 @@ public class ApplicationTranslationManager
     public ApplicationTranslationManager(
         IUnitOfWorkAsync unitOfWork,
         IApplicationPhraseService applicationPhraseService,
-        IMachineTranslationService machineTranslationService,
         IApplicationTranslationService applicationTranslationService)
     {
         _applicationPhraseService = applicationPhraseService;
-        _machineTranslationService = machineTranslationService;
         _applicationTranslationService = applicationTranslationService;
         _applicationPhraseRepository = unitOfWork.RepositoryAsync<ApplicationPhrase>();
         _applicationTranslationRepository = unitOfWork.RepositoryAsync<ApplicationTranslation>();
@@ -44,20 +41,20 @@ public class ApplicationTranslationManager
             .Select(x=>x.Text).FirstAsync();
 
         var result = await _applicationTranslationService.ReplaceTranslation(applicationId, phraseId, input);
-        if (result.Succeeded)
-        {
-            var originalPhrase = await _applicationPhraseRepository.Queryable().Include(x=>x.Phrase)
-                .ThenInclude(x=>x.MachineTranslations)
-                .Where(x => x.ApplicationId == applicationId &&
-                x.Id == phraseId).FirstOrDefaultAsync();
+        //if (result.Succeeded)
+        //{
+        //    var originalPhrase = await _applicationPhraseRepository.Queryable().Include(x=>x.Phrase)
+        //        .ThenInclude(x=>x.MachineTranslations)
+        //        .Where(x => x.ApplicationId == applicationId &&
+        //        x.Id == phraseId).FirstOrDefaultAsync();
             
-            if (originalPhrase != null)
-            {
-                await _machineTranslationService.AdjustWeights(originalPhrase.PhraseId, input.LanguageId, originalText,
-                    input.Text);
-            }
+        //    if (originalPhrase != null)
+        //    {
+        //        await _machineTranslationService.AdjustWeights(originalPhrase.PhraseId, input.LanguageId, originalText,
+        //            input.Text);
+        //    }
             
-        }
+        //}
 
 
         return result;

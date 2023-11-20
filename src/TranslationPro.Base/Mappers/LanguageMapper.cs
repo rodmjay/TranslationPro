@@ -4,7 +4,6 @@
 
 #endregion
 
-using System.Linq;
 using AutoMapper;
 using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Models;
@@ -16,9 +15,5 @@ public class LanguageMapper : Profile
     public LanguageMapper()
     {
         CreateMap<Language, LanguageOutput>().IncludeAllDerived();
-
-        CreateMap<Language, LanguagesWithEnginesOutput>()
-            .ForMember(x => x.Engines, opt => opt.MapFrom(x => x.Engines.Select(a => a.Engine)))
-            .IncludeAllDerived();
     }
 }

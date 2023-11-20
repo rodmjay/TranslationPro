@@ -9,6 +9,8 @@ namespace TranslationPro.Base.Services;
 
 public interface IApplicationTranslationService : IService<ApplicationTranslation>
 {
+    Task<Result> AddTranslationsForLanguage(Guid applicationId, string languageId);
+
     Task<PagedList<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId,
         PagingQuery paging) where T : ApplicationTranslationOutput;
 

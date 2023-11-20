@@ -5,12 +5,10 @@
 #endregion
 
 using System;
-using Newtonsoft.Json;
-using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Shared.Models;
 
-public class MachineTranslationOutput : ITranslation
+public class MachineTranslationOutput 
 {
     public string Text { get; set; }
     public string Engine { get; set; }

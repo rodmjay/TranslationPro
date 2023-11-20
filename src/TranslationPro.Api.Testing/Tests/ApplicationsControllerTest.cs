@@ -47,8 +47,6 @@ public class ApplicationsControllerTest : BaseApiTest
             Assert.IsNotNull(application);
 
             Assert.AreEqual(randomCompanyName, application.Name);
-
-            Assert.IsTrue(application.SupportedLanguages.Contains(language));
         }
     }
 
@@ -62,7 +60,7 @@ public class ApplicationsControllerTest : BaseApiTest
 
             Assert.AreEqual(1, applications.Count);
 
-            var createPhraseResult = await PhrasesProxy.CreatePhraseAsync(ApplicationId, new PhraseOptions()
+            var createPhraseResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, new PhraseOptions()
             {
                 Text = "hello world"
             });

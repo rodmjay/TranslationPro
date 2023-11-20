@@ -19,7 +19,7 @@ public static class PhraseFiltersExtensions
         var expr = PredicateBuilder.True<ApplicationPhrase>();
 
         if (query.ContainsText != null)
-            expr = expr.And(x => x.Phrase.Text.Contains(query.ContainsText));
+            expr = expr.And(x => x.Text.Contains(query.ContainsText));
 
         if (query.Id != null)
             expr = expr.And(x => x.Id == query.Id.Value);

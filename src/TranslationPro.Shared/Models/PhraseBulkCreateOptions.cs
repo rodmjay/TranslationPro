@@ -6,7 +6,8 @@
 
 namespace TranslationPro.Shared.Models;
 
-public class JobOutput
+public class PhraseBulkCreateOptions
 {
-
+    public string[] Texts { get; set; }
+    public string[] LanguageIds { get; set; }
 }

@@ -13,7 +13,5 @@ namespace TranslationPro.Shared.Interfaces;
 public interface ILanguagesController
 {
     Task<List<LanguageOutput>> GetLanguagesAsync();
-    Task<List<LanguagesWithEnginesOutput>> GetAllLanguagesAsync();
-
-    Task<LanguagesWithEnginesOutput> GetLanguageAsync(string languageId);
+    Task<List<LanguageOutput>> GetAllLanguagesAsync();
 }

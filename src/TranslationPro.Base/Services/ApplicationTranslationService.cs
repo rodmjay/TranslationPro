@@ -7,7 +7,6 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Extensions;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
-using TranslationPro.Base.Extensions;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 
@@ -25,13 +24,33 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
     }
 
     private IQueryable<ApplicationTranslation> ApplicationTranslations => Repository.Queryable()
-        .Include(x => x.ApplicationPhrase).Include(x => x.ApplicationLanguage).ThenInclude(x => x.Language);
+        .Include(x => x.ApplicationPhrase).Include(x => x.ApplicationLanguage);
 
     private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
-        .Include(x => x.Translations)
-        .Include(x => x.Phrase).ThenInclude(x => x.MachineTranslations);
+        .Include(x => x.Translations);
+
+    public async Task<Result> AddTranslationsForLanguage(Guid applicationId, string languageId)
+    {
+        var phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId).ToListAsync();
+
+        foreach (var phrase in phrases)
+        {
+            if (phrase.Translations.All(x => x.LanguageId != languageId))
+            {
+                phrase.Translations.Add(new ApplicationTranslation()
+                {
+                    LanguageId = languageId,
+                    ObjectState = ObjectState.Added
+                });
+                
+                _applicationPhraseRepository.InsertOrUpdateGraph(phrase, false);
+            }
+        }
+
+        return Result.Success();
+    }
 
     public Task<PagedList<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId, PagingQuery paging) where T : ApplicationTranslationOutput
     {
@@ -42,47 +61,48 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
 
     public async Task<int> CopyTranslationFromPhraseList(Guid applicationId, int phraseId)
     {
-        var retVal = 0;
+        return 0;
+        //var retVal = 0;
 
-        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
+        //var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-        var applicationPhrase = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
-            .FirstOrDefaultAsync();
+        //var applicationPhrase = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Id == phraseId)
+        //    .FirstOrDefaultAsync();
 
-        if (applicationPhrase == null)
-        {
-            retVal = 0;
-            return retVal;
-        }
+        //if (applicationPhrase == null)
+        //{
+        //    retVal = 0;
+        //    return retVal;
+        //}
 
-        foreach (var language in application.EnabledLanguages())
-        {
-            var machineTranslation = applicationPhrase.Phrase.MachineTranslations
-                .OrderByDescending(x => x.Weight).FirstOrDefault(x => x.LanguageId == language);
+        //foreach (var language in application.EnabledLanguages())
+        //{
+        //    var machineTranslation = applicationPhrase.Phrase.MachineTranslations
+        //        .OrderByDescending(x => x.Weight).FirstOrDefault(x => x.LanguageId == language);
 
-            if (machineTranslation != null)
-            {
-                if (applicationPhrase.Translations.All(x => x.LanguageId != language))
-                {
-                    applicationPhrase.Translations.Add(new ApplicationTranslation()
-                    {
-                        Text = machineTranslation.Text,
-                        LanguageId = language,
-                        ObjectState = ObjectState.Added
-                    });
-                }
+        //    if (machineTranslation != null)
+        //    {
+        //        if (applicationPhrase.Translations.All(x => x.LanguageId != language))
+        //        {
+        //            applicationPhrase.Translations.Add(new ApplicationTranslation()
+        //            {
+        //                Text = machineTranslation.Text,
+        //                LanguageId = language,
+        //                ObjectState = ObjectState.Added
+        //            });
+        //        }
 
-                applicationPhrase.ObjectState = ObjectState.Modified;
-            }
+        //        applicationPhrase.ObjectState = ObjectState.Modified;
+        //    }
 
-        }
+        //}
 
-        if (applicationPhrase.ObjectState == ObjectState.Modified)
-        {
-            retVal = _applicationPhraseRepository.Update(applicationPhrase, true);
-        }
+        //if (applicationPhrase.ObjectState == ObjectState.Modified)
+        //{
+        //    retVal = _applicationPhraseRepository.Update(applicationPhrase, true);
+        //}
 
-        return retVal;
+        //return retVal;
     }
 
     public async Task<int> CopyTranslationsFromLanguage(Guid applicationId, string languageId)

@@ -11,7 +11,7 @@ using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Proxies;
 
-public class PhrasesProxy : BaseProxy, IPhrasesController
+public class ApplicationPhrasesProxy : BaseProxy, IApplicationPhrasesController
 {
 
     public Task<ApplicationPhraseDetails> GetPhraseAsync(Guid applicationId, int phraseId)
@@ -47,7 +47,7 @@ public class PhrasesProxy : BaseProxy, IPhrasesController
     }
 
 
-    public PhrasesProxy(HttpClient httpClient) : base(httpClient)
+    public ApplicationPhrasesProxy(HttpClient httpClient) : base(httpClient)
     {
     }
 }
