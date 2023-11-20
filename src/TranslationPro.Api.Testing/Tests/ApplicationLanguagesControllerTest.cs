@@ -90,7 +90,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
             Assert.AreEqual(2, getApplication.PhraseCount);
             Assert.AreEqual(4, getApplication.TranslationCount);
 
-            var getPhrases = await ApplicationPhrasesProxy.GetPhraseAsync(applicationId, createPhrase.PhraseId.Value);
+            var getPhrases = await ApplicationPhrasesProxy.GetPhraseAsync(applicationId, int.Parse(createPhrase.Id.ToString()));
 
             foreach (var phrase in getPhrases.Translations)
             {

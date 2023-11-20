@@ -34,7 +34,7 @@ public class TranslationsControllerTest : BaseApiTest
                 Text = "hola mae"
             };
 
-            var updateResult = await ApplicationTranslationsProxy.ReplaceTranslation(ApplicationId, createResult.PhraseId.Value, replacementInput);
+            var updateResult = await ApplicationTranslationsProxy.ReplaceTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), replacementInput);
 
             Assert.IsTrue(updateResult.Succeeded);
         }

@@ -9,5 +9,7 @@ namespace TranslationPro.Base.Services
     {
         Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options);
         Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId);
+
+        Task<string[]> GetLanguagesForApplication(Guid applicationId);
     }
 }

@@ -30,7 +30,7 @@ public class PhrasesControllerTest : BaseApiTest
 
             Assert.IsTrue(result.Succeeded);
 
-            var phrase = await ApplicationPhrasesProxy.GetPhraseAsync(ApplicationId, result.PhraseId.Value);
+            var phrase = await ApplicationPhrasesProxy.GetPhraseAsync(ApplicationId, int.Parse(result.Id.ToString()));
 
             Assert.IsNotNull(phrase);
 
@@ -94,7 +94,7 @@ public class PhrasesControllerTest : BaseApiTest
             };
             var createResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            var deleteResult = await ApplicationPhrasesProxy.DeletePhraseAsync(ApplicationId, createResult.PhraseId.Value);
+            var deleteResult = await ApplicationPhrasesProxy.DeletePhraseAsync(ApplicationId, int.Parse(createResult.Id.ToString()));
 
             Assert.IsTrue(deleteResult.Succeeded);
         }

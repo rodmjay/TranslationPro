@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,15 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
         .Include(x => x.Translations);
+
+    public async Task<List<ApplicationTranslation>> GetPendingTranslations(Guid applicationId, int[] phraseIds)
+    {
+        var translations = await ApplicationTranslations
+            .Where(x => x.ApplicationId == applicationId && phraseIds.Contains(x.PhraseId) && x.Text == null)
+            .ToListAsync();
+
+        return translations;
+    }
 
     public async Task<Result> AddTranslationsForLanguage(Guid applicationId, string languageId)
     {

@@ -25,6 +25,14 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Services;
 
+public class EnsurePhrasesResult
+{
+    public int PhrasesRequested { get; set; }
+    public int PhrasesAdded { get; set; }
+    public int ExistingPhrases { get; set; }
+
+    public int[] Phrases { get; set; }
+}
 public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplicationPhraseService
 {
     private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
@@ -54,7 +62,12 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
     private IQueryable<ApplicationTranslation> ApplicationTranslations => _applicationTranslationRepository.Queryable()
         .Include(x => x.ApplicationPhrase);
-    
+
+    public Task<string[]> GetPhraseTextsForApplication(Guid applicationId)
+    {
+        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId).Select(x => x.Text).ToArrayAsync();
+    }
+
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery paging,
         PhraseFilters filters) where T : ApplicationPhraseOutput
     {
@@ -74,7 +87,67 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
         return phraseIds;
     }
-    
+
+    public async Task<EnsurePhrasesResult> EnsureApplicationPhrases(Guid applicationId, string[] phrases)
+    {
+        var texts = phrases.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).Distinct().ToArray();
+
+        var retVal = new EnsurePhrasesResult()
+        {
+            PhrasesRequested = texts.Length
+        };
+
+        var existingPhrases = await ApplicationPhrases.Where(x => texts.Contains(x.Text)).ToListAsync();
+
+        retVal.ExistingPhrases = existingPhrases.Count;
+
+        foreach (var text in texts)
+        {
+            if(existingPhrases.Any(x=>x.Text == text)) continue;
+
+            var phrase = new ApplicationPhrase()
+            {
+                Text = text,
+                ApplicationId = applicationId
+            };
+
+            Repository.Insert(phrase);
+        }
+
+        retVal.PhrasesAdded = Repository.Commit();
+        retVal.Phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text))
+            .Select(x => x.Id).ToArrayAsync();
+
+        return retVal;
+    }
+
+    public async Task EnsurePhrasesWithTranslations(Guid applicationId, int[] phraseIds, string[] languageIds)
+    {
+        var phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && phraseIds.Contains(x.Id))
+            .ToListAsync();
+
+        foreach (var phrase in phrases)
+        {
+            foreach (var language in languageIds)
+            {
+                var translation = phrase.Translations.FirstOrDefault(x => x.LanguageId == language);
+
+                if (translation != null) continue;
+
+                phrase.Translations.Add(new ApplicationTranslation()
+                {
+                    LanguageId = language,
+                    ObjectState = ObjectState.Added
+                });
+
+                phrase.ObjectState = ObjectState.Modified;
+            }
+
+            Repository.InsertOrUpdateGraph(phrase);
+        }
+
+        Repository.Commit();
+    }
 
     public async Task<ApplicationPhrase> CreateApplicationPhrase(Guid applicationId, PhraseOptions input)
     {

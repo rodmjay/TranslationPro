@@ -101,5 +101,11 @@ namespace TranslationPro.Base.Services
                 return Result.Success();
             return Result.Failed();
         }
+
+        public Task<string[]> GetLanguagesForApplication(Guid applicationId)
+        {
+            return ApplicationLanguages.Where(x => x.ApplicationId == applicationId).Select(x => x.LanguageId)
+                .ToArrayAsync();
+        }
     }
 }

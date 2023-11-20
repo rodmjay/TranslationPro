@@ -46,7 +46,7 @@ public class ApplicationPhrasesController : BaseController, IApplicationPhrasesC
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _applicationPhraseManager.CreatePhrase(applicationId, input);
+        var result = await _applicationPhraseManager.CreatePhrase(applicationId, input.Text);
         
         return result;
     }

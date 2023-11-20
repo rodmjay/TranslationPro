@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Entities;
@@ -9,6 +10,8 @@ namespace TranslationPro.Base.Services;
 
 public interface IApplicationTranslationService : IService<ApplicationTranslation>
 {
+    Task<List<ApplicationTranslation>> GetPendingTranslations(Guid applicationId, int[] phraseIds);
+
     Task<Result> AddTranslationsForLanguage(Guid applicationId, string languageId);
 
     Task<PagedList<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId,

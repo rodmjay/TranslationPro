@@ -17,6 +17,8 @@ namespace TranslationPro.Base.Services;
 
 public interface IApplicationPhraseService : IService<ApplicationPhrase>
 {
+    Task<string[]> GetPhraseTextsForApplication(Guid applicationId);
+
     Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery query, PhraseFilters filters)
         where T : ApplicationPhraseOutput;
 
@@ -26,6 +28,8 @@ public interface IApplicationPhraseService : IService<ApplicationPhrase>
     Task<Result> SaveApplicationPhrase(ApplicationPhrase phrase);
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
     Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language);
-    
 
+
+    Task<EnsurePhrasesResult> EnsureApplicationPhrases(Guid applicationId, string[] phrases);
+    Task EnsurePhrasesWithTranslations(Guid applicationId, int[] phraseIds, string[] languageIds);
 }
