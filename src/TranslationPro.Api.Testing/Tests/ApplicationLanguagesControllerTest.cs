@@ -43,10 +43,10 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
 
             var createPhraseOptions = new PhraseOptions()
             {
-                Text = "house"
+                Texts = new []{ "house" }
             };
 
-            var createPhrase = await ApplicationPhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
+            var createPhrase = await ApplicationPhrasesProxy.CreatePhrasesAsync(applicationId, createPhraseOptions);
             Assert.IsNotNull(createPhrase);
 
             var getApplication =
@@ -63,7 +63,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
 
             var addApplicationLanguageOptions = new ApplicationLanguageOptions()
             {
-                Language = language
+                LanguageId = language
             };
 
             var addApplicationLanguageOptionsResult =
@@ -80,9 +80,9 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
 
             createPhraseOptions = new PhraseOptions()
             {
-                Text = "street"
+                Texts = new []{"street"}
             };
-            createPhrase = await ApplicationPhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
+            createPhrase = await ApplicationPhrasesProxy.CreatePhrasesAsync(applicationId, createPhraseOptions);
             Assert.IsNotNull(createPhrase);
 
             getApplication = await ApplicationsProxy.GetApplicationAsync(applicationId);
@@ -90,7 +90,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
             Assert.AreEqual(2, getApplication.PhraseCount);
             Assert.AreEqual(4, getApplication.TranslationCount);
 
-            var getPhrases = await ApplicationPhrasesProxy.GetPhraseAsync(applicationId, int.Parse(createPhrase.Id.ToString()));
+            var getPhrases = await ApplicationPhrasesProxy.GetPhraseAsync(applicationId, int.Parse(createPhrase[0].Id.ToString()));
 
             foreach (var phrase in getPhrases.Translations)
             {

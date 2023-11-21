@@ -10,15 +10,15 @@ namespace TranslationPro.Base.Services;
 
 public interface IApplicationTranslationService : IService<ApplicationTranslation>
 {
-    Task<List<ApplicationTranslation>> GetPendingTranslations(Guid applicationId, int[] phraseIds);
+    Task<List<ApplicationTranslation>> GetPendingTranslations(Guid applicationId, int[] phraseIds, string[] languageIds);
 
     Task<Result> AddTranslationsForLanguage(Guid applicationId, string languageId);
 
     Task<PagedList<T>> GetTranslationsForApplicationForLanguage<T>(Guid applicationId, string languageId,
         PagingQuery paging) where T : ApplicationTranslationOutput;
 
-    Task<int> CopyTranslationFromPhraseList(Guid applicationId, int phraseId);
-    Task<int> CopyTranslationsFromLanguage(Guid applicationId, string languageId);
     Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions input);
 
+    Task ScaffoldTranslations(Guid applicationId, int[] phraseIds, string[] languageIds);
+    Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language);
 }

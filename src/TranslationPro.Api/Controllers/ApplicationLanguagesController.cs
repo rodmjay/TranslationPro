@@ -37,9 +37,9 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _applicationPhraseManager.AddLanguageToApplicationPhrases(applicationId, options.Language);
+        await _applicationPhraseManager.AddLanguageToApplicationPhrases(applicationId, options.LanguageId);
         
-        return result;
+        return Result.Success(options.LanguageId);
     }
 
     [HttpDelete("{languageId}")]

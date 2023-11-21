@@ -51,63 +51,63 @@ public class ApplicationPhraseManager
         return _applicationPhraseService.GetPhraseAsync<T>(applicationId, phraseId);
     }
 
-    public async Task<Result> AddLanguageToApplicationPhrases(Guid applicationId, string language)
+    public async Task AddLanguageToApplicationPhrases(Guid applicationId, string languageId)
     {
         var phrases = await _applicationPhraseService.GetPhraseTextsForApplication(applicationId);
-        return await CreateAndTranslatePhrases(applicationId, new[] {language}, phrases);
+        await CreateAndTranslatePhrases(applicationId, new[] { languageId }, phrases);
     }
 
-    public async Task<T> CreatePhrase<T>(Guid applicationId, string phrase) where T : ApplicationPhraseOutput
+    public async Task<List<T>> CreatePhrases<T>(Guid applicationId, string[] phrases) where T : ApplicationPhraseOutput
     {
         var languages = await _applicationLanguageService.GetLanguagesForApplication(applicationId);
-        var translationResult = await CreateAndTranslatePhrases(applicationId, languages, new[] {phrase});
 
-        return await _applicationPhraseService.GetPhraseAsync<T>(applicationId, phrase);
+        await CreateAndTranslatePhrases(applicationId, languages, phrases);
+
+        return await _applicationPhraseService.GetPhrasesAsync<T>(applicationId, phrases);
     }
 
-    public async Task<Result> CreateAndTranslatePhrases(Guid applicationId, string[] languageIds, string[] phrases)
+    public async Task CreateAndTranslatePhrases(Guid applicationId, string[] languageIds, string[] phrases)
     {
+        var texts = phrases.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).Distinct().ToArray();
+
         await _applicationLanguageService.EnsureApplicationLanguages(applicationId, languageIds);
+
+        var createPhrases = await _applicationPhraseService.ScaffoldPhrases(applicationId, texts);
         
-        var createPhrases = await _applicationPhraseService.EnsureApplicationPhrases(applicationId, phrases);
+        var pending = await _applicationTranslationService.GetPendingTranslations(applicationId, createPhrases.Phrases, languageIds);
 
-        await _applicationPhraseService.EnsurePhrasesWithTranslations(applicationId, createPhrases.Phrases, languageIds);
-
-        var pending = await _applicationTranslationService.GetPendingTranslations(applicationId, createPhrases.Phrases);
-
-        var translateOptions = new PhraseBulkCreateOptions()
+        if (pending.Count > 0)
         {
-            LanguageIds = pending.Select(x=>x.LanguageId).Distinct().ToArray(),
-            Texts = pending.Select(x=>x.ApplicationPhrase.Text).Distinct().ToArray()
-        };
-        
-        var translationResult = await _translationProxy.Translate(translateOptions);
-
-        foreach (var phrase in translationResult)
-        {
-            var translations = phrase.MachineTranslations.GroupBy(x => x.LanguageId)
-                .ToDictionary(x => x.Key, x => x.First());
-
-            foreach (var translation in translations)
+            var translationResult = await _translationProxy.Translate(new PhraseBulkCreateOptions()
             {
-                var applicationTranslation = pending
-                    .FirstOrDefault(x => x.ApplicationPhrase.Text == phrase.Text && x.LanguageId == translation.Key);
+                LanguageIds = pending.Select(x => x.LanguageId).Distinct().ToArray(),
+                Texts = pending.Select(x => x.ApplicationPhrase.Text).Distinct().ToArray()
+            });
 
-                if (applicationTranslation != null)
+            foreach (var phrase in translationResult)
+            {
+                var translations = phrase.MachineTranslations.GroupBy(x => x.LanguageId)
+                    .ToDictionary(x => x.Key, x => x.First());
+
+                foreach (var translation in translations)
                 {
-                    applicationTranslation.Text = translation.Value.Text;
-                    applicationTranslation.ObjectState = ObjectState.Modified;
+                    var applicationTranslation = pending
+                        .FirstOrDefault(x => x.ApplicationPhrase.Text == phrase.Text && x.LanguageId == translation.Key);
 
-                    _applicationTranslationRepository.Update(applicationTranslation);
+                    if (applicationTranslation != null)
+                    {
+                        applicationTranslation.Text = translation.Value.Text;
+                        applicationTranslation.ObjectState = ObjectState.Modified;
+
+                        _applicationTranslationRepository.Update(applicationTranslation);
+                    }
                 }
             }
+
+            _applicationTranslationRepository.Commit();
         }
-
-        _applicationTranslationRepository.Commit();
-
-        return Result.Success();
     }
-    
+
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery query,
         PhraseFilters filters)
@@ -118,7 +118,7 @@ public class ApplicationPhraseManager
 
     public Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
     {
-        return _applicationPhraseService.GetApplicationPhraseList(applicationId, language);
+        return _applicationTranslationService.GetApplicationPhraseList(applicationId, language);
     }
 
     public Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)

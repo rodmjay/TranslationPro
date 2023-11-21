@@ -56,7 +56,7 @@ namespace TranslationPro.App.Shared
             var result = await ApplicationLanguagesController.AddLanguageToApplicationAsync(ApplicationId,
                 new ApplicationLanguageOptions()
                 {
-                    Language = langage
+                    LanguageId = langage
                 });
             
             await OnInitializedAsync();

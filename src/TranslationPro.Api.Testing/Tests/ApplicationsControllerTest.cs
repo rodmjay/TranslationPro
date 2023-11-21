@@ -60,9 +60,9 @@ public class ApplicationsControllerTest : BaseApiTest
 
             Assert.AreEqual(1, applications.Count);
 
-            var createPhraseResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, new PhraseOptions()
+            var createPhraseResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, new PhraseOptions()
             {
-                Text = "hello world"
+                Texts = new []{ "hello world" }
             });
 
             var application = await ApplicationsProxy.GetApplicationAsync(ApplicationId);

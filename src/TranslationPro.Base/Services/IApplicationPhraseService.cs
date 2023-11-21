@@ -23,14 +23,8 @@ public interface IApplicationPhraseService : IService<ApplicationPhrase>
         where T : ApplicationPhraseOutput;
 
     Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : ApplicationPhraseOutput;
-    Task<T> GetPhraseAsync<T>(Guid applicationId, string phrase) where T : ApplicationPhraseOutput;
+    Task<List<T>> GetPhrasesAsync<T>(Guid applicationId, string[] phrases) where T : ApplicationPhraseOutput;
     //Task<Result> BulkUploadPhrases(Guid applicationId, List<string> phrases);
-    Task<ApplicationPhrase> CreateApplicationPhrase(Guid applicationId, PhraseOptions input);
-    Task<Result> SaveApplicationPhrase(ApplicationPhrase phrase);
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
-    Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language);
-
-
-    Task<EnsurePhrasesResult> EnsureApplicationPhrases(Guid applicationId, string[] phrases);
-    Task EnsurePhrasesWithTranslations(Guid applicationId, int[] phraseIds, string[] languageIds);
+    Task<EnsurePhrasesResult> ScaffoldPhrases(Guid applicationId, string[] phrases);
 }

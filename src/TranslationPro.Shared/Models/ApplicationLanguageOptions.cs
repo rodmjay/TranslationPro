@@ -9,5 +9,5 @@ namespace TranslationPro.Shared.Models;
 
 public class ApplicationLanguageOptions
 {
-    public string Language { get; set; }
+    public string LanguageId { get; set; }
 }

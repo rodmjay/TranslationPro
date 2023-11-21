@@ -26,11 +26,11 @@ namespace TranslationPro.App.Pages
 
         private async Task HandleSubmit()
         {
-            var result = await ApplicationPhraseProxy.CreatePhraseAsync(ApplicationId, Input);
+            var result = await ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, Input);
 
             if (result != null)
             {
-                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result.Id}");
+                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result[0].Id}");
             }
         }
     }

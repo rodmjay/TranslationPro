@@ -18,11 +18,6 @@ public interface IApplicationPhrasesController
 {
 
     Task<ApplicationPhraseDetails> GetPhraseAsync(Guid applicationId, int phraseId);
-
-    //Task<Result> BulkUploadAsync(Guid applicationId,
-    //     List<string> input);
-
-    Task<ApplicationPhraseDetails> CreatePhraseAsync(Guid applicationId, PhraseOptions input);
     
     Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,
          PhraseFilters filters);
@@ -32,4 +27,6 @@ public interface IApplicationPhrasesController
 
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
 
+    Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync( Guid applicationId,
+        PhraseOptions input);
 }

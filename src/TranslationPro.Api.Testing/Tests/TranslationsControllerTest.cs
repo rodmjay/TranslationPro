@@ -22,11 +22,11 @@ public class TranslationsControllerTest : BaseApiTest
         {
             var input = new PhraseOptions()
             {
-                Text = "hello"
+                Texts = new []{ "hello" }
             };
-            var createResult = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
+            var createResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, input);
 
-            input.Text = "goodbye";
+            input.Texts = new []{ "goodbye" };
 
             var replacementInput = new TranslationReplacementOptions()
             {
@@ -34,7 +34,7 @@ public class TranslationsControllerTest : BaseApiTest
                 Text = "hola mae"
             };
 
-            var updateResult = await ApplicationTranslationsProxy.ReplaceTranslation(ApplicationId, int.Parse(createResult.Id.ToString()), replacementInput);
+            var updateResult = await ApplicationTranslationsProxy.ReplaceTranslation(ApplicationId, int.Parse(createResult[0].Id.ToString()), replacementInput);
 
             Assert.IsTrue(updateResult.Succeeded);
         }

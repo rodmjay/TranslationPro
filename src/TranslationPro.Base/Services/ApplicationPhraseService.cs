@@ -70,21 +70,14 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             .ProjectTo<T>(ProjectionMapping).FirstAsync();
     }
 
-    public Task<T> GetPhraseAsync<T>(Guid applicationId, string phrase) where T : ApplicationPhraseOutput
+    public Task<List<T>> GetPhrasesAsync<T>(Guid applicationId, string[] phrases) where T : ApplicationPhraseOutput
     {
-        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Text == phrase)
-            .ProjectTo<T>(ProjectionMapping).FirstAsync();
+        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && phrases.Contains(x.Text))
+            .ProjectTo<T>(ProjectionMapping).ToListAsync();
     }
+    
 
-    public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
-    {
-        var phraseIds = await ApplicationTranslations.Where(at => at.LanguageId == language && !at.IsDeleted).GroupBy(x => x.PhraseId)
-            .ToDictionaryAsync(g => g.Key, g => g.Select(x => x.Text).First());
-
-        return phraseIds;
-    }
-
-    public async Task<EnsurePhrasesResult> EnsureApplicationPhrases(Guid applicationId, string[] phrases)
+    public async Task<EnsurePhrasesResult> ScaffoldPhrases(Guid applicationId, string[] phrases)
     {
         var texts = phrases.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).Distinct().ToArray();
 
@@ -93,94 +86,36 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             PhrasesRequested = texts.Length
         };
 
-        var existingPhrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text)).ToListAsync();
+        var existingPhrases = await ApplicationPhrases
+            .Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text)).ToListAsync();
 
         retVal.ExistingPhrases = existingPhrases.Count;
 
-        foreach (var text in texts)
-        {
-            if(existingPhrases.Any(x=>x.Text == text)) continue;
+        var nextId = await GetNextPhraseIdAsync(applicationId);
 
-            var phrase = new ApplicationPhrase()
+        for (var index = 0; index < texts.Length; index++)
+        {
+            var text = texts[index];
+            if (existingPhrases.Any(x => x.Text == text)) continue;
+
+            var applicationPhrase = new ApplicationPhrase()
             {
-                Id = await GetNextPhraseIdAsync(applicationId),
+                Id = nextId + index,
                 Text = text,
                 ApplicationId = applicationId
             };
 
-            Repository.Insert(phrase);
+            Repository.Insert(applicationPhrase);
         }
 
         retVal.PhrasesAdded = Repository.Commit();
 
-        retVal.Phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text))
+        retVal.Phrases = await ApplicationPhrases
+            .Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text))
             .Select(x => x.Id).ToArrayAsync();
 
         return retVal;
     }
-
-    public async Task EnsurePhrasesWithTranslations(Guid applicationId, int[] phraseIds, string[] languageIds)
-    {
-        var phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && phraseIds.Contains(x.Id))
-            .ToListAsync();
-
-        foreach (var phrase in phrases)
-        {
-            foreach (var language in languageIds)
-            {
-                var translation = phrase.Translations.FirstOrDefault(x => x.LanguageId == language);
-
-                if (translation != null) continue;
-
-                phrase.Translations.Add(new ApplicationTranslation()
-                {
-                    LanguageId = language,
-                    ObjectState = ObjectState.Added
-                });
-
-                phrase.ObjectState = ObjectState.Modified;
-            }
-
-            Repository.Update(phrase);
-        }
-
-        Repository.Commit();
-    }
-
-    public async Task<ApplicationPhrase> CreateApplicationPhrase(Guid applicationId, PhraseOptions input)
-    {
-        _logger.LogInformation(GetLogMessage("Creating Phrase: {0}"), input.Text);
-
-        var applicationPhrase = await ApplicationPhrases
-            .Where(x => x.ApplicationId == applicationId && x.Text == input.Text).FirstOrDefaultAsync();
-
-        if (applicationPhrase == null)
-        {
-            var applicationPhraseId = await GetNextPhraseIdAsync(applicationId);
-
-            applicationPhrase = new ApplicationPhrase
-            {
-                Id = applicationPhraseId,
-                Text = input.Text,
-                ApplicationId = applicationId,
-                ObjectState = ObjectState.Added
-            };
-
-            var records = Repository.InsertOrUpdateGraph(applicationPhrase, true);
-        }
-
-        return applicationPhrase;
-
-    }
-
-    public Task<Result> SaveApplicationPhrase(ApplicationPhrase phrase)
-    {
-        var records = Repository.InsertOrUpdateGraph(phrase, true);
-        if (records > 0)
-            return Task.FromResult(Result.Success(phrase.Id));
-        return Task.FromResult(Result.Failed());
-    }
-
 
     public async Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)
     {
