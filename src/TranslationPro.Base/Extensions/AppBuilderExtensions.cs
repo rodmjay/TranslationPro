@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using TranslationPro.Base.Managers;
 using TranslationPro.Shared.Proxies;
-using System.Security.Policy;
 
 namespace TranslationPro.Base.Extensions;
 

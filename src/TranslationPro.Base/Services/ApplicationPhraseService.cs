@@ -25,14 +25,6 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Services;
 
-public class EnsurePhrasesResult
-{
-    public int PhrasesRequested { get; set; }
-    public int PhrasesAdded { get; set; }
-    public int ExistingPhrases { get; set; }
-
-    public int[] Phrases { get; set; }
-}
 public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplicationPhraseService
 {
     private static string GetLogMessage(string message, [CallerMemberName] string callerName = null)
@@ -40,7 +32,6 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         return $"[{nameof(ApplicationPhraseService)}.{callerName}] - {message}";
     }
 
-    private readonly IRepositoryAsync<Application> _applicationRepository;
     private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
@@ -52,7 +43,6 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     {
         _errorDescriber = errorDescriber;
         _logger = logger;
-        _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         _applicationTranslationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
     }
 
@@ -80,6 +70,12 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             .ProjectTo<T>(ProjectionMapping).FirstAsync();
     }
 
+    public Task<T> GetPhraseAsync<T>(Guid applicationId, string phrase) where T : ApplicationPhraseOutput
+    {
+        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && x.Text == phrase)
+            .ProjectTo<T>(ProjectionMapping).FirstAsync();
+    }
+
     public async Task<Dictionary<int, string>> GetApplicationPhraseList(Guid applicationId, string language)
     {
         var phraseIds = await ApplicationTranslations.Where(at => at.LanguageId == language && !at.IsDeleted).GroupBy(x => x.PhraseId)
@@ -97,7 +93,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             PhrasesRequested = texts.Length
         };
 
-        var existingPhrases = await ApplicationPhrases.Where(x => texts.Contains(x.Text)).ToListAsync();
+        var existingPhrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text)).ToListAsync();
 
         retVal.ExistingPhrases = existingPhrases.Count;
 
@@ -107,6 +103,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
 
             var phrase = new ApplicationPhrase()
             {
+                Id = await GetNextPhraseIdAsync(applicationId),
                 Text = text,
                 ApplicationId = applicationId
             };
@@ -115,6 +112,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         }
 
         retVal.PhrasesAdded = Repository.Commit();
+
         retVal.Phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text))
             .Select(x => x.Id).ToArrayAsync();
 
@@ -143,7 +141,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
                 phrase.ObjectState = ObjectState.Modified;
             }
 
-            Repository.InsertOrUpdateGraph(phrase);
+            Repository.Update(phrase);
         }
 
         Repository.Commit();

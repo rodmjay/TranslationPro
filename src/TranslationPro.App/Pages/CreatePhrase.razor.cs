@@ -28,9 +28,9 @@ namespace TranslationPro.App.Pages
         {
             var result = await ApplicationPhraseProxy.CreatePhraseAsync(ApplicationId, Input);
 
-            if (result.Succeeded)
+            if (result != null)
             {
-                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result.PhraseId}");
+                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result.Id}");
             }
         }
     }

@@ -28,7 +28,7 @@ public class PhrasesControllerTest : BaseApiTest
 
             var result = await ApplicationPhrasesProxy.CreatePhraseAsync(ApplicationId, input);
 
-            Assert.IsTrue(result.Succeeded);
+            Assert.IsNotNull(result);
 
             var phrase = await ApplicationPhrasesProxy.GetPhraseAsync(ApplicationId, int.Parse(result.Id.ToString()));
 

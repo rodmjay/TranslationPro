@@ -47,7 +47,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
             };
 
             var createPhrase = await ApplicationPhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
-            Assert.IsTrue(createPhrase.Succeeded);
+            Assert.IsNotNull(createPhrase);
 
             var getApplication =
                 await ApplicationsProxy.GetApplicationAsync(applicationId);
@@ -83,7 +83,7 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
                 Text = "street"
             };
             createPhrase = await ApplicationPhrasesProxy.CreatePhraseAsync(applicationId, createPhraseOptions);
-            Assert.IsTrue(createPhrase.Succeeded);
+            Assert.IsNotNull(createPhrase);
 
             getApplication = await ApplicationsProxy.GetApplicationAsync(applicationId);
 

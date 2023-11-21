@@ -23,6 +23,7 @@ public interface IApplicationPhraseService : IService<ApplicationPhrase>
         where T : ApplicationPhraseOutput;
 
     Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : ApplicationPhraseOutput;
+    Task<T> GetPhraseAsync<T>(Guid applicationId, string phrase) where T : ApplicationPhraseOutput;
     //Task<Result> BulkUploadPhrases(Guid applicationId, List<string> phrases);
     Task<ApplicationPhrase> CreateApplicationPhrase(Guid applicationId, PhraseOptions input);
     Task<Result> SaveApplicationPhrase(ApplicationPhrase phrase);

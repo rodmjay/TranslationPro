@@ -14,28 +14,19 @@ namespace TranslationPro.Base.Managers;
 
 public class ApplicationLanguageManager
 {
+    private readonly ApplicationPhraseManager _phraseManager;
     private readonly IApplicationLanguageService _applicationLanguageService;
-    private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly IApplicationTranslationService _applicationTranslationService;
 
     public ApplicationLanguageManager(
+        ApplicationPhraseManager phraseManager,
         IApplicationLanguageService applicationLanguageService,
-        IApplicationPhraseService applicationPhraseService,
         IApplicationTranslationService applicationTranslationService)
     {
+        _phraseManager = phraseManager;
         _applicationLanguageService = applicationLanguageService;
-        _applicationPhraseService = applicationPhraseService;
         _applicationTranslationService = applicationTranslationService;
     }
-    public async Task<Result> AddLanguageToApplication(Guid applicationId, ApplicationLanguageOptions options)
-    {
-        var addLanguageToApplicationResult = await _applicationLanguageService
-            .AddLanguageToApplication(applicationId, options);
-        
-        
-        return addLanguageToApplicationResult;
-    }
-
     public Task<Result> RemoveLanguageFromApplication(Guid applicationId, string languageId)
     {
         return _applicationLanguageService.RemoveLanguageFromApplication(applicationId, languageId);

@@ -2,7 +2,6 @@
 using System;
 using TranslationPro.Shared.Models;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Results;
 using TranslationPro.Shared.Filters;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -10,11 +9,9 @@ using Microsoft.Extensions.Logging;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Services;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Shared.Proxies;
-using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Managers;
 
@@ -26,29 +23,22 @@ public class ApplicationPhraseManager
         return $"[{nameof(ApplicationPhraseManager)}.{callerName}] - {message}";
     }
 
-    private readonly IPermissionService _permissionService;
     private readonly TranslationsProxy _translationProxy;
     private readonly IApplicationTranslationService _applicationTranslationService;
     private readonly IApplicationLanguageService _applicationLanguageService;
     private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly ILogger<ApplicationPhraseManager> _logger;
-    private readonly IRepositoryAsync<Application> _applicationRepository;
-    private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhraseRepository;
     private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
 
     public ApplicationPhraseManager(
         IUnitOfWorkAsync unitOfWork,
-        IPermissionService permissionService,
         TranslationsProxy translationProxy,
         IApplicationTranslationService applicationTranslationService,
         IApplicationLanguageService applicationLanguageService,
         IApplicationPhraseService applicationPhraseService,
         ILogger<ApplicationPhraseManager> logger)
     {
-        _applicationRepository = unitOfWork.RepositoryAsync<Application>();
-        _applicationPhraseRepository = unitOfWork.RepositoryAsync<ApplicationPhrase>();
         _applicationTranslationRepository = unitOfWork.RepositoryAsync<ApplicationTranslation>();
-        _permissionService = permissionService;
         _translationProxy = translationProxy;
         _applicationTranslationService = applicationTranslationService;
         _applicationLanguageService = applicationLanguageService;
@@ -56,27 +46,29 @@ public class ApplicationPhraseManager
         _logger = logger;
     }
 
-    private IQueryable<Application> Applications => _applicationRepository.Queryable().Include(x => x.Languages);
-
     public Task<T> GetPhraseAsync<T>(Guid applicationId, int phraseId) where T : ApplicationPhraseOutput
     {
         return _applicationPhraseService.GetPhraseAsync<T>(applicationId, phraseId);
     }
 
-    public async Task<Result> CreatePhraseLanguages(Guid applicationId, string language)
+    public async Task<Result> AddLanguageToApplicationPhrases(Guid applicationId, string language)
     {
         var phrases = await _applicationPhraseService.GetPhraseTextsForApplication(applicationId);
-        return await CreatePhrases(applicationId, new[] {language}, phrases);
+        return await CreateAndTranslatePhrases(applicationId, new[] {language}, phrases);
     }
 
-    public async Task<Result> CreatePhrase(Guid applicationId, string phrase)
+    public async Task<T> CreatePhrase<T>(Guid applicationId, string phrase) where T : ApplicationPhraseOutput
     {
         var languages = await _applicationLanguageService.GetLanguagesForApplication(applicationId);
-        return await CreatePhrases(applicationId, languages, new[] {phrase});
+        var translationResult = await CreateAndTranslatePhrases(applicationId, languages, new[] {phrase});
+
+        return await _applicationPhraseService.GetPhraseAsync<T>(applicationId, phrase);
     }
 
-    public async Task<Result> CreatePhrases(Guid applicationId, string[] languageIds, string[] phrases)
+    public async Task<Result> CreateAndTranslatePhrases(Guid applicationId, string[] languageIds, string[] phrases)
     {
+        await _applicationLanguageService.EnsureApplicationLanguages(applicationId, languageIds);
+        
         var createPhrases = await _applicationPhraseService.EnsureApplicationPhrases(applicationId, phrases);
 
         await _applicationPhraseService.EnsurePhrasesWithTranslations(applicationId, createPhrases.Phrases, languageIds);
@@ -115,49 +107,7 @@ public class ApplicationPhraseManager
 
         return Result.Success();
     }
-
-    public async Task<Result> CreatePhrase(Guid applicationId, PhraseOptions input)
-    {
-        _logger.LogInformation(GetLogMessage("Creating Phrase: {0} for application: {1}"), input.Text, applicationId);
-        
-        var languages = await _applicationLanguageService.GetLanguagesForApplication(applicationId);
-        
-        var applicationPhrase = await _applicationPhraseService.CreateApplicationPhrase(applicationId, input);
-
-        var result = await _translationProxy.Translate(new PhraseBulkCreateOptions()
-        {
-            LanguageIds = languages,
-            Texts = new[] { input.Text }
-        });
-        
-        foreach (var phrase in result)
-        {
-            if (phrase.Text == applicationPhrase.Text)
-            {
-                // todo: use weights to get the right translation
-                var translations = phrase.MachineTranslations.GroupBy(x => x.LanguageId)
-                    .ToDictionary(x => x.Key, x => x.Select(t=>t.Text).First());
-
-                foreach (var (language, firstTranslation) in translations)
-                {
-                    applicationPhrase.Translations.Add(new ApplicationTranslation()
-                    {
-                        LanguageId = language,
-                        Text = firstTranslation,
-                        ObjectState = ObjectState.Added
-                    });
-                    applicationPhrase.ObjectState = ObjectState.Modified;
-                }
-            }
-        }
-
-        if (applicationPhrase.ObjectState == ObjectState.Modified)
-        {
-            await _applicationPhraseService.SaveApplicationPhrase(applicationPhrase);
-        }
-
-        return Result.Success(applicationPhrase.Id);
-    }
+    
 
     public Task<PagedList<T>> GetPhrasesForApplicationAsync<T>(Guid applicationId, PagingQuery query,
         PhraseFilters filters)

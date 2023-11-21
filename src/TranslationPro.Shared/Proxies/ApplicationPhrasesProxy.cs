@@ -19,9 +19,9 @@ public class ApplicationPhrasesProxy : BaseProxy, IApplicationPhrasesController
         return DoGet<ApplicationPhraseDetails>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
-    public Task<Result> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
+    public Task<ApplicationPhraseDetails> CreatePhraseAsync(Guid applicationId, PhraseOptions input)
     {
-        return DoPost<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases", input);
+        return DoPost<PhraseOptions, ApplicationPhraseDetails>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
     public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)

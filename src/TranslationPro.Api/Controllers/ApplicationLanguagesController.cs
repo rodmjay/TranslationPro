@@ -19,12 +19,15 @@ namespace TranslationPro.Api.Controllers;
 [Route("v1.0/applications/{applicationId}/languages")]
 public class ApplicationLanguagesController : BaseController, IApplicationLanguagesController
 {
+    private readonly ApplicationPhraseManager _applicationPhraseManager;
     private readonly ApplicationLanguageManager _applicationLanguageManager;
 
     public ApplicationLanguagesController(IServiceProvider serviceProvider,
+        ApplicationPhraseManager applicationPhraseManager,
         ApplicationLanguageManager applicationLanguageManager) : base(
         serviceProvider)
     {
+        _applicationPhraseManager = applicationPhraseManager;
         _applicationLanguageManager = applicationLanguageManager;
     }
 
@@ -34,7 +37,7 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
     {
         await AssertUserHasAccessToApplication(applicationId);
 
-        var result = await _applicationLanguageManager.AddLanguageToApplication(applicationId, options);
+        var result = await _applicationPhraseManager.AddLanguageToApplicationPhrases(applicationId, options.Language);
         
         return result;
     }
