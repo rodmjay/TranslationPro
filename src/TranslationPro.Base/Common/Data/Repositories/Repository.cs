@@ -323,38 +323,7 @@ public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : cla
         query = query.Skip(skip).Take(pageSize.Value);
         return query;
     }
-
-    internal IQueryable<TEntity> Select(
-        List<Expression<Func<TEntity, bool>>> filters = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        List<Expression<Func<TEntity, object>>> includes = null,
-        int? page = null,
-        int? pageSize = null)
-    {
-        IQueryable<TEntity> query = _dbSet;
-
-        if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-        if (filters != null) query = filters.Aggregate(query, (current, filter) => current.Where(filter));
-
-        if (orderBy == null) return query;
-        query = orderBy(query);
-        if (!page.HasValue || !pageSize.HasValue) return query;
-        if (page > 0 && pageSize > 0) query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
-        return query;
-    }
-
-    internal async Task<IEnumerable<TEntity>> SelectAsync(
-        Expression<Func<TEntity, bool>> filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        List<Expression<Func<TEntity, object>>> includes = null,
-        int? page = null,
-        int? pageSize = null,
-        Expression<Func<TEntity, object>> projection = null)
-    {
-        var entries = Select(filter, orderBy, includes, page, pageSize);
-        return await entries.ToListAsync();
-    }
+    
 
     private void SyncObjectGraph(object entity) // scan object graph for all 
     {

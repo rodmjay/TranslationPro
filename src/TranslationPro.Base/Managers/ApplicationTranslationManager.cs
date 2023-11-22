@@ -18,19 +18,14 @@ namespace TranslationPro.Base.Managers;
 
 public class ApplicationTranslationManager
 {
-    private readonly IApplicationPhraseService _applicationPhraseService;
     private readonly IApplicationTranslationService _applicationTranslationService;
-    private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhraseRepository;
     private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
 
     public ApplicationTranslationManager(
         IUnitOfWorkAsync unitOfWork,
-        IApplicationPhraseService applicationPhraseService,
         IApplicationTranslationService applicationTranslationService)
     {
-        _applicationPhraseService = applicationPhraseService;
         _applicationTranslationService = applicationTranslationService;
-        _applicationPhraseRepository = unitOfWork.RepositoryAsync<ApplicationPhrase>();
         _applicationTranslationRepository = unitOfWork.RepositoryAsync<ApplicationTranslation>();
     }
 

@@ -58,7 +58,8 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
                 phrase.Translations.Add(new ApplicationTranslation()
                 {
                     LanguageId = language,
-                    ObjectState = ObjectState.Added
+                    ObjectState = ObjectState.Added,
+                    Created = DateTimeOffset.UtcNow
                 });
 
                 phrase.ObjectState = ObjectState.Modified;
