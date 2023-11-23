@@ -4,8 +4,6 @@
 
 #endregion
 
-using System.Net;
-
 namespace TranslationPro.Shared.Stripe;
 
 public class SimpleSubscriptionCreateOptions

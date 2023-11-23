@@ -24,10 +24,10 @@ public static class PhraseTestCases
         }
     };
 
-    public static PhraseOptions CreatePhrase =>
+    public static ApplicationPhrasesCreateOptions CreatePhrase =>
         new()
         {
-            Texts = new []{ "house" }
+            Texts = new List<string>() {"house"}
         };
 
 }

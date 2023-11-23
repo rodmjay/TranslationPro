@@ -14,16 +14,13 @@ namespace TranslationPro.Base.Managers;
 
 public class ApplicationLanguageManager
 {
-    private readonly ApplicationPhraseManager _phraseManager;
     private readonly IApplicationLanguageService _applicationLanguageService;
     private readonly IApplicationTranslationService _applicationTranslationService;
 
     public ApplicationLanguageManager(
-        ApplicationPhraseManager phraseManager,
         IApplicationLanguageService applicationLanguageService,
         IApplicationTranslationService applicationTranslationService)
     {
-        _phraseManager = phraseManager;
         _applicationLanguageService = applicationLanguageService;
         _applicationTranslationService = applicationTranslationService;
     }

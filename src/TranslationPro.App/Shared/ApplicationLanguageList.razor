@@ -7,15 +7,15 @@
         @foreach (var lang in Languages)
         {
             <div class="form-check">
-@* 
-                @if (!Application.SupportedLanguages.Contains(lang.Id))
+
+                @if (!Application.Languages.Select(x=>x.Id).Contains(lang.Id))
                 {
                     <input disabled="@(Disabled ? "disabled" : null)" @onclick="()=>HandleEnableClick(lang.Id)" class="form-check-input" type="checkbox" value="@lang.Id" id="@lang.Id">
                 }
                 else
                 {
                     <input disabled="@(Disabled ? "disabled" : null)" @onclick="()=>HandleDisableClick(lang.Id)" class="form-check-input" checked type="checkbox" value="@lang.Id" id="@lang.Id">
-                } *@
+                }
 
                 <label class="form-check-label" for="@lang.Id">
                     @lang.Name

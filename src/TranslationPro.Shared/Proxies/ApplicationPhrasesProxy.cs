@@ -7,7 +7,6 @@ using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Helpers;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
-using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Proxies;
 
@@ -19,14 +18,14 @@ public class ApplicationPhrasesProxy : BaseProxy, IApplicationPhrasesController
         return DoGet<ApplicationPhraseDetails>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}");
     }
 
-    public Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync(Guid applicationId, PhraseOptions input)
+    public Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync(Guid applicationId, ApplicationPhrasesCreateOptions input)
     {
-        return DoPost<PhraseOptions, List<ApplicationPhraseDetails>>($"{ApplicationUrl}/{applicationId}/phrases", input);
+        return DoPost<ApplicationPhrasesCreateOptions, List<ApplicationPhraseDetails>>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
-    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, PhraseOptions input)
+    public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, ApplicationPhrasesCreateOptions input)
     {
-        return DoPut<PhraseOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        return DoPut<ApplicationPhrasesCreateOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
     }
 
     public Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging, PhraseFilters filters)

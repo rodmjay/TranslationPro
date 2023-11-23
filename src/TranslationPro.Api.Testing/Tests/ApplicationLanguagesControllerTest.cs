@@ -41,9 +41,9 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
 
             var applicationId = Guid.Parse(createApplication.Id.ToString());
 
-            var createPhraseOptions = new PhraseOptions()
+            var createPhraseOptions = new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{ "house" }
+                Texts = new List<string>() {"house"}
             };
 
             var createPhrase = await ApplicationPhrasesProxy.CreatePhrasesAsync(applicationId, createPhraseOptions);
@@ -78,9 +78,9 @@ public class ApplicationLanguagesControllerTest : BaseApiTest
             Assert.AreEqual(1, getApplication.PhraseCount);
             Assert.AreEqual(2, getApplication.TranslationCount);
 
-            createPhraseOptions = new PhraseOptions()
+            createPhraseOptions = new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{"street"}
+                Texts = new List<string>() {"street"}
             };
             createPhrase = await ApplicationPhrasesProxy.CreatePhrasesAsync(applicationId, createPhraseOptions);
             Assert.IsNotNull(createPhrase);

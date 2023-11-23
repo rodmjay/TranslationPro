@@ -17,8 +17,13 @@ public class LanguageDetailsBase : ApplicationDetailsBase
     [Parameter]
     public string LanguageId { get; set; }
 
+    protected LanguageOutput Language { get; set; }
+
     [Inject]
     public IApplicationLanguagesController ApplicationLanguagesProxy { get; set; }
+
+    [Inject]
+    public ILanguagesController LanguageProxy { get; set; }
 
     public PagedList<ApplicationTranslationOutputWithOriginalPhrase> Translations { get; set; }
 
@@ -30,6 +35,8 @@ public class LanguageDetailsBase : ApplicationDetailsBase
         Translations =
             await ApplicationLanguagesProxy.GetTranslationsForLanguage(ApplicationId, LanguageId,
                 _paging);
+
+        Language = await LanguageProxy.GetLanguageAsync(LanguageId);
 
         StateHasChanged();
 

@@ -4,6 +4,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Shared.Models;
@@ -20,13 +21,13 @@ public class TranslationsControllerTest : BaseApiTest
         [Test]
         public async Task CanReplaceTranslation()
         {
-            var input = new PhraseOptions()
+            var input = new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{ "hello" }
+                Texts = new List<string>() {"hello"}
             };
             var createResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, input);
 
-            input.Texts = new []{ "goodbye" };
+            input.Texts = new List<string>() {"goodbye"};
 
             var replacementInput = new TranslationReplacementOptions()
             {

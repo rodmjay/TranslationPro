@@ -23,7 +23,7 @@ public class PhrasesControllerTest : BaseApiTest
     public class TheCreatePhrasesMethod : PhrasesControllerTest
     {
         [TestCaseSource(typeof(PhraseTestCases), nameof(PhraseTestCases.PhrasesWithTranslations))]
-        public async Task CanCreatePhrasesWithTranslations(PhraseOptions input, Dictionary<string, string> translations)
+        public async Task CanCreatePhrasesWithTranslations(ApplicationPhrasesCreateOptions input, Dictionary<string, string> translations)
         {
 
             var result = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, input);
@@ -51,9 +51,9 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanGetPhrases()
         {
-            var input = new PhraseOptions()
+            var input = new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{ "hello" }
+                Texts = new List<string>() {"hello"}
             };
             var createResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, input);
 
@@ -70,9 +70,9 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanGetPhrasesForApplicationAndLanguage()
         {
-            var input = new PhraseOptions()
+            var input = new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{ "hello" }
+                Texts = new List<string>() {"hello"}
             };
             var createResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, input);
 
@@ -88,9 +88,9 @@ public class PhrasesControllerTest : BaseApiTest
         [Test]
         public async Task CanDeletePhrase()
         {
-            var input = new PhraseOptions()
+            var input = new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{ "hello" }
+                Texts = new List<string>() {"hello"}
             };
             var createResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, input);
 

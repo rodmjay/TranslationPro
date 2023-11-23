@@ -13,18 +13,23 @@
 }
 else
 {
-    <h3>Manage Language (@LanguageId)</h3>
+    if (Language != null)
+    {
+        
+        <h3>Manage Language (@Language.Name)</h3>
 
-    <PagingTable PagedList="Translations" PageChanged="Callback">
-        <HeaderTemplate>
-            <th>Original </th>
-            <th>Translated</th>
-        </HeaderTemplate>
-        <ItemTemplate>
-            <td>@context.Phrase</td>
-            <td>
-                @context.Text
-            </td>
-        </ItemTemplate>
-    </PagingTable>
+        <PagingTable PagedList="Translations" PageChanged="Callback">
+            <HeaderTemplate>
+                <th>Original </th>
+                <th>Translated</th>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <td>@context.Phrase</td>
+                <td>
+                    @context.Text
+                </td>
+            </ItemTemplate>
+        </PagingTable>
+    }
+
 }

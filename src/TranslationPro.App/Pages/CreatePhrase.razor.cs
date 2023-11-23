@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using TranslationPro.App.Bases;
 using TranslationPro.Shared.Interfaces;
@@ -8,8 +11,8 @@ namespace TranslationPro.App.Pages
 {
     public partial class CreatePhrase : ApplicationDetailsBase
     {
+        private readonly List<string> Phrases = new() { "" };
         
-        public PhraseOptions Input { get; set; } = new PhraseOptions();
 
         [Inject]
         public IApplicationPhrasesController ApplicationPhraseProxy { get; set; }
@@ -23,14 +26,30 @@ namespace TranslationPro.App.Pages
                 Url = $"/applications/{ApplicationId}/phrases/create"
             });
         }
+        
 
-        private async Task HandleSubmit()
+        private void AddItem()
         {
-            var result = await ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, Input);
+            Phrases.Add("");
+        }
 
+        private void RemoveItem(int index)
+        {
+            Phrases.RemoveAt(index);
+        }
+
+        private void SubmitItems()
+        {
+            var cleanItems = Phrases.Where(x=>!string.IsNullOrWhiteSpace(x)).Select(x=>x.Trim()).Distinct().ToList();
+
+            var phraseOptions = new ApplicationPhrasesCreateOptions
+            {
+                Texts = cleanItems
+            };
+            var result = ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, phraseOptions);
             if (result != null)
             {
-                NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{result[0].Id}");
+                NavigationManager.NavigateTo($"/applications/{ApplicationId}", forceLoad:true);
             }
         }
     }

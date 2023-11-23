@@ -42,12 +42,12 @@ public class ApplicationPhrasesController : BaseController, IApplicationPhrasesC
 
     [HttpPost]
     public async Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync([FromRoute] Guid applicationId,
-        [FromBody] PhraseOptions input)
+        [FromBody] ApplicationPhrasesCreateOptions input)
     {
         await AssertUserHasAccessToApplication(applicationId);
 
         var result = await _applicationPhraseManager
-            .CreatePhrases<ApplicationPhraseDetails>(applicationId, input.Texts);
+            .CreatePhrases<ApplicationPhraseDetails>(applicationId, input.Texts.ToArray());
         
         return result;
     }

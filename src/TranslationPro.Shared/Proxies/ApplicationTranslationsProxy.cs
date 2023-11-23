@@ -9,9 +9,9 @@ namespace TranslationPro.Shared.Proxies;
 
 public class ApplicationTranslationsProxy : BaseProxy, IApplicationTranslationsController
 {
-    public Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationOptions input)
+    public Task<Result> SaveTranslation(Guid applicationId, int phraseId, TranslationSaveOptions input)
     {
-        return DoPut<TranslationOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
+        return DoPut<TranslationSaveOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);
 
     }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using TranslationPro.Shared.Extensions;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -11,18 +10,15 @@ public class LanguagesProxy : BaseProxy, ILanguagesController
 {
     protected string LanguageUrl = "/v1.0/languages";
 
-    public async Task<List<LanguageOutput>> GetLanguagesAsync()
+    public Task<List<LanguageOutput>> GetLanguagesAsync()
     {
-        var response = await HttpClient.GetAsync(LanguageUrl);
+        return DoGet<List<LanguageOutput>>(LanguageUrl);
 
-        return response.Content.DeserializeObject<List<LanguageOutput>>();
     }
 
-    public async Task<List<LanguageOutput>> GetAllLanguagesAsync()
+    public Task<LanguageOutput> GetLanguageAsync(string languageId)
     {
-        var response = await HttpClient.GetAsync($"{LanguageUrl}/all");
-
-        return response.Content.DeserializeObject<List<LanguageOutput>>();
+        return DoGet<LanguageOutput>(LanguageUrl + $"/{languageId}");
     }
 
     public LanguagesProxy(HttpClient httpClient) : base(httpClient)

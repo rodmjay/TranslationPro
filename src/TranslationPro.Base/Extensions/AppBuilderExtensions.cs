@@ -44,6 +44,7 @@ public static class AppBuilderExtensions
         builder.Services.TryAddScoped<IApplicationTranslationService, ApplicationTranslationService>();
         builder.Services.TryAddScoped<IApplicationLanguageService, ApplicationLanguageService>();
         builder.Services.TryAddScoped<IPermissionService, PermissionService>();
+        builder.Services.TryAddScoped<ILanguageService, LanguageService>();
 
         builder.Services.TryAddScoped<ApplicationManager>();
         builder.Services.TryAddScoped<ApplicationLanguageManager>();

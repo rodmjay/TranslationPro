@@ -5,6 +5,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TranslationPro.Shared.Models;
@@ -60,9 +61,9 @@ public class ApplicationsControllerTest : BaseApiTest
 
             Assert.AreEqual(1, applications.Count);
 
-            var createPhraseResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, new PhraseOptions()
+            var createPhraseResult = await ApplicationPhrasesProxy.CreatePhrasesAsync(ApplicationId, new ApplicationPhrasesCreateOptions()
             {
-                Texts = new []{ "hello world" }
+                Texts = new List<string>() {"hello world"}
             });
 
             var application = await ApplicationsProxy.GetApplicationAsync(ApplicationId);

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TranslationPro.Shared.Models;
+﻿namespace TranslationPro.Shared.Models;
 
 public class PhraseOutput
 {

@@ -27,15 +27,13 @@ else
             <HeaderTemplate>
                 <th>Language</th>
                 <th>Text</th>
-                <td>Machine Translations</td>
-
+                
             </HeaderTemplate>
             <ItemTemplate>
                 <th>
                     <NavLink href="@{
                 $"/applications/{ApplicationId}/languages/{@context.LanguageId}"
 }">
-
                         @context.LanguageName
                     </NavLink>
 
@@ -45,15 +43,6 @@ else
                                    $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
                                }">
                         @context.Text
-                    </NavLink>
-
-                </td>
-                <td>
-
-                    <NavLink href="@{
-                                   $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{context.LanguageId}"
-                               }">
-                        XX
                     </NavLink>
 
                 </td>

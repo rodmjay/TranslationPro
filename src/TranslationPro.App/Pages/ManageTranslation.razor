@@ -6,7 +6,7 @@
 }
 @layout ApplicationLayout
 
-@if (Application != null && ApplicationPhrase != null)
+@if (Application != null && ApplicationPhrase != null && ApplicationTranslation != null)
 {
 
     <nav aria-label="breadcrumb">
@@ -52,30 +52,35 @@
         </div>
     </div>
     <div class="row">
-@* 
-        <CommonTable Items="ApplicationPhrase.MachineTranslations[LanguageId]">
-            <HeaderTemplate>
-                <th>Text</th>
-                <th>Engine</th>
-                <td></td>
-            </HeaderTemplate>
-            <ItemTemplate>
-                <td>@context.Text</td>
-                <td>@context.Engine</td>
-                <td>
+        
+        @if (MachineTranslations != null)
+        {
+            
+            <CommonTable Items="MachineTranslations">
+                <HeaderTemplate>
+                    <th>Text</th>
+                    <th>Engine</th>
+                    <td></td>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <td>@context.Text</td>
+                    <td>@context.Engine</td>
+                    <td>
                     
-                    @if (@context.Text != @ApplicationTranslation.Text)
-                    {
+                        @if (@context.Text != @ApplicationTranslation.Text)
+                        {
                         
-                        <button @onclick="() => Callback(context.Text)"
-                                class="btn btn-outline-primary">
-                            Use This Translation
-                        </button>
-                    }
+                            <button @onclick="() => Callback(context.Text)"
+                                    class="btn btn-outline-primary">
+                                Use This Translation
+                            </button>
+                        }
 
-                </td>
-            </ItemTemplate>
-        </CommonTable> *@
+                    </td>
+                </ItemTemplate>
+            </CommonTable>
+        }
+
     </div>
 
     @*

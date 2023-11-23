@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Models;
-using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Interfaces;
 
@@ -28,5 +27,5 @@ public interface IApplicationPhrasesController
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
 
     Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync( Guid applicationId,
-        PhraseOptions input);
+        ApplicationPhrasesCreateOptions input);
 }

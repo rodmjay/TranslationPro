@@ -5,19 +5,6 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.App.Bases
 {
-    public class ApplicationUsersBase : ApplicationDetailsBase
-    {
-        protected override async Task LoadData()
-        {
-            await base.LoadData();
-            NavigationItems.Add(new NavigationItem()
-            {
-                Title = "Application Users",
-                Url = $"/applications/{ApplicationId}/users"
-            });
-        }
-    }
-
     public class ApplicationDetailsBase : AuthenticatedBase
     {
         [Parameter]
@@ -29,9 +16,11 @@ namespace TranslationPro.App.Bases
         {
             await LoadData();
         }
+        
 
         protected override async Task LoadData()
         {
+            StateHasChanged();
             await base.LoadData();
 
             Application = await ApplicationService.GetApplicationAsync(ApplicationId);

@@ -6,7 +6,7 @@
 
 namespace TranslationPro.Shared.Models;
 
-public class PhraseUpdateOptions : PhraseOptions
+public class PhraseUpdateOptions : ApplicationPhrasesCreateOptions
 {
     public int PhraseId { get; set; }
 }

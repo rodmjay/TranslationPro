@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
-using TranslationPro.Shared.Results;
 
 namespace TranslationPro.Shared.Proxies;
 

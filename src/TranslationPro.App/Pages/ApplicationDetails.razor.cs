@@ -24,8 +24,6 @@ namespace TranslationPro.App.Pages
             await base.LoadData();
 
             Phrases = await ApplicationPhrasesController.GetPhrasesAsync(ApplicationId, _paging, new PhraseFilters());
-
-            StateHasChanged();
         }
         public async Task HandlePageNavigation(int page)
         {

@@ -28,7 +28,7 @@ public class PhraseDetailsBase : ApplicationDetailsBase
     {
         await base.LoadData();
         ApplicationPhrase = await ApplicationPhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
-
+        
         this.NavigationItems.Add(new NavigationItem()
         {
             Title = ApplicationPhrase.Id.ToString(),

@@ -18,6 +18,7 @@ namespace TranslationPro.App.Extensions
                 .AddTransient<ApiAuthorizationMessageHandler>();
 
             var url = new Uri(builder.Configuration["ApiBase"]);
+            var translationsUrl = new Uri(builder.Configuration["TranslationsUrl"]);
 
             builder.Services.AddHttpClient<IApplicationsController, ApplicationsProxy>(
                     client => client.BaseAddress = url)
@@ -41,7 +42,9 @@ namespace TranslationPro.App.Extensions
             builder.Services.AddHttpClient<IApplicationTranslationsController, ApplicationTranslationsProxy>(
                     client => client.BaseAddress = url)
                 .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
-            
+
+            builder.Services.AddHttpClient<TranslationsProxy>(
+                client => client.BaseAddress = translationsUrl);
 
             return builder;
         }
