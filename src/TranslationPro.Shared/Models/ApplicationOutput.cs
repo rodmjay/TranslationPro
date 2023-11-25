@@ -16,6 +16,12 @@ public class ApplicationOutput : IApplication
     public int TranslationCount { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
+    public int LanguageCount
+    {
+        get => Languages.Count;
+        set{}
+    }
+
     public ICollection<LanguageOutput> Languages { get; set; }
     public ICollection<ApplicationUserOutput> Users { get; set; }
 }

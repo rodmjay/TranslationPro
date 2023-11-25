@@ -1,0 +1,14 @@
+﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}/languages/{LanguageId}"
+@inherits TranslationDetailsBase
+
+@if (ApplicationPhrase != null)
+{
+    
+    <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+
+    <Heading Size="HeadingSize.Is3">Manage Translation</Heading>
+
+    <VariantList ApplicationId="@ApplicationId" PhraseId="@PhraseId" LanguageId="@LanguageId"></VariantList>
+
+}
+

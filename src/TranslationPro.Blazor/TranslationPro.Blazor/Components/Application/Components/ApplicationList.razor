@@ -1,0 +1,12 @@
+﻿
+<DataGrid TItem="ApplicationOutput"
+          Data="Apps"
+          RowClicked="Callback">
+
+    <DataGridColumns>
+        <DataGridColumn Field="@nameof(ApplicationOutput.Name)" Caption="Name"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ApplicationOutput.PhraseCount)" Caption="Phrases"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ApplicationOutput.LanguageCount)" Caption="Languages"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ApplicationOutput.TranslationCount)" Caption="Translations"></DataGridColumn>
+    </DataGridColumns>
+</DataGrid>

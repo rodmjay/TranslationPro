@@ -1,0 +1,51 @@
+﻿<Bar Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Tablet" ThemeContrast="ThemeContrast.Dark"
+     Mode="BarMode.VerticalInline" CollapseMode="BarCollapseMode.Small">
+    <BarToggler />
+    <BarBrand>
+        <BarItem>
+            <BarLink To="">
+                TranslationPro
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            
+            <AuthorizeView>
+                <Authorized>
+                    <BarItem>
+                        <BarLink To="/">
+                            <BarIcon IconName="IconName.Dashboard"/>
+                            Dashboard
+                        </BarLink>
+                    </BarItem>
+                    
+                    <BarItem>
+                        <BarDropdown @bind-Visible="pagesBarVisible">
+                            <BarDropdownToggle>
+                                <BarIcon IconName="IconName.Edit"/>
+                                Applications
+                            </BarDropdownToggle>
+                            <BarDropdownMenu>
+                                <BarDropdownItem To="/applications">My Applications</BarDropdownItem>
+                            </BarDropdownMenu>
+                            <BarDropdownMenu>
+                                <BarDropdownItem To="/create-application">Create Application</BarDropdownItem>
+                            </BarDropdownMenu>
+                        </BarDropdown>
+                    </BarItem>
+                </Authorized>
+                
+
+            </AuthorizeView>
+
+           
+        </BarStart>
+        
+    </BarMenu>
+</Bar>
+@code {
+    private bool pagesBarVisible = true;
+
+    RenderFragment customIcon =@<img src="/brand-logo.png" style="width:32px; height: 32px" />;
+}

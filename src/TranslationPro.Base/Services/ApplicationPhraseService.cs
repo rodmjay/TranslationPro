@@ -32,7 +32,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         return $"[{nameof(ApplicationPhraseService)}.{callerName}] - {message}";
     }
 
-    private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
+    private readonly IRepositoryAsync<Application> _applicationRepository;
     private readonly PhraseErrorDescriber _errorDescriber;
     private readonly ILogger<ApplicationPhraseService> _logger;
 
@@ -43,16 +43,15 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     {
         _errorDescriber = errorDescriber;
         _logger = logger;
-        _applicationTranslationRepository = UnitOfWork.RepositoryAsync<ApplicationTranslation>();
+        _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
     }
+
+    private IQueryable<Application> Applications => _applicationRepository.Queryable();
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
         .Include(x => x.Translations)
         .Include(x => x.Application);
-
-    private IQueryable<ApplicationTranslation> ApplicationTranslations => _applicationTranslationRepository.Queryable()
-        .Include(x => x.ApplicationPhrase);
-
+    
     public Task<string[]> GetPhraseTextsForApplication(Guid applicationId)
     {
         return ApplicationPhrases.Where(x => x.ApplicationId == applicationId).Select(x => x.Text).ToArrayAsync();
@@ -90,20 +89,19 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             .Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text)).ToListAsync();
 
         retVal.ExistingPhrases = existingPhrases.Count;
-
-        var nextId = await GetNextPhraseIdAsync(applicationId);
-
-        for (var index = 0; index < texts.Length; index++)
+        
+        foreach (var text in texts)
         {
-            var text = texts[index];
             if (existingPhrases.Any(x => x.Text == text)) continue;
 
             var applicationPhrase = new ApplicationPhrase()
             {
-                Id = nextId + index,
+                Id = await GetCurrentPhraseIdAsync(applicationId),
                 Text = text,
                 ApplicationId = applicationId
             };
+
+            await IncrementCurrentPhrase(applicationId);
 
             Repository.Insert(applicationPhrase);
         }
@@ -138,14 +136,17 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     }
 
 
-    private async Task<int> GetNextPhraseIdAsync(Guid applicationId)
+    private async Task<int> GetCurrentPhraseIdAsync(Guid applicationId)
     {
-        var lastPhrase = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId).OrderByDescending(x => x.Id)
-            .FirstOrDefaultAsync().ConfigureAwait(false);
+        return await Applications.Where(x => x.Id == applicationId).Select(x => x.CurrentPhraseId).FirstAsync();
+    }
 
-        if (lastPhrase == null)
-            return 10000;
+    private async Task IncrementCurrentPhrase(Guid applicationId)
+    {
+        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
+        application.CurrentPhraseId++;
+        application.ObjectState = ObjectState.Modified;
 
-        return lastPhrase.Id + 1;
+        await _applicationRepository.UpdateAsync(application, true);
     }
 }

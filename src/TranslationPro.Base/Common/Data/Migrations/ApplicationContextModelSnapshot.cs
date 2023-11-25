@@ -707,6 +707,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             Id = 3,
                             ClientId = 5,
                             Origin = "https://translationpro-app-test.azurewebsites.net"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClientId = 5,
+                            Origin = "https://localhost:7243"
                         });
                 });
 
@@ -825,6 +831,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             Id = 4,
                             ClientId = 5,
                             PostLogoutRedirectUri = "https://translationpro-app-test.azurewebsites.net/authentication/logout-callback"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClientId = 5,
+                            PostLogoutRedirectUri = "https://localhost:7243/authentication/logout-callback"
                         });
                 });
 
@@ -898,6 +910,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
                             Id = 4,
                             ClientId = 5,
                             RedirectUri = "https://translationpro-app-test.azurewebsites.net/authentication/login-callback"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClientId = 5,
+                            RedirectUri = "https://localhost:7243/authentication/login-callback"
                         });
                 });
 
@@ -1532,6 +1550,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("CurrentPhraseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(10000);
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

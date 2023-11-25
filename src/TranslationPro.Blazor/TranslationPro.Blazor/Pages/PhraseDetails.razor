@@ -1,0 +1,12 @@
+﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}"
+@inherits PhraseDetailsBase
+<ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+
+<TranslationList ApplicationId="@ApplicationId" PhraseId="@PhraseId">
+
+</TranslationList>
+
+
+@code {
+
+}

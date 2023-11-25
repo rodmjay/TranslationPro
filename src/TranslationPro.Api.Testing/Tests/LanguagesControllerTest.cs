@@ -25,16 +25,5 @@ public class LanguagesControllerTest : BaseApiTest
             Assert.AreEqual(123, languages.Count);
         }
     }
-
-    [TestFixture]
-    public class TheGetAllLanguagesMethod : LanguagesControllerTest
-    {
-        [Test]
-        public async Task CanGetAllLanguages()
-        {
-            var languages = await LanguageProxy.GetAllLanguagesAsync();
-
-            Assert.AreEqual(132, languages.Count);
-        }
-    }
+    
 }

@@ -1,0 +1,76 @@
+﻿@using TranslationPro.Shared.Interfaces
+@using TranslationPro.Shared.Models
+@using TranslationPro.Shared.Common
+@using TranslationPro.Shared.Filters
+<h3>PhraseList</h3>
+
+@if (PagedList != null)
+{
+    
+    <DataGrid @ref="grid" TItem="ApplicationPhraseOutput"
+              Data="@PagedList.Items"
+              TotalItems="@PagedList.TotalItems"
+              PageSize="@PagedList.PageSize"
+              RowClicked="ItemSelected"
+              ShowPager
+              Responsive>
+    
+        <DataGridColumns>
+            <DataGridColumn Field="@nameof(ApplicationPhraseOutput.Text)" Caption="Phrase"  ></DataGridColumn>
+            <DataGridColumn Field="@nameof(ApplicationPhraseOutput.TranslationCount)" Caption="Translations"></DataGridColumn>
+        </DataGridColumns>
+
+
+    </DataGrid>
+}
+
+
+@code {
+
+    private DataGrid<ApplicationPhraseOutput> grid;
+
+    [Parameter]
+    public Guid ApplicationId { get; set; }
+
+    [Inject]
+    public IApplicationPhrasesController PhraseData { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public PagedList<ApplicationPhraseOutput> PagedList { get; set; }
+
+    private PagingQuery PagingQuery { get; set; } = new();
+
+
+    public async Task LoadData()
+    {
+        PagedList = await PhraseData.GetPhrasesAsync(ApplicationId, PagingQuery, new PhraseFilters());
+    }
+
+    public async Task Reload()
+    {
+        await LoadData();
+        await grid.Reload();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task OnReadData(DataGridReadDataEventArgs<ApplicationPhraseOutput> e)
+    {
+        if (!e.CancellationToken.IsCancellationRequested)
+        {
+
+        }
+    }
+
+    private void ItemSelected(DataGridRowMouseEventArgs<ApplicationPhraseOutput> evnt)
+    {
+        NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{evnt.Item.Id}");
+    }
+
+}

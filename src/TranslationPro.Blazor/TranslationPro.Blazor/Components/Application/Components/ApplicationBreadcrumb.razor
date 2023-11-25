@@ -1,0 +1,28 @@
+﻿<Breadcrumb>
+    
+    @for (var i = 0; i < NavigationItems.Count; i++)
+    {
+        var index = i;
+        if (i == NavigationItems.Count - 1)
+        {
+            <BreadcrumbItem Active>
+                <BreadcrumbLink TextColor="TextColor.Dark" To="@NavigationItems[index].Url">@NavigationItems[index].Title</BreadcrumbLink>
+            </BreadcrumbItem>
+        }
+        else
+        {
+            <BreadcrumbItem>
+                <BreadcrumbLink TextColor="TextColor.Black50" To="@NavigationItems[index].Url">@NavigationItems[index].Title</BreadcrumbLink>
+            </BreadcrumbItem>
+        }
+    }
+
+</Breadcrumb>
+
+
+@code {
+
+    [Parameter]
+    public List<NavigationItem> NavigationItems { get; set; }
+
+}

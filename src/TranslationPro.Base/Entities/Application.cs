@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Stripe.Interfaces;
@@ -31,6 +32,7 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete, I
     public Guid Id { get; set; }
     public string Name { get; set; }
     public bool IsDeleted { get; set; }
+    public int CurrentPhraseId { get; set; }
     public ICollection<ApplicationUser> Users { get; set; }
 
     public override void Configure(EntityTypeBuilder<Application> builder)
@@ -40,6 +42,8 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete, I
         builder.HasKey(x => x.Id);
         
         builder.HasQueryFilter(x => !x.IsDeleted);
+
+        builder.Property(x => x.CurrentPhraseId).HasDefaultValue(10000);
     }
 
     public DateTimeOffset Created { get; set; }

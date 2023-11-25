@@ -1,0 +1,29 @@
+﻿@page "/"
+@inject IVersionProvider VersionProvider
+
+<AuthorizeView>
+    <NotAuthorized>
+        
+
+        <Heading Size="HeadingSize.Is1" Margin="Margin.Is3.FromBottom">Translation Pro</Heading>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/applications");
+        }
+    }
+}

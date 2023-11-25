@@ -1,0 +1,125 @@
+﻿@using TranslationPro.Shared.Interfaces
+@using TranslationPro.Shared.Proxies
+
+@if (PhraseOutput != null)
+{
+
+    <Container Fluid Margin="Margin.Is5.FromBottom">
+         <Row>
+             <Column ColumnSize="ColumnSize.Is6">
+                 <Card>
+                     <CardBody>
+                         <CardTitle>English</CardTitle>
+                         <CardText>@ApplicationPhraseDetails.Text</CardText>
+                     </CardBody>
+                 </Card>
+             </Column>
+             <Column ColumnSize="ColumnSize.Is6">
+                 <Card>
+                     <CardBody>
+                         <CardTitle>@Language.Name</CardTitle>
+                         <CardText>@Translation.Text</CardText>
+
+                     </CardBody>
+                 </Card>
+             </Column>
+            
+         </Row>
+     </Container>
+
+    <Table>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Text</TableHeaderCell>
+                <TableHeaderCell>Engine</TableHeaderCell>
+                <TableHeaderCell></TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            @foreach (var output in PhraseOutput.MachineTranslations)
+            {
+                <TableRow>
+                    <TableRowCell>@output.Text</TableRowCell>
+                    <TableRowCell>@output.Engine</TableRowCell>
+                    <TableRowCell>
+                        <Button @onclick="()=>Callback(output.Text)">
+                            Use This Translation
+                        </Button>
+                    </TableRowCell>
+                </TableRow>
+            }
+
+        </TableBody>
+    </Table>
+
+}
+else
+{
+    <Paragraph>Loading Translation Variants...</Paragraph>
+}
+
+@code {
+
+    [Parameter]
+    public Guid ApplicationId { get; set; }
+
+    [Parameter]
+    public int PhraseId { get; set; }
+
+    [Parameter]
+    public string LanguageId { get; set; }
+
+    [Inject]
+    public IApplicationPhrasesController PhraseService { get; set; }
+
+    [Inject]
+    public ILanguagesController LanguageService { get; set; }
+
+    public LanguageOutput Language { get; set; }
+
+    [Inject]
+    public TranslationsProxy TranslationService { get; set; }
+
+    [Inject]
+    public IApplicationTranslationsController ApplicationTranslationsController { get; set; }
+
+    public PhraseOutput PhraseOutput { get; set; }
+
+    public ApplicationPhraseDetails ApplicationPhraseDetails { get; set; }
+
+    public ApplicationTranslationOutput Translation { get; set; }
+
+    public async Task LoadData()
+    {
+        Language = await LanguageService.GetLanguageAsync(LanguageId);
+        ApplicationPhraseDetails = await PhraseService.GetPhraseAsync(ApplicationId, PhraseId);
+        Translation = ApplicationPhraseDetails.Translations.Where(x => x.LanguageId == LanguageId).First();
+        var phraseList = await TranslationService.Translate(new PhraseBulkCreateOptions() {LanguageIds = new[] {LanguageId}, Texts = new[] {ApplicationPhraseDetails.Text}});
+
+        if (phraseList.Count > 0)
+        {
+            PhraseOutput = phraseList[0];
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    
+    private async Task Callback(string text)
+    {
+        var result = await ApplicationTranslationsController.ReplaceTranslation(ApplicationId, PhraseId,
+            new TranslationReplacementOptions()
+            {
+                Text = text,
+                LanguageId = LanguageId
+            });
+
+        await LoadData();
+        StateHasChanged();
+    }
+
+}

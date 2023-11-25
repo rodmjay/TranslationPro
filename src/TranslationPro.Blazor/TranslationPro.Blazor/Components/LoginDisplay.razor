@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Extensions.Configuration
+@inject IAccessTokenProvider TokenProvider
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@inject IConfiguration Configuration
+
+
+
+<AuthorizeView>
+    <Authorized>
+                    
+        <BarItem>
+            <BarLink @onclick="HandleProfileClick">@context.User.Identity?.Name</BarLink>
+        </BarItem>
+        <BarItem>
+            <BarLink @onclick="HandleSignOutClick">
+                Log Out
+            </BarLink>
+        </BarItem>
+
+    </Authorized>
+    <NotAuthorized>
+                    
+                    
+        <BarItem Margin="Margin.Is2.FromEnd">
+                        
+            <BarLink To="authentication/login">Login</BarLink>
+                        
+        </BarItem>
+                    
+        <BarItem Margin="Margin.Is2.FromEnd">
+                        
+            <BarLink @onclick="HandleRegisterClick">Register</BarLink>
+                        
+        </BarItem>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    private string AuthorityUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthorityUrl = Configuration["OidcConfiguration:Authority"];
+    }
+
+    private async Task HandleSignOutClick(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+    
+    private void HandleRegisterClick()
+    {
+        Navigation.NavigateTo(Configuration["AuthenticationPaths:RemoteRegisterPath"]);
+    }
+
+    private void HandleProfileClick()
+    {
+        Navigation.NavigateTo(Configuration["AuthenticationPaths:RemoteProfilePath"]);
+    }
+
+}
