@@ -28,7 +28,7 @@
                         </Validation>
                     }
                     <Button Color="Color.Secondary" Clicked="AddItem">Add Item</Button>
-                    <Button Color="Color.Primary" Clicked="HandleSubmit">Submit</Button>
+                    <Button Color="Color.Primary" Loading="@_isLoading" Clicked="HandleSubmit">Submit</Button>
                 </Validations>
 
             </CardBody>
@@ -53,6 +53,7 @@
         });
     }
 
+    private bool _isLoading = false;
     
     private void RemoveItem(int index)
     {
@@ -72,14 +73,19 @@
 
     private async Task HandleSubmit(MouseEventArgs evnt)
     {
+        _isLoading = true;
         var cleanItems = Phrases.Select(x => x.Value).ToList();
         
         var result = await ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, new ApplicationPhrasesCreateOptions
         {
             Texts = cleanItems
         });
+
+        _isLoading = false;
+
         if (result != null)
         {
+           
             NavigationManager.NavigateTo($"/applications/{ApplicationId}");
         }
     }

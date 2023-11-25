@@ -1,61 +1,65 @@
 ﻿@using TranslationPro.Shared.Interfaces
 @using TranslationPro.Shared.Proxies
 
-@if (PhraseOutput != null)
+@if (PhraseOutput == null)
 {
-
-    <Container Fluid Margin="Margin.Is5.FromBottom">
-         <Row>
-             <Column ColumnSize="ColumnSize.Is6">
-                 <Card>
-                     <CardBody>
-                         <CardTitle>English</CardTitle>
-                         <CardText>@ApplicationPhraseDetails.Text</CardText>
-                     </CardBody>
-                 </Card>
-             </Column>
-             <Column ColumnSize="ColumnSize.Is6">
-                 <Card>
-                     <CardBody>
-                         <CardTitle>@Language.Name</CardTitle>
-                         <CardText>@Translation.Text</CardText>
-
-                     </CardBody>
-                 </Card>
-             </Column>
-            
-         </Row>
-     </Container>
-
-    <Table>
-        <TableHeader>
-            <TableRow>
-                <TableHeaderCell>Text</TableHeaderCell>
-                <TableHeaderCell>Engine</TableHeaderCell>
-                <TableHeaderCell></TableHeaderCell>
-            </TableRow>
-        </TableHeader>
-        <TableBody>
-            @foreach (var output in PhraseOutput.MachineTranslations)
-            {
-                <TableRow>
-                    <TableRowCell>@output.Text</TableRowCell>
-                    <TableRowCell>@output.Engine</TableRowCell>
-                    <TableRowCell>
-                        <Button @onclick="()=>Callback(output.Text)">
-                            Use This Translation
-                        </Button>
-                    </TableRowCell>
-                </TableRow>
-            }
-
-        </TableBody>
-    </Table>
-
+    <Paragraph>Loading Translation Variants...</Paragraph>
 }
 else
 {
-    <Paragraph>Loading Translation Variants...</Paragraph>
+    <Row HorizontalGutter="32" VerticalGutter="16">
+        <Column ColumnSize="@ColumnSize.Is6">
+            <Card>
+                <CardBody>
+                    <CardTitle>English</CardTitle>
+                    <CardText>@ApplicationPhraseDetails.Text</CardText>
+                </CardBody>
+            </Card>
+        </Column>
+        <Column ColumnSize="@ColumnSize.Is6">
+            <Card>
+                <CardBody>
+                    <CardTitle>@Language.Name</CardTitle>
+                    <CardText>@Translation.Text</CardText>
+
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+    <Row HorizontalGutter="32" VerticalGutter="16">
+        
+        <Column ColumnSize="ColumnSize.Is12">
+            
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHeaderCell>Text</TableHeaderCell>
+                        <TableHeaderCell>Engine</TableHeaderCell>
+                        <TableHeaderCell></TableHeaderCell>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <Repeater TItem="MachineTranslationOutput" Items="PhraseOutput.MachineTranslations">
+                        <TableRow>
+                            <TableRowCell>@context.Text</TableRowCell>
+                            <TableRowCell>@context.Engine</TableRowCell>
+                            <TableRowCell>
+                                @if (context.Text != Translation.Text)
+                                {
+                                    <Button Disabled="@_isLoading" Color="@Color.Primary" Clicked="@(() => Callback(context.Text))">
+                                        Use This Translation
+                                    </Button>
+                                }
+
+                            </TableRowCell>
+                        </TableRow>
+                    </Repeater>
+                </TableBody>
+            </Table>
+
+        </Column>
+
+    </Row>
 }
 
 @code {
@@ -89,11 +93,13 @@ else
 
     public ApplicationTranslationOutput Translation { get; set; }
 
+    private bool _isLoading = false;
+
     public async Task LoadData()
     {
         Language = await LanguageService.GetLanguageAsync(LanguageId);
         ApplicationPhraseDetails = await PhraseService.GetPhraseAsync(ApplicationId, PhraseId);
-        Translation = ApplicationPhraseDetails.Translations.Where(x => x.LanguageId == LanguageId).First();
+        Translation = ApplicationPhraseDetails.Translations.First(x => x.LanguageId == LanguageId);
         var phraseList = await TranslationService.Translate(new PhraseBulkCreateOptions() {LanguageIds = new[] {LanguageId}, Texts = new[] {ApplicationPhraseDetails.Text}});
 
         if (phraseList.Count > 0)
@@ -106,18 +112,20 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
+        
     }
 
     
     private async Task Callback(string text)
     {
+        _isLoading = true;
         var result = await ApplicationTranslationsController.ReplaceTranslation(ApplicationId, PhraseId,
             new TranslationReplacementOptions()
             {
                 Text = text,
                 LanguageId = LanguageId
             });
-
+        _isLoading = false;
         await LoadData();
         StateHasChanged();
     }

@@ -19,6 +19,7 @@ public class ApplicationTranslationMapper : Profile
             .ForMember(x => x.LanguageName, opt => opt.MapFrom(x => x.ApplicationLanguage.Language.Name))
             .ForMember(x => x.LanguageId, opt => opt.MapFrom(x => x.ApplicationLanguage.LanguageId))
             .ForMember(x => x.Text, opt => opt.MapFrom(x => x.Text))
+            .ForMember(x => x.MachineTranslations, opt => opt.MapFrom(x => x.MachineTranslations))
             .IncludeAllDerived();
 
         CreateMap<ApplicationTranslation, ApplicationTranslationOutputWithOriginalPhrase>()

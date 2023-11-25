@@ -86,13 +86,17 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         };
 
         var existingPhrases = await ApplicationPhrases
-            .Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text)).ToListAsync();
+            .Where(x => x.ApplicationId == applicationId && texts.Select(t=>t.ToUpper()).Contains(x.Text.ToUpper())).ToListAsync();
 
         retVal.ExistingPhrases = existingPhrases.Count;
         
+        var phrasesAddedUpper = new List<string>();
+
         foreach (var text in texts)
         {
-            if (existingPhrases.Any(x => x.Text == text)) continue;
+            if (existingPhrases.Any(x => x.Text.ToUpper() == text.ToUpper())) continue;
+
+            if (phrasesAddedUpper.Contains(text.ToUpper())) continue;
 
             var applicationPhrase = new ApplicationPhrase()
             {
@@ -104,12 +108,14 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             await IncrementCurrentPhrase(applicationId);
 
             Repository.Insert(applicationPhrase);
+
+            phrasesAddedUpper.Add(applicationPhrase.Text.ToUpper());
         }
 
         retVal.PhrasesAdded = Repository.Commit();
 
         retVal.Phrases = await ApplicationPhrases
-            .Where(x => x.ApplicationId == applicationId && texts.Contains(x.Text))
+            .Where(x => x.ApplicationId == applicationId && texts.Select(t=>t.ToUpper()).Contains(x.Text.ToUpper()))
             .Select(x => x.Id).ToArrayAsync();
 
         return retVal;

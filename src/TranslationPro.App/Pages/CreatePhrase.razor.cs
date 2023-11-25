@@ -13,6 +13,7 @@ namespace TranslationPro.App.Pages
     {
         private readonly List<string> Phrases = new() { "" };
         
+        private bool IsLoading = false;
 
         [Inject]
         public IApplicationPhrasesController ApplicationPhraseProxy { get; set; }
@@ -40,6 +41,7 @@ namespace TranslationPro.App.Pages
 
         private void SubmitItems()
         {
+            IsLoading = true;
             var cleanItems = Phrases.Where(x=>!string.IsNullOrWhiteSpace(x)).Select(x=>x.Trim()).Distinct().ToList();
 
             var phraseOptions = new ApplicationPhrasesCreateOptions
@@ -49,6 +51,7 @@ namespace TranslationPro.App.Pages
             var result = ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, phraseOptions);
             if (result != null)
             {
+                IsLoading = false;
                 NavigationManager.NavigateTo($"/applications/{ApplicationId}", forceLoad:true);
             }
         }

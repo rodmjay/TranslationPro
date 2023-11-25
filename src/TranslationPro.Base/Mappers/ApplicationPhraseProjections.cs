@@ -17,8 +17,8 @@ public class ApplicationPhraseProjections : Profile
     {
         CreateMap<ApplicationPhrase, ApplicationPhraseOutput>()
             .ForMember(x => x.Text, opt => opt.MapFrom(x => x.Text))
-            .ForMember(x => x.TranslationCount, opt => opt.MapFrom(x => x.Translations.Count(t => !t.IsDeleted && !string.IsNullOrWhiteSpace(t.Text))))
-            .ForMember(x => x.PendingTranslationCount, opt => opt.MapFrom(x => x.Translations.Count(t => !t.IsDeleted && string.IsNullOrWhiteSpace(t.Text))))
+            .ForMember(x => x.TranslationCount, opt => opt.MapFrom(x => x.Translations.Count(t => !t.IsDeleted && t.Text != null)))
+            .ForMember(x => x.PendingTranslationCount, opt => opt.MapFrom(x => x.Translations.Count(t => !t.IsDeleted && t.Text == null)))
             .IncludeAllDerived();
 
         CreateMap<ApplicationPhrase, ApplicationPhraseDetails>()

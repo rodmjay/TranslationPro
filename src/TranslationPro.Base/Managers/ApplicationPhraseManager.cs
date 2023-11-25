@@ -87,16 +87,17 @@ public class ApplicationPhraseManager
             foreach (var phrase in translationResult)
             {
                 var translations = phrase.MachineTranslations.GroupBy(x => x.LanguageId)
-                    .ToDictionary(x => x.Key, x => x.First());
+                    .ToDictionary(x => x.Key, x => x.ToList());
 
-                foreach (var translation in translations)
+                foreach (var (languageId, value) in translations)
                 {
                     var applicationTranslation = pending
-                        .FirstOrDefault(x => x.ApplicationPhrase.Text.ToUpper() == phrase.Text.ToUpper() && x.LanguageId == translation.Key);
+                        .FirstOrDefault(x => x.ApplicationPhrase.Text.ToUpper() == phrase.Text.ToUpper() && x.LanguageId == languageId);
 
                     if (applicationTranslation != null)
                     {
-                        applicationTranslation.Text = translation.Value.Text;
+                        applicationTranslation.Text = value.First().Text;
+                        applicationTranslation.MachineTranslations = value.Count;
                         applicationTranslation.ObjectState = ObjectState.Modified;
 
                         _applicationTranslationRepository.Update(applicationTranslation);

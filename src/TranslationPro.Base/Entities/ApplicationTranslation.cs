@@ -23,6 +23,7 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
 
     public ApplicationPhrase ApplicationPhrase { get; set; }
     public ApplicationLanguage ApplicationLanguage { get; set; }
+    public int MachineTranslations { get; set; }
 
     public string Text { get; set; }
 
