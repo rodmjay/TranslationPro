@@ -7,7 +7,10 @@
 using Microsoft.JSInterop;
 
 namespace TranslationPro.Blazor.Services;
-
+public class FormResponse
+{
+    public string Value { get; set; }
+}
 public class SessionStorageInterop
 {
     private readonly IJSRuntime _jsRuntime;

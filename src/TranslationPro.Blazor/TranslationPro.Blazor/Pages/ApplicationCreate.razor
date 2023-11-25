@@ -19,24 +19,22 @@
                                 <TextEdit @bind-Text="@Input.Name" Placeholder="Enter application Name" />
                             </Field>
                         </Validation>
-                        <Button Color="Color.Primary" Clicked="SubmitBasicExample">Submit</Button>
+                        
+                        <Field>
+                            <FieldLabel>Select Languages</FieldLabel>
+                            <Select TValue="string" Multiple SelectedValuesChanged="@OnChangeSelection">
+                        
+                                @foreach (var lang in Languages)
+                                {
+                                    <SelectItem Value="@lang.Id">@lang.Name</SelectItem>
+                                }
+
+                            </Select>
+                            <FieldHelp>Hold Ctrl to select more than one</FieldHelp>
+                        </Field>
+                        <Button Color="Color.Primary" Clicked="HandleSubmit">Submit</Button>
                     </Validations>
                 
-                    <Field>
-                        <FieldLabel>Select Languages</FieldLabel>
-                        <Select TValue="string" Multiple SelectedValuesChanged="@OnChangeSelection">
-                        
-                            @foreach (var lang in Languages)
-                            {
-                                <SelectItem Value="@lang.Id">@lang.Name</SelectItem>
-                            }
-
-                        </Select>
-                        <FieldHelp>Hold Ctrl to select more than one</FieldHelp>
-                    </Field>
-                    <Field>
-                        <Button Color="Color.Primary" Clicked="HandleSubmit" >Submit</Button>
-                    </Field>
                 </CardBody>
             </Card>
         </Column>

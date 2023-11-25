@@ -1,4 +1,5 @@
 ﻿@inherits ApplicationDetailsBase
+
 @page "/applications/{ApplicationId:guid}"
 
 @if (Application == null)
@@ -10,6 +11,10 @@ else
     <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
 
     <Heading Size="HeadingSize.Is3">@Application.Name</Heading>
+
+    <Buttons>
+        <Button Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
+    </Buttons>
 
     <Container Fluid Margin="Margin.Is5.FromBottom">
          <Row>

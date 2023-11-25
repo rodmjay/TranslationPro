@@ -18,5 +18,6 @@ namespace TranslationPro.Blazor.Pages
             await list.Reload();
             StateHasChanged();
         }
+        
     }
 }

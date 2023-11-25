@@ -21,18 +21,12 @@ namespace TranslationPro.Base.Services
             return $"[{nameof(ApplicationLanguageService)}.{callerName}] - {message}";
         }
 
-        private readonly IRepositoryAsync<Application> _applicationRepository;
         public ApplicationLanguageService(IServiceProvider serviceProvider,
             ILogger<ApplicationLanguageService> logger) : base(serviceProvider)
         {
             _logger = logger;
-            _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
         }
-
-        private IQueryable<Application> Applications => _applicationRepository.Queryable()
-            .Include(x => x.Languages)
-            .ThenInclude(x => x.Translations)
-            .IgnoreQueryFilters();
+        
 
         private IQueryable<ApplicationLanguage> ApplicationLanguages =>
             Repository.Queryable()
