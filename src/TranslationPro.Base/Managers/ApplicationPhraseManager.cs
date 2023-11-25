@@ -92,7 +92,7 @@ public class ApplicationPhraseManager
                 foreach (var translation in translations)
                 {
                     var applicationTranslation = pending
-                        .FirstOrDefault(x => x.ApplicationPhrase.Text == phrase.Text && x.LanguageId == translation.Key);
+                        .FirstOrDefault(x => x.ApplicationPhrase.Text.ToUpper() == phrase.Text.ToUpper() && x.LanguageId == translation.Key);
 
                     if (applicationTranslation != null)
                     {

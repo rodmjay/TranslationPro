@@ -7,7 +7,7 @@
     <Column ColumnSize="ColumnSize.Is6.OnDesktop">
         <Card Margin="Margin.Is4.FromBottom">
             <CardHeader>
-                <CardTitle>Basic Example</CardTitle>
+                <CardTitle>Add New Phrases</CardTitle>
             </CardHeader>
             <CardBody>
                 <Validations Mode="ValidationMode.Auto" ValidateOnLoad="false">
@@ -16,13 +16,18 @@
                     {
                         var local = index;
                         <Validation Validator="@ValidationRule.IsNotEmpty">
-                            <Field>
-                                <FieldLabel>Enter Phrase</FieldLabel>
-                                <TextEdit @bind-Text="@Phrases[local].Value"/>
-                            </Field>
+                            <Fields>
+                                <Field ColumnSize="ColumnSize.Is10">
+                                    <TextEdit @bind-Text="@Phrases[local].Value" Placeholder="Enter Text"/>
+                                </Field>
+                                <Field ColumnSize="ColumnSize.Is2">
+                                    <Button Color="Color.Danger" Clicked="() => RemoveItem(local)">Remove</Button>
+                                </Field>
+                            </Fields>
+                            
                         </Validation>
                     }
-
+                    <Button Color="Color.Secondary" Clicked="AddItem">Add Item</Button>
                     <Button Color="Color.Primary" Clicked="HandleSubmit">Submit</Button>
                 </Validations>
 
@@ -35,10 +40,24 @@
     [Inject]
     public IApplicationPhrasesController ApplicationPhraseProxy { get; set; }
 
-    private readonly List<FormResponse> Phrases = new List<FormResponse>()
+    private readonly List<FormResponse> Phrases = new()
     {
         new FormResponse(){ Value = "" }
     };
+
+    protected void AddItem()
+    {
+        Phrases.Add(new FormResponse()
+        {
+            Value = ""
+        });
+    }
+
+    
+    private void RemoveItem(int index)
+    {
+        Phrases.RemoveAt(index);
+    }
 
 
     protected override async Task LoadData()
@@ -51,18 +70,14 @@
             });
     }
 
-
-
-
     private async Task HandleSubmit(MouseEventArgs evnt)
     {
         var cleanItems = Phrases.Select(x => x.Value).ToList();
-
-        var phraseOptions = new ApplicationPhrasesCreateOptions
-            {
-                Texts = cleanItems
-            };
-        var result = await ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, phraseOptions);
+        
+        var result = await ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, new ApplicationPhrasesCreateOptions
+        {
+            Texts = cleanItems
+        });
         if (result != null)
         {
             NavigationManager.NavigateTo($"/applications/{ApplicationId}");
