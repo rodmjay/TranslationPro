@@ -18,17 +18,17 @@
                         <Validation Validator="@ValidationRule.IsNotEmpty">
                             <Fields>
                                 <Field ColumnSize="ColumnSize.Is10">
-                                    <TextEdit @bind-Text="@Phrases[local].Value" Placeholder="Enter Text"/>
+                                    <TextEdit @bind-Text="@Phrases[local].Value" Disabled="@IsSubmitting" Placeholder="Enter Text"/>
                                 </Field>
                                 <Field ColumnSize="ColumnSize.Is2">
-                                    <Button Color="Color.Danger" Clicked="() => RemoveItem(local)">Remove</Button>
+                                    <Button Color="Color.Danger" Disabled="@IsSubmitting" Clicked="() => RemoveItem(local)">Remove</Button>
                                 </Field>
                             </Fields>
                             
                         </Validation>
                     }
-                    <Button Color="Color.Secondary" Clicked="AddItem">Add Item</Button>
-                    <Button Color="Color.Primary" Loading="@_isLoading" Clicked="HandleSubmit">Submit</Button>
+                    <Button Color="Color.Secondary" Disabled="@IsSubmitting" Clicked="AddItem">Add Item</Button>
+                    <Button Color="Color.Primary" Loading="@IsSubmitting" Clicked="HandleSubmit">Submit</Button>
                 </Validations>
 
             </CardBody>
@@ -40,26 +40,33 @@
     [Inject]
     public IApplicationPhrasesController ApplicationPhraseProxy { get; set; }
 
-    private readonly List<FormResponse> Phrases = new()
-    {
-        new FormResponse(){ Value = "" }
-    };
+    private List<FormResponse> Phrases { get; } = new();
 
     protected void AddItem()
     {
         Phrases.Add(new FormResponse()
         {
-            Value = ""
+            Value = null
         });
     }
 
-    private bool _isLoading = false;
-    
+    private bool IsSubmitting = false;
+
     private void RemoveItem(int index)
     {
         Phrases.RemoveAt(index);
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            AddItem();
+        }
+
+    }
 
     protected override async Task LoadData()
     {
@@ -73,20 +80,21 @@
 
     private async Task HandleSubmit(MouseEventArgs evnt)
     {
-        _isLoading = true;
+        IsSubmitting = true;
         var cleanItems = Phrases.Select(x => x.Value).ToList();
-        
+
         var result = await ApplicationPhraseProxy.CreatePhrasesAsync(ApplicationId, new ApplicationPhrasesCreateOptions
         {
             Texts = cleanItems
         });
 
-        _isLoading = false;
+        IsSubmitting = false;
 
         if (result != null)
         {
-           
+
             NavigationManager.NavigateTo($"/applications/{ApplicationId}");
         }
     }
+
 }

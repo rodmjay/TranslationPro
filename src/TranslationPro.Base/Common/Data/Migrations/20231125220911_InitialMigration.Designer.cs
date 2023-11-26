@@ -12,8 +12,8 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20231125200553_CountMachineTranslationsAdded")]
-    partial class CountMachineTranslationsAdded
+    [Migration("20231125220911_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

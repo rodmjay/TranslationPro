@@ -78,6 +78,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CurrentPhraseId = table.Column<int>(type: "int", nullable: false, defaultValue: 10000),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
@@ -584,7 +585,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
-                    PhraseId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -1182,6 +1182,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PhraseId = table.Column<int>(type: "int", nullable: false),
                     LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MachineTranslations = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -1959,7 +1960,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 values: new object[,]
                 {
                     { 2, 5, "https://localhost:44330" },
-                    { 3, 5, "https://translationpro-app-test.azurewebsites.net" }
+                    { 3, 5, "https://translationpro-app-test.azurewebsites.net" },
+                    { 4, 5, "https://localhost:7243" }
                 });
 
             migrationBuilder.InsertData(
@@ -1982,7 +1984,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     { 1, 3, "https://localhost:5002/signout-callback-oidc" },
                     { 3, 5, "https://localhost:44330/authentication/logout-callback" },
-                    { 4, 5, "https://translationpro-app-test.azurewebsites.net/authentication/logout-callback" }
+                    { 4, 5, "https://translationpro-app-test.azurewebsites.net/authentication/logout-callback" },
+                    { 5, 5, "https://localhost:7243/authentication/logout-callback" }
                 });
 
             migrationBuilder.InsertData(
@@ -1993,7 +1996,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     { 1, 3, "https://localhost:5002/signin-oidc" },
                     { 3, 5, "https://localhost:44330/authentication/login-callback" },
-                    { 4, 5, "https://translationpro-app-test.azurewebsites.net/authentication/login-callback" }
+                    { 4, 5, "https://translationpro-app-test.azurewebsites.net/authentication/login-callback" },
+                    { 5, 5, "https://localhost:7243/authentication/login-callback" }
                 });
 
             migrationBuilder.InsertData(

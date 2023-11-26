@@ -6,11 +6,15 @@
 @if (PagedList != null)
 {
     
-    <DataGrid @ref="grid" TItem="ApplicationPhraseOutput"
+    <DataGrid @ref="DataGrid" TItem="ApplicationPhraseOutput"
               Data="@PagedList.Items"
+              ReadData="OnReadData"
               TotalItems="@PagedList.TotalItems"
               PageSize="@PagedList.PageSize"
               RowClicked="ItemSelected"
+              CurrentPage="@PagedList.CurrentPage"
+              PageChanged="PageChanged"
+
               ShowPager
               Responsive>
     
@@ -26,7 +30,9 @@
 
 @code {
 
-    private DataGrid<ApplicationPhraseOutput> grid;
+    private DataGrid<ApplicationPhraseOutput> DataGrid;
+
+    private PagingQuery PagingQuery { get; set; } = new();
 
     [Parameter]
     public Guid ApplicationId { get; set; }
@@ -37,10 +43,7 @@
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-    public PagedList<ApplicationPhraseOutput> PagedList { get; set; }
-
-    private PagingQuery PagingQuery { get; set; } = new();
-
+    private PagedList<ApplicationPhraseOutput> PagedList { get; set; }
 
     public async Task LoadData()
     {
@@ -50,7 +53,7 @@
     public async Task Reload()
     {
         await LoadData();
-        await grid.Reload();
+        await DataGrid.Reload();
         StateHasChanged();
     }
 
@@ -63,13 +66,36 @@
     {
         if (!e.CancellationToken.IsCancellationRequested)
         {
-
+         
         }
     }
 
     private void ItemSelected(DataGridRowMouseEventArgs<ApplicationPhraseOutput> evnt)
     {
         NavigationManager.NavigateTo($"/applications/{ApplicationId}/phrases/{evnt.Item.Id}");
+    }
+
+    private async Task PageChanged(DataGridPageChangedEventArgs args)
+    {
+        var reload = false;
+
+        if (PagedList.CurrentPage != args.Page)
+        {
+            reload = true;
+            PagingQuery.Page = args.Page;
+        }
+
+        if (PagedList.PageSize != args.PageSize)
+        {
+            reload = true;
+            PagingQuery.Size = args.PageSize;
+        }
+
+        if (reload)
+        {
+            await LoadData();
+        }
+
     }
 
 }
