@@ -3,25 +3,19 @@
 
 @if (ApplicationPhrase != null)
 {
-    <Row HorizontalGutter="32" VerticalGutter="16">
-        <Column ColumnSize="ColumnSize.Is12">
+    <Bar>
+        <BarStart>
             <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
-        </Column>
-    </Row>
+        </BarStart>
+        <BarEnd>
+            <Buttons>
+                <Button Disabled="@Disabled" Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
+                <Button Color="Color.Danger" Clicked="@ShowModal">Delete Phrase</Button>
 
-    <Row HorizontalGutter="32" VerticalGutter="16">
-        <Column ColumnSize="ColumnSize.Is12">
-            <Bar>
-            
-                <BarEnd>
-                    <Buttons>
-                        <Button Color="Color.Danger" Clicked="@ShowModal">Delete Phrase</Button>
-                    </Buttons>
-                </BarEnd>
-            </Bar>
-           
-        </Column>
-    </Row>
+            </Buttons>
+        </BarEnd>
+    </Bar>
+    
     <Row HorizontalGutter="32" VerticalGutter="16">
         <Column ColumnSize="ColumnSize.Is12">
             <TranslationList ApplicationId="@ApplicationId" PhraseId="@PhraseId">
@@ -51,6 +45,10 @@
 
 
 @code {
+    public bool Disabled { get; set; }
+
+
+
     private Modal deletePhrase;
     
     private Task ShowModal()
@@ -65,7 +63,9 @@
     public async Task DeletePhrase()
     {
         await HideModal();
+        Disabled = true;
         await ApplicationPhraseService.DeletePhraseAsync(ApplicationId, PhraseId);
+        Disabled = false;
         NavigationManager.NavigateTo($"/applications/{ApplicationId}");
     }
 }

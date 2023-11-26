@@ -4,9 +4,25 @@
 @if (ApplicationPhrase != null)
 {
     
-    <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+    <Bar>
+        <BarStart>
+            <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+        </BarStart>
+        <BarEnd>
+            <Buttons>
+                <Button Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
+               
+            </Buttons>
+        </BarEnd>
+    </Bar>
     
-    <VariantList ApplicationId="@ApplicationId" PhraseId="@PhraseId" LanguageId="@LanguageId"></VariantList>
+    <Row HorizontalGutter="16" VerticalGutter="32">
+        <Column ColumnSize="ColumnSize.Is12">
+            <VariantList ApplicationId="@ApplicationId" PhraseId="@PhraseId" LanguageId="@LanguageId"></VariantList>
+        </Column>
+    </Row>
+
+    
 
 }
 

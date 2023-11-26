@@ -8,31 +8,21 @@
 }
 else
 {
-    <Row HorizontalGutter="32" VerticalGutter="16">
-        <Column ColumnSize="ColumnSize.Is12">
+    <Bar>
+        <BarStart>
             <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
-        </Column>
-    </Row>
+        </BarStart>
+        <BarEnd>
+            <Buttons>
+                <Button Disabled="@Disabled" Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
+
+                <Button Disabled="@Disabled" Color="Color.Danger" Clicked="@ShowModal">Delete Application</Button>
+            </Buttons>
+        </BarEnd>
+    </Bar>
     <Row HorizontalGutter="32" VerticalGutter="16">
         <Column ColumnSize="ColumnSize.Is12">
             <Heading Size="HeadingSize.Is3">@Application.Name</Heading>
-        </Column>
-    </Row>
-    <Row HorizontalGutter="32" VerticalGutter="16">
-        <Column ColumnSize="ColumnSize.Is12">
-            <Bar>
-                <BarStart>
-                    <Buttons>
-                        <Button Disabled="@Disabled" Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
-                    </Buttons>
-                </BarStart>
-                <BarEnd>
-                    <Buttons>
-                        <Button Disabled="@Disabled" Color="Color.Danger" Clicked="@ShowModal">Delete Application</Button>
-                    </Buttons>
-                </BarEnd>
-            </Bar>
-           
         </Column>
     </Row>
     <Row HorizontalGutter="16" VerticalGutter="32">
