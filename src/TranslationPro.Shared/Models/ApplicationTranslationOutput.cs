@@ -13,8 +13,3 @@ public class ApplicationTranslationOutput
     public string LanguageName { get; set; }
     public int MachineTranslations { get; set; }
 }
-
-public class ApplicationTranslationOutputWithOriginalPhrase : ApplicationTranslationOutput
-{
-    public string Phrase { get; set; }
-}
