@@ -31,10 +31,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\TranslationPro.Shared\TranslationPro.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <UpToDateCheckInput Remove="Pages\Dashboard2.razor" />
 	</ItemGroup>
 
@@ -48,6 +44,10 @@
 
 	<ItemGroup>
 	  <Folder Include="Components\Application\Pages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\TranslationPro.Shared\TranslationPro.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
