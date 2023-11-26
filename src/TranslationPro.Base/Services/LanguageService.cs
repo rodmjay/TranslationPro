@@ -30,15 +30,15 @@ public class LanguageService : BaseService<Language>, ILanguageService
     {
     }
 
-    private IQueryable<Language> Languages => Repository.Queryable();
-    
+    private IQueryable<Language> Languages => Repository.Queryable().Include(x => x.Applications);
+
     public async Task<List<T>> GetLanguagesAsync<T>() where T : LanguageOutput
     {
-        var languages = await Languages.ProjectTo<T>(ProjectionMapping).ToListAsync();
+        var languages = await Languages.OrderByDescending(x => x.Applications.Count).ProjectTo<T>(ProjectionMapping).ToListAsync();
 
         return languages;
     }
-    
+
 
     public Task<T> GetLanguageAsync<T>(string languageId) where T : LanguageOutput
     {
