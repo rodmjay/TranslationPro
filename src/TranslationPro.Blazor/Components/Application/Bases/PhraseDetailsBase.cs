@@ -14,7 +14,7 @@ public class PhraseDetailsBase : ApplicationDetailsBase
 {
 
     [Inject]
-    public IApplicationPhrasesController ApplicationPhrasesController { get; set; }
+    public IApplicationPhrasesController ApplicationPhraseService { get; set; }
 
     [Parameter]
     public int PhraseId { get; set; }
@@ -26,7 +26,7 @@ public class PhraseDetailsBase : ApplicationDetailsBase
     protected override async Task LoadData()
     {
         await base.LoadData();
-        ApplicationPhrase = await ApplicationPhrasesController.GetPhraseAsync(ApplicationId, PhraseId);
+        ApplicationPhrase = await ApplicationPhraseService.GetPhraseAsync(ApplicationId, PhraseId);
         
         this.NavigationItems.Add(new NavigationItem()
         {

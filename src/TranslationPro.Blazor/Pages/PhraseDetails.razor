@@ -1,12 +1,71 @@
 ﻿@page "/applications/{ApplicationId:guid}/phrases/{PhraseId:int}"
 @inherits PhraseDetailsBase
-<ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
 
-<TranslationList ApplicationId="@ApplicationId" PhraseId="@PhraseId">
+@if (ApplicationPhrase != null)
+{
+    <Row HorizontalGutter="32" VerticalGutter="16">
+        <Column ColumnSize="ColumnSize.Is12">
+            <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+        </Column>
+    </Row>
 
-</TranslationList>
+    <Row HorizontalGutter="32" VerticalGutter="16">
+        <Column ColumnSize="ColumnSize.Is12">
+            <Bar>
+            
+                <BarEnd>
+                    <Buttons>
+                        <Button Color="Color.Danger" Clicked="@ShowModal">Delete Phrase</Button>
+                    </Buttons>
+                </BarEnd>
+            </Bar>
+           
+        </Column>
+    </Row>
+    <Row HorizontalGutter="32" VerticalGutter="16">
+        <Column ColumnSize="ColumnSize.Is12">
+            <TranslationList ApplicationId="@ApplicationId" PhraseId="@PhraseId">
+
+            </TranslationList>
+        </Column>
+    </Row>
+
+    
+    <Modal @ref="deletePhrase">
+        <ModalContent>
+            <ModalHeader>
+                <ModalTitle>Delete Phrase</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Paragraph>Are you sure you want to delete the phrase "@ApplicationPhrase.Text"?</Paragraph>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+                <Button Color="Color.Danger" Clicked="@DeletePhrase">Yes, Delete Phrase</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+}
+
 
 
 @code {
+    private Modal deletePhrase;
+    
+    private Task ShowModal()
+    {
+        return deletePhrase.Show();
+    }
+    private Task HideModal()
+    {
+        return deletePhrase.Hide();
+    }
 
+    public async Task DeletePhrase()
+    {
+        await HideModal();
+        await ApplicationPhraseService.DeletePhraseAsync(ApplicationId, PhraseId);
+        NavigationManager.NavigateTo($"/applications/{ApplicationId}");
+    }
 }
