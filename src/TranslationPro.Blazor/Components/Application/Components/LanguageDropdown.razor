@@ -4,46 +4,42 @@
               ValueField="@((item) => item.Id)"
               SelectionMode="DropdownListSelectionMode.Checkbox"
               SelectedValues="SelectedLanguages"
-              SelectedValuesChanged="Callback"
-              SelectedValueChanged="Callback2"
+              SelectedValuesChanged="SelectedLanguagesChanged"
               Color="Color.Primary"
-              MaxMenuHeight="200px">
+              MaxMenuHeight="200px"
+              Disabled="@Disabled">
     
-    Select Language (@SelectedLanguages.Count)
+    Select Languages  @if (SelectedLanguages.Count > 0)
+                      {
+                         <Span>(@SelectedLanguages.Count)</Span> 
+                      }
 
 </DropdownList>
 
 @code
 {
-    [Inject]
-    public ILanguagesController LanguagesController { get; set; }
-
-    [Inject]
-    public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
-
-    public IEnumerable<LanguageOutput> Languages { get; set; }
-
     [Parameter]
-    public List<string> SelectedLanguages { get; set; } 
+    public List<string> SelectedLanguages { get; set; } = new();
 
     [Parameter]
     public EventCallback<IReadOnlyList<string>> LanguagesChanged { get; set; }
 
+
     [Parameter]
-    public EventCallback<string> LanguageChanged { get; set; }
+    public bool Disabled { get; set; } = false;
+
+    [Inject]
+    public ILanguagesController LanguagesController { get; set; }
+
+    public IEnumerable<LanguageOutput> Languages { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Languages = await LanguagesController.GetLanguagesAsync();
     }
 
-    private void Callback(IReadOnlyList<string> selectedLanguages)
+    private void SelectedLanguagesChanged(IReadOnlyList<string> selectedLanguages)
     {
         LanguagesChanged.InvokeAsync(selectedLanguages);
-    }
-
-    private void Callback2(string selectedLanguages)
-    {
-        LanguageChanged.InvokeAsync(selectedLanguages);
     }
 }

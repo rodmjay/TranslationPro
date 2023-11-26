@@ -21,16 +21,7 @@
                         </Validation>
                         
                         <Field>
-                            <FieldLabel>Select Languages</FieldLabel>
-                            <Select TValue="string" Multiple SelectedValuesChanged="@OnChangeSelection">
-                        
-                                @foreach (var lang in Languages)
-                                {
-                                    <SelectItem Value="@lang.Id">@lang.Name</SelectItem>
-                                }
-
-                            </Select>
-                            <FieldHelp>Hold Ctrl to select more than one</FieldHelp>
+                           <LanguageDropdown LanguagesChanged="LanguagesChanged"></LanguageDropdown>
                         </Field>
                         <Button Color="Color.Primary" Clicked="HandleSubmit">Submit</Button>
                     </Validations>
@@ -51,8 +42,6 @@
          
     private List<LanguageOutput> Languages { get; set; }
 
-    private readonly List<string> selection = new();
-
     protected override async Task LoadData()
     {
         await base.LoadData();
@@ -64,34 +53,25 @@
             Title = "Create Application"
         });
     }
-
-    async Task SubmitBasicExample()
-    {
-        if ( await validationsBasicExampleRef!.ValidateAll() )
-        {
-            await validationsBasicExampleRef.ClearAll();
-        }
-    }
-
     
-    private void OnChangeSelection(IReadOnlyList<string> selectedItems)
-    {
-        selection.Clear();
-        foreach (var item in selectedItems)
-        {
-            selection.Add(item);
-        }
-    }
-
     private async Task HandleSubmit(MouseEventArgs evnt)
     {
-        Input.Languages = selection.ToArray();
-
-        var result = await ApplicationService.CreateApplicationAsync(Input);
-
-        if (result.Succeeded)
+        if (await validationsBasicExampleRef!.ValidateAll())
         {
-            NavigationManager.NavigateTo($"/applications/{result.Id}");
+            await validationsBasicExampleRef.ClearAll();
+
+            var result = await ApplicationService.CreateApplicationAsync(Input);
+
+            if (result.Succeeded)
+            {
+                NavigationManager.NavigateTo($"/applications/{result.Id}");
+            }
         }
     }
+
+    private void LanguagesChanged(IReadOnlyList<string> languages)
+    {
+        Input.Languages = languages.ToArray();
+    }
+
 }

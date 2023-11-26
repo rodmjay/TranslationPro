@@ -20,10 +20,19 @@ else
     </Row>
     <Row HorizontalGutter="32" VerticalGutter="16">
         <Column ColumnSize="ColumnSize.Is12">
-
-            <Buttons>
-                <Button Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
-            </Buttons>
+            <Bar>
+                <BarStart>
+                    <Buttons>
+                        <Button Disabled="@Disabled" Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
+                    </Buttons>
+                </BarStart>
+                <BarEnd>
+                    <Buttons>
+                        <Button Disabled="@Disabled" Color="Color.Danger" Clicked="@ShowModal">Delete Application</Button>
+                    </Buttons>
+                </BarEnd>
+            </Bar>
+           
         </Column>
     </Row>
     <Row HorizontalGutter="16" VerticalGutter="32">
@@ -64,9 +73,25 @@ else
         </Column>
         <Column ColumnSize="ColumnSize.Is3">
 
-            <LanguageDropdown LanguagesChanged="HandleLanguageChange" SelectedLanguages="@Application.Languages.Select(x=>x.Id).ToList()"></LanguageDropdown>
+            <LanguageDropdown LanguagesChanged="HandleLanguageChange" Disabled="@Disabled" SelectedLanguages="@Application.Languages.Select(x=>x.Id).ToList()"></LanguageDropdown>
 
         </Column>
     </Row>
+
+    <Modal @ref="deleteApplication">
+        <ModalContent>
+            <ModalHeader>
+                <ModalTitle>Delete Application</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Paragraph>Are you sure you want to delete this application?</Paragraph>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+                <Button Color="Color.Danger" Clicked="@DeleteApplication">Yes, Delete Application</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
 
 }

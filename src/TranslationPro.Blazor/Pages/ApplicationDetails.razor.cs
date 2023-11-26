@@ -7,6 +7,10 @@ namespace TranslationPro.Blazor.Pages
 {
     public partial class ApplicationDetails : ApplicationDetailsBase
     {
+        private Modal deleteApplication;
+
+        public bool Disabled { get; set; }
+
         [Inject]
         public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
 
@@ -19,11 +23,28 @@ namespace TranslationPro.Blazor.Pages
             StateHasChanged();
         }
 
+        private Task ShowModal()
+        {
+            return deleteApplication.Show();
+        }
+        private Task HideModal()
+        {
+            return deleteApplication.Hide();
+        }
 
         public async Task HandleLanguageChange(IReadOnlyList<string> languages)
         {
+            Disabled = true;
             await ApplicationLanguagesController.SyncLanguages(ApplicationId, languages.ToArray());
+            Disabled = false;
             await Reload();
+        }
+
+        public async Task DeleteApplication()
+        {
+            await HideModal();
+            await ApplicationService.DeleteApplicationAsync(ApplicationId);
+            NavigationManager.NavigateTo("/applications");
         }
     }
 }
