@@ -59,32 +59,13 @@ else
         </Column>
     </Row>
     <Row HorizontalGutter="32" VerticalGutter="32">
-        <Column ColumnSize="ColumnSize.Is8">
+        <Column ColumnSize="ColumnSize.Is9">
             <PhraseList @ref="list" ApplicationId="@ApplicationId"></PhraseList>
         </Column>
-        <Column ColumnSize="ColumnSize.Is4">
-            <Accordion>
-                <Collapse>
-                    <CollapseHeader>
-                        <Heading Size="HeadingSize.Is5">
-                            <AccordionToggle Background="Background.Primary" TextColor="TextColor.Light">Languages</AccordionToggle>
-                        </Heading>
-                    </CollapseHeader>
-                    <CollapseBody>
-                        <LanguageList LanguagesChanged="Reload"></LanguageList>
-                    </CollapseBody>
-                </Collapse>
-                <Collapse>
-                    <CollapseHeader>
-                        <Heading Size="HeadingSize.Is5">
-                            <AccordionToggle Background="Background.Secondary" TextColor="TextColor.Light">Users</AccordionToggle>
-                        </Heading>
-                    </CollapseHeader>
-                    <CollapseBody>
-                        This is User List
-                    </CollapseBody>
-                </Collapse>
-            </Accordion>
+        <Column ColumnSize="ColumnSize.Is3">
+
+            <LanguageDropdown LanguagesChanged="HandleLanguageChange" SelectedLanguages="@Application.Languages.Select(x=>x.Id).ToList()"></LanguageDropdown>
+
         </Column>
     </Row>
 

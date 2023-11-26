@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace TranslationPro.App.Extensions
+namespace TranslationPro.Blazor.Extensions
 {
     public static class RouteDataExtensions
     {

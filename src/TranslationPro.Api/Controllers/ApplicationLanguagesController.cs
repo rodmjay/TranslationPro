@@ -31,6 +31,20 @@ public class ApplicationLanguagesController : BaseController, IApplicationLangua
         _applicationLanguageManager = applicationLanguageManager;
     }
 
+    [HttpPost("sync")]
+    public async Task<Result> SyncLanguages([FromRoute] Guid applicationId, [FromBody] string[] languageIds)
+    {
+
+        await AssertUserHasAccessToApplication(applicationId);
+
+        var languagesToAdd = await _applicationLanguageManager.SyncLanguages(applicationId, languageIds);
+
+        await _applicationPhraseManager.AddLanguagesToApplicationPhrases(applicationId, languagesToAdd);
+
+        return Result.Success();
+
+    }
+
     [HttpPost]
     public async Task<Result> AddLanguageToApplicationAsync([FromRoute] Guid applicationId,
         [FromBody] ApplicationLanguageOptions options)

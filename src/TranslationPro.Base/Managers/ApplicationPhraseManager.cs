@@ -51,6 +51,13 @@ public class ApplicationPhraseManager
         return _applicationPhraseService.GetPhraseAsync<T>(applicationId, phraseId);
     }
 
+
+    public async Task AddLanguagesToApplicationPhrases(Guid applicationId, string[] languageIds)
+    {
+        var phrases = await _applicationPhraseService.GetPhraseTextsForApplication(applicationId);
+        await CreateAndTranslatePhrases(applicationId, languageIds, phrases);
+    }
+
     public async Task AddLanguageToApplicationPhrases(Guid applicationId, string languageId)
     {
         var phrases = await _applicationPhraseService.GetPhraseTextsForApplication(applicationId);

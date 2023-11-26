@@ -20,4 +20,6 @@ public interface IApplicationLanguagesController
 
     Task<PagedList<ApplicationTranslationOutputWithOriginalPhrase>> GetTranslationsForLanguage(Guid applicationId, string languageId,
         PagingQuery query);
+
+    Task<Result> SyncLanguages(Guid applicationId, string[] languageIds);
 }

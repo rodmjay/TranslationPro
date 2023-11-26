@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
@@ -24,6 +25,11 @@ public class ApplicationLanguagesProxy : BaseProxy, IApplicationLanguagesControl
     {
         return DoGet<PagedList<ApplicationTranslationOutputWithOriginalPhrase>>(
             $"{ApplicationUrl}/{applicationId}/languages/{languageId}");
+    }
+
+    public Task<Result> SyncLanguages(Guid applicationId, string[] languageIds)
+    {
+        return DoPost<string[], Result>($"{ApplicationUrl}/{applicationId}/languages/sync", languageIds);
     }
 
     public ApplicationLanguagesProxy(HttpClient httpClient) : base(httpClient)

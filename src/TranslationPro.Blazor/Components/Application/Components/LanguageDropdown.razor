@@ -1,0 +1,49 @@
+﻿
+<DropdownList TItem="LanguageOutput" TValue="string" Data="@Languages"
+              TextField="@((item) => item.Name)"
+              ValueField="@((item) => item.Id)"
+              SelectionMode="DropdownListSelectionMode.Checkbox"
+              SelectedValues="SelectedLanguages"
+              SelectedValuesChanged="Callback"
+              SelectedValueChanged="Callback2"
+              Color="Color.Primary"
+              MaxMenuHeight="200px">
+    
+    Select Language (@SelectedLanguages.Count)
+
+</DropdownList>
+
+@code
+{
+    [Inject]
+    public ILanguagesController LanguagesController { get; set; }
+
+    [Inject]
+    public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
+
+    public IEnumerable<LanguageOutput> Languages { get; set; }
+
+    [Parameter]
+    public List<string> SelectedLanguages { get; set; } 
+
+    [Parameter]
+    public EventCallback<IReadOnlyList<string>> LanguagesChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string> LanguageChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Languages = await LanguagesController.GetLanguagesAsync();
+    }
+
+    private void Callback(IReadOnlyList<string> selectedLanguages)
+    {
+        LanguagesChanged.InvokeAsync(selectedLanguages);
+    }
+
+    private void Callback2(string selectedLanguages)
+    {
+        LanguageChanged.InvokeAsync(selectedLanguages);
+    }
+}
