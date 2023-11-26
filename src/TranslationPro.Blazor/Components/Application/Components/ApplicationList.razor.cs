@@ -7,9 +7,6 @@ namespace TranslationPro.Blazor.Components.Application.Components;
 
 public partial class ApplicationList : ComponentBase
 {
-    [CascadingParameter]
-    Task<AuthenticationState> authenticationStateTask { get; set; }
-
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     

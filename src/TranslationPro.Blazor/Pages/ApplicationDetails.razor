@@ -1,5 +1,6 @@
 ﻿@inherits ApplicationDetailsBase
 
+
 @page "/applications/{ApplicationId:guid}"
 
 @if (Application == null)
@@ -27,7 +28,7 @@ else
     </Row>
     <Row HorizontalGutter="16" VerticalGutter="32">
         <Column ColumnSize="ColumnSize.Is12">
-            
+
             <CardDeck>
                 <Card>
                     <CardBody>
@@ -49,24 +50,51 @@ else
                 </Card>
                 <Card>
                     <CardBody>
-                        <CardTitle>Users</CardTitle>
-                        <CardText>@Application.Users.Count</CardText>
+                        <CardTitle>Pending Translations</CardTitle>
+                        <CardText>@Application.PendingTranslationCount</CardText>
                     </CardBody>
                 </Card>
             </CardDeck>
-           
-        </Column>
-    </Row>
-    <Row HorizontalGutter="32" VerticalGutter="32">
-        <Column ColumnSize="ColumnSize.Is9">
-            <PhraseList @ref="list" ApplicationId="@ApplicationId"></PhraseList>
-        </Column>
-        <Column ColumnSize="ColumnSize.Is3">
-
-            <LanguageDropdown LanguagesChanged="HandleLanguageChange" Disabled="@Disabled" SelectedLanguages="@Application.Languages.Select(x=>x.Id).ToList()"></LanguageDropdown>
 
         </Column>
     </Row>
+    <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+        <Items>
+            <Tab Name="phrases">Phrases (@Application.PhraseCount)</Tab>
+            <Tab Name="users">Users (@Application.Users.Count)</Tab>
+            <Tab Name="languages">Languages (@Application.LanguageCount)</Tab>
+        </Items>
+
+        <Content>
+            <TabPanel Name="phrases">
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is9">
+                        <PhraseList @ref="list" ApplicationId="@ApplicationId"></PhraseList>
+                    </Column>
+                    <Column ColumnSize="ColumnSize.Is3">
+                        <div style="padding: 10px">
+                            <LanguageDropdown LanguagesChanged="HandleLanguageChange" Disabled="@Disabled" SelectedLanguages="@Application.Languages.Select(x => x.Id).ToList()"></LanguageDropdown>
+                        </div>
+                    </Column>
+                </Row>
+
+            </TabPanel>
+            <TabPanel Name="users">
+
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is9">
+                        <UserList Users="@Application.Users.ToList()"></UserList>
+                    </Column>
+                </Row>
+
+            </TabPanel>
+            <TabPanel Name="languages">
+                
+                <LanguageDragDrop LanguageDisabled="@LanguageDisabled" LanguageEnabled="@LanguageEnabled" SelectedLanguages="@Application.Languages.ToList()"></LanguageDragDrop>
+
+            </TabPanel>
+        </Content>
+    </Tabs>
 
     <Modal @ref="deleteApplication">
         <ModalContent>

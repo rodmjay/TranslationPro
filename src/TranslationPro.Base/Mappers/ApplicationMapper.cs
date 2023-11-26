@@ -20,6 +20,8 @@ public class ApplicationMapper : Profile
             .ForMember(x => x.Users, opt => opt.MapFrom(a => a.Users))
             .ForMember(x => x.Languages, opt => opt.MapFrom(a => a.Languages.Select(al => al.Language)))
             .ForMember(x => x.TranslationCount,
-                opt => opt.MapFrom(a => a.Phrases.SelectMany(ap => ap.Translations).Count(at => !at.IsDeleted)));
+                opt => opt.MapFrom(a => a.Phrases.SelectMany(ap => ap.Translations).Where(at => at.Text != null).Count(at => !at.IsDeleted)))
+            .ForMember(x => x.PendingTranslationCount,
+                opt => opt.MapFrom(a => a.Phrases.SelectMany(ap => ap.Translations).Where(at => at.Text == null).Count(at => !at.IsDeleted)));
     }
 }

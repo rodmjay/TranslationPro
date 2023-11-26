@@ -2,6 +2,7 @@
 using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Components.Application.Components;
 using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Pages
 {
@@ -10,6 +11,15 @@ namespace TranslationPro.Blazor.Pages
         private Modal deleteApplication;
 
         public bool Disabled { get; set; }
+
+        string selectedTab = "phrases";
+
+        private Task OnSelectedTabChanged(string name)
+        {
+            selectedTab = name;
+
+            return Task.CompletedTask;
+        }
 
         [Inject]
         public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
@@ -45,6 +55,27 @@ namespace TranslationPro.Blazor.Pages
             await HideModal();
             await ApplicationService.DeleteApplicationAsync(ApplicationId);
             NavigationManager.NavigateTo("/applications");
+        }
+
+
+        private async Task LanguageEnabled(string languageId)
+        {
+            Disabled = true;
+            await ApplicationLanguagesController.AddLanguageToApplicationAsync(ApplicationId,
+                new ApplicationLanguageOptions()
+                {
+                    LanguageId = languageId
+                });
+            Disabled = false;
+            await Reload();
+        }
+
+        private async Task LanguageDisabled(string languageId)
+        {
+            Disabled = true;
+            await ApplicationLanguagesController.RemoveLanguageFromApplicationAsync(ApplicationId,languageId);
+            Disabled = false;
+            await Reload();
         }
     }
 }

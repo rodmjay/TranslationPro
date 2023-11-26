@@ -1,0 +1,19 @@
+﻿<DataGrid TItem="ApplicationUserOutput"
+          Data="@Users">
+
+    <DataGridColumns>
+        <DataGridColumn Field="@nameof(ApplicationUserOutput.Name)" Caption="Name"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ApplicationUserOutput.Role)" Caption="Role"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ApplicationUserOutput.Status)" Caption="Status"></DataGridColumn>
+    </DataGridColumns>
+</DataGrid>
+
+@code
+{
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    
+    [Parameter]
+    public List<ApplicationUserOutput> Users { get; set; }
+
+}

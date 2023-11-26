@@ -3,6 +3,12 @@
 @using TranslationPro.Blazor.Services
 @inherits ApplicationDetailsBase
 
+<Bar>
+    <BarStart>
+        <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+    </BarStart>
+</Bar>
+
 <Row>
     <Column ColumnSize="ColumnSize.Is6.OnDesktop">
         <Card Margin="Margin.Is4.FromBottom">

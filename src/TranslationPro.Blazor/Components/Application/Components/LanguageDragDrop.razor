@@ -1,0 +1,91 @@
+﻿
+@if (items.Count > 0)
+{
+    
+    <DropContainer TItem="DropItem" Items="@items" ItemsFilter="@((item, dropZone) => item.Group == dropZone)" ItemDropped="@ItemDropped" Flex="Flex.Wrap.Grow.Is1">
+        <ChildContent>
+            <DropZone TItem="DropItem" Name="Disabled" Border="Border.Rounded" Background="Background.Light" Padding="Padding.Is3" Margin="Margin.Is3" Flex="Flex.Grow.Is1">
+                <Heading Size="HeadingSize.Is4" Margin="Margin.Is3.FromBottom">Available</Heading>
+            </DropZone>
+            <DropZone TItem="DropItem" Name="Enabled" Border="Border.Rounded" Background="Background.Light" Padding="Padding.Is3" Margin="Margin.Is3" Flex="Flex.Grow.Is1">
+                <Heading Size="HeadingSize.Is4" Margin="Margin.Is3.FromBottom">Enabled</Heading>
+            </DropZone>
+        </ChildContent>
+        <ItemTemplate>
+            <Card Shadow="Shadow.Default" Margin="Margin.Is3.OnY">
+                <CardBody>
+                    @context.Name
+                </CardBody>
+            </Card>
+        </ItemTemplate>
+    </DropContainer>
+}
+@code {
+
+    [Inject]
+    private ILanguagesController LanguageService { get; set; }
+
+    public class DropItem
+    {
+        public string Name { get; init; }
+
+        public string LanguageId { get; set; }
+
+        public string Group { get; set; }
+    }
+
+    [Parameter]
+    public List<LanguageOutput> SelectedLanguages { get; set; }
+
+    [Parameter]
+    public EventCallback<string> LanguageEnabled { get; set; }
+
+    [Parameter]
+    public EventCallback<string> LanguageDisabled { get; set; }
+
+    private List<LanguageOutput> Languages { get; set; }
+
+    private List<DropItem> items = new()
+    {
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Languages = await LanguageService.GetLanguagesAsync();
+
+        var languageIds = Languages.Select(x => x.Id).ToArray();
+        var selectedLanguageIds = SelectedLanguages.Select(x => x.Id).ToArray();
+
+        foreach (var languageId in languageIds)
+        {
+            var dropItem = new DropItem()
+                {
+                    Name = Languages.First(x => x.Id == languageId).Name,
+                    LanguageId = languageId
+                };
+
+            if (selectedLanguageIds.Contains(languageId))
+            {
+                dropItem.Group = "Enabled";
+            }
+            else
+            {
+                dropItem.Group = "Disabled";
+            }
+            items.Add(dropItem);
+        }
+    }
+
+    private async Task ItemDropped(DraggableDroppedEventArgs<DropItem> dropItem)
+    {
+        if (dropItem.DropZoneName == "Enabled")
+        {
+            await LanguageEnabled.InvokeAsync(dropItem.Item.LanguageId);
+        }
+        if (dropItem.DropZoneName == "Disabled")
+        {
+            await LanguageDisabled.InvokeAsync(dropItem.Item.LanguageId);
+        }
+        dropItem.Item.Group = dropItem.DropZoneName;
+    }
+}
