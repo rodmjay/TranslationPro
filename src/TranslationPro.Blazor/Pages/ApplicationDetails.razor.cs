@@ -6,12 +6,7 @@ namespace TranslationPro.Blazor.Pages
     public partial class ApplicationDetails : ApplicationDetailsBase
     {
         private PhraseList list;
-
-        protected override async Task LoadData()
-        {
-            await base.LoadData();
-        }
-
+        
         public async Task Reload()
         {
             await LoadData();
