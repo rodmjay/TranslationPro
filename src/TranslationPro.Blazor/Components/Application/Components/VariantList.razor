@@ -8,28 +8,17 @@
 else
 {
     <Row HorizontalGutter="32" VerticalGutter="16">
-        <Column ColumnSize="@ColumnSize.Is6">
-            <Card>
-                <CardBody>
-                    <CardTitle>English</CardTitle>
-                    <CardText>@ApplicationPhraseDetails.Text</CardText>
-                </CardBody>
-            </Card>
-        </Column>
-        <Column ColumnSize="@ColumnSize.Is6">
-            <Card>
-                <CardBody>
-                    <CardTitle>@Language.Name</CardTitle>
-                    <CardText>@Translation.Text</CardText>
-
-                </CardBody>
-            </Card>
+        <Column ColumnSize="@ColumnSize.Is12">
+            <CardDeck>
+                <Translation Language="English" Text="@ApplicationPhraseDetails.Text"></Translation>
+                <Translation Language="@Language.Name" Text="@Translation.Text"></Translation>
+            </CardDeck>
         </Column>
     </Row>
     <Row HorizontalGutter="32" VerticalGutter="16">
-        
+
         <Column ColumnSize="ColumnSize.Is12">
-            
+
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -100,7 +89,7 @@ else
         Language = await LanguageService.GetLanguageAsync(LanguageId);
         ApplicationPhraseDetails = await PhraseService.GetPhraseAsync(ApplicationId, PhraseId);
         Translation = ApplicationPhraseDetails.Translations.First(x => x.LanguageId == LanguageId);
-        var phraseList = await TranslationService.Translate(new PhraseBulkCreateOptions() {LanguageIds = new[] {LanguageId}, Texts = new[] {ApplicationPhraseDetails.Text}});
+        var phraseList = await TranslationService.Translate(new PhraseBulkCreateOptions() { LanguageIds = new[] { LanguageId }, Texts = new[] { ApplicationPhraseDetails.Text } });
 
         if (phraseList.Count > 0)
         {
@@ -112,19 +101,19 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
-        
+
     }
 
-    
+
     private async Task Callback(string text)
     {
         _isLoading = true;
         var result = await ApplicationTranslationsController.ReplaceTranslation(ApplicationId, PhraseId,
             new TranslationReplacementOptions()
-            {
-                Text = text,
-                LanguageId = LanguageId
-            });
+                {
+                    Text = text,
+                    LanguageId = LanguageId
+                });
         _isLoading = false;
         await LoadData();
         StateHasChanged();

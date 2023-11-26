@@ -1,0 +1,16 @@
+﻿<CardBody>
+    <CardTitle >
+        <Heading Size="HeadingSize.Is5">@Language</Heading>
+    </CardTitle>
+    <CardText>
+        <Heading Size="HeadingSize.Is4">@Text</Heading>
+    </CardText>
+</CardBody>
+
+@code {
+    [Parameter]
+    public string Language { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+}

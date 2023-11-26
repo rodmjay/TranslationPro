@@ -27,37 +27,35 @@ else
         </Column>
     </Row>
     <Row HorizontalGutter="16" VerticalGutter="32">
-        <Column ColumnSize="ColumnSize.Is3">
-            <Card>
-                <CardBody>
-                    <CardTitle>Phrases</CardTitle>
-                    <CardText>@Application.PhraseCount</CardText>
-                </CardBody>
-            </Card>
-        </Column>
-        <Column ColumnSize="ColumnSize.Is3">
-            <Card>
-                <CardBody>
-                    <CardTitle>Languages</CardTitle>
-                    <CardText>@Application.Languages.Count</CardText>
-                </CardBody>
-            </Card>
-        </Column>
-        <Column ColumnSize="ColumnSize.Is3">
-            <Card>
-                <CardBody>
-                    <CardTitle>Translations</CardTitle>
-                    <CardText>@Application.TranslationCount</CardText>
-                </CardBody>
-            </Card>
-        </Column>
-        <Column ColumnSize="ColumnSize.Is3">
-            <Card>
-                <CardBody>
-                    <CardTitle>Users</CardTitle>
-                    <CardText>@Application.Users.Count</CardText>
-                </CardBody>
-            </Card>
+        <Column ColumnSize="ColumnSize.Is12">
+            
+            <CardDeck>
+                <Card>
+                    <CardBody>
+                        <CardTitle>Phrases</CardTitle>
+                        <CardText>@Application.PhraseCount</CardText>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardBody>
+                        <CardTitle>Languages</CardTitle>
+                        <CardText>@Application.Languages.Count</CardText>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardBody>
+                        <CardTitle>Translations</CardTitle>
+                        <CardText>@Application.TranslationCount</CardText>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardBody>
+                        <CardTitle>Users</CardTitle>
+                        <CardText>@Application.Users.Count</CardText>
+                    </CardBody>
+                </Card>
+            </CardDeck>
+           
         </Column>
     </Row>
     <Row HorizontalGutter="32" VerticalGutter="32">

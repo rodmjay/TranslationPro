@@ -11,10 +11,10 @@
     <Authorized>
                     
         <BarItem>
-            <BarLink @onclick="HandleProfileClick">@context.User.Identity?.Name</BarLink>
+            <BarLink TextColor="TextColor.White" @onclick="HandleProfileClick">@context.User.Identity?.Name</BarLink>
         </BarItem>
         <BarItem>
-            <BarLink @onclick="HandleSignOutClick">
+            <BarLink TextColor="TextColor.White" @onclick="HandleSignOutClick">
                 Log Out
             </BarLink>
         </BarItem>
@@ -25,13 +25,13 @@
                     
         <BarItem Margin="Margin.Is2.FromEnd">
                         
-            <BarLink To="authentication/login">Login</BarLink>
+            <BarLink TextColor="TextColor.White" To="authentication/login">Login</BarLink>
                         
         </BarItem>
                     
         <BarItem Margin="Margin.Is2.FromEnd">
                         
-            <BarLink @onclick="HandleRegisterClick">Register</BarLink>
+            <BarLink TextColor="TextColor.White" @onclick="HandleRegisterClick">Register</BarLink>
                         
         </BarItem>
 
