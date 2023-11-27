@@ -28,6 +28,7 @@ public class ApplicationTranslationsController : BaseController, IApplicationTra
         _applicationTranslationManager = applicationTranslationManager;
     }
 
+ 
     [HttpPut()]
     public async Task<Result> ReplaceTranslation([FromRoute] Guid applicationId, [FromRoute] int phraseId,
         [FromBody] TranslationReplacementOptions options)

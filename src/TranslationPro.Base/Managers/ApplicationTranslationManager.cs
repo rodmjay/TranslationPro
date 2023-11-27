@@ -26,8 +26,10 @@ public class ApplicationTranslationManager
         IApplicationTranslationService applicationTranslationService)
     {
         _applicationTranslationService = applicationTranslationService;
+
         _applicationTranslationRepository = unitOfWork.RepositoryAsync<ApplicationTranslation>();
     }
+
 
     public async Task<Result> ReplaceTranslation(Guid applicationId, int phraseId, TranslationReplacementOptions input)
     {

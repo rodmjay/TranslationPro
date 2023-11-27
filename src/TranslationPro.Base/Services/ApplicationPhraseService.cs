@@ -46,12 +46,30 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
         _applicationRepository = UnitOfWork.RepositoryAsync<Application>();
     }
 
-    private IQueryable<Application> Applications => _applicationRepository.Queryable();
+    private IQueryable<Application> Applications => _applicationRepository.Queryable()
+        .Include(x=>x.Languages);
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
         .Include(x => x.Translations)
         .Include(x => x.Application);
     
+
+    public async Task<string[]> GetPhrasesWithPendingTranslation(Guid applicationId)
+    {
+        var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
+
+        var count = application.Languages.Count(x => !x.IsDeleted);
+
+        var phrases = await ApplicationPhrases.Where(x => x.ApplicationId == applicationId)
+            .ProjectTo<ApplicationPhraseOutput>(ProjectionMapping).ToListAsync();
+
+        var phrasesWithEmptyTranslations = phrases.Where(x => x.PendingTranslationCount > 0).Select(x => x.Text).ToArray();
+
+        var phrasesWithMissingTranslations = phrases.Where(x=>x.TranslationCount < count).Select(x => x.Text).ToArray();
+
+        return phrasesWithEmptyTranslations.Union(phrasesWithMissingTranslations).ToArray();
+    }
+
     public Task<string[]> GetPhraseTextsForApplication(Guid applicationId)
     {
         return ApplicationPhrases.Where(x => x.ApplicationId == applicationId).Select(x => x.Text).ToArrayAsync();

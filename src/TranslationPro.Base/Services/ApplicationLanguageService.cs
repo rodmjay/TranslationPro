@@ -61,7 +61,7 @@ namespace TranslationPro.Base.Services
 
         public Task<string[]> GetLanguagesForApplication(Guid applicationId)
         {
-            return ApplicationLanguages.Where(x => x.ApplicationId == applicationId).Select(x => x.LanguageId)
+            return ApplicationLanguages.Where(x => x.ApplicationId == applicationId && !x.IsDeleted).Select(x => x.LanguageId)
                 .ToArrayAsync();
         }
 

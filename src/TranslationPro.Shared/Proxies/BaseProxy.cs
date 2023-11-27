@@ -20,6 +20,13 @@ public abstract class BaseProxy
         HttpClient = httpClient;
     }
 
+    protected async Task<TOutput> DoPost<TOutput>(string url)
+    {
+        var response = await HttpClient.PostAsync(url, null);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
+    }
 
     protected async Task<TOutput> DoPost<TInput, TOutput>(string url, TInput input)
     {

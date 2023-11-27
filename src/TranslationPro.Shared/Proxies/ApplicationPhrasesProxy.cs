@@ -23,6 +23,11 @@ public class ApplicationPhrasesProxy : BaseProxy, IApplicationPhrasesController
         return DoPost<ApplicationPhrasesCreateOptions, List<ApplicationPhraseDetails>>($"{ApplicationUrl}/{applicationId}/phrases", input);
     }
 
+    public Task<Result> ProcessPending(Guid applicationId)
+    {
+        return DoPost<Result>($"{ApplicationUrl}/{applicationId}/phrases/process");
+    }
+
     public Task<Result> UpdatePhraseAsync(Guid applicationId, int phraseId, ApplicationPhrasesCreateOptions input)
     {
         return DoPut<ApplicationPhrasesCreateOptions, Result>($"{ApplicationUrl}/{applicationId}/phrases/{phraseId}", input);

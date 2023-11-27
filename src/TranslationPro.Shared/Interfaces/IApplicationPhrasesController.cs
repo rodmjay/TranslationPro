@@ -28,4 +28,6 @@ public interface IApplicationPhrasesController
 
     Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync( Guid applicationId,
         ApplicationPhrasesCreateOptions input);
+
+    Task<Result> ProcessPending(Guid applicationId);
 }

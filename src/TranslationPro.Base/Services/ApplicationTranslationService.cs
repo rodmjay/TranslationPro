@@ -27,6 +27,7 @@ public class ApplicationTranslationService : BaseService<ApplicationTranslation>
 
     private IQueryable<ApplicationPhrase> ApplicationPhrases => _applicationPhraseRepository.Queryable()
         .Include(x => x.Translations);
+    
 
     public async Task<List<ApplicationTranslation>> GetPendingTranslations(Guid applicationId, int[] phraseIds, string[] languageIds)
     {

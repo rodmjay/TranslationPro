@@ -13,7 +13,7 @@ else
     </Card>
 
 
-    <DataGrid TItem="ApplicationTranslationOutput" Data="@ApplicationPhrase.Translations" RowClicked="RowClicked" >
+    <DataGrid TItem="ApplicationTranslationOutput" Data="@ApplicationPhrase.Translations" PageSize="@ApplicationPhrase.TranslationCount" RowClicked="RowClicked" TotalItems="@ApplicationPhrase.TranslationCount" >
         <DataGridColumns>
             <DataGridColumn Field="@nameof(ApplicationTranslationOutput.Text)" Caption="Text"></DataGridColumn>
             <DataGridColumn Field="@nameof(ApplicationTranslationOutput.LanguageName)" Caption="Language"></DataGridColumn>

@@ -38,7 +38,18 @@ public class ApplicationPhrasesController : BaseController, IApplicationPhrasesC
         await AssertUserHasAccessToApplication(applicationId);
         return await _applicationPhraseManager.GetPhraseAsync<ApplicationPhraseDetails>(applicationId, phraseId);
     }
-    
+
+
+    [HttpPost("process")]
+    public async Task<Result> ProcessPending([FromRoute] Guid applicationId)
+    {
+        await AssertUserHasAccessToApplication(applicationId);
+
+        await _applicationPhraseManager.ProcessPending(applicationId);
+
+        return Result.Success();
+    }
+
 
     [HttpPost]
     public async Task<List<ApplicationPhraseDetails>> CreatePhrasesAsync([FromRoute] Guid applicationId,

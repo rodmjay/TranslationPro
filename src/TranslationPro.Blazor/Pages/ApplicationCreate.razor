@@ -1,7 +1,11 @@
 ﻿@page "/create-application"
-@using TranslationPro.Shared.Interfaces
 @inherits AuthenticatedBase
-
+<Bar>
+    <BarStart>
+        <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+    </BarStart>
+       
+</Bar>
 @if (Languages != null)
 {
     
@@ -38,7 +42,10 @@
     [Inject]
     public ILanguagesController LanguagesController { get; set; }
 
-    public ApplicationCreateOptions Input { get; set; } = new();
+    public ApplicationCreateOptions Input { get; set; } = new()
+    {
+        Languages = new List<string>()
+    };
          
     private List<LanguageOutput> Languages { get; set; }
 

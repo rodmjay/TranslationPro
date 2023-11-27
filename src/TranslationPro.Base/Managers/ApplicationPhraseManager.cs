@@ -134,4 +134,11 @@ public class ApplicationPhraseManager
         return _applicationPhraseService.DeletePhraseAsync(applicationId, phraseId);
     }
 
+    public async Task ProcessPending(Guid applicationId)
+    {
+        var phrases = await _applicationPhraseService.GetPhrasesWithPendingTranslation(applicationId);
+        var languages = await _applicationLanguageService.GetLanguagesForApplication(applicationId);
+
+        await CreateAndTranslatePhrases(applicationId, languages, phrases);
+    }
 }
