@@ -9,6 +9,7 @@ namespace TranslationPro.Blazor.Pages
     public partial class ApplicationDetails : ApplicationDetailsBase
     {
         private Modal deleteApplication;
+        private LanguageDragDrop languageDragDrop;
 
         public bool Disabled { get; set; }
 
@@ -26,6 +27,19 @@ namespace TranslationPro.Blazor.Pages
 
         private PhraseList list;
         
+        public List<string> SelectedLanguages
+        {
+            get;
+            set;
+        }
+
+        protected override async Task LoadData()
+        {
+            await base.LoadData();
+            SelectedLanguages = Application.Languages.Select(x => x.Id).ToList();
+        }
+        
+
         public async Task Reload()
         {
             await LoadData();

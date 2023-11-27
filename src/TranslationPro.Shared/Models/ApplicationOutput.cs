@@ -23,6 +23,6 @@ public class ApplicationOutput : IApplication
         set{}
     }
 
-    public ICollection<LanguageOutput> Languages { get; set; }
-    public ICollection<ApplicationUserOutput> Users { get; set; }
+    public List<LanguageOutput> Languages { get; set; }
+    public List<ApplicationUserOutput> Users { get; set; }
 }

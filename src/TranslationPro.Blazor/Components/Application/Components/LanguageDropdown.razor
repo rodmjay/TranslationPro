@@ -4,7 +4,7 @@
               ValueField="@((item) => item.Id)"
               SelectionMode="DropdownListSelectionMode.Checkbox"
               SelectedValues="SelectedLanguages"
-              SelectedValuesChanged="SelectedLanguagesChanged"
+              SelectedValuesChanged="ValuesChanged"
               Color="Color.Primary"
               MaxMenuHeight="200px"
               Disabled="@Disabled">
@@ -38,8 +38,8 @@
         Languages = await LanguagesController.GetLanguagesAsync();
     }
 
-    private void SelectedLanguagesChanged(IReadOnlyList<string> selectedLanguages)
+    private async Task ValuesChanged(IReadOnlyList<string> selectedLanguages)
     {
-        LanguagesChanged.InvokeAsync(selectedLanguages);
+        await LanguagesChanged.InvokeAsync(selectedLanguages.ToList());
     }
 }

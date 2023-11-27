@@ -2,7 +2,7 @@
 @if (items.Count > 0)
 {
     
-    <DropContainer TItem="DropItem" Items="@items" ItemsFilter="@((item, dropZone) => item.Group == dropZone)" ItemDropped="@ItemDropped" Flex="Flex.Wrap.Grow.Is1">
+    <DropContainer @ref="dropContainer" TItem="DropItem" Items="@items" ItemsFilter="@((item, dropZone) => item.Group == dropZone)" ItemDropped="@ItemDropped" Flex="Flex.Wrap.Grow.Is1">
         <ChildContent>
             <DropZone TItem="DropItem" Name="Disabled" Border="Border.Rounded" Background="Background.Light" Padding="Padding.Is3" Margin="Margin.Is3" Flex="Flex.Grow.Is1">
                 <Heading Size="HeadingSize.Is4" Margin="Margin.Is3.FromBottom">Available</Heading>
@@ -22,6 +22,8 @@
 }
 @code {
 
+    DropContainer<DropItem> dropContainer;
+
     [Inject]
     private ILanguagesController LanguageService { get; set; }
 
@@ -33,6 +35,15 @@
 
         public string Group { get; set; }
     }
+
+    public async Task Refresh()
+    {
+        await LoadData();
+        dropContainer.Refresh();
+    }
+
+    [Parameter]
+    public EventCallback SelectedLanguagesChanged { get; set; }
 
     [Parameter]
     public List<LanguageOutput> SelectedLanguages { get; set; }
@@ -49,8 +60,11 @@
     {
     };
 
-    protected override async Task OnInitializedAsync()
+    public async Task LoadData()
     {
+
+        items.Clear();
+        
         Languages = await LanguageService.GetLanguagesAsync();
 
         var languageIds = Languages.Select(x => x.Id).ToArray();
@@ -59,10 +73,10 @@
         foreach (var languageId in languageIds)
         {
             var dropItem = new DropItem()
-                {
-                    Name = Languages.First(x => x.Id == languageId).Name,
-                    LanguageId = languageId
-                };
+            {
+                Name = Languages.First(x => x.Id == languageId).Name,
+                LanguageId = languageId
+            };
 
             if (selectedLanguageIds.Contains(languageId))
             {
@@ -76,6 +90,11 @@
         }
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
     private async Task ItemDropped(DraggableDroppedEventArgs<DropItem> dropItem)
     {
         if (dropItem.DropZoneName == "Enabled")
@@ -87,5 +106,7 @@
             await LanguageDisabled.InvokeAsync(dropItem.Item.LanguageId);
         }
         dropItem.Item.Group = dropItem.DropZoneName;
+
+        await SelectedLanguagesChanged.InvokeAsync();
     }
 }
