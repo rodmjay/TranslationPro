@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Common.Data.Repositories;
 

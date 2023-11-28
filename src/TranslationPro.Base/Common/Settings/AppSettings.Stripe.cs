@@ -4,11 +4,8 @@
 
 #endregion
 
-using TranslationPro.Base.Stripe.Config;
-
 namespace TranslationPro.Base.Common.Settings;
 
 public partial class AppSettings
 {
-    public StripeSettings Stripe { get; set; }
 }

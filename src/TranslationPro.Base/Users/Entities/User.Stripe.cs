@@ -4,12 +4,9 @@
 
 #endregion
 
-using TranslationPro.Base.Stripe.Entities;
-
 namespace TranslationPro.Base.Users.Entities;
 
 public partial class User
 {
     public string CustomerId { get; set; }
-    public StripeCustomer Customer { get; set; }
 }

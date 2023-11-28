@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions.Impl;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Shared.Common;

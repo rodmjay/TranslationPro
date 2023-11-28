@@ -5,12 +5,12 @@
 #endregion
 
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Entities;
 
@@ -27,6 +27,9 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
 
     public string Text { get; set; }
 
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public int CharacterCount { get; set; }
+
     public override void Configure(EntityTypeBuilder<ApplicationTranslation> builder)
     {
         builder.ToTable(nameof(ApplicationTranslation), "TranslationPro");
@@ -41,6 +44,9 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
             .WithMany(x => x.Translations)
             .HasForeignKey(x => new {x.ApplicationId, x.LanguageId})
             .OnDelete(DeleteBehavior.NoAction);
+
+
+        builder.Property(x => x.CharacterCount).HasComputedColumnSql("DATALENGTH([Text])");
     }
 
     public bool IsDeleted { get; set; }

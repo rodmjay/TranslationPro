@@ -19,7 +19,6 @@ using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Extensions;
-using TranslationPro.Base.Stripe.Extensions;
 using TranslationPro.Base.Users.Extensions;
 
 namespace TranslationPro.Api;
@@ -41,14 +40,9 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        var builder = services.ConfigureApp(Configuration)
-            .AddDatabase<ApplicationContext>()
-            .AddAutomapperProfilesFromAssemblies()
-            .AddCaching()
-            .AddUserDependencies()
-            .AddTranslationProUserDependencies()
-            .AddTranslationProDependencies()
-            .AddStripeDependencies();
+        var builder = services.ConfigureApp(Configuration).AddDatabase<ApplicationContext>()
+            .AddAutomapperProfilesFromAssemblies().AddCaching().AddUserDependencies()
+            .AddTranslationProUserDependencies().AddTranslationProDependencies();
         
 
         var webAppBuilder = builder.ConfigureWebApp(Environment);

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231127050749_AddLengthToApplicationPhrase2")]
+    partial class AddLengthToApplicationPhrase2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2349,6 +2352,1094 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCard", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddressCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine1Check")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressState")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressZip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressZipCheck")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CvcCheck")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("DefaultForCurrency")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DynamicLast4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ExpMonth")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpYear")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Fingerprint")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Funding")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Iin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Issuer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Last4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenizationMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Card", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCharge", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountCaptured")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountRefunded")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AuthorizationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CalculatedStatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Captured")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("Created")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Disputed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FailureCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FailureMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Refunded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatementDescriptorSuffix")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("Charge", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCoupon", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long?>("AmountOff")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Created")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Duration")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("DurationInMonths")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("MaxRedemptions")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("PercentOff")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long?>("RedeemBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TimesRedeemed")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupon", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCouponProduct", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CouponId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProductId", "CouponId");
+
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("CouponProduct", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCustomer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Balance")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Created")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("Delinquent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoicePrefix")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("NextInvoiceSequence")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxExempt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customer", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CouponId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("Discount", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDispute", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Dispute", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AmountCaptured")
+                        .HasColumnType("int");
+
+                    b.Property<long>("AmountDue")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountPaid")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountRemaining")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountShipping")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ApplicationFeeAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AttemptCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Attempted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AutoAdvance")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BillingReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Captured")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ChargeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CollectionMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Created")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerTaxExempt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EffectiveAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("EndingBalance")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Footer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HostedInvoiceUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoicePdf")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("NextPaymentAttempt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PaidOutOfBand")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("PostPaymentCreditNotesAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PrePaymentCreditNotesAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Refunded")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("StartingBalance")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubscriptionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Subtotal")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("SubtotalExcludingTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("Tax")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Total")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TotalExcludingTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("WebhooksDeliveredAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChargeId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("Invoice", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceDiscount", b =>
+                {
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceId", "DiscountId");
+
+                    b.HasIndex("DiscountId")
+                        .IsUnique();
+
+                    b.ToTable("InvoiceDiscount", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AmountExcludingTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Discountable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PriceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Proration")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("Quantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SubscriptionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SubscriptionItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("UnitAmountExcludingTax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("PriceId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("SubscriptionItemId");
+
+                    b.ToTable("InvoiceLineItem", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItemDiscount", b =>
+                {
+                    b.Property<string>("InvoiceLineItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceLineItemId", "DiscountId");
+
+                    b.HasIndex("DiscountId")
+                        .IsUnique();
+
+                    b.ToTable("InvoiceItemDiscount", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CaptureMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConfirmationMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Created")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StripeInvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("StripeInvoiceId");
+
+                    b.ToTable("PaymentIntent", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", b =>
+                {
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceId", "PaymentIntentId");
+
+                    b.HasIndex("InvoiceId")
+                        .IsUnique();
+
+                    b.HasIndex("PaymentIntentId")
+                        .IsUnique();
+
+                    b.ToTable("InvoicePaymentIntent", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLink", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowPromotionCodes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BillingAddressCollection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerCreation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Livemode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentMethodCollection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubmitType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentLink", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("AmountDiscount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountSubtotal")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountTax")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountTotal")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentLinkId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PriceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long?>("Quantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StripePaymentLinkLineItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentLinkId");
+
+                    b.HasIndex("PriceId");
+
+                    b.HasIndex("StripePaymentLinkLineItemId");
+
+                    b.ToTable("LineItem", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CardId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("PaymentMethod", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePayout", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payout", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePrice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BillingScheme")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LookupKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nickname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TaxBehavior")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TiersMode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("UnitAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("UnitAmountDecimal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Price", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProduct", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatementDescriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StripeProduct", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProductFeature", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProductId", "Name");
+
+                    b.ToTable("ProductFeature", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePromotionCode", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CouponId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("PromotionCode", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeRefund", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChargeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChargeId");
+
+                    b.ToTable("Refund", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSession", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Session", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSetupIntent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique()
+                        .HasFilter("[CustomerId] IS NOT NULL");
+
+                    b.ToTable("SetupIntent", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("ApplicationFeePercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("BillingCycleAnchor")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CancelAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("CancelAtPeriodEnd")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CollectionMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CurrentPeriodEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CurrentPeriodStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long?>("DaysUntilDue")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("EndedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("NextPendingInvoiceItemInvoice")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethodId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ScheduleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TrialEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("TrialStart")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("Subscription", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PriceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Quantity")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SubscriptionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("SubscriptionItem", "Stripe");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EndBehavior")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ReleasedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReleasedSubscription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("SubscriptionSchedule", "Stripe");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -2843,6 +3934,448 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCard", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("Cards")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCharge", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("Charges")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                        .WithMany("Charges")
+                        .HasForeignKey("InvoiceId");
+
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeChargeOutcome", "Outcome", b1 =>
+                        {
+                            b1.Property<string>("StripeChargeId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("NetworkStatus")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Reason")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("RiskLevel")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<long>("RiskScore")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("SellerMessage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Type")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripeChargeId");
+
+                            b1.ToTable("Charge", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripeChargeId");
+                        });
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Outcome");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCouponProduct", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCoupon", "Coupon")
+                        .WithMany("Products")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeProduct", "Product")
+                        .WithMany("Coupons")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Coupon");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCustomer", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Users.Entities.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeCustomer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeAddress", "Address", b1 =>
+                        {
+                            b1.Property<string>("StripeCustomerId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line1")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line2")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripeCustomerId");
+
+                            b1.ToTable("Customer", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripeCustomerId");
+                        });
+
+                    b.Navigation("Address");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCoupon", "Coupon")
+                        .WithMany("Discounts")
+                        .HasForeignKey("CouponId");
+
+                    b.Navigation("Coupon");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCharge", "Charge")
+                        .WithMany()
+                        .HasForeignKey("ChargeId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("Invoices")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscription", "Subscription")
+                        .WithMany("Invoices")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripeAddress", "CustomerAddress", b1 =>
+                        {
+                            b1.Property<string>("StripeInvoiceId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line1")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line2")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripeInvoiceId");
+
+                            b1.ToTable("Invoice", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripeInvoiceId");
+                        });
+
+                    b.Navigation("Charge");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("CustomerAddress");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceDiscount", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeDiscount", "Discount")
+                        .WithOne("InvoiceDiscount")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeInvoiceDiscount", "DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                        .WithMany("Discounts")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                        .WithMany("Lines")
+                        .HasForeignKey("InvoiceId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePrice", "Price")
+                        .WithMany("InvoiceLineItems")
+                        .HasForeignKey("PriceId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscription", "Subscription")
+                        .WithMany("InvoiceLineItems")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", "SubscriptionItem")
+                        .WithMany("InvoiceLineItems")
+                        .HasForeignKey("SubscriptionItemId");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Price");
+
+                    b.Navigation("Subscription");
+
+                    b.Navigation("SubscriptionItem");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItemDiscount", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeDiscount", "Discount")
+                        .WithOne("InvoiceLineItemDiscount")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItemDiscount", "DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", "InvoiceLineItem")
+                        .WithMany("Discounts")
+                        .HasForeignKey("InvoiceLineItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("InvoiceLineItem");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("PaymentIntents")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", null)
+                        .WithMany("PaymentIntents")
+                        .HasForeignKey("StripeInvoiceId");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeInvoice", "Invoice")
+                        .WithOne("PaymentIntent")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", "InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", "PaymentIntent")
+                        .WithOne("Invoice")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripePaymentIntentInvoice", "PaymentIntentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("PaymentIntent");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentLink", "PaymentLink")
+                        .WithMany("LineItems")
+                        .HasForeignKey("PaymentLinkId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePrice", "Price")
+                        .WithMany("PaymentLinkLineItems")
+                        .HasForeignKey("PriceId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", null)
+                        .WithMany("LineItems")
+                        .HasForeignKey("StripePaymentLinkLineItemId");
+
+                    b.Navigation("PaymentLink");
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCard", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Card");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePrice", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeProduct", "Product")
+                        .WithMany("Prices")
+                        .HasForeignKey("ProductId");
+
+                    b.OwnsOne("TranslationPro.Base.Stripe.Entities.StripePriceRecurring", "Recurring", b1 =>
+                        {
+                            b1.Property<string>("StripePriceId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("AggregateUsage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Interval")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<long>("IntervalCount")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long?>("TrialPeriodDays")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("UsageType")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("StripePriceId");
+
+                            b1.ToTable("Price", "Stripe");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StripePriceId");
+                        });
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Recurring");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProductFeature", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeProduct", "Product")
+                        .WithMany("Features")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePromotionCode", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCoupon", "Coupon")
+                        .WithMany("PromotionCodes")
+                        .HasForeignKey("CouponId");
+
+                    b.Navigation("Coupon");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeRefund", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCharge", "Charge")
+                        .WithMany("Refunds")
+                        .HasForeignKey("ChargeId");
+
+                    b.Navigation("Charge");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSetupIntent", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithOne("SetupIntent")
+                        .HasForeignKey("TranslationPro.Base.Stripe.Entities.StripeSetupIntent", "CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeDiscount", "Discount")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", "PaymentMethod")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("PaymentMethodId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", "Schedule")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("ScheduleId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripePrice", "Price")
+                        .WithMany("SubscriptionItems")
+                        .HasForeignKey("PriceId");
+
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeSubscription", "Subscription")
+                        .WithMany("Items")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.Navigation("Price");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
+                {
+                    b.HasOne("TranslationPro.Base.Stripe.Entities.StripeCustomer", "Customer")
+                        .WithMany("Schedules")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.RoleClaim", b =>
                 {
                     b.HasOne("TranslationPro.Base.Users.Entities.Role", "Role")
@@ -2976,6 +4509,123 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Applications");
                 });
 
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCharge", b =>
+                {
+                    b.Navigation("Refunds");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCoupon", b =>
+                {
+                    b.Navigation("Discounts");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("PromotionCodes");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeCustomer", b =>
+                {
+                    b.Navigation("Cards");
+
+                    b.Navigation("Charges");
+
+                    b.Navigation("Invoices");
+
+                    b.Navigation("PaymentIntents");
+
+                    b.Navigation("PaymentMethods");
+
+                    b.Navigation("Schedules");
+
+                    b.Navigation("SetupIntent");
+
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeDiscount", b =>
+                {
+                    b.Navigation("InvoiceDiscount");
+
+                    b.Navigation("InvoiceLineItemDiscount");
+
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoice", b =>
+                {
+                    b.Navigation("Charges");
+
+                    b.Navigation("Discounts");
+
+                    b.Navigation("Lines");
+
+                    b.Navigation("PaymentIntent");
+
+                    b.Navigation("PaymentIntents");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeInvoiceLineItem", b =>
+                {
+                    b.Navigation("Discounts");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentIntent", b =>
+                {
+                    b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLink", b =>
+                {
+                    b.Navigation("LineItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentLinkLineItem", b =>
+                {
+                    b.Navigation("LineItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePaymentMethod", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripePrice", b =>
+                {
+                    b.Navigation("InvoiceLineItems");
+
+                    b.Navigation("PaymentLinkLineItems");
+
+                    b.Navigation("SubscriptionItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeProduct", b =>
+                {
+                    b.Navigation("Coupons");
+
+                    b.Navigation("Features");
+
+                    b.Navigation("Prices");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscription", b =>
+                {
+                    b.Navigation("InvoiceLineItems");
+
+                    b.Navigation("Invoices");
+
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionItem", b =>
+                {
+                    b.Navigation("InvoiceLineItems");
+                });
+
+            modelBuilder.Entity("TranslationPro.Base.Stripe.Entities.StripeSubscriptionSchedule", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.Role", b =>
                 {
                     b.Navigation("RoleClaims");
@@ -2986,6 +4636,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.User", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("UserClaims");
 

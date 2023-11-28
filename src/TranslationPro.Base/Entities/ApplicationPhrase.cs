@@ -6,12 +6,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Entities;
 
@@ -30,6 +30,10 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICr
     public bool IsDeleted { get; set; }
     public string Text { get; set; }
 
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public int CharacterCount { get; set; }
+
     public override void Configure(EntityTypeBuilder<ApplicationPhrase> builder)
     {
         builder.ToTable(nameof(ApplicationPhrase), "TranslationPro");
@@ -41,6 +45,8 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICr
             .WithMany(x => x.Phrases)
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(x => x.CharacterCount).HasComputedColumnSql("DATALENGTH([Text])");
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

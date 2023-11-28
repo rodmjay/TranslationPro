@@ -6,7 +6,7 @@
 
 using System;
 
-namespace TranslationPro.Base.Stripe.Interfaces;
+namespace TranslationPro.Base.Common.Data.Interfaces;
 
 public interface ICreated
 {

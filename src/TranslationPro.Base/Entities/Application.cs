@@ -9,10 +9,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.Extensions.Configuration;
 using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Stripe.Interfaces;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Entities;

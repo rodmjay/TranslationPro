@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using TranslationPro.Base.Common.Data.Helpers;
 using TranslationPro.Base.Common.Data.Interfaces;
-using TranslationPro.Base.Stripe.Interfaces;
 
 namespace TranslationPro.Base.Common.Data.Bases;
 
