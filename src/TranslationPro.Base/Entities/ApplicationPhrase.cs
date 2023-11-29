@@ -46,7 +46,8 @@ public class ApplicationPhrase : BaseEntity<ApplicationPhrase>, ISoftDelete, ICr
             .HasForeignKey(x => x.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(x => x.CharacterCount).HasComputedColumnSql("DATALENGTH([Text])");
+        builder.Property(x => x.CharacterCount).HasComputedColumnSql(@"IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0)");
+
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

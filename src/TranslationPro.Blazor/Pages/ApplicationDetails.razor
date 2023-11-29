@@ -63,6 +63,7 @@ else
             <Tab Name="phrases">Phrases (@Application.PhraseCount)</Tab>
             <Tab Name="users">Users (@Application.Users.Count)</Tab>
             <Tab Name="languages">Languages (@Application.LanguageCount)</Tab>
+            <Tab Name="consumption">Consumption</Tab>
         </Items>
 
         <Content>
@@ -91,6 +92,11 @@ else
             <TabPanel Name="languages">
                 
                 <LanguageDragDrop @ref="languageDragDrop" LanguageDisabled="@LanguageDisabled" LanguageEnabled="@LanguageEnabled" SelectedLanguages="@Application.Languages"></LanguageDragDrop>
+
+            </TabPanel>
+            <TabPanel Name="consumption">
+                
+                <ApplicationConsumption ApplicationId="ApplicationId"></ApplicationConsumption>
 
             </TabPanel>
         </Content>

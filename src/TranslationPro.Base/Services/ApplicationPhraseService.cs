@@ -130,8 +130,17 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             phrasesAddedUpper.Add(applicationPhrase.Text.ToUpper());
         }
 
-        retVal.PhrasesAdded = Repository.Commit();
+        try
+        {
 
+            retVal.PhrasesAdded = Repository.Commit();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
         retVal.Phrases = await ApplicationPhrases
             .Where(x => x.ApplicationId == applicationId && texts.Select(t=>t.ToUpper()).Contains(x.Text.ToUpper()))
             .Select(x => x.Id).ToArrayAsync();

@@ -1,0 +1,50 @@
+﻿
+@if (Data != null)
+{
+    <Table>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Date</TableHeaderCell>
+                <TableHeaderCell>Input Data</TableHeaderCell>
+                <TableHeaderCell>Output Data</TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            <Repeater TItem="KeyValuePair<DateTime, ConsumptionInfo>" Items="Data">
+        
+                <TableRow>
+                    <TableRowCell>
+                        @context.Key
+                    </TableRowCell>
+                    <TableRowCell>
+                        @context.Value.InputCharacters
+                    </TableRowCell>
+                    <TableRowCell>
+                        @context.Value.OutputCharacters
+                    </TableRowCell>
+                </TableRow>
+
+            </Repeater>
+        </TableBody>
+  
+
+    </Table>
+}
+
+
+@code {
+    
+    [Parameter]
+    public Guid ApplicationId { get; set; }
+
+    [Inject]
+    public IApplicationConsumptionController ConsumptionService { get; set; }
+
+    private Dictionary<DateTime, ConsumptionInfo> Data { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Data = await ConsumptionService.GetConsumptionInfo(ApplicationId, null, null);
+    }
+
+}
