@@ -1,5 +1,6 @@
 ﻿@inherits ApplicationDetailsBase
 
+@layout MainLayout
 
 @page "/applications/{ApplicationId:guid}"
 
@@ -30,34 +31,47 @@ else
         <Column ColumnSize="ColumnSize.Is12">
 
             <CardDeck>
-                <Card>
-                    <CardBody>
-                        <CardTitle>Phrases</CardTitle>
-                        <CardText>@Application.PhraseCount</CardText>
-                    </CardBody>
-                </Card>
-                <Card>
-                    <CardBody>
-                        <CardTitle>Languages</CardTitle>
-                        <CardText>@Application.Languages.Count</CardText>
-                    </CardBody>
-                </Card>
-                <Card>
-                    <CardBody>
-                        <CardTitle>Translations</CardTitle>
-                        <CardText>@Application.TranslationCount</CardText>
-                    </CardBody>
-                </Card>
-                <Card>
-                    <CardBody>
-                        <CardTitle>Pending Translations</CardTitle>
-                        <CardText>@Application.PendingTranslationCount</CardText>
-                    </CardBody>
-                </Card>
-            </CardDeck>
+                <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                 <CardBody>
+                     <CardTitle Casing="CharacterCasing.Title">Phrases</CardTitle>
+                     <CardText>
+                             <Heading Size="HeadingSize.Is3" > @Application.PhraseCount</Heading>
+                        
+                     </CardText>
+                 </CardBody>
+             </Card>
+                 <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                     <CardBody>
+                         <CardTitle Casing="CharacterCasing.Title">Languages</CardTitle>
+                         <CardText>
 
-        </Column>
-    </Row>
+                             <Heading Size="HeadingSize.Is3"> @Application.Languages.Count</Heading>
+                             
+                         </CardText>
+                     </CardBody>
+                 </Card>
+                 <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                 <CardBody>
+                     <CardTitle Casing="CharacterCasing.Title">Translations</CardTitle>
+                     <CardText>
+                             <Heading Size="HeadingSize.Is3"> @Application.TranslationCount</Heading>
+                         
+                     </CardText>
+                 </CardBody>
+             </Card>
+                 <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center"  Shadow="Shadow.Large">
+                 <CardBody>
+                     <CardTitle Casing="CharacterCasing.Title">Pending Translations</CardTitle>
+                     <CardText>
+                             <Heading Size="HeadingSize.Is3"> @Application.PendingTranslationCount</Heading>
+                         
+                     </CardText>
+                 </CardBody>
+             </Card>
+         </CardDeck>
+
+     </Column>
+ </Row>
     <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
         <Items>
             <Tab Name="phrases">Phrases (@Application.PhraseCount)</Tab>
@@ -73,9 +87,9 @@ else
                         <PhraseList @ref="list" ApplicationId="@ApplicationId"></PhraseList>
                     </Column>
                     <Column ColumnSize="ColumnSize.Is3">
-                       @*  <div style="padding: 10px">
-                            <LanguageDropdown Disabled="@Disabled" SelectedLanguages="@SelectedLanguages" LanguagesChanged="@HandleLanguageChange"></LanguageDropdown>
-                        </div> *@
+                        @*  <div style="padding: 10px">
+                    <LanguageDropdown Disabled="@Disabled" SelectedLanguages="@SelectedLanguages" LanguagesChanged="@HandleLanguageChange"></LanguageDropdown>
+                    </div> *@
                     </Column>
                 </Row>
 
@@ -90,12 +104,12 @@ else
 
             </TabPanel>
             <TabPanel Name="languages">
-                
+
                 <LanguageDragDrop @ref="languageDragDrop" LanguageDisabled="@LanguageDisabled" LanguageEnabled="@LanguageEnabled" SelectedLanguages="@Application.Languages"></LanguageDragDrop>
 
             </TabPanel>
             <TabPanel Name="consumption">
-                
+
                 <ApplicationConsumption ApplicationId="ApplicationId"></ApplicationConsumption>
 
             </TabPanel>

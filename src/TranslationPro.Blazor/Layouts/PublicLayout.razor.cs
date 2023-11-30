@@ -1,26 +1,22 @@
 ﻿using Blazorise.Localization;
 
 using Microsoft.AspNetCore.Components;
-using TranslationPro.Shared.Interfaces;
-using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Layouts
 {
-    public partial class MainLayout
+    public partial class PublicLayout
     {
-        
         [Inject] protected ITextLocalizerService? LocalizationService { get; set; }
 
         [CascadingParameter] protected Theme? Theme { get; set; }
 
-        protected string layoutType = "fixed-header";
+        protected string layoutType = "fixed-header-footer-only";
 
         protected override async Task OnInitializedAsync()
         {
             await SelectCulture("en-US");
 
             await base.OnInitializedAsync();
-
         }
 
         private Task SelectCulture(string name)

@@ -1,6 +1,9 @@
 ﻿
 @if (Data != null)
 {
+
+
+
     <Table>
         <TableHeader>
             <TableRow>
@@ -14,7 +17,7 @@
         
                 <TableRow>
                     <TableRowCell>
-                        @context.Key
+                        @context.Key.ToShortDateString()
                     </TableRowCell>
                     <TableRowCell>
                         @context.Value.InputCharacters
@@ -42,9 +45,15 @@
 
     private Dictionary<DateTime, ConsumptionInfo> Data { get; set; }
 
+    private BarChartDataset<int> GetBarChartDataset()
+    {
+        return new() {Label = "Consumption"};
+    }
+
     protected override async Task OnInitializedAsync()
     {
         Data = await ConsumptionService.GetConsumptionInfo(ApplicationId, null, null);
+        Data = Data.NormalizeDates();
     }
 
 }
