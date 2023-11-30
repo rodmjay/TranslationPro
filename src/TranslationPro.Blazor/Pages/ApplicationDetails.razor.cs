@@ -38,7 +38,12 @@ namespace TranslationPro.Blazor.Pages
             await base.LoadData();
             SelectedLanguages = Application.Languages.Select(x => x.Id).ToList();
         }
-        
+
+        protected override async Task OnParametersSetAsync()
+        {
+            await LoadData();
+        }
+
 
         public async Task Reload()
         {

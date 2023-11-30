@@ -50,7 +50,7 @@
         return new() {Label = "Consumption"};
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         Data = await ConsumptionService.GetConsumptionInfo(ApplicationId, null, null);
         Data = Data.NormalizeDates();

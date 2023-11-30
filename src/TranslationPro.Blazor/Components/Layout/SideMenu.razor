@@ -49,6 +49,8 @@
 
     protected List<ApplicationOutput> Applications { get; set; }
 
+    [Inject]
+    protected  NavigationManager NavigationManager { get; set; }
 
     private bool pagesBarVisible = true;
 
@@ -60,4 +62,8 @@
         Applications = await ApplicationService.GetApplicationsAsync();
     }
 
+    private void Navigate(Guid applicationId)
+    {
+        NavigationManager.NavigateTo($"/applications/{applicationId}", forceLoad:true);
+    }
 }
