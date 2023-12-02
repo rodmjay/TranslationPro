@@ -37,8 +37,8 @@
 
 @code {
     
-    [Parameter]
-    public Guid ApplicationId { get; set; }
+    [CascadingParameter]
+    public ApplicationOutput Application { get; set; }
 
     [Inject]
     public IApplicationConsumptionController ConsumptionService { get; set; }
@@ -52,7 +52,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Data = await ConsumptionService.GetConsumptionInfo(ApplicationId, null, null);
+        Data = await ConsumptionService.GetConsumptionInfo(Application.Id, null, null);
         Data = Data.NormalizeDates();
     }
 

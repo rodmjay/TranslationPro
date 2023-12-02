@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using EventAggregator.Blazor;
+using Microsoft.AspNetCore.Components;
+using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Components.Application.Bases
 {
-    public class ApplicationDetailsBase : AuthenticatedBase
+    public class ApplicationDetailsBase : AuthenticatedBase, IHandle<ApplicationUpdatedEvent>, IHandle<LanguagesChangedEvent>
     {
         [Parameter]
         public Guid ApplicationId { get; set; }
@@ -12,6 +14,7 @@ namespace TranslationPro.Blazor.Components.Application.Bases
 
         protected override async Task OnInitializedAsync()
         {
+            EventAggregator.Subscribe(this);
             await LoadData();
         }
         
@@ -22,11 +25,24 @@ namespace TranslationPro.Blazor.Components.Application.Bases
 
             Application = await ApplicationService.GetApplicationAsync(ApplicationId);
 
-            this.NavigationItems.Add(new NavigationItem()
+            if (Application != null)
             {
-                Title = Application.Name,
-                Url = $"/applications/{Application.Id}"
-            });
+                NavigationItems.Add(new NavigationItem()
+                {
+                    Title = Application.Name,
+                    Url = $"/applications/{Application.Id}"
+                });
+            }
+        }
+
+        public async Task HandleAsync(ApplicationUpdatedEvent message)
+        {
+            await LoadData();
+        }
+
+        public async Task HandleAsync(LanguagesChangedEvent message)
+        {
+            await LoadData();
         }
     }
 }

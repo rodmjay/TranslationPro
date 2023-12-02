@@ -1,4 +1,6 @@
-﻿
+﻿@using EventAggregator.Blazor
+@using TranslationPro.Blazor.Events
+
 @if (items.Count > 0)
 {
     
@@ -24,8 +26,17 @@
 
     DropContainer<DropItem> dropContainer;
 
+    [CascadingParameter]
+    public IEventAggregator EventAggregator { get; set; }
+
+    [CascadingParameter]
+    public ApplicationOutput Application { get; set; }
+
     [Inject]
     private ILanguagesController LanguageService { get; set; }
+
+    [Inject]
+    protected IApplicationLanguagesController ApplicationLanguageService { get; set; }
 
     public class DropItem
     {
@@ -41,18 +52,7 @@
         await LoadData();
         dropContainer.Refresh();
     }
-
-    [Parameter]
-    public EventCallback SelectedLanguagesChanged { get; set; }
-
-    [Parameter]
-    public List<LanguageOutput> SelectedLanguages { get; set; }
-
-    [Parameter]
-    public EventCallback<string> LanguageEnabled { get; set; }
-
-    [Parameter]
-    public EventCallback<string> LanguageDisabled { get; set; }
+    
 
     private List<LanguageOutput> Languages { get; set; }
 
@@ -60,15 +60,28 @@
     {
     };
 
+    
+    public async Task HandleLanguageChange(IReadOnlyList<string> languages)
+    {
+        await ApplicationLanguageService.SyncLanguages(Application.Id, languages.ToArray());
+    }
+
+    
+    public List<string> SelectedLanguages
+    {
+        get;
+        set;
+    }
+
+
     public async Task LoadData()
     {
-
+        SelectedLanguages = Application.Languages.Select(x => x.Id).ToList();
         items.Clear();
         
         Languages = await LanguageService.GetLanguagesAsync();
 
         var languageIds = Languages.Select(x => x.Id).ToArray();
-        var selectedLanguageIds = SelectedLanguages.Select(x => x.Id).ToArray();
 
         foreach (var languageId in languageIds)
         {
@@ -78,7 +91,7 @@
                 LanguageId = languageId
             };
 
-            if (selectedLanguageIds.Contains(languageId))
+            if (SelectedLanguages.Contains(languageId))
             {
                 dropItem.Group = "Enabled";
             }
@@ -99,14 +112,30 @@
     {
         if (dropItem.DropZoneName == "Enabled")
         {
-            await LanguageEnabled.InvokeAsync(dropItem.Item.LanguageId);
+            await LanguageEnabled(dropItem.Item.LanguageId);
         }
         if (dropItem.DropZoneName == "Disabled")
         {
-            await LanguageDisabled.InvokeAsync(dropItem.Item.LanguageId);
+            await LanguageDisabled(dropItem.Item.LanguageId);
         }
         dropItem.Item.Group = dropItem.DropZoneName;
 
-        await SelectedLanguagesChanged.InvokeAsync();
+        await EventAggregator.PublishAsync(new LanguagesChangedEvent());
+    }
+
+    
+    private async Task LanguageEnabled(string languageId)
+    {
+        await ApplicationLanguageService.AddLanguageToApplicationAsync(Application.Id,
+            new ApplicationLanguageOptions()
+            {
+                LanguageId = languageId
+            });
+    }
+
+    private async Task LanguageDisabled(string languageId)
+    {
+        await ApplicationLanguageService.RemoveLanguageFromApplicationAsync(Application.Id, languageId);
+       
     }
 }

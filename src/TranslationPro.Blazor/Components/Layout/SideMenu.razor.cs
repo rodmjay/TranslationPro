@@ -6,7 +6,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Components.Layout
 {
-    public partial class SideMenu : IHandle<ApplicationCreatedEvent>
+    public partial class SideMenu : IHandle<ApplicationCreatedEvent>, IHandle<ApplicationDeletedEvent>
     {
         [CascadingParameter]
         public IEventAggregator EventAggregator { get; set; }
@@ -39,6 +39,11 @@ namespace TranslationPro.Blazor.Components.Layout
         }
 
         public async Task HandleAsync(ApplicationCreatedEvent message)
+        {
+            await LoadData();
+        }
+
+        public async Task HandleAsync(ApplicationDeletedEvent message)
         {
             await LoadData();
         }

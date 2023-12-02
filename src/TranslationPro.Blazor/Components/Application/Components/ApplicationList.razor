@@ -1,7 +1,7 @@
 ﻿
 <DataGrid TItem="ApplicationOutput"
           Data="Apps"
-          RowClicked="Callback">
+          RowClicked="HandleRowClicked">
 
     <DataGridColumns>
         <DataGridColumn Field="@nameof(ApplicationOutput.Name)" Caption="Name"></DataGridColumn>

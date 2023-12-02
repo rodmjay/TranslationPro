@@ -10,126 +10,127 @@
 }
 else
 {
-    <Bar>
-        <BarStart>
-            <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
-        </BarStart>
-        <BarEnd>
-            <Buttons>
-                <Button Disabled="@Disabled" Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
 
-                <Button Disabled="@Disabled" Color="Color.Danger" Clicked="@ShowModal">Delete Application</Button>
-            </Buttons>
-        </BarEnd>
-    </Bar>
-    <Row HorizontalGutter="32" VerticalGutter="16">
-        <Column ColumnSize="ColumnSize.Is12">
-            <Heading Size="HeadingSize.Is3">@Application.Name</Heading>
-        </Column>
-    </Row>
-    <Row HorizontalGutter="16" VerticalGutter="32">
-        <Column ColumnSize="ColumnSize.Is12">
+    <CascadingValue TValue="ApplicationOutput" Value="Application">
 
-            <CardDeck>
-                <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
-                 <CardBody>
-                     <CardTitle Casing="CharacterCasing.Title">Phrases</CardTitle>
-                     <CardText>
-                             <Heading Size="HeadingSize.Is3" > @Application.PhraseCount</Heading>
+        <Bar>
+            <BarStart>
+                <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+            </BarStart>
+            <BarEnd>
+                <Buttons>
+                    <Button Disabled="@Disabled" Color="Color.Secondary" Type="ButtonType.Link" To=@($"/applications/{ApplicationId}/create-phrase")>Create Phrase</Button>
+
+                    <Button Disabled="@Disabled" Color="Color.Danger" Clicked="@ShowModal">Delete Application</Button>
+                </Buttons>
+            </BarEnd>
+        </Bar>
+        <Row HorizontalGutter="32" VerticalGutter="16">
+            <Column ColumnSize="ColumnSize.Is12">
+                <Heading Size="HeadingSize.Is3">@Application.Name</Heading>
+            </Column>
+        </Row>
+        <Row HorizontalGutter="16" VerticalGutter="32">
+            <Column ColumnSize="ColumnSize.Is12">
+
+                <CardDeck>
+                    <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                         <CardBody>
+                             <CardTitle Casing="CharacterCasing.Title">Phrases</CardTitle>
+                             <CardText>
+                                 <Heading Size="HeadingSize.Is3"> @Application.PhraseCount</Heading>
+
+                             </CardText>
+                         </CardBody>
+                     </Card>
+                     <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                         <CardBody>
+                             <CardTitle Casing="CharacterCasing.Title">Languages</CardTitle>
+                             <CardText>
+
+                                 <Heading Size="HeadingSize.Is3"> @Application.Languages.Count</Heading>
+
+                             </CardText>
+                         </CardBody>
+                     </Card>
+                     <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                         <CardBody>
+                             <CardTitle Casing="CharacterCasing.Title">Translations</CardTitle>
+                             <CardText>
+                                 <Heading Size="HeadingSize.Is3"> @Application.TranslationCount</Heading>
+
+                             </CardText>
+                         </CardBody>
+                     </Card>
+                     <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
+                         <CardBody>
+                             <CardTitle Casing="CharacterCasing.Title">Pending Translations</CardTitle>
+                             <CardText>
+                                 <Heading Size="HeadingSize.Is3"> @Application.PendingTranslationCount</Heading>
+
+                             </CardText>
+                         </CardBody>
+                     </Card>
+                 </CardDeck>
+
+             </Column>
+         </Row>
+         <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+             <Items>
+                 <Tab Name="phrases">Phrases (@Application.PhraseCount)</Tab>
+                 <Tab Name="users">Users (@Application.Users.Count)</Tab>
+                 <Tab Name="languages">Languages (@Application.LanguageCount)</Tab>
+                 <Tab Name="consumption">Consumption</Tab>
+             </Items>
+
+             <Content>
+                 <TabPanel Name="phrases">
+                     <Row>
+                         <Column ColumnSize="ColumnSize.Is12">
+                             <PhraseList></PhraseList>
+                         </Column>
                         
-                     </CardText>
-                 </CardBody>
-             </Card>
-                 <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
-                     <CardBody>
-                         <CardTitle Casing="CharacterCasing.Title">Languages</CardTitle>
-                         <CardText>
+                     </Row>
 
-                             <Heading Size="HeadingSize.Is3"> @Application.Languages.Count</Heading>
-                             
-                         </CardText>
-                     </CardBody>
-                 </Card>
-                 <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
-                 <CardBody>
-                     <CardTitle Casing="CharacterCasing.Title">Translations</CardTitle>
-                     <CardText>
-                             <Heading Size="HeadingSize.Is3"> @Application.TranslationCount</Heading>
-                         
-                     </CardText>
-                 </CardBody>
-             </Card>
-                 <Card Background="Background.Primary" WhiteText TextAlignment="TextAlignment.Center" Shadow="Shadow.Large">
-                 <CardBody>
-                     <CardTitle Casing="CharacterCasing.Title">Pending Translations</CardTitle>
-                     <CardText>
-                             <Heading Size="HeadingSize.Is3"> @Application.PendingTranslationCount</Heading>
-                         
-                     </CardText>
-                 </CardBody>
-             </Card>
-         </CardDeck>
+                 </TabPanel>
+                 <TabPanel Name="users">
 
-     </Column>
- </Row>
-    <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
-        <Items>
-            <Tab Name="phrases">Phrases (@Application.PhraseCount)</Tab>
-            <Tab Name="users">Users (@Application.Users.Count)</Tab>
-            <Tab Name="languages">Languages (@Application.LanguageCount)</Tab>
-            <Tab Name="consumption">Consumption</Tab>
-        </Items>
+                     <Row>
+                         <Column ColumnSize="ColumnSize.Is9">
+                             <UserList></UserList>
+                         </Column>
+                     </Row>
 
-        <Content>
-            <TabPanel Name="phrases">
-                <Row>
-                    <Column ColumnSize="ColumnSize.Is9">
-                        <PhraseList @ref="list" ApplicationId="@ApplicationId"></PhraseList>
-                    </Column>
-                    <Column ColumnSize="ColumnSize.Is3">
-                        @*  <div style="padding: 10px">
-                    <LanguageDropdown Disabled="@Disabled" SelectedLanguages="@SelectedLanguages" LanguagesChanged="@HandleLanguageChange"></LanguageDropdown>
-                    </div> *@
-                    </Column>
-                </Row>
+                 </TabPanel>
+                 <TabPanel Name="languages">
 
-            </TabPanel>
-            <TabPanel Name="users">
+                     <LanguageDragDrop></LanguageDragDrop>
 
-                <Row>
-                    <Column ColumnSize="ColumnSize.Is9">
-                        <UserList Users="@Application.Users.ToList()"></UserList>
-                    </Column>
-                </Row>
+                 </TabPanel>
+                 <TabPanel Name="consumption">
 
-            </TabPanel>
-            <TabPanel Name="languages">
+                     <ApplicationConsumption></ApplicationConsumption>
 
-                <LanguageDragDrop @ref="languageDragDrop" LanguageDisabled="@LanguageDisabled" LanguageEnabled="@LanguageEnabled" SelectedLanguages="@Application.Languages"></LanguageDragDrop>
+                 </TabPanel>
+             </Content>
+         </Tabs>
 
-            </TabPanel>
-            <TabPanel Name="consumption">
+         <Modal @ref="deleteApplication">
+             <ModalContent>
+                 <ModalHeader>
+                     <ModalTitle>Delete Application</ModalTitle>
+                     <CloseButton />
+                 </ModalHeader>
+                 <ModalBody>
+                     <Paragraph>Are you sure you want to delete this application?</Paragraph>
+                 </ModalBody>
+                 <ModalFooter>
+                     <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+                     <Button Color="Color.Danger" Clicked="@DeleteApplication">Yes, Delete Application</Button>
+                 </ModalFooter>
+             </ModalContent>
+         </Modal>
+    </CascadingValue>
 
-                <ApplicationConsumption ApplicationId="ApplicationId"></ApplicationConsumption>
-
-            </TabPanel>
-        </Content>
-    </Tabs>
-
-    <Modal @ref="deleteApplication">
-        <ModalContent>
-            <ModalHeader>
-                <ModalTitle>Delete Application</ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody>
-                <Paragraph>Are you sure you want to delete this application?</Paragraph>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-                <Button Color="Color.Danger" Clicked="@DeleteApplication">Yes, Delete Application</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
 
 }

@@ -1,5 +1,5 @@
 ﻿<DataGrid TItem="ApplicationUserOutput"
-          Data="@Users">
+          Data="@Application.Users">
 
     <DataGridColumns>
         <DataGridColumn Field="@nameof(ApplicationUserOutput.Name)" Caption="Name"></DataGridColumn>
@@ -12,8 +12,9 @@
 {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-    
-    [Parameter]
-    public List<ApplicationUserOutput> Users { get; set; }
+
+    [CascadingParameter]
+    public ApplicationOutput Application { get; set; }
+
 
 }

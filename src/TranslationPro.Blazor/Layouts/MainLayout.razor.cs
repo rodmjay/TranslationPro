@@ -1,12 +1,13 @@
 ﻿using Blazorise.Localization;
 using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
+using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Layouts
 {
-    public partial class MainLayout
+    public partial class MainLayout : IHandle<SubscriptionCreatedEvent>
     {
         [Inject]
         protected IEventAggregator EventAggregator { get; set; }
@@ -16,17 +17,24 @@ namespace TranslationPro.Blazor.Layouts
         
         protected UserOutput CurrentUser { get; set; }
 
-        [Inject] protected ITextLocalizerService? LocalizationService { get; set; }
+        [Inject] protected ITextLocalizerService LocalizationService { get; set; }
 
-        [CascadingParameter] protected Theme? Theme { get; set; }
-
-        protected string layoutType = "fixed-header";
+        [CascadingParameter] protected Theme Theme { get; set; }
+        
 
         protected override async Task OnInitializedAsync()
         {
             await SelectCulture("en-US");
 
             await base.OnInitializedAsync();
+
+            EventAggregator.Subscribe(this);
+
+            await LoadData();
+        }
+
+        public async Task LoadData()
+        {
 
             CurrentUser = await UserService.GetUser();
         }
@@ -96,5 +104,9 @@ namespace TranslationPro.Blazor.Layouts
         }
 
 
+        public async Task HandleAsync(SubscriptionCreatedEvent message)
+        {
+            await LoadData();
+        }
     }
 }

@@ -74,7 +74,7 @@
 
             if (result.Succeeded)
             {
-                await EventAggregator.PublishAsync(new ApplicationCreatedEvent(Guid.Parse(result.Id.ToString())));
+                await EventAggregator.PublishAsync(new ApplicationCreatedEvent());
 
                 NavigationManager.NavigateTo($"/applications/{result.Id}");
             }

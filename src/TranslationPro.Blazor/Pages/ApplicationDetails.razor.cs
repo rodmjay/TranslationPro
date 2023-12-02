@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Components.Application.Components;
+using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -9,8 +10,6 @@ namespace TranslationPro.Blazor.Pages
     public partial class ApplicationDetails : ApplicationDetailsBase
     {
         private Modal deleteApplication;
-        private LanguageDragDrop languageDragDrop;
-
         public bool Disabled { get; set; }
 
         string selectedTab = "phrases";
@@ -24,34 +23,14 @@ namespace TranslationPro.Blazor.Pages
 
         [Inject]
         public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
-
-        private PhraseList list;
         
-        public List<string> SelectedLanguages
-        {
-            get;
-            set;
-        }
-
-        protected override async Task LoadData()
-        {
-            await base.LoadData();
-            SelectedLanguages = Application.Languages.Select(x => x.Id).ToList();
-        }
 
         protected override async Task OnParametersSetAsync()
         {
             await LoadData();
         }
 
-
-        public async Task Reload()
-        {
-            await LoadData();
-            await list.Reload();
-            StateHasChanged();
-        }
-
+        
         private Task ShowModal()
         {
             return deleteApplication.Show();
@@ -60,41 +39,19 @@ namespace TranslationPro.Blazor.Pages
         {
             return deleteApplication.Hide();
         }
-
-        public async Task HandleLanguageChange(IReadOnlyList<string> languages)
-        {
-            Disabled = true;
-            await ApplicationLanguagesController.SyncLanguages(ApplicationId, languages.ToArray());
-            Disabled = false;
-            await Reload();
-        }
+        
 
         public async Task DeleteApplication()
         {
             await HideModal();
-            await ApplicationService.DeleteApplicationAsync(ApplicationId);
-            NavigationManager.NavigateTo("/applications");
+            var result = await ApplicationService.DeleteApplicationAsync(ApplicationId);
+            if (result.Succeeded)
+            {
+                await EventAggregator.PublishAsync(new ApplicationDeletedEvent());
+                NavigationManager.NavigateTo("/applications");
+            }
         }
 
 
-        private async Task LanguageEnabled(string languageId)
-        {
-            Disabled = true;
-            await ApplicationLanguagesController.AddLanguageToApplicationAsync(ApplicationId,
-                new ApplicationLanguageOptions()
-                {
-                    LanguageId = languageId
-                });
-            Disabled = false;
-            await Reload();
-        }
-
-        private async Task LanguageDisabled(string languageId)
-        {
-            Disabled = true;
-            await ApplicationLanguagesController.RemoveLanguageFromApplicationAsync(ApplicationId,languageId);
-            Disabled = false;
-            await Reload();
-        }
     }
 }
