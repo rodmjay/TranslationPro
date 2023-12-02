@@ -12,7 +12,7 @@ namespace TranslationPro.Shared.Interfaces;
 
 public interface ISubscriptionController
 {
-    Task<SubscriptionOutput> GetSubscription();
+    Task<Stripe.Subscription> GetSubscription();
     Task<string> CreateCheckoutSession();
     Task<Result> CompleteSession( string checkoutSessionId);
 }

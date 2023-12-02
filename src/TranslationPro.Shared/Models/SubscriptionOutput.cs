@@ -8,8 +8,6 @@ namespace TranslationPro.Shared.Models;
 
 public class SubscriptionOutput
 {
-
     public decimal CharacterPrice { get; set; }
-
-    public string StripeId { get; set; }
+    public string SubscriptionId { get; set; }
 }

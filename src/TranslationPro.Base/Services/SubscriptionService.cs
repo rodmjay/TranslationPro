@@ -15,6 +15,7 @@ using Stripe;
 using Stripe.Checkout;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Settings;
+using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
 using Subscription = TranslationPro.Base.Entities.Subscription;
@@ -24,87 +25,47 @@ namespace TranslationPro.Base.Services;
 public class SubscriptionService : BaseService<Subscription>, ISubscriptionService
 {
     private readonly SessionService _sessionService;
+    private readonly Stripe.SubscriptionService _subscriptionService;
     private readonly PaymentLinkService _paymentLinkService;
     private readonly IOptions<AppSettings> _settings;
 
     public SubscriptionService(IServiceProvider serviceProvider, 
         SessionService sessionService,
+        Stripe.SubscriptionService subscriptionService,
         PaymentLinkService paymentLinkService, IOptions<AppSettings> settings) : base(serviceProvider)
     {
         _sessionService = sessionService;
+        _subscriptionService = subscriptionService;
         _paymentLinkService = paymentLinkService;
         _settings = settings;
     }
+    
 
-    public async Task<T> GetSubscriptionAsync<T>(int userId) where T : SubscriptionOutput
+    public async Task<Stripe.Subscription> GetSubscriptionAsync(int userId)
     {
-        var subscription = await Repository.Queryable().Where(x => x.UserId == userId).ProjectTo<T>(ProjectionMapping)
-            .FirstOrDefaultAsync();
+        var subscription = await Repository.Queryable().Where(x => x.UserId == userId)
+            .FirstAsync();
 
-        return subscription;
-    }
+        var subId = subscription.SubscriptionId;
 
-    public async Task<RedirectResult> CreateSubscription(int userId)
-    {
-        var retVal = new RedirectResult();
+        var sub = await _subscriptionService.GetAsync(subId);
 
-        var subscription = new Subscription()
-        {
-            UserId = userId,
-            CharacterPrice = 0.0001m
-        };
-
-        var options = new PaymentLinkCreateOptions()
-        {
-            AfterCompletion = new PaymentLinkAfterCompletionOptions()
-            {
-                Redirect = new PaymentLinkAfterCompletionRedirectOptions()
-                {
-                    Url = _settings.Value.Stripe.PostCheckoutUrl
-                },
-                Type = "redirect"
-            },
-            LineItems = new List<PaymentLinkLineItemOptions>()
-            {
-                new PaymentLinkLineItemOptions()
-                {
-                    Price = _settings.Value.Stripe.PriceId,
-                    Quantity = 1,
-                }
-            },
-            SubscriptionData = new PaymentLinkSubscriptionDataOptions()
-            {
-                TrialPeriodDays = 30,
-                Description = "$0.001 per translated character billed monthly"
-            }
-        };
-
-        var stripeResult = await _paymentLinkService.CreateAsync(options);
-
-        retVal.RedirectUrl = stripeResult.Url;
-
-        subscription.PaymentLink = stripeResult.Url;
-
-        var records = await Repository.InsertAsync(subscription, true);
-
-        if (records > 0)
-        {
-            retVal.Succeeded = true;
-        }
-
-        return retVal;
-
+        return sub;
     }
 
     public async Task<Result> CompleteSubscriptionCheckout(int userId, string checkoutSessionId)
     {
         var session = await _sessionService.GetAsync(checkoutSessionId);
 
-        var subscription = await Repository.Queryable().Where(x => x.UserId == userId).FirstAsync();
+        var subscription = new Subscription
+        {
+            UserId = userId,
+            CharacterPrice = 0.01m,
+            CustomerId = session.CustomerId,
+            SubscriptionId = session.SubscriptionId
+        };
 
-        subscription.StripeId = session.PaymentIntentId;
-
-        var records = Repository.Update(subscription, true);
+        var records = Repository.Insert(subscription, true);
         if (records > 0)
         {
             return Result.Success(userId);
@@ -126,8 +87,7 @@ public class SubscriptionService : BaseService<Subscription>, ISubscriptionServi
                 }
             },
             Mode = "subscription",
-            ReturnUrl = _settings.Value.Stripe.PostCheckoutUrl,
-
+            ReturnUrl = _settings.Value.Stripe.PostCheckoutUrl
         };
 
         var session = await _sessionService.CreateAsync(options);

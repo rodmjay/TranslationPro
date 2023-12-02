@@ -1,0 +1,78 @@
+﻿
+@if (CurrentUser == null)
+{
+    <Paragraph>Please Wait...</Paragraph>
+}
+else
+{
+    if (Subscription != null)
+    {
+        <Paragraph>
+            Next Bill Date:
+            @Subscription.NextPendingInvoiceItemInvoice.GetValueOrDefault()
+
+        </Paragraph>
+        <Paragraph>
+            Created
+            @Subscription.Created.Date.ToShortDateString()
+
+        </Paragraph>
+
+        
+        <Button Clicked="ShowModal" Color="Color.Danger">Delete Subscription</Button>
+
+    }
+
+    <Modal @ref="@deleteSubscription">
+        <ModalContent>
+            <ModalHeader>
+                <ModalTitle>Delete Subscription</ModalTitle>
+                <CloseButton/>
+            </ModalHeader>
+            <ModalBody>
+                <Paragraph>Are you sure you want to delete your subscription?</Paragraph>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="@Color.Secondary" Clicked="@HideModal">Close</Button>
+                <Button Color="@Color.Danger" Clicked="@DeleteSubscription">Yes, Delete Subscription</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+}
+
+
+@code {
+
+    [Inject]
+    protected ISubscriptionController SubscriptionService { get; set; }
+
+    [Inject]
+    protected NavigationManager NavManager { get; set; }
+
+    [CascadingParameter]
+    protected UserOutput CurrentUser { get; set; }
+
+    private Modal deleteSubscription;
+
+    private Stripe.Subscription Subscription { get; set; }
+
+    private Task ShowModal()
+    {
+        return deleteSubscription.Show();
+    }
+    private Task HideModal()
+    {
+        return deleteSubscription.Hide();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Subscription = await SubscriptionService.GetSubscription();
+    }
+
+    public async Task DeleteSubscription()
+    {
+        NavManager.NavigateTo($"/");
+    }
+
+}

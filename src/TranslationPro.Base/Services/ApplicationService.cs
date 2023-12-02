@@ -16,6 +16,7 @@ using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Errors;
+using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Enums;
 using TranslationPro.Shared.Models;
@@ -44,17 +45,27 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         .ThenInclude(x => x.Translations)
         .Include(x => x.Phrases);
 
+    private IQueryable<User> Users => Repository.GetRepository<User>().Queryable().Include(x=>x.Subscription);
+    private IQueryable<Subscription> Subscriptions => Repository.GetRepository<Subscription>().Queryable();
+
     public Task<T> GetApplication<T>(Guid applicationId) where T : ApplicationOutput
     {
         return Applications.Where(x => x.Id == applicationId).ProjectTo<T>(ProjectionMapping).FirstOrDefaultAsync();
     }
 
-    public Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
+    public async Task<Result> CreateApplicationAsync(int userId, ApplicationCreateOptions input)
     {
         _logger.LogInformation(GetLogMessage("Creating Application: {0} For User: {1}"), input.Name, userId);
 
+        var subscription = await Subscriptions.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+        if (subscription == null)
+        {
+            return Result.Failed(_errorDescriber.NoSubscription());
+        }
+
         var application = new Application
         {
+            SubscriptionId = subscription.UserId,
             Name = input.Name,
             ObjectState = ObjectState.Added,
             Users = new List<ApplicationUser>()
@@ -78,10 +89,10 @@ public class ApplicationService : BaseService<Application>, IApplicationService
         {
             _logger.LogInformation(GetLogMessage("Application Successfully Created: {0}"), input.Name);
 
-            return Task.FromResult(Result.Success(application.Id));
+            return Result.Success(application.Id);
         }
 
-        return Task.FromResult(Result.Failed(_errorDescriber.UnableToCreateApplication()));
+        return Result.Failed(_errorDescriber.UnableToCreateApplication());
     }
 
     public Task<List<T>> GetApplicationsForUserAsync<T>(int userId) where T : ApplicationOutput

@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Users.Interfaces;
+using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Controllers;
 
-public class UserController : BaseController
+public class UserController : BaseController, IUserController
 {
     private readonly IUserService _userService;
 

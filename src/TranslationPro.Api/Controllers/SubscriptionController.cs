@@ -26,11 +26,11 @@ public class SubscriptionController : BaseController, ISubscriptionController
     }
 
     [HttpGet]
-    public async Task<SubscriptionOutput> GetSubscription()
+    public async Task<Stripe.Subscription> GetSubscription()
     {
         var user = await GetCurrentUser();
 
-        return await _subscriptionService.GetSubscriptionAsync<SubscriptionOutput>(user.Id);
+        return await _subscriptionService.GetSubscriptionAsync(user.Id);
     }
 
     [HttpPut]

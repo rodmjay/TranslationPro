@@ -49,7 +49,10 @@ public class Program
         void AddBlazorise(IServiceCollection services)
         {
             services
-                .AddBlazorise();
+                .AddBlazorise(x =>
+                {
+                    x.ProductToken = "C028-DAD6-D291-4193-BF53-C678-251C";
+                });
             services
                 .AddBootstrap5Providers()
                 .AddFontAwesomeIcons();

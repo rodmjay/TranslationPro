@@ -13,8 +13,8 @@ using TranslationPro.Base.Common.Data.Bases;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Shared.Interfaces;
 
-
 namespace TranslationPro.Base.Entities;
+
 [ExcludeFromCodeCoverage]
 public class Application : BaseEntity<Application>, IApplication, ISoftDelete, ICreated
 {
@@ -34,7 +34,9 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete, I
     public int CurrentPhraseId { get; set; }
     public ICollection<ApplicationUser> Users { get; set; }
     
-    public int? SubscriptionId { get; set; }
+    public int SubscriptionId { get; set; }
+    public Subscription Subscription { get; set; }
+
 
     public override void Configure(EntityTypeBuilder<Application> builder)
     {
@@ -45,6 +47,10 @@ public class Application : BaseEntity<Application>, IApplication, ISoftDelete, I
         builder.HasQueryFilter(x => !x.IsDeleted);
 
         builder.Property(x => x.CurrentPhraseId).HasDefaultValue(10000);
+
+        builder.HasOne(x => x.Subscription).WithMany(x => x.Applications)
+            .HasForeignKey(x => x.SubscriptionId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 
     public DateTimeOffset Created { get; set; }

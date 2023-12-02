@@ -1,12 +1,24 @@
 ﻿@layout MainLayout
 @page "/subscription"
 
-<h3>Subscription</h3>
 
-<SubscriptionDataSheet></SubscriptionDataSheet>
+
+
+@if (CurrentUser.Subscription == null)
+{
+    
+    <SubscriptionCreate></SubscriptionCreate>
+}
+else
+{
+    <SubscriptionDetails></SubscriptionDetails>
+}
 
 @code {
 
 
+
+    [CascadingParameter]
+    public UserOutput CurrentUser { get; set; }
 
 }

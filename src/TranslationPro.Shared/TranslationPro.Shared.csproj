@@ -16,6 +16,7 @@
 	  <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.13" />
 	  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="stripe.net" Version="43.5.0" />
   </ItemGroup>
 
 </Project>

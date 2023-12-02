@@ -1,0 +1,44 @@
+﻿
+  <Row Margin="Margin.Is5.FromTop">
+      <Column ColumnSize="ColumnSize.Is6">
+        
+          <Heading Size="HeadingSize.Is2">Get Started Today</Heading>
+          <UnorderedList>
+              <UnorderedListItem>
+                  $0.01 Per Word Translated (see Input vs Output Charges)
+              </UnorderedListItem>
+              <UnorderedListItem>
+                  Unlimited Applications
+              </UnorderedListItem>
+              <UnorderedListItem>
+                  Unlimited Users
+              </UnorderedListItem>
+              <UnorderedListItem>
+                  Up to 126 Languages
+              </UnorderedListItem>
+          </UnorderedList>
+
+      </Column>
+      <Column ColumnSize="ColumnSize.Is6">
+          <div align="center">
+              <Button Background="Background.Primary" Size="Size.ExtraLarge" Clicked="Callback">Go To Checkout</Button>
+          </div>
+      </Column>
+  </Row>
+
+
+
+@code {
+
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+
+    [Inject]
+    protected ISubscriptionController SubscriptionService { get; set; }
+
+    private void Callback()
+    {
+        Navigation.NavigateTo("/checkout");
+    }
+
+}

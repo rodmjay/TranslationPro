@@ -84,7 +84,10 @@ public static class AppBuilderExtensions
 
         builder.Services.AddScoped(x => 
             new SessionService(x.GetRequiredService<IStripeClient>()));
-        
+
+        builder.Services.AddScoped(x =>
+            new Stripe.SubscriptionService(x.GetRequiredService<IStripeClient>()));
+
 
         return builder;
     }

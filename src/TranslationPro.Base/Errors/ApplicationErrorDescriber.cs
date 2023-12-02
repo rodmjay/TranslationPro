@@ -20,6 +20,15 @@ public class ApplicationErrorDescriber
         };
     }
 
+    public virtual Error NoSubscription()
+    {
+        return new Error
+        {
+            Code = nameof(NoSubscription),
+            Description = "Unable to create application because there is no subscription"
+        };
+    }
+
     public virtual Error UnableToCreateApplication()
     {
         return new Error

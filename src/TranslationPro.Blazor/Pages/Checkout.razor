@@ -1,15 +1,15 @@
-﻿<h3>SubscriptionDataSheet</h3>
+﻿@layout MainLayout
+@page "/checkout"
 
-<Paragraph>Why you should sign up</Paragraph>
+<h3>CheckOut</h3>
+
 
 <div id="checkout">
     <!-- Checkout will insert the payment form here -->
 </div>
 
-<Button Clicked="GoToCheckout">Go To Checkout</Button>
-<Button Clicked="Test">Test</Button>
-
 @code {
+
 
     [Inject]
     public NavigationManager Navigation { get; set; }
@@ -23,22 +23,18 @@
     [Inject]
     protected ISubscriptionController SubscriptionService { get; set; }
 
-    private async Task GoToCheckout()
+    protected override async Task OnInitializedAsync()
     {
         var subscription = await SubscriptionService.CreateCheckoutSession();
 
         var stripePublicKey = Configuration["Stripe:PublicKey"];
 
-        await JavaScriptRuntime.InvokeVoidAsync("translationProStripe.initialize", new[]
+        await JavaScriptRuntime.InvokeVoidAsync("translationProStripe.initialize", new object[]
         {
-            stripePublicKey, 
+            stripePublicKey,
             subscription
         });
     }
-
-    private async Task Test()
-    {
-        await JavaScriptRuntime.InvokeVoidAsync("blazorSessionStorage.test");
-    }
+    
 
 }

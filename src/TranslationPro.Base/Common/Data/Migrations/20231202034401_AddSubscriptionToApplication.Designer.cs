@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231202034401_AddSubscriptionToApplication")]
+    partial class AddSubscriptionToApplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1562,12 +1565,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("Application", "TranslationPro");
                 });
@@ -2366,7 +2367,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SubscriptionId")
+                    b.Property<string>("PaymentLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -2800,17 +2801,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("IdentityResource");
                 });
 
-            modelBuilder.Entity("TranslationPro.Base.Entities.Application", b =>
-                {
-                    b.HasOne("TranslationPro.Base.Entities.Subscription", "Subscription")
-                        .WithMany("Applications")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Subscription");
-                });
-
             modelBuilder.Entity("TranslationPro.Base.Entities.ApplicationLanguage", b =>
                 {
                     b.HasOne("TranslationPro.Base.Entities.Application", "Application")
@@ -3019,11 +3009,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Entities.Language", b =>
-                {
-                    b.Navigation("Applications");
-                });
-
-            modelBuilder.Entity("TranslationPro.Base.Entities.Subscription", b =>
                 {
                     b.Navigation("Applications");
                 });

@@ -15,10 +15,8 @@ namespace TranslationPro.Base.Services;
 
 public interface ISubscriptionService : IService<Subscription>
 {
-    Task<T> GetSubscriptionAsync<T>(int userId) where T : SubscriptionOutput;
-
-    Task<RedirectResult> CreateSubscription(int userId);
-
+    Task<Stripe.Subscription> GetSubscriptionAsync(int userId);
+    
     Task<Result> CompleteSubscriptionCheckout(int userId, string checkoutSessionId);
 
     Task<Session> CreateCheckoutSession(int userId);

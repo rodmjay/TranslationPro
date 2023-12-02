@@ -1,9 +1,7 @@
 ﻿@using TranslationPro.Blazor.Components.Layout
 @inherits LayoutComponentBase
 
-
-@if ( layoutType == "fixed-header" )
-{
+<CascadingValue TValue="UserOutput" Value="@CurrentUser">
     <Layout Sider>
         <LayoutSider>
             <LayoutSiderContent>
@@ -13,56 +11,14 @@
         <Layout>
             <LayoutHeader Fixed>
                 <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
-                     ThemeGradientChanged="@OnThemeGradientChanged"
-                     ThemeRoundedChanged="@OnThemeRoundedChanged"
-                     ThemeColorChanged="@OnThemeColorChanged"
-                     @bind-LayoutType="@layoutType" />
+                         ThemeGradientChanged="@OnThemeGradientChanged"
+                         ThemeRoundedChanged="@OnThemeRoundedChanged"
+                         ThemeColorChanged="@OnThemeColorChanged"
+                         @bind-LayoutType="@layoutType" />
             </LayoutHeader>
             <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
                 @Body
             </LayoutContent>
         </Layout>
     </Layout>
-}
-else if ( layoutType == "fixed-header-footer-only" )
-{
-    <Layout>
-        <LayoutHeader Fixed>
-            <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
-                 ThemeGradientChanged="@OnThemeGradientChanged"
-                 ThemeRoundedChanged="@OnThemeRoundedChanged"
-                 ThemeColorChanged="@OnThemeColorChanged"
-                 @bind-LayoutType="@layoutType" />
-        </LayoutHeader>
-        <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
-            @Body
-        </LayoutContent>
-        <LayoutFooter Fixed>
-            <FooterMenu></FooterMenu>
-        </LayoutFooter>
-    </Layout>
-}
-else if ( layoutType == "sider-with-header-on-top" )
-{
-    <Layout>
-        <LayoutHeader Fixed>
-            <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
-                 ThemeGradientChanged="@OnThemeGradientChanged"
-                 ThemeRoundedChanged="@OnThemeRoundedChanged"
-                 ThemeColorChanged="@OnThemeColorChanged"
-                 @bind-LayoutType="@layoutType" />
-        </LayoutHeader>
-        <Layout Sider>
-            <LayoutSider>
-                <LayoutSiderContent>
-                    <SideMenu />
-                </LayoutSiderContent>
-            </LayoutSider>
-            <Layout>
-                <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
-                    @Body
-                </LayoutContent>
-            </Layout>
-        </Layout>
-    </Layout>
-}
+</CascadingValue>

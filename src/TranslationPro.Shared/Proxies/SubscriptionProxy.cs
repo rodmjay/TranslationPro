@@ -19,9 +19,9 @@ public class SubscriptionProxy : BaseProxy, ISubscriptionController
     {
     }
 
-    public Task<SubscriptionOutput> GetSubscription()
+    public Task<Stripe.Subscription> GetSubscription()
     {
-        return DoGet<SubscriptionOutput>($"v1.0/subscription");
+        return DoGet<Stripe.Subscription>($"v1.0/subscription");
     }
 
     public Task<string> CreateCheckoutSession()

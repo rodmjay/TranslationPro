@@ -4,6 +4,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Bases;
@@ -17,13 +18,12 @@ public class Subscription : BaseEntity<Subscription>
 
     public User User { get; set; }
 
-    //public ICollection<Application> Applications { get; set; }
-
-    public string PaymentLink { get; set; }
+    public ICollection<Application> Applications { get; set; }
 
     public decimal CharacterPrice { get; set; }
 
-    public string StripeId { get; set; }
+    public string CustomerId { get; set; }
+    public string SubscriptionId { get; set; }
 
     public override void Configure(EntityTypeBuilder<Subscription> builder)
     {

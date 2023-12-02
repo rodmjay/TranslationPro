@@ -1,10 +1,49 @@
 ﻿@layout MainLayout
 @page "/subscription/complete"
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavManager
 
-<h3>Subscription Completed</h3>
+@if (!IsCompleted)
+{
+    <Paragraph>Finalizing Subscription...</Paragraph>
+}
+else
+{
+    
+    <h3>Subscription Completed!</h3>
+
+    <Paragraph>
+        Your consumption will be tracked monthly and you will be billed automatically.  You can cancel anytime by 
+        managing your subscription button in the top left section of the website.
+    </Paragraph>
+
+    <Button Clicked="Callback">Create An Application</Button>
+}
 
 @code {
 
+    public bool IsCompleted { get; set; } = false;
 
+    [Inject]
+    protected ISubscriptionController SubscriptionService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("session_id", out var sessionId))
+        {
+            var result = await SubscriptionService.CompleteSession(sessionId);
+            if (result.Succeeded)
+            {
+                IsCompleted = true;
+            }
+        }
+    }
+
+    private void Callback()
+    {
+        NavManager.NavigateTo("/create-application");
+    }
 
 }

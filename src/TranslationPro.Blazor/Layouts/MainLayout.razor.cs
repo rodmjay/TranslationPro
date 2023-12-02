@@ -6,9 +6,16 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Layouts
 {
+
+
     public partial class MainLayout
     {
+
+        [Inject]
+        protected IUserController UserService { get; set; }
         
+        protected UserOutput CurrentUser { get; set; }
+
         [Inject] protected ITextLocalizerService? LocalizationService { get; set; }
 
         [CascadingParameter] protected Theme? Theme { get; set; }
@@ -21,6 +28,7 @@ namespace TranslationPro.Blazor.Layouts
 
             await base.OnInitializedAsync();
 
+            CurrentUser = await UserService.GetUser();
         }
 
         private Task SelectCulture(string name)
