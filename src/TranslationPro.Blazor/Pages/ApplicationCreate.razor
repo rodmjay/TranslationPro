@@ -1,4 +1,5 @@
 ﻿@page "/create-application"
+@using TranslationPro.Blazor.Events
 @inherits AuthenticatedBase
 @layout MainLayout
 
@@ -73,6 +74,8 @@
 
             if (result.Succeeded)
             {
+                await EventAggregator.PublishAsync(new ApplicationCreatedEvent(Guid.Parse(result.Id.ToString())));
+
                 NavigationManager.NavigateTo($"/applications/{result.Id}");
             }
         }

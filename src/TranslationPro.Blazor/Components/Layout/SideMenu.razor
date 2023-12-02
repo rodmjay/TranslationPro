@@ -50,26 +50,5 @@
 </Bar>
 @code {
 
-    [Inject]
-    protected IApplicationsController ApplicationService { get; set; }
-
-    protected List<ApplicationOutput> Applications { get; set; }
-
-    [Inject]
-    protected  NavigationManager NavigationManager { get; set; }
-
-    private bool pagesBarVisible = true;
-
-    RenderFragment customIcon =@<img src="/brand-logo.png" style="width:32px; height: 32px" />;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        Applications = await ApplicationService.GetApplicationsAsync();
-    }
-
-    private void Navigate(Guid applicationId)
-    {
-        NavigationManager.NavigateTo($"/applications/{applicationId}", forceLoad:true);
-    }
+    
 }

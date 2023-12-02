@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TranslationPro.Blazor.Extensions;
 using TranslationPro.Blazor.Services;
 using TranslationPro.Shared.Policies;
+using EventAggregator.Blazor;
 
 namespace TranslationPro.Blazor;
 
@@ -18,6 +19,8 @@ public class Program
 
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+        builder.Services.AddScoped<IEventAggregator, EventAggregator.Blazor.EventAggregator>();
+        builder.Services.Configure<EventAggregatorOptions>(x=>x.AutoRefresh = true);
 
         builder.AddProxies();
 

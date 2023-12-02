@@ -1,15 +1,15 @@
 ﻿using Blazorise.Localization;
-
+using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Layouts
 {
-
-
     public partial class MainLayout
     {
+        [Inject]
+        protected IEventAggregator EventAggregator { get; set; }
 
         [Inject]
         protected IUserController UserService { get; set; }
