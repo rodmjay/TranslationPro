@@ -8,9 +8,16 @@ using TranslationPro.Base.Common.Caching;
 using TranslationPro.Base.Common.Data;
 using TranslationPro.Base.Email.Settings;
 
-namespace TranslationPro.Base.Common.Settings;
+namespace TranslationPro.Base.Settings;
 
-public partial class AppSettings
+public class StripeSettings
+{
+    public string PriceId { get; set; }
+    public string PostCheckoutUrl { get; set; }
+
+}
+
+public class AppSettings
 {
     public string ApiUrl { get; set; }
     public string AppUrl { get; set; }
@@ -21,6 +28,7 @@ public partial class AppSettings
     public DatabaseSettings Database { get; set; }
     public CacheSettings Cache { get; set; }
     public SendGridSettings SendGrid { get; set; }
+    public StripeSettings Stripe { get; set; }
     public string CodeSigningThumbprint { get; set; }
     public bool IsUnderTest { get; set; }
 

@@ -44,6 +44,10 @@ namespace TranslationPro.Blazor.Extensions
                     client => client.BaseAddress = url)
                 .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
+            builder.Services.AddHttpClient<ISubscriptionController, SubscriptionProxy>(
+                    client => client.BaseAddress = url)
+                .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+
             builder.Services.AddHttpClient<TranslationsProxy>(
                 client => client.BaseAddress = translationsUrl);
 

@@ -4,7 +4,7 @@
 
 #endregion
 
-namespace TranslationPro.Base.Users.Interfaces;
+namespace TranslationPro.Shared.Interfaces;
 
 public interface IUser
 {

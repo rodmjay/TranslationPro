@@ -5,7 +5,7 @@
 #endregion
 
 using Microsoft.Extensions.DependencyInjection;
-using TranslationPro.Base.Common.Settings;
+using AppSettings = TranslationPro.Base.Settings.AppSettings;
 
 namespace TranslationPro.Base.Common.Middleware.Builders;
 

@@ -1,0 +1,44 @@
+﻿<h3>SubscriptionDataSheet</h3>
+
+<Paragraph>Why you should sign up</Paragraph>
+
+<div id="checkout">
+    <!-- Checkout will insert the payment form here -->
+</div>
+
+<Button Clicked="GoToCheckout">Go To Checkout</Button>
+<Button Clicked="Test">Test</Button>
+
+@code {
+
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+
+    [Inject]
+    public IJSRuntime JavaScriptRuntime { get; set; }
+
+    [Inject]
+    public IConfiguration Configuration { get; set; }
+
+    [Inject]
+    protected ISubscriptionController SubscriptionService { get; set; }
+
+    private async Task GoToCheckout()
+    {
+        var subscription = await SubscriptionService.CreateCheckoutSession();
+
+        var stripePublicKey = Configuration["Stripe:PublicKey"];
+
+        await JavaScriptRuntime.InvokeVoidAsync("translationProStripe.initialize", new[]
+        {
+            stripePublicKey, 
+            subscription
+        });
+    }
+
+    private async Task Test()
+    {
+        await JavaScriptRuntime.InvokeVoidAsync("blazorSessionStorage.test");
+    }
+
+}

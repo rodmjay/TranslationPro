@@ -127,6 +127,7 @@
 		<PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+		<PackageReference Include="stripe.net" Version="43.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Twilio" Version="6.14.1" />
 	</ItemGroup>
@@ -139,5 +140,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Common\Data\Migrations\" />
+	  <Folder Include="Users\Models\" />
 	</ItemGroup>
 </Project>

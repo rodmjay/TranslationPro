@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Interfaces;
-using TranslationPro.Base.Common.Settings;
+using AppSettings = TranslationPro.Base.Settings.AppSettings;
 
 namespace TranslationPro.Base.Common.Services.Bases;
 

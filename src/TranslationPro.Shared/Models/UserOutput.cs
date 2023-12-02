@@ -4,9 +4,9 @@
 
 #endregion
 
-using TranslationPro.Base.Users.Interfaces;
+using TranslationPro.Shared.Interfaces;
 
-namespace TranslationPro.Base.Users.Models;
+namespace TranslationPro.Shared.Models;
 
 public class UserOutput : IUser
 {
@@ -17,5 +17,7 @@ public class UserOutput : IUser
     public string Email { get; set; }
 
     public string PhoneNumber { get; set; }
-    
+
+    public SubscriptionOutput Subscription { get; set; }
+
 }

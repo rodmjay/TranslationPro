@@ -11,9 +11,10 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SendGrid.Helpers.Errors.Model;
-using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Services;
 using TranslationPro.Base.Users.Interfaces;
+using TranslationPro.Shared.Interfaces;
+using AppSettings = TranslationPro.Base.Settings.AppSettings;
 
 namespace TranslationPro.Base.Common.Middleware.Bases;
 

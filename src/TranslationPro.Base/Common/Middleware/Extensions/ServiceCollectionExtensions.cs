@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Common.Settings;
+using AppSettings = TranslationPro.Base.Settings.AppSettings;
 
 namespace TranslationPro.Base.Common.Middleware.Extensions;
 

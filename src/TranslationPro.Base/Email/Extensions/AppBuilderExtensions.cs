@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Email.Services;
+using AppSettings = TranslationPro.Base.Settings.AppSettings;
 
 namespace TranslationPro.Base.Email.Extensions;
 

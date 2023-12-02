@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Entities;
-using TranslationPro.Base.Users.Interfaces;
+using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Users.Entities;
 
@@ -39,7 +39,7 @@ public partial class User : IdentityUser<int>, IEntityTypeConfiguration<User>, I
     public ICollection<UserClaim> UserClaims { get; set; }
     public ICollection<ApplicationUser> Applications { get; set; }
     public Guid? CurrentApplication { get; set; }
-
+    public Subscription Subscription { get; set; }
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(x => x.Id);

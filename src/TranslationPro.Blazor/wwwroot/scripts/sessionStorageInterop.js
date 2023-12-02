@@ -8,5 +8,8 @@ window.blazorSessionStorage = {
     },
     removeItem: function (key) {
         sessionStorage.removeItem(key);
+    },
+    test: function () {
+        alert('test');
     }
 };

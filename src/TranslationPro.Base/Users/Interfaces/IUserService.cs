@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Base.Users.Entities;
-using TranslationPro.Base.Users.Models;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Users.Interfaces;
 

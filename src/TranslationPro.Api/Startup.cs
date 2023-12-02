@@ -17,8 +17,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
-using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Extensions;
+using TranslationPro.Base.Settings;
 using TranslationPro.Base.Users.Extensions;
 
 namespace TranslationPro.Api;

@@ -6,6 +6,7 @@
 
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Base.Users.Interfaces;
 

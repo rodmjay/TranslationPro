@@ -9,5 +9,10 @@
     "AppUrl": "https://translationpro-app-test.azurewebsites.net",
     "TranslationsUrl": "https://translations-api-test.azurewebsites.net"
 
+  },
+  "Stripe": {
+    "SecretKeyEnvironmentVariableName": "TranslationProStripeSecretTest",
+    "PriceId": "price_1OIMfzDGyTHfODiYPWQKJNOm",
+    "PostCheckoutUrl": "https://translationpro-app-test.azurewebsites.net/subscription/complete/?session_id={CHECKOUT_SESSION_ID}"
   }
 }

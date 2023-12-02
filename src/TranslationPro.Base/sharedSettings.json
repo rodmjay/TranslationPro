@@ -23,7 +23,9 @@
       "ConnectionStringName": "DefaultConnection"
     },
     "Stripe": {
-      "SecretKeyEnvironmentVariableName": "TranslationProStripeSecretDev"
+      "SecretKeyEnvironmentVariableName": "TranslationProStripeSecretTest",
+      "PriceId": "price_1OIMfzDGyTHfODiYPWQKJNOm",
+      "PostCheckoutUrl": "https://localhost:7243/subscription/complete/?session_id={CHECKOUT_SESSION_ID}"
     },
     "Cache": {
       "DefaultExpiration": "00:00:30"

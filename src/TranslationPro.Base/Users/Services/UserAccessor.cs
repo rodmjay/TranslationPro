@@ -14,7 +14,8 @@ using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Interfaces;
 using TranslationPro.Base.Users.Managers;
-using TranslationPro.Base.Users.Models;
+using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Users.Services;
 

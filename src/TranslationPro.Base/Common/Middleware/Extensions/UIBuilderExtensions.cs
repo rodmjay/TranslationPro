@@ -19,9 +19,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 using TranslationPro.Base.Common.Middleware.Builders;
-using TranslationPro.Base.Common.Settings;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Base.Users.Services;
+using AppSettings = TranslationPro.Base.Settings.AppSettings;
 
 namespace TranslationPro.Base.Common.Middleware.Extensions;
 

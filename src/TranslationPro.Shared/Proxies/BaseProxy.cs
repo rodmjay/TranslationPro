@@ -46,6 +46,21 @@ public abstract class BaseProxy
         return result;
     }
 
+    protected async Task<TOutput> DoPatch<TOutput>(string url)
+    {
+        var response = await HttpClient.PatchAsync(url, null);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
+    }
+
+    protected async Task<TOutput> DoPut<TOutput>(string url)
+    {
+        var response = await HttpClient.PutAsync(url, null);
+
+        var result = response.Content.DeserializeObject<TOutput>();
+        return result;
+    }
     protected async Task<TOutput> DoPut<TInput, TOutput>(string url, TInput input)
     {
         var content = input.SerializeToUTF8Json();
