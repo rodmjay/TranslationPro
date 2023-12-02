@@ -1,11 +1,7 @@
 ﻿// checkout.js
 
 window.translationProStripe = {
-
-    test: function() {
-        alert('test');
-    },
-
+    
     initialize: async function(stripeKey, clientSecret) {
         const stripe = Stripe(stripeKey);
 
