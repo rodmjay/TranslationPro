@@ -1,4 +1,5 @@
 ﻿using Blazorise.Localization;
+using Blazorise.Snackbar;
 using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Events;
@@ -7,7 +8,12 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Layouts
 {
-    public partial class MainLayout : IHandle<SubscriptionCreatedEvent>
+    public partial class MainLayout : IHandle<SubscriptionCreatedEvent>, 
+        IHandle<ApplicationCreatedEvent>,
+        IHandle<PhraseCreatedEvent>,
+        IHandle<ApplicationDeletedEvent>,
+        IHandle<PhraseDeletedEvent>,
+        IHandle<LanguagesChangedEvent>
     {
         [CascadingParameter]
         protected IEventAggregator EventAggregator { get; set; }
@@ -103,10 +109,45 @@ namespace TranslationPro.Blazor.Layouts
             return InvokeAsync(Theme.ThemeHasChanged);
         }
 
+        private async Task PushMessage(string message, SnackbarColor color = SnackbarColor.Success)
+        {
+            await snackbarStack.PushAsync(message, color, options =>
+            {
+                options.IntervalBeforeClose = intervalBeforeMsgClose;
+            });
+        }
 
         public async Task HandleAsync(SubscriptionCreatedEvent message)
         {
+            await PushMessage("Subscription Created Successfully");
             await LoadData();
+        }
+
+        public async Task HandleAsync(ApplicationCreatedEvent message)
+        {
+            await PushMessage("Application Created Successfully");
+        }
+
+        SnackbarStack snackbarStack;
+        double intervalBeforeMsgClose = 2000;
+        public async Task HandleAsync(PhraseCreatedEvent message)
+        {
+            await PushMessage("Phrase Created Successfully");
+        }
+
+        public async Task HandleAsync(ApplicationDeletedEvent message)
+        {
+            await PushMessage("Application Deleted Successfully");
+        }
+
+        public async Task HandleAsync(PhraseDeletedEvent message)
+        {
+            await PushMessage("Phrase Deleted Successfully");
+        }
+
+        public async Task HandleAsync(LanguagesChangedEvent message)
+        {
+            await PushMessage("Languages Modified Successfully");
         }
     }
 }
