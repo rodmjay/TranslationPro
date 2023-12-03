@@ -21,6 +21,7 @@ public class Program
 
         builder.Services.AddScoped<IEventAggregator, EventAggregator.Blazor.EventAggregator>();
         builder.Services.Configure<EventAggregatorOptions>(x=>x.AutoRefresh = true);
+        
 
         builder.AddProxies();
 
@@ -41,9 +42,7 @@ public class Program
 
         builder.Services.AddSingleton<SessionStorageInterop>();
         builder.Services.AddScoped<TokenExpirationService>();
-
-
-
+        
         AddBlazorise(builder.Services);
 
         await builder.Build().RunAsync();

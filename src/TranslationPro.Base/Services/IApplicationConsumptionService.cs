@@ -14,7 +14,6 @@ namespace TranslationPro.Base.Services
     {
         Task<Dictionary<DateTime, ConsumptionInfo>> GetConsumptionInfo(Guid applicationId, DateTime startDate,
             DateTime endDate);
-
     }
 
     public class ApplicationConsumptionService : BaseService<Application>, IApplicationConsumptionService
@@ -49,12 +48,12 @@ namespace TranslationPro.Base.Services
 
                 if (phraseDictionary.ContainsKey(date))
                 {
-                    consumptionInfo.InputCharacters = phraseDictionary[date];
+                    consumptionInfo.OutputCharacters = phraseDictionary[date];
                 }
 
                 if (translationDictionary.ContainsKey(date))
                 {
-                    consumptionInfo.OutputCharacters = translationDictionary[date];
+                    consumptionInfo.InputCharacters = translationDictionary[date];
                 }
 
                 returnDictionary.Add(date, consumptionInfo);

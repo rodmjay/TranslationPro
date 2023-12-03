@@ -1,11 +1,10 @@
 ﻿using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Blazor.Components.Application.Components;
+namespace TranslationPro.Blazor.Components.Application;
 
 public partial class ApplicationList : ComponentBase, IHandle<ApplicationCreatedEvent>
 {

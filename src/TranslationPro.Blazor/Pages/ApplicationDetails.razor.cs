@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Components.Application.Bases;
-using TranslationPro.Blazor.Components.Application.Components;
 using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Interfaces;
-using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Pages
 {
@@ -24,11 +22,6 @@ namespace TranslationPro.Blazor.Pages
         [Inject]
         public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
         
-
-        protected override async Task OnParametersSetAsync()
-        {
-            await LoadData();
-        }
 
         
         private Task ShowModal()

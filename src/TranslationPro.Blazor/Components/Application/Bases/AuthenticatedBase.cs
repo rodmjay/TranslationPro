@@ -6,7 +6,6 @@
 
 using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using TranslationPro.Blazor.Services;
 using TranslationPro.Shared.Interfaces;
 
@@ -28,21 +27,28 @@ public class AuthenticatedBase : ComponentBase
     [CascadingParameter]
     protected IApplicationsController ApplicationService { get; set; }
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-        await LoadData();
+        await LoadData();   
+        BuildBreadcrumbs();
     }
 
-    protected virtual Task LoadData()
+
+    protected virtual void BuildBreadcrumbs()
     {
-        tokenExpirationService.StartTokenExpirationTimer();
         this.NavigationItems.Clear();
         this.NavigationItems.Add(new NavigationItem()
         {
             Title = "Applications",
             Url = "/applications"
         });
+    }
 
+    protected virtual Task LoadData()
+    {
+        tokenExpirationService.StartTokenExpirationTimer();
+      
         return Task.CompletedTask;
     }
 }

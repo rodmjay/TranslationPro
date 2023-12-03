@@ -6,25 +6,27 @@ using TranslationPro.Shared.Filters;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
-namespace TranslationPro.Blazor.Components.Application.Components
+namespace TranslationPro.Blazor.Components.Application
 {
-    public partial class PhraseList : IHandle<LanguagesChangedEvent>
+    public partial class PhraseList : IHandle<LanguagesChangedEvent>, 
+        IHandle<PhraseCreatedEvent>, 
+        IHandle<PhraseDeletedEvent>
     {
         [CascadingParameter]
         public IEventAggregator EventAggregator { get; set; }
 
         [CascadingParameter]
         public ApplicationOutput Application { get; set; }
-        
-        private PagingQuery PagingQuery { get; set; } = new();
 
         [Inject]
-        public IApplicationPhrasesController PhraseData { get; set; }
+        public IApplicationPhrasesController PhraseService { get; set; }
 
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        protected NavigationManager NavManager { get; set; }
 
-        private PagedList<ApplicationPhraseOutput> PagedList { get; set; }
+        protected PagingQuery PagingQuery { get; set; } = new();
+
+        protected PagedList<ApplicationPhraseOutput> PagedList { get; set; }
 
         protected override void OnInitialized()
         {
@@ -33,7 +35,7 @@ namespace TranslationPro.Blazor.Components.Application.Components
 
         public async Task LoadData()
         {
-            PagedList = await PhraseData.GetPhrasesAsync(Application.Id, PagingQuery, new PhraseFilters());
+            PagedList = await PhraseService.GetPhrasesAsync(Application.Id, PagingQuery, new PhraseFilters());
         }
         
         protected override async Task OnParametersSetAsync()
@@ -49,12 +51,12 @@ namespace TranslationPro.Blazor.Components.Application.Components
             }
         }
 
-        private void ItemSelected(DataGridRowMouseEventArgs<ApplicationPhraseOutput> evnt)
+        private void HandleRowSelected(DataGridRowMouseEventArgs<ApplicationPhraseOutput> evnt)
         {
-            NavigationManager.NavigateTo($"/applications/{Application.Id}/phrases/{evnt.Item.Id}");
+            NavManager.NavigateTo($"/applications/{Application.Id}/phrases/{evnt.Item.Id}");
         }
 
-        private async Task PageChanged(DataGridPageChangedEventArgs args)
+        private async Task HandlePageChanged(DataGridPageChangedEventArgs args)
         {
             var reload = false;
 
@@ -78,6 +80,16 @@ namespace TranslationPro.Blazor.Components.Application.Components
         }
 
         public async Task HandleAsync(LanguagesChangedEvent message)
+        {
+            await LoadData();
+        }
+
+        public async Task HandleAsync(PhraseCreatedEvent message)
+        {
+            await LoadData();
+        }
+
+        public async Task HandleAsync(PhraseDeletedEvent message)
         {
             await LoadData();
         }

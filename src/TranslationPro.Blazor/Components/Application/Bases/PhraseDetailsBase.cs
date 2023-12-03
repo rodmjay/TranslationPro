@@ -21,17 +21,21 @@ public class PhraseDetailsBase : ApplicationDetailsBase
 
     protected ApplicationPhraseDetails ApplicationPhrase { get; set; }
 
-
-    
-    protected override async Task LoadData()
+    protected override void BuildBreadcrumbs()
     {
-        await base.LoadData();
-        ApplicationPhrase = await ApplicationPhraseService.GetPhraseAsync(ApplicationId, PhraseId);
-        
+        base.BuildBreadcrumbs();
         this.NavigationItems.Add(new NavigationItem()
         {
             Title = ApplicationPhrase.Id.ToString(),
             Url = $"/applications/{Application.Id}/phrases/{ApplicationPhrase.Id}"
         });
+    }
+
+    protected override async Task LoadData()
+    {
+        await base.LoadData();
+        ApplicationPhrase = await ApplicationPhraseService.GetPhraseAsync(ApplicationId, PhraseId);
+        
+        
     }
 }

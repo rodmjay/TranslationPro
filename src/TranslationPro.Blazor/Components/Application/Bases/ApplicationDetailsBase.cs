@@ -12,18 +12,20 @@ namespace TranslationPro.Blazor.Components.Application.Bases
 
         protected ApplicationOutput Application { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             EventAggregator.Subscribe(this);
-            await LoadData();
         }
         
-
         protected override async Task LoadData()
         {
             await base.LoadData();
-
             Application = await ApplicationService.GetApplicationAsync(ApplicationId);
+        }
+
+        protected override void BuildBreadcrumbs()
+        {
+            base.BuildBreadcrumbs();
 
             if (Application != null)
             {
@@ -33,6 +35,7 @@ namespace TranslationPro.Blazor.Components.Application.Bases
                     Url = $"/applications/{Application.Id}"
                 });
             }
+
         }
 
         public async Task HandleAsync(ApplicationUpdatedEvent message)

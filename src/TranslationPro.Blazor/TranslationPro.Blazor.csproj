@@ -6,6 +6,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="TranslationPro.Blazor\**" />
+	  <Content Remove="TranslationPro.Blazor\**" />
+	  <EmbeddedResource Remove="TranslationPro.Blazor\**" />
+	  <None Remove="TranslationPro.Blazor\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Remove="Pages\Dashboard2.razor" />
 	</ItemGroup>
 
@@ -43,10 +50,6 @@
 
 	<ItemGroup>
 	  <None Include="Pages\Dashboard.razor" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Components\Application\Pages\" />
 	</ItemGroup>
 
 	<ItemGroup>

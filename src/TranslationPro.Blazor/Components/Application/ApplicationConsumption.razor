@@ -2,8 +2,6 @@
 @if (Data != null)
 {
 
-
-
     <Table>
         <TableHeader>
             <TableRow>
@@ -44,11 +42,7 @@
     public IApplicationConsumptionController ConsumptionService { get; set; }
 
     private Dictionary<DateTime, ConsumptionInfo> Data { get; set; }
-
-    private BarChartDataset<int> GetBarChartDataset()
-    {
-        return new() {Label = "Consumption"};
-    }
+    
 
     protected override async Task OnParametersSetAsync()
     {

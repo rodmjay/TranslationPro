@@ -26,6 +26,16 @@ public class TranslationDetailsBase : PhraseDetailsBase
         await LoadData();
     }
 
+    protected override void BuildBreadcrumbs()
+    {
+        base.BuildBreadcrumbs();
+
+        this.NavigationItems.Add(new NavigationItem()
+        {
+            Title = Language.Name,
+            Url = $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{LanguageId}"
+        });
+    }
 
     protected override async Task LoadData()
     {
@@ -33,10 +43,5 @@ public class TranslationDetailsBase : PhraseDetailsBase
         
         Language = await LanguageService.GetLanguageAsync(LanguageId);
 
-        this.NavigationItems.Add(new NavigationItem()
-        {
-            Title = Language.Name,
-            Url = $"/applications/{ApplicationId}/phrases/{PhraseId}/languages/{LanguageId}"
-        });
     }
 }
