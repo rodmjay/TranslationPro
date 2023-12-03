@@ -16,6 +16,8 @@ public class UserProjections : Profile
     {
         CreateMap<User, UserOutput>()
             .ForMember(x=>x.Subscription, opt=>opt.MapFrom(x=>x.Subscription))
+            .ForMember(x=>x.ApplicationCount, opt=>opt.MapFrom(x=>x.Applications.Count))
+            .ForMember(x=>x.HasSubscription, opt=>opt.MapFrom(x=>x.Subscription != null))
             .IncludeAllDerived();
     }
 }

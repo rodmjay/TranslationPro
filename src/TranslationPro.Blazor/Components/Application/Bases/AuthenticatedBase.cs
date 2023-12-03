@@ -8,6 +8,7 @@ using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Services;
 using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Components.Application.Bases;
 
@@ -27,6 +28,8 @@ public class AuthenticatedBase : ComponentBase
     [CascadingParameter]
     protected IApplicationsController ApplicationService { get; set; }
 
+    [CascadingParameter]
+    public UserOutput CurrentUser { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {

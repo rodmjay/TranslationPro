@@ -10,20 +10,3 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager NavigationManager
-
-
-@code
-{
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-        if (authState.User.Identity.IsAuthenticated)
-        {
-            NavigationManager.NavigateTo("/applications");
-        }
-    }
-}

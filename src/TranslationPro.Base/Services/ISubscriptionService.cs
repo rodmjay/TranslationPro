@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Stripe.Checkout;
 using TranslationPro.Base.Common.Services.Interfaces;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Models;
 using Subscription = TranslationPro.Base.Entities.Subscription;
 
 namespace TranslationPro.Base.Services;

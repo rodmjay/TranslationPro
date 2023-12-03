@@ -1,40 +1,9 @@
 ﻿@layout MainLayout
 @page "/checkout"
 
-<h3>CheckOut</h3>
+<h3>Checkout</h3>
 
 
 <div id="checkout">
     <!-- Checkout will insert the payment form here -->
 </div>
-
-@code {
-
-
-    [Inject]
-    public NavigationManager Navigation { get; set; }
-
-    [Inject]
-    public IJSRuntime JavaScriptRuntime { get; set; }
-
-    [Inject]
-    public IConfiguration Configuration { get; set; }
-
-    [Inject]
-    protected ISubscriptionController SubscriptionService { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var subscription = await SubscriptionService.CreateCheckoutSession();
-
-        var stripePublicKey = Configuration["Stripe:PublicKey"];
-
-        await JavaScriptRuntime.InvokeVoidAsync("translationProStripe.initialize", new object[]
-        {
-            stripePublicKey,
-            subscription
-        });
-    }
-    
-
-}

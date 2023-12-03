@@ -1,0 +1,25 @@
+﻿
+@if (Languages != null)
+{
+    <Card Margin="Margin.Is4.FromBottom">
+        <CardHeader>
+            <CardTitle>Create New Application</CardTitle>
+        </CardHeader>
+        <CardBody>
+            <Validations @ref="validationsBasicExampleRef" Mode="ValidationMode.Auto" ValidateOnLoad="false">
+                <Validation Validator="@ValidationRule.IsNotEmpty">
+                    <Field>
+                        <FieldLabel>Application Name</FieldLabel>
+                        <TextEdit @bind-Text="@Input.Name" Placeholder="Enter application Name" />
+                    </Field>
+                </Validation>
+                        
+                <Field>
+                    <LanguageDropdown LanguagesChanged="LanguagesChanged"></LanguageDropdown>
+                </Field>
+                <Button Color="Color.Primary" Clicked="HandleSubmit">Submit</Button>
+            </Validations>
+                
+        </CardBody>
+    </Card>
+}

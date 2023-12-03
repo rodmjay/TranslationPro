@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using EventAggregator.Blazor;
+using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Blazor.Pages
 {
-    public partial class ApplicationDetails : ApplicationDetailsBase
+    public partial class ApplicationDetails : ApplicationDetailsBase, IHandle<PhraseCreatedEvent>
     {
         private Modal deleteApplication;
         public bool Disabled { get; set; }
@@ -15,7 +16,6 @@ namespace TranslationPro.Blazor.Pages
         private Task OnSelectedTabChanged(string name)
         {
             selectedTab = name;
-
             return Task.CompletedTask;
         }
 
@@ -46,5 +46,9 @@ namespace TranslationPro.Blazor.Pages
         }
 
 
+        public async Task HandleAsync(PhraseCreatedEvent message)
+        {
+            await LoadData();
+        }
     }
 }

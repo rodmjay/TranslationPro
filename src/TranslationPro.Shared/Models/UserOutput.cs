@@ -18,6 +18,9 @@ public class UserOutput : IUser
 
     public string PhoneNumber { get; set; }
 
+    public int ApplicationCount { get; set; }
+    public bool HasSubscription { get; set; }
+
     public SubscriptionOutput Subscription { get; set; }
 
 }

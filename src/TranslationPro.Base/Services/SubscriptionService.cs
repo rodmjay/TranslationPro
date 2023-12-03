@@ -8,16 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Stripe;
 using Stripe.Checkout;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Settings;
-using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Common;
-using TranslationPro.Shared.Models;
 using Subscription = TranslationPro.Base.Entities.Subscription;
 
 namespace TranslationPro.Base.Services;

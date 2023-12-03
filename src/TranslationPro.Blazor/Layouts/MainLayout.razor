@@ -1,26 +1,23 @@
 ﻿@using TranslationPro.Blazor.Components.Layout
 @inherits LayoutComponentBase
 
-
-<CascadingValue TValue="IEventAggregator" Value="EventAggregator">
-    <CascadingValue TValue="UserOutput" Value="@CurrentUser">
-        <Layout Sider>
-            <LayoutSider>
-                <LayoutSiderContent>
-                    <SideMenu />
-                </LayoutSiderContent>
-            </LayoutSider>
-            <Layout>
-                <LayoutHeader Fixed>
-                    <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
-                             ThemeGradientChanged="@OnThemeGradientChanged"
-                             ThemeRoundedChanged="@OnThemeRoundedChanged"
-                             ThemeColorChanged="@OnThemeColorChanged"/>
-                </LayoutHeader>
-                <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
-                    @Body
-                </LayoutContent>
-            </Layout>
+<CascadingValue TValue="UserOutput" Value="@CurrentUser">
+    <Layout Sider>
+        <LayoutSider>
+            <LayoutSiderContent>
+                <SideMenu />
+            </LayoutSiderContent>
+        </LayoutSider>
+        <Layout>
+            <LayoutHeader Fixed>
+                <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
+                         ThemeGradientChanged="@OnThemeGradientChanged"
+                         ThemeRoundedChanged="@OnThemeRoundedChanged"
+                         ThemeColorChanged="@OnThemeColorChanged"/>
+            </LayoutHeader>
+            <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
+                @Body
+            </LayoutContent>
         </Layout>
-    </CascadingValue>
+    </Layout>
 </CascadingValue>

@@ -9,7 +9,7 @@ namespace TranslationPro.Blazor.Layouts
 {
     public partial class MainLayout : IHandle<SubscriptionCreatedEvent>
     {
-        [Inject]
+        [CascadingParameter]
         protected IEventAggregator EventAggregator { get; set; }
 
         [Inject]

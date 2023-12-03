@@ -11,33 +11,6 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.Is6.OnDesktop">
-        <Card Margin="Margin.Is4.FromBottom">
-            <CardHeader>
-                <CardTitle>Add New Phrases</CardTitle>
-            </CardHeader>
-            <CardBody>
-                <Validations Mode="ValidationMode.Auto" ValidateOnLoad="false">
-                    
-                    @for (var index = 0; index < Phrases.Count; index++)
-                    {
-                        var local = index;
-                        <Validation Validator="@ValidationRule.IsNotEmpty">
-                            <Fields>
-                                <Field ColumnSize="ColumnSize.Is10">
-                                    <TextEdit @bind-Text="@Phrases[local].Value" Disabled="@IsSubmitting" Placeholder="Enter Text"/>
-                                </Field>
-                                <Field ColumnSize="ColumnSize.Is2">
-                                    <Button Color="Color.Danger" Disabled="@IsSubmitting" Clicked="() => RemoveItem(local)">Remove</Button>
-                                </Field>
-                            </Fields>
-                            
-                        </Validation>
-                    }
-                    <Button Color="Color.Secondary" Disabled="@IsSubmitting" Clicked="AddItem">Add Item</Button>
-                    <Button Color="Color.Primary" Loading="@IsSubmitting" Clicked="HandleSubmit">Submit</Button>
-                </Validations>
-
-            </CardBody>
-        </Card>
+        <PhraseForm></PhraseForm>
     </Column>
 </Row>

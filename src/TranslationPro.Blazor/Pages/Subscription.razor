@@ -1,24 +1,12 @@
 ﻿@layout MainLayout
 @page "/subscription"
-
-
-
+@inherits AuthenticatedBase
 
 @if (CurrentUser.Subscription == null)
 {
-    
     <SubscriptionCreate></SubscriptionCreate>
 }
 else
 {
     <SubscriptionDetails></SubscriptionDetails>
-}
-
-@code {
-
-
-
-    [CascadingParameter]
-    public UserOutput CurrentUser { get; set; }
-
 }

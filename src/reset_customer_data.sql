@@ -1,0 +1,6 @@
+delete from [TranslationPro].[ApplicationTranslation]
+delete from [TranslationPro].[ApplicationPhrase]
+delete from [TranslationPro].[ApplicationLanguage]
+delete from [TranslationPro].[ApplicationUser]
+delete from [TranslationPro].[Application]
+delete from [TranslationPro].[Subscription]

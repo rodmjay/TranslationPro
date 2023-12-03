@@ -87,7 +87,16 @@ else
                  <TabPanel Name="phrases">
                      <Row>
                          <Column ColumnSize="ColumnSize.Is12">
-                             <PhraseList></PhraseList>
+                             
+                             @if (Application.PhraseCount == 0)
+                             {
+                                 <PhraseForm></PhraseForm>
+                             }
+                             else
+                             {
+                                 <PhraseList></PhraseList>
+                             }
+
                          </Column>
                         
                      </Row>

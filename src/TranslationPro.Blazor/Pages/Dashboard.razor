@@ -3,10 +3,23 @@
 @inherits AuthenticatedBase
 @layout MainLayout
 
-<h3>Applications</h3>
+@if(CurrentUser != null)
+{
+    if (CurrentUser.HasSubscription)
+    {
+        if (CurrentUser.ApplicationCount > 0)
+        {
+            <h3>Applications</h3>
 
-<ApplicationList></ApplicationList>
-
-@code {
-
+            <ApplicationList></ApplicationList>
+        }
+        else
+        {
+            <ApplicationForm></ApplicationForm>
+        }
+    }
+    else
+    {
+        <Subscription></Subscription>
+    }
 }
