@@ -9,6 +9,9 @@ namespace TranslationPro.Blazor.Components.Layout
     public partial class SideMenu : IHandle<ApplicationCreatedEvent>, IHandle<ApplicationDeletedEvent>
     {
         [CascadingParameter]
+        public UserOutput CurrentUser { get; set; }
+
+        [CascadingParameter]
         public IEventAggregator EventAggregator { get; set; }
 
         [Inject]

@@ -12,8 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Stripe;
 using Stripe.Checkout;
+using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Common.Services.Bases;
 using TranslationPro.Base.Settings;
+using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Common;
 using Subscription = TranslationPro.Base.Entities.Subscription;
 
@@ -22,21 +24,27 @@ namespace TranslationPro.Base.Services;
 public class SubscriptionService : BaseService<Subscription>, ISubscriptionService
 {
     private readonly SessionService _sessionService;
+    private readonly CustomerService _customerService;
     private readonly Stripe.SubscriptionService _subscriptionService;
     private readonly PaymentLinkService _paymentLinkService;
     private readonly IOptions<AppSettings> _settings;
+    private readonly IRepositoryAsync<User> _userRepository;
 
     public SubscriptionService(IServiceProvider serviceProvider, 
         SessionService sessionService,
+        CustomerService customerService,
         Stripe.SubscriptionService subscriptionService,
         PaymentLinkService paymentLinkService, IOptions<AppSettings> settings) : base(serviceProvider)
     {
         _sessionService = sessionService;
+        _customerService = customerService;
         _subscriptionService = subscriptionService;
         _paymentLinkService = paymentLinkService;
         _settings = settings;
+        _userRepository = UnitOfWork.RepositoryAsync<User>();
     }
-    
+
+    private IQueryable<User> Users => _userRepository.Queryable();
 
     public async Task<Stripe.Subscription> GetSubscriptionAsync(int userId)
     {
@@ -73,6 +81,23 @@ public class SubscriptionService : BaseService<Subscription>, ISubscriptionServi
 
     public async Task<Session> CreateCheckoutSession(int userId)
     {
+        var user = await Users.Where(x=>x.Id == userId).FirstAsync();
+
+        if (user.CustomerId == null)
+        {
+            var customerOptions = new CustomerCreateOptions()
+            {
+                Name = user.FullName,
+                Email = user.Email,
+            };
+
+            var customer = await _customerService.CreateAsync(customerOptions);
+
+            user.CustomerId = customer.Id;
+
+            _userRepository.Update(user, true);
+        }
+
         var options = new SessionCreateOptions()
         {
             UiMode = "embedded",
@@ -83,6 +108,7 @@ public class SubscriptionService : BaseService<Subscription>, ISubscriptionServi
                     Price = _settings.Value.Stripe.PriceId
                 }
             },
+            Customer = user.CustomerId,
             Mode = "subscription",
             ReturnUrl = _settings.Value.Stripe.PostCheckoutUrl
         };

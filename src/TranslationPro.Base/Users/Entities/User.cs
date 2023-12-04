@@ -33,6 +33,8 @@ public partial class User : IdentityUser<int>, IEntityTypeConfiguration<User>, I
     public string LastName { get; set; }
     public string FullName => FirstName + " " + LastName;
 
+    public string StripeCustomerId { get; set; }
+
     public ICollection<UserRole> UserRoles { get; set; }
     public ICollection<UserToken> UserTokens { get; set; }
     public ICollection<UserLogin> UserLogins { get; set; }

@@ -14,7 +14,11 @@ public class ApplicationOutput : IApplication
 {
     public int PhraseCount { get; set; }
     public int TranslationCount { get; set; }
-    public int PendingTranslationCount { get; set; }
+    public int BlankTranslationCount { get; set; }
+    public int MissingTranslations => IdealTranslationCount - TranslationCount;
+    public int PendingTranslations => BlankTranslationCount + MissingTranslations; 
+    public int IdealTranslationCount => LanguageCount * PhraseCount;
+
     public Guid Id { get; set; }
     public string Name { get; set; }
     public int LanguageCount

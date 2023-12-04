@@ -10,42 +10,68 @@
     </BarBrand>
     <BarMenu>
         <BarStart>
-            <BarItem>
-                <BarLink To="/applications">
-                    <BarIcon IconName="IconName.Dashboard"/>
-                    Dashboard
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/subscription">
-                    <BarIcon IconName="IconName.Dashboard" />
-                    Subscription
-                </BarLink>
-            </BarItem>
-            <Divider />
-            <Repeater Items="Applications">
-                
+            
+            @if (CurrentUser is {ApplicationCount: > 0 })
+            {
                 <BarItem>
-                    <BarLink To=@($"applications/{@context.Id}") Match="Match.Prefix">
-                        <BarIcon IconName="IconName.ChevronRight"/>
-                        @context.Name
+                    <BarLink To="/applications">
+                        <BarIcon IconName="IconName.Dashboard"/>
+                        Dashboard
                     </BarLink>
                 </BarItem>
+            }
 
-            </Repeater>
-
-           
-        </BarStart>
-        <BarEnd>
             <BarItem>
-                
-                <BarLink To="/create-application" Match="Match.Prefix">
-                    <BarIcon IconName="IconName.Add" />
-                    Create Application
+                <BarLink To="/subscription">
+                    <BarIcon IconName="IconName.Dashboard"/>
+                    
+                    @if (CurrentUser is {HasSubscription: true })
+                    {
+                        <span>My Subscription</span>
+                    }
+                    else
+                    {
+                        <span>Subscribe</span>
+                    }
+                    
                 </BarLink>
             </BarItem>
-        </BarEnd>
+            
+            @if (CurrentUser is {ApplicationCount: > 0 })
+            {
+                
+                <Divider/>
+                <Repeater Items="Applications">
+
+                    <BarItem>
+                        <BarLink To=@($"applications/{@context.Id}") Match="Match.Prefix">
+                            <BarIcon IconName="IconName.ChevronRight"/>
+                            @context.Name
+                        </BarLink>
+                    </BarItem>
+
+                </Repeater>
+
+            }
+
+
+        </BarStart>
         
+        @if (CurrentUser is {ApplicationCount: > 0 })
+        {
+            
+            <BarEnd>
+                <BarItem>
+                
+                    <BarLink To="/create-application" Match="Match.Prefix">
+                        <BarIcon IconName="IconName.Add" />
+                        Create Application
+                    </BarLink>
+                </BarItem>
+            </BarEnd>
+        
+        }
+
     </BarMenu>
 </Bar>
 @code {

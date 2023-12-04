@@ -13,7 +13,8 @@ namespace TranslationPro.Blazor.Layouts
         IHandle<PhraseCreatedEvent>,
         IHandle<ApplicationDeletedEvent>,
         IHandle<PhraseDeletedEvent>,
-        IHandle<LanguagesChangedEvent>
+        IHandle<LanguagesChangedEvent>,
+        IHandle<PhrasesReprocessedEvent>
     {
         [CascadingParameter]
         protected IEventAggregator EventAggregator { get; set; }
@@ -126,6 +127,7 @@ namespace TranslationPro.Blazor.Layouts
         public async Task HandleAsync(ApplicationCreatedEvent message)
         {
             await PushMessage("Application Created Successfully");
+            await LoadData();
         }
 
         SnackbarStack snackbarStack;
@@ -138,6 +140,7 @@ namespace TranslationPro.Blazor.Layouts
         public async Task HandleAsync(ApplicationDeletedEvent message)
         {
             await PushMessage("Application Deleted Successfully");
+            await LoadData();
         }
 
         public async Task HandleAsync(PhraseDeletedEvent message)
@@ -148,6 +151,12 @@ namespace TranslationPro.Blazor.Layouts
         public async Task HandleAsync(LanguagesChangedEvent message)
         {
             await PushMessage("Languages Modified Successfully");
+        }
+
+        public async Task HandleAsync(PhrasesReprocessedEvent message)
+        {
+            await PushMessage("Phrases Processed Successfully", SnackbarColor.Info);
+            await LoadData();
         }
     }
 }

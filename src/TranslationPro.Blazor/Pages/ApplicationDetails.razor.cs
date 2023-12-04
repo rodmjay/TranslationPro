@@ -2,12 +2,16 @@
 using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Events;
+using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Blazor.Pages
 {
-    public partial class ApplicationDetails : ApplicationDetailsBase, IHandle<PhraseCreatedEvent>
+    public partial class ApplicationDetails : ApplicationDetailsBase, IHandle<PhraseCreatedEvent>, IHandle<PhrasesReprocessedEvent>
     {
+        [Inject]
+        public IApplicationPhrasesController ApplicationPhraseService { get; set; }
+
         private Modal deleteApplication;
         public bool Disabled { get; set; }
 
@@ -21,9 +25,7 @@ namespace TranslationPro.Blazor.Pages
 
         [Inject]
         public IApplicationLanguagesController ApplicationLanguagesController { get; set; }
-        
 
-        
         private Task ShowModal()
         {
             return deleteApplication.Show();
@@ -32,7 +34,20 @@ namespace TranslationPro.Blazor.Pages
         {
             return deleteApplication.Hide();
         }
-        
+
+        protected override async Task LoadData()
+        {
+            await base.LoadData();
+
+            if (this.Application.PendingTranslations > 0)
+            {
+                var result = await ApplicationPhraseService.ProcessPending(ApplicationId);
+                if (result.Succeeded)
+                {
+                    await EventAggregator.PublishAsync(new PhrasesReprocessedEvent());
+                }
+            }
+        }
 
         public async Task DeleteApplication()
         {
@@ -47,6 +62,11 @@ namespace TranslationPro.Blazor.Pages
 
 
         public async Task HandleAsync(PhraseCreatedEvent message)
+        {
+            await LoadData();
+        }
+
+        public async Task HandleAsync(PhrasesReprocessedEvent message)
         {
             await LoadData();
         }
