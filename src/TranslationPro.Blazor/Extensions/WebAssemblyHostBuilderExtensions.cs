@@ -44,7 +44,7 @@ namespace TranslationPro.Blazor.Extensions
                     client => client.BaseAddress = url)
                 .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
-            builder.Services.AddHttpClient<ISubscriptionController, SubscriptionProxy>(
+            builder.Services.AddHttpClient<IStripeController, StripeProxy>(
                     client => client.BaseAddress = url)
                 .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 

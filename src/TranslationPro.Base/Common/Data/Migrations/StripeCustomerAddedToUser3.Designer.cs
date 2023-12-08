@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231204025030_StripeCustomerAddedToUser3")]
+    partial class StripeCustomerAddedToUser3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2359,21 +2362,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<long?>("Amount")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal?>("AmountDecimal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Interval")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("IntervalCount")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
@@ -2405,15 +2393,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Product", "Stripe");
@@ -2423,6 +2402,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("CharacterPrice")
+                        .HasPrecision(19, 4)
+                        .HasColumnType("money");
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(max)");
@@ -2971,45 +2954,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("TranslationPro.Base.Entities.Price", b =>
-                {
-                    b.OwnsMany("TranslationPro.Base.Entities.PriceTier", "Tiers", b1 =>
-                        {
-                            b1.Property<string>("PriceId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<long?>("FlatAmount")
-                                .HasColumnType("bigint");
-
-                            b1.Property<decimal?>("FlatAmountDecimal")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<long?>("UnitAmount")
-                                .HasColumnType("bigint");
-
-                            b1.Property<decimal?>("UnitAmountDecimal")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<long?>("UpTo")
-                                .HasColumnType("bigint");
-
-                            b1.HasKey("PriceId", "Id");
-
-                            b1.ToTable("PriceTier", "Stripe");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PriceId");
-                        });
-
-                    b.Navigation("Tiers");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Entities.Subscription", b =>

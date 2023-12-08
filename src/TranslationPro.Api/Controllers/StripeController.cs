@@ -11,42 +11,41 @@ using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Services;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
-using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Controllers;
 
-public class SubscriptionController : BaseController, ISubscriptionController
+public class StripeController : BaseController, IStripeController
 {
-    private readonly ISubscriptionService _subscriptionService;
+    private readonly IStripeService _stripeService;
 
-    public SubscriptionController(IServiceProvider serviceProvider,
-        ISubscriptionService subscriptionService) : base(serviceProvider)
+    public StripeController(IServiceProvider serviceProvider,
+        IStripeService stripeService) : base(serviceProvider)
     {
-        _subscriptionService = subscriptionService;
+        _stripeService = stripeService;
     }
 
-    [HttpGet]
+    [HttpGet("subscription")]
     public async Task<Stripe.Subscription> GetSubscription()
     {
         var user = await GetCurrentUser();
 
-        return await _subscriptionService.GetSubscriptionAsync(user.Id);
+        return await _stripeService.GetSubscriptionAsync(user.Id);
     }
 
-    [HttpPut]
+    [HttpPut("checkout")]
     public async Task<string> CreateCheckoutSession()
     {
         var user = await GetCurrentUser();
 
-        var session = await _subscriptionService.CreateCheckoutSession(user.Id);
+        var session = await _stripeService.CreateCheckoutSession(user.Id);
         return session.ClientSecret;
     }
 
-    [HttpPatch]
+    [HttpPatch("complete-checkout")]
     public async Task<Result> CompleteSession([FromQuery] string checkoutSessionId)
     {
         var user = await GetCurrentUser();
 
-        return await _subscriptionService.CompleteSubscriptionCheckout(user.Id, checkoutSessionId);
+        return await _stripeService.CompleteSubscriptionCheckout(user.Id, checkoutSessionId);
     }
 }

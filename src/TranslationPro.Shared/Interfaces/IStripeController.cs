@@ -10,7 +10,7 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Shared.Interfaces;
 
-public interface ISubscriptionController
+public interface IStripeController
 {
     Task<Stripe.Subscription> GetSubscription();
     Task<string> CreateCheckoutSession();

@@ -14,27 +14,29 @@ namespace TranslationPro.Base.Entities;
 
 public class Subscription : BaseEntity<Subscription>
 {
+    public Subscription()
+    {
+        Items = new List<SubscriptionItem>();
+    }
+
     public int UserId { get; set; }
 
     public User User { get; set; }
 
     public ICollection<Application> Applications { get; set; }
-
-    public decimal CharacterPrice { get; set; }
-
+    public ICollection<SubscriptionItem> Items { get; set; }
+    
     public string CustomerId { get; set; }
     public string SubscriptionId { get; set; }
 
     public override void Configure(EntityTypeBuilder<Subscription> builder)
     {
-        builder.ToTable(nameof(Subscription), "TranslationPro");
+        builder.ToTable(nameof(Subscription), "Stripe");
 
         builder.HasKey(x => x.UserId);
 
         builder.HasOne(x=>x.User)
             .WithOne(x=>x.Subscription)
             .HasForeignKey<Subscription>(x=>x.UserId);
-
-        builder.Property(x => x.CharacterPrice).HasColumnType("money").HasPrecision(19, 4);
     }
 }

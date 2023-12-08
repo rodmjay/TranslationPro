@@ -8,5 +8,5 @@ namespace TranslationPro.Blazor.Pages;
 
 public partial class Subscription : AuthenticatedBase
 {
-
+    
 }

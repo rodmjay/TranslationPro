@@ -12,7 +12,7 @@ namespace TranslationPro.Blazor.Pages
         public bool IsCompleted { get; set; } = false;
 
         [Inject]
-        protected ISubscriptionController SubscriptionService { get; set; }
+        protected IStripeController StripeService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,7 +20,7 @@ namespace TranslationPro.Blazor.Pages
 
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("session_id", out var sessionId))
             {
-                var result = await SubscriptionService.CompleteSession(sessionId);
+                var result = await StripeService.CompleteSession(sessionId);
                 if (result.Succeeded)
                 {
                     await EventAggregator.PublishAsync(new SubscriptionCreatedEvent());

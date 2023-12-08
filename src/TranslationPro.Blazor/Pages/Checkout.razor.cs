@@ -17,11 +17,11 @@ namespace TranslationPro.Blazor.Pages
         public IConfiguration Configuration { get; set; }
 
         [Inject]
-        protected ISubscriptionController SubscriptionService { get; set; }
+        protected IStripeController StripeService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var subscription = await SubscriptionService.CreateCheckoutSession();
+            var subscription = await StripeService.CreateCheckoutSession();
 
             var stripePublicKey = Configuration["Stripe:PublicKey"];
 

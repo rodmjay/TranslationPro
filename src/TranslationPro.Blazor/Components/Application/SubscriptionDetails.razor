@@ -15,10 +15,8 @@ else
         <Paragraph>
             Created
             @Subscription.Created.Date.ToShortDateString()
-
         </Paragraph>
 
-        
         <Button Clicked="ShowModal" Color="Color.Danger">Delete Subscription</Button>
 
     }
@@ -38,41 +36,4 @@ else
             </ModalFooter>
         </ModalContent>
     </Modal>
-}
-
-
-@code {
-
-    [Inject]
-    protected ISubscriptionController SubscriptionService { get; set; }
-
-    [Inject]
-    protected NavigationManager NavManager { get; set; }
-
-    [CascadingParameter]
-    protected UserOutput CurrentUser { get; set; }
-
-    private Modal deleteSubscription;
-
-    private Stripe.Subscription Subscription { get; set; }
-
-    private Task ShowModal()
-    {
-        return deleteSubscription.Show();
-    }
-    private Task HideModal()
-    {
-        return deleteSubscription.Hide();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        Subscription = await SubscriptionService.GetSubscription();
-    }
-
-    public async Task DeleteSubscription()
-    {
-        NavManager.NavigateTo($"/");
-    }
-
 }

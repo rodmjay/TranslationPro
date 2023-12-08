@@ -13,24 +13,24 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Shared.Proxies;
 
-public class SubscriptionProxy : BaseProxy, ISubscriptionController
+public class StripeProxy : BaseProxy, IStripeController
 {
-    public SubscriptionProxy(HttpClient httpClient) : base(httpClient)
+    public StripeProxy(HttpClient httpClient) : base(httpClient)
     {
     }
 
     public Task<Stripe.Subscription> GetSubscription()
     {
-        return DoGet<Stripe.Subscription>($"v1.0/subscription");
+        return DoGet<Stripe.Subscription>($"v1.0/stripe/subscription");
     }
 
     public Task<string> CreateCheckoutSession()
     {
-        return DoPut<string>("v1.0/subscription");
+        return DoPut<string>("v1.0/stripe/checkout");
     }
 
     public Task<Result> CompleteSession(string checkoutSessionId)
     {
-        return DoPatch<Result>($"v1.0/subscription?checkoutSessionId={checkoutSessionId}");
+        return DoPatch<Result>($"v1.0/stripe/complete-checkout?checkoutSessionId={checkoutSessionId}");
     }
 }

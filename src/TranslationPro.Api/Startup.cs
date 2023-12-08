@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using TranslationPro.Base.Common.Data.Contexts;
 using TranslationPro.Base.Common.Middleware.Extensions;
 using TranslationPro.Base.Extensions;
+using TranslationPro.Base.Services;
 using TranslationPro.Base.Settings;
 using TranslationPro.Base.Users.Extensions;
 
@@ -96,8 +97,10 @@ public class Startup
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context,
-        IOptions<AppSettings> settings)
+        IOptions<AppSettings> settings, IStripeService stripeService)
     {
         RestApiBuilderExtensions.Configure(app, env, context, settings);
+
+        stripeService.Initialize();
     }
 }

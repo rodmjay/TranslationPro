@@ -27,11 +27,11 @@
                     
                     @if (CurrentUser is {HasSubscription: true })
                     {
-                        <span>My Subscription</span>
+                        @("My Subscription")
                     }
                     else
                     {
-                        <span>Subscribe</span>
+                        @("Subscribe")
                     }
                     
                 </BarLink>

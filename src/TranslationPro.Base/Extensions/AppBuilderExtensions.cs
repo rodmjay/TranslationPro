@@ -16,14 +16,11 @@ using Stripe;
 using Stripe.Checkout;
 using TranslationPro.Base.Managers;
 using TranslationPro.Shared.Proxies;
-using SubscriptionService = TranslationPro.Base.Services.SubscriptionService;
 
 namespace TranslationPro.Base.Extensions;
 
 public static class AppBuilderExtensions
 {
-
-
     public static AppBuilder AddTranslationProUserDependencies(this AppBuilder builder)
     {
         builder.Services.TryAddScoped<IApplicationUserService, ApplicationUserService>();
@@ -49,7 +46,7 @@ public static class AppBuilderExtensions
         builder.Services.TryAddScoped<IPermissionService, PermissionService>();
         builder.Services.TryAddScoped<ILanguageService, LanguageService>();
         builder.Services.TryAddScoped<IApplicationConsumptionService, ApplicationConsumptionService>();
-        builder.Services.TryAddScoped<ISubscriptionService, SubscriptionService>();
+        builder.Services.TryAddScoped<IStripeService, StripeService>();
 
         builder.Services.TryAddScoped<ApplicationManager>();
         builder.Services.TryAddScoped<ApplicationLanguageManager>();
@@ -86,11 +83,19 @@ public static class AppBuilderExtensions
             new SessionService(x.GetRequiredService<IStripeClient>()));
 
         builder.Services.AddScoped(x =>
-            new Stripe.SubscriptionService(x.GetRequiredService<IStripeClient>()));
+            new SubscriptionService(x.GetRequiredService<IStripeClient>()));
 
         builder.Services.AddScoped(x =>
             new CustomerService(x.GetRequiredService<IStripeClient>()));
 
+        builder.Services.AddScoped(x =>
+            new PriceService(x.GetRequiredService<IStripeClient>()));
+
+        builder.Services.AddScoped(x =>
+            new ProductService(x.GetRequiredService<IStripeClient>()));
+
+        builder.Services.AddScoped(x =>
+            new PlanService(x.GetRequiredService<IStripeClient>()));
 
         return builder;
     }
