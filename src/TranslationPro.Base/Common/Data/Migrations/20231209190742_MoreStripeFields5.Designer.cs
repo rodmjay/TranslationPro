@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationPro.Base.Common.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TranslationPro.Base.Common.Data.Contexts;
 namespace TranslationPro.Base.Common.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231209190742_MoreStripeFields5")]
+    partial class MoreStripeFields5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2700,31 +2703,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("InvoiceId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("InvoiceItemId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("PeriodEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("PeriodStart")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SubscriptionItemId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<long>("TotalUsage")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("InvoiceId");
-
                     b.HasIndex("InvoiceItemId");
-
-                    b.HasIndex("SubscriptionItemId");
 
                     b.ToTable("UsageRecordSummary", "Stripe");
                 });
@@ -3374,21 +3358,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
             modelBuilder.Entity("TranslationPro.Base.Entities.UsageRecordSummary", b =>
                 {
-                    b.HasOne("TranslationPro.Base.Entities.Invoice", "Invoice")
-                        .WithMany("UsageRecordSummaries")
-                        .HasForeignKey("InvoiceId");
-
-                    b.HasOne("TranslationPro.Base.Entities.InvoiceItem", null)
+                    b.HasOne("TranslationPro.Base.Entities.InvoiceItem", "InvoiceItem")
                         .WithMany("UsageRecords")
                         .HasForeignKey("InvoiceItemId");
 
-                    b.HasOne("TranslationPro.Base.Entities.SubscriptionItem", "SubscriptionItem")
-                        .WithMany("UsageRecordSummaries")
-                        .HasForeignKey("SubscriptionItemId");
-
-                    b.Navigation("Invoice");
-
-                    b.Navigation("SubscriptionItem");
+                    b.Navigation("InvoiceItem");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Users.Entities.RoleClaim", b =>
@@ -3529,8 +3503,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("Lines");
-
-                    b.Navigation("UsageRecordSummaries");
                 });
 
             modelBuilder.Entity("TranslationPro.Base.Entities.InvoiceItem", b =>
@@ -3566,8 +3538,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
 
             modelBuilder.Entity("TranslationPro.Base.Entities.SubscriptionItem", b =>
                 {
-                    b.Navigation("UsageRecordSummaries");
-
                     b.Navigation("UsageRecords");
                 });
 

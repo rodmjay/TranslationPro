@@ -27,12 +27,15 @@ public class StripeMapper : Profile
         CreateMap<InvoiceItem, InvoiceItemOutput>()
             .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id));
 
+        CreateMap<UsageRecordSummary, UsageRecordSummaryOutput>();
+
         CreateMap<InvoiceLine, InvoiceLineOutput>()
             .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id));
 
         CreateMap<SubscriptionItem, SubscriptionItemOutput>()
             .ForMember(x=>x.Id, opt=>opt.MapFrom(x=>x.StripeItemId))
             .ForMember(x=>x.Product, opt=>opt.MapFrom(x=>x.Product))
+            .ForMember(x=>x.UsageRecords, opt=>opt.MapFrom(x=>x.UsageRecordSummaries))
             .ForMember(x=>x.Plan, opt=>opt.MapFrom(x=>x.Plan));
 
         CreateMap<Plan, PlanOutput>()

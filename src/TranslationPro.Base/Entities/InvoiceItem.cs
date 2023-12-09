@@ -16,6 +16,7 @@ public class InvoiceItem : BaseEntity<InvoiceItem>
     public string Id { get; set; }
     public string InvoiceId { get; set; }
     public Invoice Invoice { get; set; }
+    public ICollection<UsageRecordSummary> UsageRecords { get; set; }
 
     public override void Configure(EntityTypeBuilder<InvoiceItem> builder)
     {

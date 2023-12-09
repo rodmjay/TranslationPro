@@ -40,6 +40,7 @@ public class StripeService : BaseService, IStripeService
     private readonly PriceService _priceService;
     private readonly SessionService _sessionService;
     private readonly CustomerService _customerService;
+    private readonly UsageRecordSummaryService _usageRecordSummaryService;
     private readonly PlanService _planService;
     private readonly InvoiceService _invoiceService;
     private readonly SubscriptionService _subscriptionService;
@@ -50,6 +51,7 @@ public class StripeService : BaseService, IStripeService
         PriceService priceService,
         SessionService sessionService,
         CustomerService customerService,
+        UsageRecordSummaryService usageRecordSummaryService,
         PlanService planService,
         InvoiceService invoiceService,
         SubscriptionService subscriptionService) : base(serviceProvider)
@@ -58,6 +60,7 @@ public class StripeService : BaseService, IStripeService
         _priceService = priceService;
         _sessionService = sessionService;
         _customerService = customerService;
+        _usageRecordSummaryService = usageRecordSummaryService;
         _planService = planService;
         _invoiceService = invoiceService;
         _subscriptionService = subscriptionService;
@@ -133,6 +136,9 @@ public class StripeService : BaseService, IStripeService
         var subscription = await _subscriptionRepository
             .Queryable()
             .Include(x=>x.Items)
+            .ThenInclude(x=>x.UsageRecords)
+            .Include(x=>x.Items)
+            .ThenInclude(x=>x.UsageRecordSummaries)
             .Include(x=>x.Invoices)
             .ThenInclude(x=>x.Lines)
             .Where(x => x.UserId == userId)
@@ -172,7 +178,7 @@ public class StripeService : BaseService, IStripeService
                 existingInvoice.Sync(invoice,userId);
                 existingInvoice.ObjectState = ObjectState.Modified;
             }
-
+            if(existingInvoice != null)
             foreach (var existingLine in existingInvoice.Lines)
             {
                 existingLine.ObjectState = ObjectState.Deleted;
@@ -197,6 +203,40 @@ public class StripeService : BaseService, IStripeService
                 }
             }
         }
+        
+
+
+        foreach (var item in subscription.Items)
+        {
+            foreach (var summary in item.UsageRecordSummaries)
+            {
+                summary.ObjectState = ObjectState.Deleted;
+            }
+
+            var usageSummaries = await _usageRecordSummaryService.ListAsync(item.StripeItemId,
+                new UsageRecordSummaryListOptions()
+                {
+                    Limit = 100,
+                });
+
+            foreach (var usageSummary in usageSummaries)
+            {
+                var existingSummary = item.UsageRecordSummaries.FirstOrDefault(x => x.Id == usageSummary.Id);
+                if (existingSummary == null)
+                {
+                    existingSummary = new Entities.UsageRecordSummary();
+                    existingSummary.Sync(usageSummary);
+                    existingSummary.ObjectState = ObjectState.Added;
+
+                    item.UsageRecordSummaries.Add(existingSummary);
+                }
+                else
+                {
+                    existingSummary.Sync(usageSummary);
+                    existingSummary.ObjectState = ObjectState.Modified;
+                }
+            }
+        }
 
         _subscriptionRepository.InsertOrUpdateGraph(subscription, true);
 
@@ -215,6 +255,7 @@ public class StripeService : BaseService, IStripeService
 
         var subscription = new Subscription();
         subscription.Sync(stripeSubscription, userId);
+        subscription.ObjectState = ObjectState.Added;
 
         var records = _subscriptionRepository.InsertOrUpdateGraph(subscription, true);
         if (records > 0)

@@ -15,10 +15,18 @@ namespace TranslationPro.Base.Entities;
 
 public class Invoice : BaseEntity<Invoice>
 {
+    public Invoice()
+    {
+        this.Items = new List<InvoiceItem>();
+        this.Lines = new List<InvoiceLine>();
+        this.UsageRecordSummaries = new List<UsageRecordSummary>();
+    }
+
     public int UserId { get; set; }
     public string Id { get; set; }
     public ICollection<InvoiceItem> Items { get; set; }
     public ICollection<InvoiceLine> Lines { get; set; }
+    public ICollection<UsageRecordSummary> UsageRecordSummaries { get; set; }
     public string SubscriptionId { get; set; }
     public Subscription Subscription { get; set; }
     public long AmountDue { get; set; }

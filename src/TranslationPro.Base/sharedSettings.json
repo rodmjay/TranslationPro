@@ -15,7 +15,7 @@
   "AppSettings": {
     "Authority": "https://localhost:44319",
     "ApiUrl": "https://localhost:19977",
-    "AppUrl": "https://localhost:44330",
+    "AppUrl": "https://localhost:7243",
     "TranslationsUrl": "https://localhost:44318",
     "ASPNETCORE_ENVIRONMENT": "Development",
     "Database": {

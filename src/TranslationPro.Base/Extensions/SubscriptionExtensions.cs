@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Identity.Client;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Entities;
 

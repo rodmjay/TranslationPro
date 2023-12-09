@@ -19,6 +19,7 @@ else
             <Items>
                 <Tab Name="products">Products</Tab>
                 <Tab Name="invoices">Invoices</Tab>
+                <Tab Name="usage_records">Usage Summary</Tab>
             </Items>
             <Content>
                 <TabPanel Name="products">
@@ -72,6 +73,39 @@ else
                             }
                         </TableBody>
                     </Table>
+                </TabPanel>
+                <TabPanel Name="usage_records">
+                    
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeaderCell>
+                                    Period
+                                </TableHeaderCell>
+                                <TableHeaderCell>
+                                    Amount
+                                </TableHeaderCell>
+                            </TableRow>
+                        </TableHeader>
+                        
+                        <TableBody>
+
+
+                        @foreach (var usage in @Subscription.Items.SelectMany(x => x.UsageRecords))
+                        {
+                            <TableRow>
+                                <TableRowCell>
+                                    @usage.PeriodStart - @usage.PeriodEnd
+                                </TableRowCell>
+                                <TableRowCell>
+                                    @usage.TotalUsage
+                                </TableRowCell>
+                            </TableRow>
+                        }
+
+                        </TableBody>
+                    </Table>
+
                 </TabPanel>
             </Content>
         </Tabs>

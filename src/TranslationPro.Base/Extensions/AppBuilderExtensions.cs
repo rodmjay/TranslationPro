@@ -107,6 +107,9 @@ public static class AppBuilderExtensions
             new UsageRecordService(x.GetRequiredService<IStripeClient>()));
 
 
+        builder.Services.AddScoped(x =>
+            new UsageRecordSummaryService(x.GetRequiredService<IStripeClient>()));
+
         return builder;
     }
 }

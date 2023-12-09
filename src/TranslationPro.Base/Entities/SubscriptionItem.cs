@@ -22,6 +22,7 @@ public class SubscriptionItem : BaseEntity<SubscriptionItem>
     public Product Product { get; set; }
 
     public ICollection<UsageRecord> UsageRecords { get; set; }
+    public ICollection<UsageRecordSummary> UsageRecordSummaries { get; set; }
 
     public override void Configure(EntityTypeBuilder<SubscriptionItem> builder)
     {
