@@ -110,17 +110,27 @@
 
     private async Task ItemDropped(DraggableDroppedEventArgs<DropItem> dropItem)
     {
+
+        dropItem.Item.Group = dropItem.DropZoneName;
         if (dropItem.DropZoneName == "Enabled")
         {
-            await LanguageEnabled(dropItem.Item.LanguageId);
+            if (!SelectedLanguages.Contains(dropItem.Item.LanguageId))
+            {
+                await LanguageEnabled(dropItem.Item.LanguageId);
+                
+                await EventAggregator.PublishAsync(new LanguagesChangedEvent());
+            }
         }
         if (dropItem.DropZoneName == "Disabled")
         {
-            await LanguageDisabled(dropItem.Item.LanguageId);
+            if (SelectedLanguages.Contains(dropItem.Item.LanguageId))
+            {
+                await LanguageDisabled(dropItem.Item.LanguageId);
+                
+                await EventAggregator.PublishAsync(new LanguagesChangedEvent());
+            }
         }
-        dropItem.Item.Group = dropItem.DropZoneName;
 
-        await EventAggregator.PublishAsync(new LanguagesChangedEvent());
     }
 
     

@@ -12,6 +12,7 @@ public class Product : BaseEntity<Product>
     public string Description { get; set; }
     public string Name { get; set; }
     public string Type { get; set; }
+    public ICollection<SubscriptionItem> SubscriptionItems { get; set; }
 
     public override void Configure(EntityTypeBuilder<Product> builder)
     {

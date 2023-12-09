@@ -52,7 +52,7 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
     private IQueryable<ApplicationPhrase> ApplicationPhrases => Repository.Queryable()
         .Include(x => x.Translations)
         .Include(x => x.Application);
-    
+
 
     public async Task<string[]> GetPhrasesWithPendingTranslation(Guid applicationId)
     {
@@ -137,6 +137,12 @@ public class ApplicationPhraseService : BaseService<ApplicationPhrase>, IApplica
             .Select(x => x.Id).ToArrayAsync();
 
         return retVal;
+    }
+
+    public Task<List<ApplicationPhrase>> GetPhrasesById(Guid applicationId, int[] phraseIds)
+    {
+        return ApplicationPhrases.Where(x => x.ApplicationId == applicationId && phraseIds.Contains(x.Id))
+            .ToListAsync();
     }
 
     public async Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId)

@@ -4,7 +4,6 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using TranslationPro.Base.Entities;
 

@@ -8,9 +8,6 @@ namespace TranslationPro.Blazor.Components.Application
     {
 
         [Inject]
-        protected IStripeController StripeService { get; set; }
-
-        [Inject]
         protected NavigationManager NavManager { get; set; }
 
         [CascadingParameter]
@@ -18,7 +15,8 @@ namespace TranslationPro.Blazor.Components.Application
 
         private Modal deleteSubscription;
 
-        private Stripe.Subscription Subscription { get; set; }
+        [CascadingParameter]
+        private SubscriptionOutput Subscription { get; set; }
 
         private Task ShowModal()
         {
@@ -28,12 +26,7 @@ namespace TranslationPro.Blazor.Components.Application
         {
             return deleteSubscription.Hide();
         }
-
-        protected override async Task OnInitializedAsync()
-        {
-            Subscription = await StripeService.GetSubscription();
-        }
-
+        
         public async Task DeleteSubscription()
         {
             NavManager.NavigateTo($"/");

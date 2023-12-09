@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Stripe;
@@ -20,6 +21,7 @@ using TranslationPro.Base.Extensions;
 using TranslationPro.Base.Settings;
 using TranslationPro.Base.Users.Entities;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Models;
 using ProductService = Stripe.ProductService;
 using Subscription = TranslationPro.Base.Entities.Subscription;
 
@@ -39,6 +41,7 @@ public class StripeService : BaseService, IStripeService
     private readonly SessionService _sessionService;
     private readonly CustomerService _customerService;
     private readonly PlanService _planService;
+    private readonly InvoiceService _invoiceService;
     private readonly SubscriptionService _subscriptionService;
 
     public StripeService(IServiceProvider serviceProvider,
@@ -48,6 +51,7 @@ public class StripeService : BaseService, IStripeService
         SessionService sessionService,
         CustomerService customerService,
         PlanService planService,
+        InvoiceService invoiceService,
         SubscriptionService subscriptionService) : base(serviceProvider)
     {
         _productService = productService;
@@ -55,6 +59,7 @@ public class StripeService : BaseService, IStripeService
         _sessionService = sessionService;
         _customerService = customerService;
         _planService = planService;
+        _invoiceService = invoiceService;
         _subscriptionService = subscriptionService;
         _settings = settings.Value.Stripe;
         _subscriptionRepository = UnitOfWork.RepositoryAsync<Subscription>();
@@ -123,16 +128,83 @@ public class StripeService : BaseService, IStripeService
 
     }
 
-    public async Task<Stripe.Subscription> GetSubscriptionAsync(int userId)
+    public async Task<T> GetSubscriptionAsync<T>(int userId) where T : SubscriptionOutput
     {
-        var subscription = await _subscriptionRepository.Queryable().Where(x => x.UserId == userId)
+        var subscription = await _subscriptionRepository
+            .Queryable()
+            .Include(x=>x.Items)
+            .Include(x=>x.Invoices)
+            .ThenInclude(x=>x.Lines)
+            .Where(x => x.UserId == userId)
             .FirstAsync();
 
         var subId = subscription.SubscriptionId;
 
         var sub = await _subscriptionService.GetAsync(subId);
 
-        return sub;
+        subscription.Sync(sub, userId);
+        subscription.ObjectState = ObjectState.Modified;
+
+        var invoices = await _invoiceService.ListAsync(new InvoiceListOptions()
+        {
+            Subscription = subId
+        });
+
+        foreach (var invoice in subscription.Invoices)
+        {
+            invoice.ObjectState = ObjectState.Deleted;
+        }
+
+        foreach (var invoice in invoices)
+        {
+            var existingInvoice = subscription.Invoices.FirstOrDefault(x => x.Id == invoice.Id);
+
+            if (existingInvoice == null)
+            {
+                existingInvoice = new Entities.Invoice();
+                existingInvoice.Sync(invoice, userId);
+                existingInvoice.ObjectState = ObjectState.Added;
+
+                subscription.Invoices.Add(existingInvoice);
+            }
+            else
+            {
+                existingInvoice.Sync(invoice,userId);
+                existingInvoice.ObjectState = ObjectState.Modified;
+            }
+
+            foreach (var existingLine in existingInvoice.Lines)
+            {
+                existingLine.ObjectState = ObjectState.Deleted;
+            }
+            foreach (var line in invoice.Lines)
+            {
+
+
+                var existingLine = existingInvoice.Lines.FirstOrDefault(x => x.Id == line.Id);
+
+                if (existingLine == null)
+                {
+                    existingLine = new InvoiceLine();
+                    existingLine.Sync(line,invoice.Id);
+                    existingLine.ObjectState = ObjectState.Added;
+                    existingInvoice.Lines.Add(existingLine);
+                }
+                else
+                {
+                    existingLine.Sync(line, invoice.Id);
+                    existingLine.ObjectState = ObjectState.Modified;
+                }
+            }
+        }
+
+        _subscriptionRepository.InsertOrUpdateGraph(subscription, true);
+
+        var output = await _subscriptionRepository
+            .Queryable().Where(x=>x.UserId == userId)
+            .ProjectTo<T>(ProjectionMapping).FirstAsync();
+
+        return output;
     }
 
     public async Task<Result> CompleteSubscriptionCheckout(int userId, string checkoutSessionId)

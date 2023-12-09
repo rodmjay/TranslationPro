@@ -27,4 +27,5 @@ public interface IApplicationPhraseService : IService<ApplicationPhrase>
     Task<List<T>> GetPhrasesAsync<T>(Guid applicationId, string[] phrases) where T : ApplicationPhraseOutput;
     Task<Result> DeletePhraseAsync(Guid applicationId, int phraseId);
     Task<EnsurePhrasesResult> ScaffoldPhrases(Guid applicationId, string[] phrases);
+    Task<List<ApplicationPhrase>> GetPhrasesById(Guid applicationId, int[] phraseIds);
 }

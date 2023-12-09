@@ -2,6 +2,7 @@
 using Blazorise.Snackbar;
 using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
+using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Events;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
@@ -18,6 +19,8 @@ namespace TranslationPro.Blazor.Layouts
     {
         [CascadingParameter]
         protected IEventAggregator EventAggregator { get; set; }
+
+        protected List<NavigationItem> NavigationItems { get; set; } = new();
 
         [Inject]
         protected IUserController UserService { get; set; }

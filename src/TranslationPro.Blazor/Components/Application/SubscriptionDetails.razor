@@ -1,21 +1,82 @@
-﻿
-@if (CurrentUser == null)
+﻿@if (CurrentUser == null)
 {
     <Paragraph>Please Wait...</Paragraph>
 }
 else
 {
-    if (Subscription != null)
+    if (@Subscription != null)
     {
-        <Paragraph>
-            Next Bill Date:
-            @Subscription.NextPendingInvoiceItemInvoice.GetValueOrDefault()
+        <Table>
+            <TableBody>
+                <TableRow>
+                    <TableHeaderCell>Started</TableHeaderCell>
+                    <TableRowCell>@Subscription.StartDate</TableRowCell>
+                </TableRow>
+            </TableBody>
+        </Table>
 
-        </Paragraph>
-        <Paragraph>
-            Created
-            @Subscription.Created.Date.ToShortDateString()
-        </Paragraph>
+        <Tabs SelectedTab="products">
+            <Items>
+                <Tab Name="products">Products</Tab>
+                <Tab Name="invoices">Invoices</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="products">
+                    
+                    
+
+                    <Table>
+                        <TableBody>
+                            @foreach (var item in @Subscription.Items)
+                            {
+                                <TableRow>
+                                    <TableHeaderCell>Name</TableHeaderCell>
+                                    <TableRowCell>@item.Product.Name</TableRowCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHeaderCell>Billed</TableHeaderCell>
+                                    <TableRowCell>Every @item.Plan.IntervalCount @item.Plan.Interval</TableRowCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+
+                </TabPanel>
+                <TabPanel Name="invoices">
+                    <Table>
+                        
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeaderCell>Invoice #</TableHeaderCell>
+                                <TableHeaderCell>Total</TableHeaderCell>
+                                <TableHeaderCell>Period Start</TableHeaderCell>
+                                <TableHeaderCell>Period End</TableHeaderCell>
+                                <TableHeaderCell>Status</TableHeaderCell>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+
+
+                            @foreach (var invoice in @Subscription.Invoices)
+                            {
+                                <TableRow>
+                                    <TableRowCell>
+                                        <NavLink href="@{$"invoice/{invoice.Number}"}">
+                                            @invoice.Number</NavLink>
+                                    </TableRowCell>
+                                    <TableRowCell>@invoice.Total</TableRowCell>
+                                    <TableRowCell>@invoice.PeriodStart.ToShortDateString()</TableRowCell>
+                                    <TableRowCell>@invoice.PeriodEnd.ToShortDateString()</TableRowCell>
+                                    <TableRowCell>@invoice.Status</TableRowCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+                </TabPanel>
+            </Content>
+        </Tabs>
+
+
 
         <Button Clicked="ShowModal" Color="Color.Danger">Delete Subscription</Button>
 
@@ -25,7 +86,7 @@ else
         <ModalContent>
             <ModalHeader>
                 <ModalTitle>Delete Subscription</ModalTitle>
-                <CloseButton/>
+                <CloseButton />
             </ModalHeader>
             <ModalBody>
                 <Paragraph>Are you sure you want to delete your subscription?</Paragraph>

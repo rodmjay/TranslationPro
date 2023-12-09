@@ -30,6 +30,9 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public int CharacterCount { get; set; }
 
+    public string UsageRecordId { get; set; }
+    public UsageRecord UsageRecord { get; set; }
+
     public override void Configure(EntityTypeBuilder<ApplicationTranslation> builder)
     {
         builder.ToTable(nameof(ApplicationTranslation), "TranslationPro");
@@ -44,6 +47,9 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
             .WithMany(x => x.Translations)
             .HasForeignKey(x => new {x.ApplicationId, x.LanguageId})
             .OnDelete(DeleteBehavior.NoAction);
+
+
+        builder.HasOne(x => x.UsageRecord).WithMany(x => x.Translations).HasForeignKey(x => x.UsageRecordId);
 
 
         builder.Property(x => x.CharacterCount).HasComputedColumnSql(@"IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0)");

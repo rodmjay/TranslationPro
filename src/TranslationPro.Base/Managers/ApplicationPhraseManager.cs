@@ -10,8 +10,12 @@ using TranslationPro.Base.Common.Data.Interfaces;
 using TranslationPro.Base.Entities;
 using TranslationPro.Base.Services;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Stripe;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Shared.Proxies;
+using Application = TranslationPro.Base.Entities.Application;
+using UsageRecord = TranslationPro.Base.Entities.UsageRecord;
 
 namespace TranslationPro.Base.Managers;
 
@@ -27,8 +31,12 @@ public class ApplicationPhraseManager
     private readonly IApplicationTranslationService _applicationTranslationService;
     private readonly IApplicationLanguageService _applicationLanguageService;
     private readonly IApplicationPhraseService _applicationPhraseService;
+    private readonly UsageRecordService _usageRecordService;
     private readonly ILogger<ApplicationPhraseManager> _logger;
+    private readonly IRepositoryAsync<ApplicationPhrase> _applicationPhrasesRepository;
     private readonly IRepositoryAsync<ApplicationTranslation> _applicationTranslationRepository;
+    private readonly IRepositoryAsync<UsageRecord> _usageRecordRepository;
+    private readonly IRepositoryAsync<Application> _applicationRepository;
 
     public ApplicationPhraseManager(
         IUnitOfWorkAsync unitOfWork,
@@ -36,13 +44,18 @@ public class ApplicationPhraseManager
         IApplicationTranslationService applicationTranslationService,
         IApplicationLanguageService applicationLanguageService,
         IApplicationPhraseService applicationPhraseService,
+        UsageRecordService usageRecordService,
         ILogger<ApplicationPhraseManager> logger)
     {
         _applicationTranslationRepository = unitOfWork.RepositoryAsync<ApplicationTranslation>();
+        _applicationPhrasesRepository = unitOfWork.RepositoryAsync<ApplicationPhrase>();
+        _applicationRepository = unitOfWork.RepositoryAsync<Application>();
+        _usageRecordRepository = unitOfWork.RepositoryAsync<UsageRecord>();
         _translationProxy = translationProxy;
         _applicationTranslationService = applicationTranslationService;
         _applicationLanguageService = applicationLanguageService;
         _applicationPhraseService = applicationPhraseService;
+        _usageRecordService = usageRecordService;
         _logger = logger;
     }
 
@@ -51,7 +64,65 @@ public class ApplicationPhraseManager
         return _applicationPhraseService.GetPhraseAsync<T>(applicationId, phraseId);
     }
 
+    public async Task<Result> ProcessBillingForApplication(Guid applicationId)
+    {
+        var application = await _applicationRepository.Queryable()
+            .Include(x=>x.Subscription)
+            .ThenInclude(x=>x.Items)
+            .Where(x => x.Id == applicationId).FirstAsync();
 
+        var phrases = await _applicationPhrasesRepository.Queryable().Include(x=>x.UsageRecord)
+            .Where(x => x.ApplicationId == applicationId 
+                && x.UsageRecord == null)
+            .ToListAsync();
+
+        var translations = await _applicationTranslationRepository.Queryable()
+            .Include(x=>x.UsageRecord)
+            .Where(x => x.ApplicationId == applicationId && x.UsageRecord == null)
+            .ToListAsync();
+
+        var unbilledInputCharacters = phrases.Sum(x => x.CharacterCount);
+        var unbilledOutputCharacters = translations.Sum(x => x.CharacterCount);
+
+        var usageDataOptions = new UsageRecordCreateOptions()
+        {
+            Action = "increment",
+            Quantity = unbilledInputCharacters + unbilledOutputCharacters
+        };
+
+        var usageRecord = await _usageRecordService.CreateAsync(application.Subscription.Items.First().StripeItemId, usageDataOptions);
+
+        var usageRecordEntity = new UsageRecord()
+        {
+            Id = usageRecord.Id,
+            SubscriptionItemId = usageRecord.SubscriptionItem,
+            Quantity = usageRecord.Quantity,
+            Timestamp = usageRecord.Timestamp
+        };
+
+        var usageRecords = _usageRecordRepository.Insert(usageRecordEntity, true);
+
+        foreach (var phrase in phrases)
+        {
+            phrase.UsageRecordId = usageRecord.Id;
+            phrase.ObjectState = ObjectState.Modified;
+
+            _applicationPhrasesRepository.Update(phrase);
+        }
+
+        foreach (var translation in translations)
+        {
+            translation.UsageRecordId = usageRecord.Id;
+            translation.ObjectState = ObjectState.Modified;
+
+            _applicationTranslationRepository.Update(translation);
+        }
+
+        var outputRecords = _applicationTranslationRepository.Commit();
+        var inputRecords = _applicationPhrasesRepository.Commit();
+
+        return Result.Success();
+    }
     public async Task AddLanguagesToApplicationPhrases(Guid applicationId, string[] languageIds)
     {
         var phrases = await _applicationPhraseService.GetPhraseTextsForApplication(applicationId);

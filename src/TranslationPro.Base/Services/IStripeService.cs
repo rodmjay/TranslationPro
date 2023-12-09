@@ -7,13 +7,14 @@
 using System.Threading.Tasks;
 using Stripe.Checkout;
 using TranslationPro.Shared.Common;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Base.Services;
 
 public interface IStripeService
 {
     void Initialize();
-    Task<Stripe.Subscription> GetSubscriptionAsync(int userId);
+    Task<T> GetSubscriptionAsync<T>(int userId) where T : SubscriptionOutput;
 
     Task<Result> CompleteSubscriptionCheckout(int userId, string checkoutSessionId);
 

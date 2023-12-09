@@ -12,6 +12,19 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Components.Application.Bases;
 
+public class SubscriptionBase : AuthenticatedBase
+{
+    protected override void BuildBreadcrumbs()
+    {
+        this.NavigationItems.Clear();
+        this.NavigationItems.Add(new NavigationItem()
+        {
+            Title = "Subscription",
+            Url = "/subscription"
+        });
+    }
+}
+
 public class AuthenticatedBase : ComponentBase
 {
     [Inject] 
@@ -23,7 +36,8 @@ public class AuthenticatedBase : ComponentBase
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
-    protected List<NavigationItem> NavigationItems { get; set; } = new();
+    [CascadingParameter]
+    protected List<NavigationItem> NavigationItems { get; set; }
 
     [CascadingParameter]
     protected IApplicationsController ApplicationService { get; set; }

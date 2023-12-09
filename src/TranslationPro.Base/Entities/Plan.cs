@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 using TranslationPro.Base.Common.Data.Bases;
 
 namespace TranslationPro.Base.Entities;
@@ -14,6 +15,9 @@ public class Plan : BaseEntity<Plan>
     public decimal? AmountDecimal { get; set; }
     public string Interval { get; set; }
     public long IntervalCount { get; set; }
+
+    public ICollection<SubscriptionItem> SubscriptionItems { get; set; }
+
 
     public override void Configure(EntityTypeBuilder<Plan> builder)
     {

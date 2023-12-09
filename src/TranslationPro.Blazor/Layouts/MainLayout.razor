@@ -2,26 +2,27 @@
 @inherits LayoutComponentBase
 
 <CascadingValue TValue="UserOutput" Value="@CurrentUser">
-    <Layout Sider>
-        <LayoutSider>
-            <LayoutSiderContent>
-                <SideMenu />
-            </LayoutSiderContent>
-        </LayoutSider>
-        <Layout>
-            <LayoutHeader Fixed>
-                <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
-                         ThemeGradientChanged="@OnThemeGradientChanged"
-                         ThemeRoundedChanged="@OnThemeRoundedChanged"
-                         ThemeColorChanged="@OnThemeColorChanged"/>
-            </LayoutHeader>
-            <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
-                @Body
-            </LayoutContent>
-            
-    
-            <SnackbarStack @ref="snackbarStack" Location="SnackbarStackLocation.BottomEnd" />
-        </Layout>
-    </Layout>
+    <CascadingValue TValue="List<NavigationItem>" Value="NavigationItems">
+        <Layout Sider>
+            <LayoutSider>
+                <LayoutSiderContent>
+                    <SideMenu />
+                </LayoutSiderContent>
+            </LayoutSider>
+            <Layout>
+                <LayoutHeader Fixed>
+                    <TopMenu ThemeEnabledChanged="@OnThemeEnabledChanged"
+                             ThemeGradientChanged="@OnThemeGradientChanged"
+                             ThemeRoundedChanged="@OnThemeRoundedChanged"
+                             ThemeColorChanged="@OnThemeColorChanged" />
+                </LayoutHeader>
+                <LayoutContent Padding="Padding.Is4.OnX.Is4.FromTop">
+                    @Body
+                </LayoutContent>
 
+
+                <SnackbarStack @ref="snackbarStack" Location="SnackbarStackLocation.BottomEnd" />
+            </Layout>
+        </Layout>
+    </CascadingValue>
 </CascadingValue>

@@ -11,6 +11,7 @@ using TranslationPro.Base.Common.Middleware.Bases;
 using TranslationPro.Base.Services;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
+using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Api.Controllers;
 
@@ -25,11 +26,11 @@ public class StripeController : BaseController, IStripeController
     }
 
     [HttpGet("subscription")]
-    public async Task<Stripe.Subscription> GetSubscription()
+    public async Task<SubscriptionOutput> GetSubscription()
     {
         var user = await GetCurrentUser();
 
-        return await _stripeService.GetSubscriptionAsync(user.Id);
+        return await _stripeService.GetSubscriptionAsync<SubscriptionOutput>(user.Id);
     }
 
     [HttpPut("checkout")]

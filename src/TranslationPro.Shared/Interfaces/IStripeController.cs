@@ -4,6 +4,7 @@
 
 #endregion
 
+using System;
 using System.Threading.Tasks;
 using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Models;
@@ -12,7 +13,8 @@ namespace TranslationPro.Shared.Interfaces;
 
 public interface IStripeController
 {
-    Task<Stripe.Subscription> GetSubscription();
+    Task<SubscriptionOutput> GetSubscription();
     Task<string> CreateCheckoutSession();
     Task<Result> CompleteSession( string checkoutSessionId);
+    
 }

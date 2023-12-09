@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Identity.Client;
 using TranslationPro.Base.Common.Data.Enums;
 using TranslationPro.Base.Entities;
 
@@ -20,7 +22,16 @@ public static class SubscriptionExtensions
         entity.UserId = userId;
         entity.CustomerId = subscription.CustomerId;
         entity.SubscriptionId = subscription.Id;
-        entity.ObjectState = ObjectState.Added;
+        entity.StartDate = subscription.StartDate;
+        entity.EndedAt = subscription.EndedAt;
+        entity.DaysUntilDue = subscription.DaysUntilDue;
+        entity.CurrentPeriodStart = subscription.CurrentPeriodStart;
+        entity.CurrentPeriodEnd = subscription.CurrentPeriodEnd;
+        entity.Created = subscription.Created;
+        entity.CollectionMethod = subscription.CollectionMethod;
+        entity.CancelAt = subscription.CancelAt;
+        entity.CancelAtPeriodEnd = subscription.CancelAtPeriodEnd;
+        entity.CanceledAt = subscription.CanceledAt;
 
         foreach (var item in subscription.Items.Data)
         {

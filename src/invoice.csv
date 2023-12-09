@@ -1,0 +1,178 @@
+﻿JToken,JToken._annotations,JToken.Type,JToken.HasValues,JToken.Path
+"""id"": ""in_1OLF3xDGyTHfODiYLVwk3rWp""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,id
+"""object"": ""invoice""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,object
+"""account_country"": ""US""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,account_country
+"""account_name"": ""TranslationPRO""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,account_name
+"""account_tax_ids"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,account_tax_ids
+"""amount_due"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,amount_due
+"""amount_paid"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,amount_paid
+"""amount_remaining"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,amount_remaining
+"""amount_shipping"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,amount_shipping
+"""application"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,application
+"""application_fee_amount"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,application_fee_amount
+"""attempt_count"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,attempt_count
+"""attempted"": true",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,attempted
+"""auto_advance"": false",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,auto_advance
+"""automatic_tax"": {
+  ""enabled"": false,
+  ""status"": null
+}",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,automatic_tax
+"""billing_reason"": ""subscription_create""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,billing_reason
+"""charge"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,charge
+"""collection_method"": ""charge_automatically""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,collection_method
+"""created"": 1702084237",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,created
+"""currency"": ""usd""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,currency
+"""custom_fields"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,custom_fields
+"""customer"": ""cus_P7gB6hnlEFyuoM""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer
+"""customer_address"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_address
+"""customer_email"": ""admin@admin.com""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_email
+"""customer_name"": ""Rod Johnson""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_name
+"""customer_phone"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_phone
+"""customer_shipping"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_shipping
+"""customer_tax_exempt"": ""none""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_tax_exempt
+"""customer_tax_ids"": []",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,customer_tax_ids
+"""default_payment_method"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,default_payment_method
+"""default_source"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,default_source
+"""default_tax_rates"": []",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,default_tax_rates
+"""description"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,description
+"""discount"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,discount
+"""discounts"": []",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,discounts
+"""due_date"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,due_date
+"""effective_at"": 1702084237",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,effective_at
+"""ending_balance"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,ending_balance
+"""footer"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,footer
+"""from_invoice"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,from_invoice
+"""hosted_invoice_url"": ""https://invoice.stripe.com/i/acct_1O8nvSDGyTHfODiY/test_YWNjdF8xTzhudlNER3lUSGZPRGlZLF9QOVlBWmlUVG1HUWgzbldDMmZwb3FKR3JtZFg4VFBWLDkyNjczNzA20200b5k88Gd1?s=ap""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,hosted_invoice_url
+"""invoice_pdf"": ""https://pay.stripe.com/invoice/acct_1O8nvSDGyTHfODiY/test_YWNjdF8xTzhudlNER3lUSGZPRGlZLF9QOVlBWmlUVG1HUWgzbldDMmZwb3FKR3JtZFg4VFBWLDkyNjczNzA20200b5k88Gd1/pdf?s=ap""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,invoice_pdf
+"""last_finalization_error"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,last_finalization_error
+"""latest_revision"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,latest_revision
+"""lines"": {
+  ""object"": ""list"",
+  ""data"": [
+    {
+      ""id"": ""il_1OLF3xDGyTHfODiYJlzlT0wr"",
+      ""object"": ""line_item"",
+      ""amount"": 0,
+      ""amount_excluding_tax"": 0,
+      ""currency"": ""usd"",
+      ""description"": ""0 × Basic Consumption Plan (Test) (at $0.01 / month)"",
+      ""discount_amounts"": [],
+      ""discountable"": true,
+      ""discounts"": [],
+      ""livemode"": false,
+      ""metadata"": {},
+      ""period"": {
+        ""end"": 1704762337,
+        ""start"": 1702084237
+      },
+      ""plan"": {
+        ""id"": ""price_1OIMfzDGyTHfODiYPWQKJNOm"",
+        ""object"": ""plan"",
+        ""active"": true,
+        ""aggregate_usage"": ""sum"",
+        ""amount"": null,
+        ""amount_decimal"": null,
+        ""billing_scheme"": ""tiered"",
+        ""created"": 1701398519,
+        ""currency"": ""usd"",
+        ""interval"": ""month"",
+        ""interval_count"": 1,
+        ""livemode"": false,
+        ""metadata"": {},
+        ""nickname"": null,
+        ""product"": ""prod_P6Zpt6ra12nJRH"",
+        ""tiers_mode"": ""graduated"",
+        ""transform_usage"": null,
+        ""trial_period_days"": null,
+        ""usage_type"": ""metered""
+      },
+      ""price"": {
+        ""id"": ""price_1OIMfzDGyTHfODiYPWQKJNOm"",
+        ""object"": ""price"",
+        ""active"": true,
+        ""billing_scheme"": ""tiered"",
+        ""created"": 1701398519,
+        ""currency"": ""usd"",
+        ""custom_unit_amount"": null,
+        ""livemode"": false,
+        ""lookup_key"": null,
+        ""metadata"": {},
+        ""nickname"": null,
+        ""product"": ""prod_P6Zpt6ra12nJRH"",
+        ""recurring"": {
+          ""aggregate_usage"": ""sum"",
+          ""interval"": ""month"",
+          ""interval_count"": 1,
+          ""trial_period_days"": null,
+          ""usage_type"": ""metered""
+        },
+        ""tax_behavior"": ""unspecified"",
+        ""tiers_mode"": ""graduated"",
+        ""transform_quantity"": null,
+        ""type"": ""recurring"",
+        ""unit_amount"": null,
+        ""unit_amount_decimal"": null
+      },
+      ""proration"": false,
+      ""proration_details"": {
+        ""credited_items"": null
+      },
+      ""quantity"": 0,
+      ""subscription"": ""sub_1OLF3xDGyTHfODiYvMII5bnd"",
+      ""subscription_item"": ""si_P9YAkCXBBKPMIq"",
+      ""tax_amounts"": [],
+      ""tax_rates"": [],
+      ""type"": ""subscription"",
+      ""unit_amount_excluding_tax"": null
+    }
+  ],
+  ""has_more"": false,
+  ""total_count"": 1,
+  ""url"": ""/v1/invoices/in_1OLF3xDGyTHfODiYLVwk3rWp/lines""
+}",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,lines
+"""livemode"": false",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,livemode
+"""metadata"": {}",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,metadata
+"""next_payment_attempt"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,next_payment_attempt
+"""number"": ""63CEA085-0006""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,number
+"""on_behalf_of"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,on_behalf_of
+"""paid"": true",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,paid
+"""paid_out_of_band"": false",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,paid_out_of_band
+"""payment_intent"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,payment_intent
+"""payment_settings"": {
+  ""default_mandate"": null,
+  ""payment_method_options"": null,
+  ""payment_method_types"": null
+}",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,payment_settings
+"""period_end"": 1702084237",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,period_end
+"""period_start"": 1702084237",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,period_start
+"""post_payment_credit_notes_amount"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,post_payment_credit_notes_amount
+"""pre_payment_credit_notes_amount"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,pre_payment_credit_notes_amount
+"""quote"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,quote
+"""receipt_number"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,receipt_number
+"""rendering"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,rendering
+"""rendering_options"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,rendering_options
+"""shipping_cost"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,shipping_cost
+"""shipping_details"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,shipping_details
+"""starting_balance"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,starting_balance
+"""statement_descriptor"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,statement_descriptor
+"""status"": ""paid""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,status
+"""status_transitions"": {
+  ""finalized_at"": 1702084237,
+  ""marked_uncollectible_at"": null,
+  ""paid_at"": 1702084237,
+  ""voided_at"": null
+}",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,status_transitions
+"""subscription"": ""sub_1OLF3xDGyTHfODiYvMII5bnd""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,subscription
+"""subscription_details"": {
+  ""metadata"": {}
+}",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,subscription_details
+"""subtotal"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,subtotal
+"""subtotal_excluding_tax"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,subtotal_excluding_tax
+"""tax"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,tax
+"""test_clock"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,test_clock
+"""total"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,total
+"""total_discount_amounts"": []",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,total_discount_amounts
+"""total_excluding_tax"": 0",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,total_excluding_tax
+"""total_tax_amounts"": []",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,total_tax_amounts
+"""transfer_data"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,transfer_data
+"""webhooks_delivered_at"": 1702084237",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,webhooks_delivered_at

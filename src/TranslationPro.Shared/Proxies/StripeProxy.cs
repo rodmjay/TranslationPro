@@ -19,9 +19,9 @@ public class StripeProxy : BaseProxy, IStripeController
     {
     }
 
-    public Task<Stripe.Subscription> GetSubscription()
+    public Task<SubscriptionOutput> GetSubscription()
     {
-        return DoGet<Stripe.Subscription>($"v1.0/stripe/subscription");
+        return DoGet<SubscriptionOutput>($"v1.0/stripe/subscription");
     }
 
     public Task<string> CreateCheckoutSession()

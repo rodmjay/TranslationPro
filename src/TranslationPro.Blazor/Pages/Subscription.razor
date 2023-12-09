@@ -1,6 +1,8 @@
-﻿@layout MainLayout
+﻿@layout SubscriptionLayout
+
 @page "/subscription"
-@inherits AuthenticatedBase
+@inherits SubscriptionBase
+
 
 @if (CurrentUser.Subscription == null)
 {

@@ -1,0 +1,106 @@
+﻿@layout SubscriptionLayout
+@page "/invoice/{Number}"
+@inherits SubscriptionBase
+
+<h3>Invoice @InvoiceOutput.Number</h3>
+
+@if (@InvoiceOutput != null)
+{
+    <Table>
+        <TableBody>
+            <TableRow>
+                <TableHeaderCell>
+                    Invoice #
+                </TableHeaderCell>
+                <TableRowCell>
+                    @InvoiceOutput.Number
+                </TableRowCell>
+                <TableHeaderCell>
+                    Status
+                </TableHeaderCell>
+                <TableRowCell>
+                    @InvoiceOutput.Status
+                </TableRowCell>
+            </TableRow>
+            <TableRow>
+                <TableHeaderCell>
+                    Period
+                </TableHeaderCell>
+                <TableRowCell>
+                    @InvoiceOutput.PeriodStart - @InvoiceOutput.PeriodEnd
+                </TableRowCell>
+                <TableHeaderCell>
+                    Collection Method
+                </TableHeaderCell>
+                <TableRowCell>
+                    @InvoiceOutput.CollectionMethod
+                </TableRowCell>
+            </TableRow>
+        </TableBody>
+    </Table>
+
+    <h3>Line Items</h3>
+
+    <Table>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Quantity</TableHeaderCell>
+                <TableHeaderCell>Description</TableHeaderCell>
+                <TableHeaderCell>Amount</TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            @foreach (var line in @InvoiceOutput.Lines)
+            {
+                <TableRow>
+                    <TableRowCell>@line.Quantity</TableRowCell>
+                    <TableRowCell>@line.Description</TableRowCell>
+                    <TableRowCell>@line.Amount</TableRowCell>
+                </TableRow>
+            }
+        </TableBody>
+    </Table>
+    
+    <h3>
+        Invoice Total
+    </h3>
+    <Table>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>
+                    Total
+                </TableHeaderCell>
+                <TableRowCell>
+                    @InvoiceOutput.Total
+                </TableRowCell>
+            </TableRow>
+        </TableHeader>
+    </Table>
+}
+
+@code {
+
+    [CascadingParameter]
+    public SubscriptionOutput SubscriptionOutput { get; set; }
+
+    [Parameter]
+    public string Number { get; set; }
+
+    protected InvoiceOutput InvoiceOutput { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        InvoiceOutput = SubscriptionOutput.Invoices.First(x => x.Number == Number);
+    }
+    
+    protected override void BuildBreadcrumbs()
+    {
+        base.BuildBreadcrumbs();
+        this.NavigationItems.Add(new NavigationItem()
+            {
+                Title = $"Invoice {Number}",
+                Url = $"/invoice/{Number}"
+            });
+    }
+
+}

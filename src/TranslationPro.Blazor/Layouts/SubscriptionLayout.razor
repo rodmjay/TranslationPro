@@ -1,0 +1,23 @@
+﻿@using TranslationPro.Blazor.Components.Layout
+@inherits LayoutComponentBase
+@layout MainLayout
+
+
+<CascadingValue TValue="SubscriptionOutput" Value="@Subscription">
+    
+    <CascadingValue TValue="List<NavigationItem>" Value="NavigationItems">
+        <Bar>
+            <BarStart>
+                <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+            </BarStart>
+            <BarEnd>
+                <Buttons>
+                </Buttons>
+            </BarEnd>
+        </Bar>
+
+    </CascadingValue>
+   
+    @Body
+
+</CascadingValue>

@@ -97,6 +97,16 @@ public static class AppBuilderExtensions
         builder.Services.AddScoped(x =>
             new PlanService(x.GetRequiredService<IStripeClient>()));
 
+        builder.Services.AddScoped(x =>
+            new InvoiceService(x.GetRequiredService<IStripeClient>()));
+
+        builder.Services.AddScoped(x =>
+            new InvoiceItemService(x.GetRequiredService<IStripeClient>()));
+
+        builder.Services.AddScoped(x =>
+            new UsageRecordService(x.GetRequiredService<IStripeClient>()));
+
+
         return builder;
     }
 }

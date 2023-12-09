@@ -6,7 +6,7 @@ using TranslationPro.Blazor.Components.Application.Bases;
 
 namespace TranslationPro.Blazor.Pages;
 
-public partial class Subscription : AuthenticatedBase
+public partial class Subscription : SubscriptionBase
 {
-    
+
 }

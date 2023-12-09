@@ -46,6 +46,8 @@ public class ApplicationPhrasesController : BaseController, IApplicationPhrasesC
 
         await _applicationPhraseManager.ProcessPending(applicationId);
 
+        await _applicationPhraseManager.ProcessBillingForApplication(applicationId);
+
         return Result.Success();
     }
 
@@ -58,7 +60,9 @@ public class ApplicationPhrasesController : BaseController, IApplicationPhrasesC
 
         var result = await _applicationPhraseManager
             .CreatePhrases<ApplicationPhraseDetails>(applicationId, input.Texts.ToArray());
-        
+
+        await _applicationPhraseManager.ProcessBillingForApplication(applicationId);
+
         return result;
     }
     

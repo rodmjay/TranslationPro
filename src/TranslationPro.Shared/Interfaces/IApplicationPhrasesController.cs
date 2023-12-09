@@ -15,7 +15,6 @@ namespace TranslationPro.Shared.Interfaces;
 
 public interface IApplicationPhrasesController
 {
-
     Task<ApplicationPhraseDetails> GetPhraseAsync(Guid applicationId, int phraseId);
     
     Task<PagedList<ApplicationPhraseOutput>> GetPhrasesAsync(Guid applicationId, PagingQuery paging,

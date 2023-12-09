@@ -3,14 +3,23 @@
 @inherits ApplicationDetailsBase
 @layout MainLayout
 
-<Bar>
-    <BarStart>
-        <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
-    </BarStart>
-</Bar>
+@if (Application != null)
+{
+    
+    <CascadingValue TValue="ApplicationOutput" Value="Application">
+        
+        <Bar>
+            <BarStart>
+                <ApplicationBreadcrumb NavigationItems="@NavigationItems"></ApplicationBreadcrumb>
+            </BarStart>
+        </Bar>
 
-<Row>
-    <Column ColumnSize="ColumnSize.Is6.OnDesktop">
-        <PhraseForm></PhraseForm>
-    </Column>
-</Row>
+        <Row>
+            <Column ColumnSize="ColumnSize.Is6.OnDesktop">
+                <PhraseForm></PhraseForm>
+            </Column>
+        </Row>
+
+    </CascadingValue>
+
+}
