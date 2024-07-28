@@ -13,6 +13,8 @@ namespace TranslationPro.Blazor.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            Console.WriteLine("Index.OnInitializedAsync");
+
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             if (authState.User.Identity.IsAuthenticated)

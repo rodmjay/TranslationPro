@@ -24,6 +24,8 @@ namespace TranslationPro.Blazor.Layouts
 
         protected override async Task OnInitializedAsync()
         {
+            Console.WriteLine("SubscriptionLayout.OnInitializedAsync");
+
             await base.OnInitializedAsync();
 
             EventAggregator.Subscribe(this);
@@ -33,6 +35,8 @@ namespace TranslationPro.Blazor.Layouts
 
         public async Task LoadData()
         {
+            Console.WriteLine("SubscriptionLayout.LoadData");
+
             Subscription = await StripeService.GetSubscription();
         }
     }

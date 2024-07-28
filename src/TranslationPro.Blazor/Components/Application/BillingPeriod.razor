@@ -1,0 +1,28 @@
+﻿@if (StartDate.HasValue)
+{
+    <span>
+        @StartDate.Value.ToShortDateString()
+    </span>
+}
+
+@if (StartDate.HasValue && EndDate.HasValue)
+{
+    <span>-</span>
+}
+
+@if (@EndDate.HasValue)
+{
+    <span>
+        @EndDate.Value.ToShortDateString()
+    </span>
+}
+
+@code {
+
+    [Parameter]
+    public DateTime? StartDate { get; set; }
+
+    [Parameter]
+    public DateTime? EndDate { get; set; }
+
+}

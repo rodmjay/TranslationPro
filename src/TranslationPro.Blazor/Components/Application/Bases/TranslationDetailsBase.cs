@@ -12,7 +12,6 @@ namespace TranslationPro.Blazor.Components.Application.Bases;
 
 public class TranslationDetailsBase : PhraseDetailsBase
 {
-
     [Parameter]
     public string LanguageId { get; set; }
     
@@ -20,14 +19,16 @@ public class TranslationDetailsBase : PhraseDetailsBase
     public ILanguagesController LanguageService { get; set; }
 
     public LanguageOutput Language { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    
+    protected override async Task OnParametersSetAsync()
     {
         await LoadData();
     }
 
     protected override void BuildBreadcrumbs()
     {
+        Console.WriteLine("TranslationDetailsBase.BuildBreadcrumbs");
+
         base.BuildBreadcrumbs();
 
         this.NavigationItems.Add(new NavigationItem()
@@ -37,8 +38,10 @@ public class TranslationDetailsBase : PhraseDetailsBase
         });
     }
 
-    protected override async Task LoadData()
+    protected async Task LoadData()
     {
+        Console.WriteLine("TranslationDetailsBase.LoadData");
+
         await base.LoadData();
         
         Language = await LanguageService.GetLanguageAsync(LanguageId);

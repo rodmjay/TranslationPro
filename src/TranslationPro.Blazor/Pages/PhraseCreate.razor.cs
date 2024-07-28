@@ -6,6 +6,8 @@ namespace TranslationPro.Blazor.Pages
     {
         protected override void BuildBreadcrumbs()
         {
+            Console.WriteLine("PhraseCreate.BuildBreadcrumbs");
+
             base.BuildBreadcrumbs();
 
             NavigationItems.Add(new NavigationItem()

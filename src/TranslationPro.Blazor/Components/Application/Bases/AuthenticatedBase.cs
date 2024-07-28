@@ -6,30 +6,13 @@
 
 using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
-using TranslationPro.Blazor.Services;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Components.Application.Bases;
 
-public class SubscriptionBase : AuthenticatedBase
+public abstract class AuthenticatedBase : ComponentBase
 {
-    protected override void BuildBreadcrumbs()
-    {
-        this.NavigationItems.Clear();
-        this.NavigationItems.Add(new NavigationItem()
-        {
-            Title = "Subscription",
-            Url = "/subscription"
-        });
-    }
-}
-
-public class AuthenticatedBase : ComponentBase
-{
-    [Inject] 
-    private TokenExpirationService tokenExpirationService { get; set; }
-
     [CascadingParameter]
     protected IEventAggregator EventAggregator { get; set; }
     
@@ -47,25 +30,10 @@ public class AuthenticatedBase : ComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadData();   
+        Console.WriteLine("AuthenticatedBase.OnParametersSetAsync");
         BuildBreadcrumbs();
     }
-
-
-    protected virtual void BuildBreadcrumbs()
-    {
-        this.NavigationItems.Clear();
-        this.NavigationItems.Add(new NavigationItem()
-        {
-            Title = "Applications",
-            Url = "/applications"
-        });
-    }
-
-    protected virtual Task LoadData()
-    {
-        tokenExpirationService.StartTokenExpirationTimer();
-      
-        return Task.CompletedTask;
-    }
+    
+    protected abstract void BuildBreadcrumbs();
+    
 }

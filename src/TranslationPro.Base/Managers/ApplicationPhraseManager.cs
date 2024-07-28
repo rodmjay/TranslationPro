@@ -81,8 +81,8 @@ public class ApplicationPhraseManager
             .Where(x => x.ApplicationId == applicationId && x.UsageRecord == null)
             .ToListAsync();
 
-        var unbilledInputCharacters = phrases.Sum(x => x.CharacterCount);
-        var unbilledOutputCharacters = translations.Sum(x => x.CharacterCount);
+        var unbilledInputCharacters = phrases.Sum(x => x.ActualLength);
+        var unbilledOutputCharacters = translations.Sum(x => x.ActualLength);
 
         var usageDataOptions = new UsageRecordCreateOptions()
         {

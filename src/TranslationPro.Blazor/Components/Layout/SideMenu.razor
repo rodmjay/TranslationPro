@@ -20,22 +20,6 @@
                     </BarLink>
                 </BarItem>
             }
-
-            <BarItem>
-                <BarLink To="/subscription">
-                    <BarIcon IconName="IconName.Dashboard"/>
-                    
-                    @if (CurrentUser is {HasSubscription: true })
-                    {
-                        @("My Subscription")
-                    }
-                    else
-                    {
-                        @("Subscribe")
-                    }
-                    
-                </BarLink>
-            </BarItem>
             
             @if (CurrentUser is {ApplicationCount: > 0 })
             {

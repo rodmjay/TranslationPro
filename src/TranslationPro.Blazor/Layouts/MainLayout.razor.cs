@@ -4,6 +4,7 @@ using EventAggregator.Blazor;
 using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Events;
+using TranslationPro.Blazor.Services;
 using TranslationPro.Shared.Interfaces;
 using TranslationPro.Shared.Models;
 
@@ -17,6 +18,11 @@ namespace TranslationPro.Blazor.Layouts
         IHandle<LanguagesChangedEvent>,
         IHandle<PhrasesReprocessedEvent>
     {
+
+        [Inject]
+        private TokenExpirationService tokenExpirationService { get; set; }
+
+
         [CascadingParameter]
         protected IEventAggregator EventAggregator { get; set; }
 
@@ -34,9 +40,13 @@ namespace TranslationPro.Blazor.Layouts
 
         protected override async Task OnInitializedAsync()
         {
+            Console.WriteLine("MainLayout.OnInitializedAsync");
+
             await SelectCulture("en-US");
 
             await base.OnInitializedAsync();
+
+            //tokenExpirationService.StartTokenExpirationTimer();
 
             EventAggregator.Subscribe(this);
 
@@ -45,6 +55,7 @@ namespace TranslationPro.Blazor.Layouts
 
         public async Task LoadData()
         {
+            Console.WriteLine("MainLayout.LoadData");
 
             CurrentUser = await UserService.GetUser();
         }

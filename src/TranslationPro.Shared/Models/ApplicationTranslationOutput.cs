@@ -12,4 +12,5 @@ public class ApplicationTranslationOutput
     public string LanguageId { get; set; }
     public string LanguageName { get; set; }
     public int MachineTranslations { get; set; }
+    public int ActualLength { get; set; }
 }

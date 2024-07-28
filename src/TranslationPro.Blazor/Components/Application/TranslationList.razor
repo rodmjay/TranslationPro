@@ -17,7 +17,9 @@ else
         <DataGridColumns>
             <DataGridColumn Field="@nameof(ApplicationTranslationOutput.Text)" Caption="Text"></DataGridColumn>
             <DataGridColumn Field="@nameof(ApplicationTranslationOutput.LanguageName)" Caption="Language"></DataGridColumn>
-            <DataGridColumn Field="@nameof(ApplicationTranslationOutput.MachineTranslations)" Caption="Translations"></DataGridColumn>
+            <DataGridColumn Field="@nameof(ApplicationTranslationOutput.MachineTranslations)" Caption="Variations"></DataGridColumn>
+            <DataGridColumn Field="@nameof(ApplicationTranslationOutput.ActualLength)" Caption="Length (in bytes)"></DataGridColumn>
+
         </DataGridColumns>
     </DataGrid>
 }

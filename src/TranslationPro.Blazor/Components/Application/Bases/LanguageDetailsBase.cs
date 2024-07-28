@@ -28,16 +28,26 @@ public class LanguageDetailsBase : ApplicationDetailsBase
 
     private readonly PagingQuery _paging = new();
 
-    protected override async Task LoadData()
+    protected override async Task OnParametersSetAsync()
     {
-        await base.LoadData();
+        await LoadData();
+    }
+
+    protected async Task LoadData()
+    {
+        Console.WriteLine("LanguageDetailsBase.LoadData");
+        
         Translations =
             await ApplicationLanguagesProxy.GetTranslationsForLanguage(ApplicationId, LanguageId,
                 _paging);
 
         Language = await LanguageProxy.GetLanguageAsync(LanguageId);
+        
+    }
 
-        StateHasChanged();
+    protected override void BuildBreadcrumbs()
+    {
+        base.BuildBreadcrumbs();
 
         NavigationItems.Add(new NavigationItem()
         {

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using TranslationPro.Blazor.Components.Application.Bases;
 using TranslationPro.Blazor.Events;
-using TranslationPro.Shared.Common;
 using TranslationPro.Shared.Interfaces;
 
 namespace TranslationPro.Blazor.Pages
@@ -35,10 +34,10 @@ namespace TranslationPro.Blazor.Pages
             return deleteApplication.Hide();
         }
 
-        protected override async Task LoadData()
+        protected async Task LoadData()
         {
-            await base.LoadData();
-
+            Console.WriteLine("ApplicationDetails.LoadData");
+            
             if (this.Application.PendingTranslations > 0)
             {
                 var result = await ApplicationPhraseService.ProcessPending(ApplicationId);
@@ -47,6 +46,18 @@ namespace TranslationPro.Blazor.Pages
                     await EventAggregator.PublishAsync(new PhrasesReprocessedEvent());
                 }
             }
+        }
+
+        protected override void BuildBreadcrumbs()
+        {
+            Console.WriteLine("ApplicationDetails.BuildBreadcrumbs");
+
+            this.NavigationItems.Clear();
+            this.NavigationItems.Add(new NavigationItem()
+            {
+                Title = "Applications",
+                Url = "/applications"
+            });
         }
 
         public async Task DeleteApplication()

@@ -21,8 +21,15 @@ public class PhraseDetailsBase : ApplicationDetailsBase
 
     protected ApplicationPhraseDetails ApplicationPhrase { get; set; }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadData();
+    }
+
     protected override void BuildBreadcrumbs()
     {
+        Console.WriteLine("PhraseDetailsBase.BuildBreadcrumbs");
+
         base.BuildBreadcrumbs();
         this.NavigationItems.Add(new NavigationItem()
         {
@@ -31,9 +38,10 @@ public class PhraseDetailsBase : ApplicationDetailsBase
         });
     }
 
-    protected override async Task LoadData()
+    protected virtual async Task LoadData()
     {
-        await base.LoadData();
+        Console.WriteLine("PhraseDetailsBase.LoadData");
+        
         ApplicationPhrase = await ApplicationPhraseService.GetPhraseAsync(ApplicationId, PhraseId);
         
         

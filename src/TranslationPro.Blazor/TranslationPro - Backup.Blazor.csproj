@@ -58,7 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\scss\" />
+	  <Folder Include="wwwroot\NewFolder\" />
 	</ItemGroup>
 
 </Project>

@@ -23,13 +23,11 @@ else
             </Items>
             <Content>
                 <TabPanel Name="products">
-                    
-                    
 
-                    <Table>
-                        <TableBody>
-                            @foreach (var item in @Subscription.Items)
-                            {
+                    @foreach (var item in @Subscription.Items)
+                    {
+                        <Table>
+                            <TableBody>
                                 <TableRow>
                                     <TableHeaderCell>Name</TableHeaderCell>
                                     <TableRowCell>@item.Product.Name</TableRowCell>
@@ -38,20 +36,20 @@ else
                                     <TableHeaderCell>Billed</TableHeaderCell>
                                     <TableRowCell>Every @item.Plan.IntervalCount @item.Plan.Interval</TableRowCell>
                                 </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
+                            </TableBody>
+                        </Table>
+                    }
+
 
                 </TabPanel>
                 <TabPanel Name="invoices">
                     <Table>
-                        
+
                         <TableHeader>
                             <TableRow>
                                 <TableHeaderCell>Invoice #</TableHeaderCell>
                                 <TableHeaderCell>Total</TableHeaderCell>
-                                <TableHeaderCell>Period Start</TableHeaderCell>
-                                <TableHeaderCell>Period End</TableHeaderCell>
+                                <TableHeaderCell>Period</TableHeaderCell>
                                 <TableHeaderCell>Status</TableHeaderCell>
                             </TableRow>
                         </TableHeader>
@@ -62,12 +60,14 @@ else
                             {
                                 <TableRow>
                                     <TableRowCell>
-                                        <NavLink href="@{$"invoice/{invoice.Number}"}">
-                                            @invoice.Number</NavLink>
+                                        <NavLink href="@{
+                                $"/subscription/invoice/{invoice.Number}"
+}">
+                                            @invoice.Number
+                                        </NavLink>
                                     </TableRowCell>
                                     <TableRowCell>@invoice.Total</TableRowCell>
-                                    <TableRowCell>@invoice.PeriodStart.ToShortDateString()</TableRowCell>
-                                    <TableRowCell>@invoice.PeriodEnd.ToShortDateString()</TableRowCell>
+                                    <TableRowCell><BillingPeriod StartDate="@invoice.PeriodStart" EndDate="@invoice.PeriodEnd"></BillingPeriod></TableRowCell>
                                     <TableRowCell>@invoice.Status</TableRowCell>
                                 </TableRow>
                             }
@@ -75,7 +75,7 @@ else
                     </Table>
                 </TabPanel>
                 <TabPanel Name="usage_records">
-                    
+
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -87,21 +87,21 @@ else
                                 </TableHeaderCell>
                             </TableRow>
                         </TableHeader>
-                        
+
                         <TableBody>
 
 
-                        @foreach (var usage in @Subscription.Items.SelectMany(x => x.UsageRecords))
-                        {
-                            <TableRow>
-                                <TableRowCell>
-                                    @usage.PeriodStart - @usage.PeriodEnd
-                                </TableRowCell>
-                                <TableRowCell>
-                                    @usage.TotalUsage
-                                </TableRowCell>
-                            </TableRow>
-                        }
+                            @foreach (var usage in @Subscription.Items.SelectMany(x => x.UsageRecords))
+                            {
+                                <TableRow>
+                                    <TableRowCell>
+                                        <BillingPeriod StartDate="@usage.PeriodStart" EndDate="@usage.PeriodEnd"></BillingPeriod>
+                                    </TableRowCell>
+                                    <TableRowCell>
+                                        @usage.TotalUsage
+                                    </TableRowCell>
+                                </TableRow>
+                            }
 
                         </TableBody>
                     </Table>

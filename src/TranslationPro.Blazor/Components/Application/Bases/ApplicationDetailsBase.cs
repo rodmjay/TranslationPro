@@ -5,30 +5,31 @@ using TranslationPro.Shared.Models;
 
 namespace TranslationPro.Blazor.Components.Application.Bases
 {
-    public class ApplicationDetailsBase : AuthenticatedBase, IHandle<ApplicationUpdatedEvent>, IHandle<LanguagesChangedEvent>
+    public class ApplicationDetailsBase : AuthenticatedBase
     {
         [Parameter]
         public Guid ApplicationId { get; set; }
 
+        [CascadingParameter]
         protected ApplicationOutput Application { get; set; }
 
         protected override void OnInitialized()
         {
+            Console.WriteLine("ApplicationDetailsBase.OnInitialized");
+
             EventAggregator.Subscribe(this);
         }
         
-        protected override async Task LoadData()
-        {
-            await base.LoadData();
-            Application = await ApplicationService.GetApplicationAsync(ApplicationId);
-        }
-
         protected override void BuildBreadcrumbs()
         {
-            base.BuildBreadcrumbs();
-
             if (Application != null)
             {
+                base.NavigationItems.Clear();
+                this.NavigationItems.Add(new NavigationItem()
+                {
+                    Title = "Applications",
+                    Url = "/applications"
+                });
                 NavigationItems.Add(new NavigationItem()
                 {
                     Title = Application.Name,
@@ -38,14 +39,5 @@ namespace TranslationPro.Blazor.Components.Application.Bases
 
         }
 
-        public async Task HandleAsync(ApplicationUpdatedEvent message)
-        {
-            await LoadData();
-        }
-
-        public async Task HandleAsync(LanguagesChangedEvent message)
-        {
-            await LoadData();
-        }
     }
 }

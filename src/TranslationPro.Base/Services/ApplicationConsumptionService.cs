@@ -22,14 +22,14 @@ public class ApplicationConsumptionService : BaseService<Application>, IApplicat
     {
         var application = await Applications.Where(x => x.Id == applicationId).FirstAsync();
 
-        var phrases = application.Phrases.Where(x => x.CharacterCount > 0).ToList();
-        var translations = phrases.SelectMany(x => x.Translations).Where(x => x.CharacterCount > 0).ToList();
+        var phrases = application.Phrases.Where(x => x.ActualLength > 0).ToList();
+        var translations = phrases.SelectMany(x => x.Translations).Where(x => x.ActualLength > 0).ToList();
 
         var phraseDictionary = phrases.GroupBy(x => x.Created.Date)
-            .ToDictionary(x => x.Key, ap => ap.Sum(ap1 => ap1.CharacterCount));
+            .ToDictionary(x => x.Key, ap => ap.Sum(ap1 => ap1.ActualLength));
 
         var translationDictionary = translations.GroupBy(x => x.Created.Date)
-            .ToDictionary(x => x.Key, at => at.Sum(at1 => at1.CharacterCount));
+            .ToDictionary(x => x.Key, at => at.Sum(at1 => at1.ActualLength));
 
         var uniqueDates = phraseDictionary.Select(x => x.Key).Union(translationDictionary.Select(x => x.Key)).ToList();
 

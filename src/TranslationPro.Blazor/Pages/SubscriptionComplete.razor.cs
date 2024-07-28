@@ -16,6 +16,8 @@ namespace TranslationPro.Blazor.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            Console.WriteLine("SubscriptionComplete.OnInitializedAsync");
+
             var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
 
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("session_id", out var sessionId))
@@ -27,6 +29,11 @@ namespace TranslationPro.Blazor.Pages
                     IsCompleted = true;
                 }
             }
+        }
+
+        protected override void BuildBreadcrumbs()
+        {
+            base.NavigationItems.Clear();
         }
 
         private void Callback()

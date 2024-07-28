@@ -1,0 +1,10 @@
+﻿@using TranslationPro.Blazor.Components.Layout
+@inherits LayoutComponentBase
+@layout MainLayout
+
+
+<CascadingValue TValue="ApplicationOutput" Value="@Application">
+    <CascadingValue TValue="List<NavigationItem>" Value="NavigationItems">
+        @Body
+    </CascadingValue>
+</CascadingValue>

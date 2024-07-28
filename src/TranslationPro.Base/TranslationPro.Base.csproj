@@ -138,6 +138,7 @@
 
 
 	<ItemGroup>
+	  <Folder Include="Common\Data\Migrations\" />
 	  <Folder Include="Users\Models\" />
 	</ItemGroup>
 </Project>

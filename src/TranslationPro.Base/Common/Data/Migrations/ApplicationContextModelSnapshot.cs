@@ -1598,10 +1598,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("CharacterCount")
+                    b.Property<int>("ActualLength")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("int")
-                        .HasComputedColumnSql("IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0)");
+                        .HasComputedColumnSql("CASE WHEN TranslationPro.IsAscii([Text]) = 1 THEN IIF([Text] is not null, CAST(LEN([Text]) AS INT), 0) ELSE IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0) END");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
@@ -1633,10 +1633,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     b.Property<string>("LanguageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CharacterCount")
+                    b.Property<int>("ActualLength")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("int")
-                        .HasComputedColumnSql("IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0)");
+                        .HasComputedColumnSql("CASE WHEN TranslationPro.IsAscii([Text]) = 1 THEN IIF([Text] is not null, CAST(LEN([Text]) AS INT), 0) ELSE IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0) END");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");

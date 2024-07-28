@@ -26,12 +26,13 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
     public int MachineTranslations { get; set; }
 
     public string Text { get; set; }
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public int CharacterCount { get; set; }
+    
 
     public string UsageRecordId { get; set; }
     public UsageRecord UsageRecord { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public int ActualLength { get; set; }
 
     public override void Configure(EntityTypeBuilder<ApplicationTranslation> builder)
     {
@@ -50,10 +51,12 @@ public class ApplicationTranslation : BaseEntity<ApplicationTranslation>, ISoftD
 
 
         builder.HasOne(x => x.UsageRecord).WithMany(x => x.Translations).HasForeignKey(x => x.UsageRecordId);
+        
+        builder.Property(x => x.ActualLength)
+            .HasComputedColumnSql("CASE WHEN TranslationPro.IsAscii([Text]) = 1 THEN IIF([Text] is not null, CAST(LEN([Text]) AS INT), 0) ELSE IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0) END");
 
-
-        builder.Property(x => x.CharacterCount).HasComputedColumnSql(@"IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0)");
     }
+
 
     public bool IsDeleted { get; set; }
     public DateTimeOffset Created { get; set; }

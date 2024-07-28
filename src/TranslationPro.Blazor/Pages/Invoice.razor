@@ -1,5 +1,5 @@
 ﻿@layout SubscriptionLayout
-@page "/invoice/{Number}"
+@page "/subscription/invoice/{Number}"
 @inherits SubscriptionBase
 
 <h3>Invoice @InvoiceOutput.Number</h3>
@@ -27,7 +27,7 @@
                     Period
                 </TableHeaderCell>
                 <TableRowCell>
-                    @InvoiceOutput.PeriodStart - @InvoiceOutput.PeriodEnd
+                    <BillingPeriod StartDate="@InvoiceOutput.PeriodStart" EndDate="@InvoiceOutput.PeriodEnd"></BillingPeriod>
                 </TableRowCell>
                 <TableHeaderCell>
                     Collection Method
@@ -90,11 +90,15 @@
 
     protected override void OnParametersSet()
     {
+        Console.WriteLine("Invoice.OnParametersSet");
+
         InvoiceOutput = SubscriptionOutput.Invoices.First(x => x.Number == Number);
     }
     
     protected override void BuildBreadcrumbs()
     {
+        Console.WriteLine("Invoice.BuildBreadcrumbs");
+
         base.BuildBreadcrumbs();
         this.NavigationItems.Add(new NavigationItem()
             {

@@ -21,6 +21,8 @@ namespace TranslationPro.Blazor.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            Console.WriteLine("Checkout.OnInitializedAsync");
+
             var subscription = await StripeService.CreateCheckoutSession();
 
             var stripePublicKey = Configuration["Stripe:PublicKey"];

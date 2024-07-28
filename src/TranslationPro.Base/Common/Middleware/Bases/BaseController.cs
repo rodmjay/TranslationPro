@@ -47,8 +47,8 @@ public class BaseController : ControllerBase
             throw new ForbiddenException("User does not have access to application");
     }
 
-    protected async Task<IUser> GetCurrentUser()
+    protected Task<IUser> GetCurrentUser()
     {
-        return await _userAccessor.GetUser(User);
+        return _userAccessor.GetUser(User);
     }
 }

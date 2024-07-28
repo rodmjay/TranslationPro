@@ -9,7 +9,12 @@
 
 <AuthorizeView>
     <Authorized>
-                    
+
+        <BarItem>
+            <Button Type="ButtonType.Link" Color="Color.Secondary" To="/Subscription">
+                Subscription
+            </Button>
+        </BarItem>
         <BarItem>
             <BarLink TextColor="TextColor.White" @onclick="HandleProfileClick">@context.User.Identity?.Name</BarLink>
         </BarItem>
@@ -21,7 +26,7 @@
 
     </Authorized>
     <NotAuthorized>
-                    
+                
                     
         <BarItem Margin="Margin.Is2.FromEnd">
                         

@@ -22,6 +22,28 @@ namespace TranslationPro.Base.Common.Data.Migrations
             migrationBuilder.EnsureSchema(
                 name: "Stripe");
 
+            migrationBuilder.Sql(@"CREATE FUNCTION TranslationPro.IsAscii(@input NVARCHAR(MAX))
+RETURNS BIT
+WITH SCHEMABINDING
+AS
+BEGIN
+    DECLARE @isAscii BIT = 1;
+
+    -- Check each character in the input string
+    DECLARE @i INT = 1, @len INT = LEN(@input);
+    WHILE @i <= @len
+    BEGIN
+        IF UNICODE(SUBSTRING(@input, @i, 1)) > 127
+        BEGIN
+            SET @isAscii = 0; -- Non-ASCII character found
+            BREAK;
+        END
+        SET @i = @i + 1;
+    END
+
+    RETURN @isAscii;
+END");
+
             migrationBuilder.CreateTable(
                 name: "ApiResource",
                 schema: "IdentityServer",
@@ -71,19 +93,15 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Application",
-                schema: "TranslationPro",
+                name: "Charge",
+                schema: "Stripe",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CurrentPhraseId = table.Column<int>(type: "int", nullable: false, defaultValue: 10000),
-                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Application", x => x.Id);
+                    table.PrimaryKey("PK_Charge", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,31 +168,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Coupon",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AmountOff = table.Column<long>(type: "bigint", nullable: true),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    Duration = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DurationInMonths = table.Column<long>(type: "bigint", nullable: true),
-                    MaxRedemptions = table.Column<long>(type: "bigint", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PercentOff = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    RedeemBy = table.Column<long>(type: "bigint", nullable: true),
-                    TimesRedeemed = table.Column<long>(type: "bigint", nullable: false),
-                    Valid = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<int>(type: "int", nullable: false),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coupon", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DeviceFlowCodes",
                 schema: "IdentityServer",
                 columns: table => new
@@ -192,18 +185,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DeviceFlowCodes", x => x.UserCode);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Dispute",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Dispute", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,39 +264,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentLink",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    AllowPromotionCodes = table.Column<bool>(type: "bit", nullable: false),
-                    BillingAddressCollection = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerCreation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Livemode = table.Column<bool>(type: "bit", nullable: false),
-                    PaymentMethodCollection = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SubmitType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentLink", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payout",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payout", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 schema: "IdentityServer",
                 columns: table => new
@@ -336,6 +284,35 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Price",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Price", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -376,41 +353,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Session",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Session", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StripeProduct",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    StatementDescriptor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnitLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StripeProduct", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -418,8 +360,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentApplication = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentApplication = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -574,29 +516,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         column: x => x.ScopeId,
                         principalSchema: "IdentityServer",
                         principalTable: "ApiScope",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationPhrase",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationPhrase", x => new { x.ApplicationId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_ApplicationPhrase_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Application",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -806,44 +725,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Discount",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CouponId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Discount", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Discount_Coupon_CouponId",
-                        column: x => x.CouponId,
-                        principalSchema: "Stripe",
-                        principalTable: "Coupon",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PromotionCode",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CouponId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PromotionCode", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PromotionCode_Coupon_CouponId",
-                        column: x => x.CouponId,
-                        principalSchema: "Stripe",
-                        principalTable: "Coupon",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "IdentityResourceClaim",
                 schema: "IdentityServer",
                 columns: table => new
@@ -889,31 +770,53 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationLanguage",
-                schema: "TranslationPro",
+                name: "PriceTier",
+                schema: "Stripe",
                 columns: table => new
                 {
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    PriceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FlatAmount = table.Column<long>(type: "bigint", nullable: true),
+                    FlatAmountDecimal = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    UnitAmount = table.Column<long>(type: "bigint", nullable: true),
+                    UnitAmountDecimal = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    UpTo = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationLanguage", x => new { x.ApplicationId, x.LanguageId });
+                    table.PrimaryKey("PK_PriceTier", x => new { x.PriceId, x.Id });
                     table.ForeignKey(
-                        name: "FK_ApplicationLanguage_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Application",
+                        name: "FK_PriceTier_Price_PriceId",
+                        column: x => x.PriceId,
+                        principalSchema: "Stripe",
+                        principalTable: "Price",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plan",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Amount = table.Column<long>(type: "bigint", nullable: true),
+                    AmountDecimal = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Interval = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IntervalCount = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plan", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationLanguage_Language_LanguageId",
-                        column: x => x.LanguageId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Language",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Plan_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "Stripe",
+                        principalTable: "Product",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -938,151 +841,29 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CouponProduct",
+                name: "Subscription",
                 schema: "Stripe",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CouponId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CouponProduct", x => new { x.ProductId, x.CouponId });
-                    table.ForeignKey(
-                        name: "FK_CouponProduct_Coupon_CouponId",
-                        column: x => x.CouponId,
-                        principalSchema: "Stripe",
-                        principalTable: "Coupon",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CouponProduct_StripeProduct_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "Stripe",
-                        principalTable: "StripeProduct",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Price",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    Recurring_AggregateUsage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Recurring_Interval = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Recurring_IntervalCount = table.Column<long>(type: "bigint", nullable: true),
-                    Recurring_TrialPeriodDays = table.Column<long>(type: "bigint", nullable: true),
-                    Recurring_UsageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BillingScheme = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DaysUntilDue = table.Column<long>(type: "bigint", nullable: true),
+                    CurrentPeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CurrentPeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    LookupKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Nickname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TaxBehavior = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TiersMode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnitAmount = table.Column<long>(type: "bigint", nullable: true),
-                    UnitAmountDecimal = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
+                    CollectionMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CanceledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CancelAtPeriodEnd = table.Column<bool>(type: "bit", nullable: false),
+                    CancelAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Price", x => x.Id);
+                    table.PrimaryKey("PK_Subscription", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Price_StripeProduct_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "Stripe",
-                        principalTable: "StripeProduct",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductFeature",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductFeature", x => new { x.ProductId, x.Name });
-                    table.ForeignKey(
-                        name: "FK_ProductFeature_StripeProduct_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "Stripe",
-                        principalTable: "StripeProduct",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUser",
-                schema: "TranslationPro",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false),
-                    InvitationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    InvitationReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUser", x => new { x.ApplicationId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUser_Application_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalSchema: "TranslationPro",
-                        principalTable: "Application",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUser_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customer",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Address_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Balance = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<long>(type: "bigint", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    Delinquent = table.Column<bool>(type: "bit", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InvoicePrefix = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NextInvoiceSequence = table.Column<long>(type: "bigint", nullable: false),
-                    TaxExempt = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Customer_User_UserId",
+                        name: "FK_Subscription_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -1175,6 +956,312 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Application",
+                schema: "TranslationPro",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CurrentPhraseId = table.Column<int>(type: "int", nullable: false, defaultValue: 10000),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Application", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Application_Subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalSchema: "Stripe",
+                        principalTable: "Subscription",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoice",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AmountDue = table.Column<long>(type: "bigint", nullable: false),
+                    AmountPaid = table.Column<long>(type: "bigint", nullable: false),
+                    Attempted = table.Column<bool>(type: "bit", nullable: false),
+                    AmountRemaining = table.Column<long>(type: "bigint", nullable: false),
+                    AttemptCount = table.Column<long>(type: "bigint", nullable: false),
+                    BillingReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CollectionMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EffectiveAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndingBalance = table.Column<long>(type: "bigint", nullable: true),
+                    ChargeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HostedInvoiceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InvoicePdf = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NextPaymentAttempt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Paid = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Subtotal = table.Column<long>(type: "bigint", nullable: false),
+                    SubtotalExcludingTax = table.Column<long>(type: "bigint", nullable: true),
+                    Tax = table.Column<long>(type: "bigint", nullable: true),
+                    ReceiptNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Total = table.Column<long>(type: "bigint", nullable: false),
+                    AutoAdvance = table.Column<bool>(type: "bit", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invoice_Charge_ChargeId",
+                        column: x => x.ChargeId,
+                        principalSchema: "Stripe",
+                        principalTable: "Charge",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Invoice_Subscription_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Stripe",
+                        principalTable: "Subscription",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubscriptionItem",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    StripeItemId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlanId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubscriptionItem", x => x.StripeItemId);
+                    table.ForeignKey(
+                        name: "FK_SubscriptionItem_Plan_PlanId",
+                        column: x => x.PlanId,
+                        principalSchema: "Stripe",
+                        principalTable: "Plan",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SubscriptionItem_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "Stripe",
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SubscriptionItem_Subscription_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Stripe",
+                        principalTable: "Subscription",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationLanguage",
+                schema: "TranslationPro",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationLanguage", x => new { x.ApplicationId, x.LanguageId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationLanguage_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalSchema: "TranslationPro",
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationLanguage_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalSchema: "TranslationPro",
+                        principalTable: "Language",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationUser",
+                schema: "TranslationPro",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    InvitationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    InvitationReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUser", x => new { x.ApplicationId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationUser_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalSchema: "TranslationPro",
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUser_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvoiceItem",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoiceItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvoiceItem_Invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalSchema: "Stripe",
+                        principalTable: "Invoice",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvoiceLine",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Amount = table.Column<long>(type: "bigint", nullable: false),
+                    AmountExcludingTax = table.Column<long>(type: "bigint", nullable: true),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<long>(type: "bigint", nullable: true),
+                    UnitAmountExcludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoiceLine", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvoiceLine_Invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalSchema: "Stripe",
+                        principalTable: "Invoice",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsageRecord",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubscriptionItemId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsageRecord", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UsageRecord_SubscriptionItem_SubscriptionItemId",
+                        column: x => x.SubscriptionItemId,
+                        principalSchema: "Stripe",
+                        principalTable: "SubscriptionItem",
+                        principalColumn: "StripeItemId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsageRecordSummary",
+                schema: "Stripe",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubscriptionItemId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TotalUsage = table.Column<long>(type: "bigint", nullable: false),
+                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    InvoiceItemId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsageRecordSummary", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UsageRecordSummary_InvoiceItem_InvoiceItemId",
+                        column: x => x.InvoiceItemId,
+                        principalSchema: "Stripe",
+                        principalTable: "InvoiceItem",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UsageRecordSummary_Invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalSchema: "Stripe",
+                        principalTable: "Invoice",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UsageRecordSummary_SubscriptionItem_SubscriptionItemId",
+                        column: x => x.SubscriptionItemId,
+                        principalSchema: "Stripe",
+                        principalTable: "SubscriptionItem",
+                        principalColumn: "StripeItemId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationPhrase",
+                schema: "TranslationPro",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UsageRecordId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ActualLength = table.Column<int>(type: "int", nullable: false, computedColumnSql: "CASE WHEN TranslationPro.IsAscii([Text]) = 1 THEN IIF([Text] is not null, CAST(LEN([Text]) AS INT), 0) ELSE IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0) END"),
+                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationPhrase", x => new { x.ApplicationId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_ApplicationPhrase_Application_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalSchema: "TranslationPro",
+                        principalTable: "Application",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationPhrase_UsageRecord_UsageRecordId",
+                        column: x => x.UsageRecordId,
+                        principalSchema: "Stripe",
+                        principalTable: "UsageRecord",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApplicationTranslation",
                 schema: "TranslationPro",
                 columns: table => new
@@ -1184,6 +1271,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                     LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MachineTranslations = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UsageRecordId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ActualLength = table.Column<int>(type: "int", nullable: false, computedColumnSql: "CASE WHEN TranslationPro.IsAscii([Text]) = 1 THEN IIF([Text] is not null, CAST(LEN([Text]) AS INT), 0) ELSE IIF([Text] is not null, CAST(DATALENGTH([Text]) AS INT), 0) END"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -1203,572 +1292,12 @@ namespace TranslationPro.Base.Common.Data.Migrations
                         principalTable: "ApplicationPhrase",
                         principalColumns: new[] { "ApplicationId", "Id" },
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LineItem",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AmountDiscount = table.Column<long>(type: "bigint", nullable: false),
-                    AmountSubtotal = table.Column<long>(type: "bigint", nullable: false),
-                    AmountTax = table.Column<long>(type: "bigint", nullable: false),
-                    AmountTotal = table.Column<long>(type: "bigint", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<long>(type: "bigint", nullable: true),
-                    PriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PaymentLinkId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    StripePaymentLinkLineItemId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LineItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LineItem_LineItem_StripePaymentLinkLineItemId",
-                        column: x => x.StripePaymentLinkLineItemId,
+                        name: "FK_ApplicationTranslation_UsageRecord_UsageRecordId",
+                        column: x => x.UsageRecordId,
                         principalSchema: "Stripe",
-                        principalTable: "LineItem",
+                        principalTable: "UsageRecord",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_LineItem_PaymentLink_PaymentLinkId",
-                        column: x => x.PaymentLinkId,
-                        principalSchema: "Stripe",
-                        principalTable: "PaymentLink",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_LineItem_Price_PriceId",
-                        column: x => x.PriceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Price",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Card",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Last4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CvcCheck = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExpMonth = table.Column<long>(type: "bigint", nullable: false),
-                    ExpYear = table.Column<long>(type: "bigint", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    DefaultForCurrency = table.Column<bool>(type: "bit", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressZipCheck = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressZip = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressState = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine1Check = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressCity = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DynamicLast4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Fingerprint = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Funding = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Iin = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Issuer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TokenizationMethod = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Card", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Card_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SetupIntent",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SetupIntent", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SetupIntent_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubscriptionSchedule",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CanceledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndBehavior = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReleasedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReleasedSubscription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubscriptionSchedule", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubscriptionSchedule_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PaymentMethod",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CardId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentMethod", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentMethod_Card_CardId",
-                        column: x => x.CardId,
-                        principalSchema: "Stripe",
-                        principalTable: "Card",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PaymentMethod_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscription",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ScheduleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ApplicationFeePercent = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    BillingCycleAnchor = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CancelAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CancelAtPeriodEnd = table.Column<bool>(type: "bit", nullable: false),
-                    CanceledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CollectionMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentPeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CurrentPeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DaysUntilDue = table.Column<long>(type: "bigint", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EndedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    NextPendingInvoiceItemInvoice = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrialEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TrialStart = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PaymentMethodId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DiscountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscription_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Subscription_Discount_DiscountId",
-                        column: x => x.DiscountId,
-                        principalSchema: "Stripe",
-                        principalTable: "Discount",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Subscription_PaymentMethod_PaymentMethodId",
-                        column: x => x.PaymentMethodId,
-                        principalSchema: "Stripe",
-                        principalTable: "PaymentMethod",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Subscription_SubscriptionSchedule_ScheduleId",
-                        column: x => x.ScheduleId,
-                        principalSchema: "Stripe",
-                        principalTable: "SubscriptionSchedule",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubscriptionItem",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SubscriptionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    Quantity = table.Column<long>(type: "bigint", nullable: false),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubscriptionItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubscriptionItem_Price_PriceId",
-                        column: x => x.PriceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Price",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SubscriptionItem_Subscription_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalSchema: "Stripe",
-                        principalTable: "Subscription",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Charge",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Amount = table.Column<long>(type: "bigint", nullable: false),
-                    AmountCaptured = table.Column<long>(type: "bigint", nullable: false),
-                    AmountRefunded = table.Column<long>(type: "bigint", nullable: false),
-                    AuthorizationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CalculatedStatementDescriptor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Captured = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<long>(type: "bigint", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Disputed = table.Column<bool>(type: "bit", nullable: false),
-                    FailureCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FailureMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Outcome_NetworkStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Outcome_Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Outcome_RiskLevel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Outcome_RiskScore = table.Column<long>(type: "bigint", nullable: true),
-                    Outcome_SellerMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Outcome_Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Paid = table.Column<bool>(type: "bit", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Refunded = table.Column<bool>(type: "bit", nullable: false),
-                    StatementDescriptor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StatementDescriptorSuffix = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Charge", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Charge_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Invoice",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Created = table.Column<int>(type: "int", nullable: false),
-                    Captured = table.Column<bool>(type: "bit", nullable: false),
-                    AmountCaptured = table.Column<int>(type: "int", nullable: false),
-                    Refunded = table.Column<bool>(type: "bit", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AccountCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AmountDue = table.Column<long>(type: "bigint", nullable: false),
-                    AmountPaid = table.Column<long>(type: "bigint", nullable: false),
-                    AmountRemaining = table.Column<long>(type: "bigint", nullable: false),
-                    AmountShipping = table.Column<long>(type: "bigint", nullable: false),
-                    ApplicationFeeAmount = table.Column<long>(type: "bigint", nullable: true),
-                    AttemptCount = table.Column<long>(type: "bigint", nullable: false),
-                    Attempted = table.Column<bool>(type: "bit", nullable: false),
-                    AutoAdvance = table.Column<bool>(type: "bit", nullable: false),
-                    BillingReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CollectionMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress_State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress_Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress_Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress_Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress_PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerTaxExempt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EffectiveAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndingBalance = table.Column<long>(type: "bigint", nullable: true),
-                    Footer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HostedInvoiceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InvoicePdf = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NextPaymentAttempt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Paid = table.Column<bool>(type: "bit", nullable: false),
-                    PaidOutOfBand = table.Column<bool>(type: "bit", nullable: false),
-                    PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostPaymentCreditNotesAmount = table.Column<long>(type: "bigint", nullable: false),
-                    PrePaymentCreditNotesAmount = table.Column<long>(type: "bigint", nullable: false),
-                    ReceiptNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartingBalance = table.Column<long>(type: "bigint", nullable: false),
-                    StatementDescriptor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Subtotal = table.Column<long>(type: "bigint", nullable: false),
-                    SubtotalExcludingTax = table.Column<long>(type: "bigint", nullable: true),
-                    Tax = table.Column<long>(type: "bigint", nullable: true),
-                    Total = table.Column<long>(type: "bigint", nullable: false),
-                    TotalExcludingTax = table.Column<long>(type: "bigint", nullable: true),
-                    WebhooksDeliveredAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false),
-                    SubscriptionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChargeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invoice", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Invoice_Charge_ChargeId",
-                        column: x => x.ChargeId,
-                        principalSchema: "Stripe",
-                        principalTable: "Charge",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Invoice_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Invoice_Subscription_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalSchema: "Stripe",
-                        principalTable: "Subscription",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Refund",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ChargeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Refund", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Refund_Charge_ChargeId",
-                        column: x => x.ChargeId,
-                        principalSchema: "Stripe",
-                        principalTable: "Charge",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InvoiceDiscount",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DiscountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InvoiceDiscount", x => new { x.InvoiceId, x.DiscountId });
-                    table.ForeignKey(
-                        name: "FK_InvoiceDiscount_Discount_DiscountId",
-                        column: x => x.DiscountId,
-                        principalSchema: "Stripe",
-                        principalTable: "Discount",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InvoiceDiscount_Invoice_InvoiceId",
-                        column: x => x.InvoiceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Invoice",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InvoiceLineItem",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PriceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SubscriptionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SubscriptionItemId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Amount = table.Column<long>(type: "bigint", nullable: false),
-                    AmountExcludingTax = table.Column<long>(type: "bigint", nullable: true),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discountable = table.Column<bool>(type: "bit", nullable: false),
-                    Proration = table.Column<bool>(type: "bit", nullable: false),
-                    Quantity = table.Column<long>(type: "bigint", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnitAmountExcludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InvoiceLineItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InvoiceLineItem_Invoice_InvoiceId",
-                        column: x => x.InvoiceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Invoice",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InvoiceLineItem_Price_PriceId",
-                        column: x => x.PriceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Price",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InvoiceLineItem_SubscriptionItem_SubscriptionItemId",
-                        column: x => x.SubscriptionItemId,
-                        principalSchema: "Stripe",
-                        principalTable: "SubscriptionItem",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InvoiceLineItem_Subscription_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalSchema: "Stripe",
-                        principalTable: "Subscription",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PaymentIntent",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Amount = table.Column<long>(type: "bigint", nullable: false),
-                    CaptureMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConfirmationMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<int>(type: "int", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    InvoiceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LiveMode = table.Column<bool>(type: "bit", nullable: false),
-                    StripeInvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentIntent", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentIntent_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Stripe",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PaymentIntent_Invoice_StripeInvoiceId",
-                        column: x => x.StripeInvoiceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Invoice",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InvoiceItemDiscount",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    DiscountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    InvoiceLineItemId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InvoiceItemDiscount", x => new { x.InvoiceLineItemId, x.DiscountId });
-                    table.ForeignKey(
-                        name: "FK_InvoiceItemDiscount_Discount_DiscountId",
-                        column: x => x.DiscountId,
-                        principalSchema: "Stripe",
-                        principalTable: "Discount",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InvoiceItemDiscount_InvoiceLineItem_InvoiceLineItemId",
-                        column: x => x.InvoiceLineItemId,
-                        principalSchema: "Stripe",
-                        principalTable: "InvoiceLineItem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InvoicePaymentIntent",
-                schema: "Stripe",
-                columns: table => new
-                {
-                    PaymentIntentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    InvoiceId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InvoicePaymentIntent", x => new { x.InvoiceId, x.PaymentIntentId });
-                    table.ForeignKey(
-                        name: "FK_InvoicePaymentIntent_Invoice_InvoiceId",
-                        column: x => x.InvoiceId,
-                        principalSchema: "Stripe",
-                        principalTable: "Invoice",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InvoicePaymentIntent_PaymentIntent_PaymentIntentId",
-                        column: x => x.PaymentIntentId,
-                        principalSchema: "Stripe",
-                        principalTable: "PaymentIntent",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -2117,10 +1646,22 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Application_SubscriptionId",
+                schema: "TranslationPro",
+                table: "Application",
+                column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ApplicationLanguage_LanguageId",
                 schema: "TranslationPro",
                 table: "ApplicationLanguage",
                 column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationPhrase_UsageRecordId",
+                schema: "TranslationPro",
+                table: "ApplicationPhrase",
+                column: "UsageRecordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationTranslation_ApplicationId_LanguageId",
@@ -2129,28 +1670,16 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "ApplicationId", "LanguageId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApplicationTranslation_UsageRecordId",
+                schema: "TranslationPro",
+                table: "ApplicationTranslation",
+                column: "UsageRecordId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUser_UserId",
                 schema: "TranslationPro",
                 table: "ApplicationUser",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Card_CustomerId",
-                schema: "Stripe",
-                table: "Card",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Charge_CustomerId",
-                schema: "Stripe",
-                table: "Charge",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Charge_InvoiceId",
-                schema: "Stripe",
-                table: "Charge",
-                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Client_ClientId",
@@ -2222,19 +1751,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CouponProduct_CouponId",
-                schema: "Stripe",
-                table: "CouponProduct",
-                column: "CouponId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customer_UserId",
-                schema: "Stripe",
-                table: "Customer",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DeviceFlowCodes_DeviceCode",
                 schema: "IdentityServer",
                 table: "DeviceFlowCodes",
@@ -2246,12 +1762,6 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer",
                 table: "DeviceFlowCodes",
                 column: "Expiration");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Discount_CouponId",
-                schema: "Stripe",
-                table: "Discount",
-                column: "CouponId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityResource_Name",
@@ -2281,116 +1791,28 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "ChargeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_CustomerId",
+                name: "IX_Invoice_UserId",
                 schema: "Stripe",
                 table: "Invoice",
-                column: "CustomerId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_SubscriptionId",
+                name: "IX_InvoiceItem_InvoiceId",
                 schema: "Stripe",
-                table: "Invoice",
-                column: "SubscriptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoiceDiscount_DiscountId",
-                schema: "Stripe",
-                table: "InvoiceDiscount",
-                column: "DiscountId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoiceItemDiscount_DiscountId",
-                schema: "Stripe",
-                table: "InvoiceItemDiscount",
-                column: "DiscountId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoiceLineItem_InvoiceId",
-                schema: "Stripe",
-                table: "InvoiceLineItem",
+                table: "InvoiceItem",
                 column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvoiceLineItem_PriceId",
+                name: "IX_InvoiceLine_InvoiceId",
                 schema: "Stripe",
-                table: "InvoiceLineItem",
-                column: "PriceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoiceLineItem_SubscriptionId",
-                schema: "Stripe",
-                table: "InvoiceLineItem",
-                column: "SubscriptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoiceLineItem_SubscriptionItemId",
-                schema: "Stripe",
-                table: "InvoiceLineItem",
-                column: "SubscriptionItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoicePaymentIntent_InvoiceId",
-                schema: "Stripe",
-                table: "InvoicePaymentIntent",
-                column: "InvoiceId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoicePaymentIntent_PaymentIntentId",
-                schema: "Stripe",
-                table: "InvoicePaymentIntent",
-                column: "PaymentIntentId",
-                unique: true);
+                table: "InvoiceLine",
+                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Key_Use",
                 schema: "IdentityServer",
                 table: "Key",
                 column: "Use");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LineItem_PaymentLinkId",
-                schema: "Stripe",
-                table: "LineItem",
-                column: "PaymentLinkId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LineItem_PriceId",
-                schema: "Stripe",
-                table: "LineItem",
-                column: "PriceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LineItem_StripePaymentLinkLineItemId",
-                schema: "Stripe",
-                table: "LineItem",
-                column: "StripePaymentLinkLineItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentIntent_CustomerId",
-                schema: "Stripe",
-                table: "PaymentIntent",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentIntent_StripeInvoiceId",
-                schema: "Stripe",
-                table: "PaymentIntent",
-                column: "StripeInvoiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentMethod_CardId",
-                schema: "Stripe",
-                table: "PaymentMethod",
-                column: "CardId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentMethod_CustomerId",
-                schema: "Stripe",
-                table: "PaymentMethod",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_ConsumedTime",
@@ -2425,22 +1847,10 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Price_ProductId",
+                name: "IX_Plan_ProductId",
                 schema: "Stripe",
-                table: "Price",
+                table: "Plan",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PromotionCode_CouponId",
-                schema: "Stripe",
-                table: "PromotionCode",
-                column: "CouponId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Refund_ChargeId",
-                schema: "Stripe",
-                table: "Refund",
-                column: "ChargeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaim_RoleId",
@@ -2479,54 +1889,46 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupIntent_CustomerId",
-                schema: "Stripe",
-                table: "SetupIntent",
-                column: "CustomerId",
-                unique: true,
-                filter: "[CustomerId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscription_CustomerId",
-                schema: "Stripe",
-                table: "Subscription",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscription_DiscountId",
-                schema: "Stripe",
-                table: "Subscription",
-                column: "DiscountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscription_PaymentMethodId",
-                schema: "Stripe",
-                table: "Subscription",
-                column: "PaymentMethodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscription_ScheduleId",
-                schema: "Stripe",
-                table: "Subscription",
-                column: "ScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionItem_PriceId",
+                name: "IX_SubscriptionItem_PlanId",
                 schema: "Stripe",
                 table: "SubscriptionItem",
-                column: "PriceId");
+                column: "PlanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionItem_SubscriptionId",
+                name: "IX_SubscriptionItem_ProductId",
                 schema: "Stripe",
                 table: "SubscriptionItem",
-                column: "SubscriptionId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionSchedule_CustomerId",
+                name: "IX_SubscriptionItem_UserId",
                 schema: "Stripe",
-                table: "SubscriptionSchedule",
-                column: "CustomerId");
+                table: "SubscriptionItem",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsageRecord_SubscriptionItemId",
+                schema: "Stripe",
+                table: "UsageRecord",
+                column: "SubscriptionItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsageRecordSummary_InvoiceId",
+                schema: "Stripe",
+                table: "UsageRecordSummary",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsageRecordSummary_InvoiceItemId",
+                schema: "Stripe",
+                table: "UsageRecordSummary",
+                column: "InvoiceItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsageRecordSummary_SubscriptionItemId",
+                schema: "Stripe",
+                table: "UsageRecordSummary",
+                column: "SubscriptionItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
@@ -2537,60 +1939,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 name: "IX_UserRole_RoleId",
                 table: "UserRole",
                 column: "RoleId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Charge_Invoice_InvoiceId",
-                schema: "Stripe",
-                table: "Charge",
-                column: "InvoiceId",
-                principalSchema: "Stripe",
-                principalTable: "Invoice",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Customer_User_UserId",
-                schema: "Stripe",
-                table: "Customer");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Card_Customer_CustomerId",
-                schema: "Stripe",
-                table: "Card");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Charge_Customer_CustomerId",
-                schema: "Stripe",
-                table: "Charge");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Invoice_Customer_CustomerId",
-                schema: "Stripe",
-                table: "Invoice");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_PaymentMethod_Customer_CustomerId",
-                schema: "Stripe",
-                table: "PaymentMethod");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Subscription_Customer_CustomerId",
-                schema: "Stripe",
-                table: "Subscription");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_SubscriptionSchedule_Customer_CustomerId",
-                schema: "Stripe",
-                table: "SubscriptionSchedule");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Charge_Invoice_InvoiceId",
-                schema: "Stripe",
-                table: "Charge");
-
             migrationBuilder.DropTable(
                 name: "ApiResourceClaim",
                 schema: "IdentityServer");
@@ -2660,16 +2013,8 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "CouponProduct",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
                 name: "DeviceFlowCodes",
                 schema: "IdentityServer");
-
-            migrationBuilder.DropTable(
-                name: "Dispute",
-                schema: "Stripe");
 
             migrationBuilder.DropTable(
                 name: "IdentityProviders");
@@ -2683,15 +2028,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "InvoiceDiscount",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "InvoiceItemDiscount",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "InvoicePaymentIntent",
+                name: "InvoiceLine",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2699,27 +2036,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "LineItem",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Payout",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
                 name: "PersistedGrants",
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "ProductFeature",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "PromotionCode",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Refund",
+                name: "PriceTier",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2730,11 +2051,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "Session",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "SetupIntent",
+                name: "UsageRecordSummary",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2774,15 +2091,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "IdentityServer");
 
             migrationBuilder.DropTable(
-                name: "InvoiceLineItem",
+                name: "Price",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
-                name: "PaymentIntent",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "PaymentLink",
+                name: "InvoiceItem",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2797,22 +2110,7 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "TranslationPro");
 
             migrationBuilder.DropTable(
-                name: "SubscriptionItem",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Price",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "StripeProduct",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Customer",
+                name: "UsageRecord",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2820,7 +2118,15 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
+                name: "SubscriptionItem",
+                schema: "Stripe");
+
+            migrationBuilder.DropTable(
                 name: "Charge",
+                schema: "Stripe");
+
+            migrationBuilder.DropTable(
+                name: "Plan",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
@@ -2828,24 +2134,11 @@ namespace TranslationPro.Base.Common.Data.Migrations
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
-                name: "Discount",
+                name: "Product",
                 schema: "Stripe");
 
             migrationBuilder.DropTable(
-                name: "PaymentMethod",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "SubscriptionSchedule",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Coupon",
-                schema: "Stripe");
-
-            migrationBuilder.DropTable(
-                name: "Card",
-                schema: "Stripe");
+                name: "User");
         }
     }
 }
